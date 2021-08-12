@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import src="/util/comp_popups.zul" ?>
+<?import src="/util/comp_botones.zul" ?>
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+
+
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<window id="asignaComisionConfronta" width="50%" height="90%" title="Asigna impuestos" closable="True" 
+	 border="normal"  mode="modal"  position="center,center"
+		apply="com.terium.siccam.controller.CBAsignaComisionTiendasPropiasController"
+		 sizable="true" >
+		<borderlayout id="blyPrincipal">
+
+
+			<center autoscroll="true">
+				<groupbox width="100%" height="100%" mold="3d">
+					<groupbox width="100%" mold="3d">
+						<caption
+							label="Consulta asignaciones de impuestos" />
+						<grid>
+							<columns>
+								<column />
+								<column />
+								<column />
+								<column />
+							</columns>
+							<rows>
+								<row>
+									<hbox>
+										<label value="Forma de Pago :" />
+									</hbox>
+									<hbox>
+										<combobox id="cmbFormaDePago"
+											readonly="true" width="150px">
+										</combobox>
+									</hbox>
+									<hbox>
+										<label
+											value="Cargo :" />
+									</hbox>
+									<hbox>
+										<combobox id="cmbTipoImpuesto"
+											readonly="true" width="150px">
+										</combobox>
+									</hbox>
+								</row>
+
+								<row>
+									<hbox>
+										<label value="Tipo :" />
+									</hbox>
+									<hbox>
+										<combobox id="cmbTipo"
+											readonly="true" width="150px">
+										</combobox>
+									</hbox>
+									<hbox>
+										<label value="Medio de Pago :" />
+									</hbox>
+									<hbox>
+										<combobox id="cmbMedioDePago"
+											readonly="true" width="150px">
+										</combobox>
+									</hbox>
+								</row>
+
+								<row>
+									<hbox>
+										<label value="Tipologia:" />
+									</hbox>
+									<hbox>
+										<combobox id="cmbTipologia"
+											readonly="true" width="150px">
+										</combobox>
+									</hbox>
+									
+									<hbox>
+										<label value="Valor :" />
+									</hbox>
+									<hbox>
+										<textbox id="txtValor" width="150px" xmlns:w="client" >
+											<attribute
+														w:name="doKeyPress_">
+														<![CDATA[ function(evt) { if
+														(!this._shallIgnore(evt,
+														".0123456789"))
+														this.$doKeyPress_(evt); }
+														]]>
+														</attribute>	
+										
+										</textbox>
+									</hbox>
+								</row>
+
+							</rows>
+
+						</grid>
+
+					</groupbox>
+					
+	<button id="btnNuevo" label="Guardar"
+						image="img/globales/16x16/guardarnuevo.png" />
+						
+						<button id="btnModificar" label="Modificar"
+						image="img/globales/16x16/modificar_1.png"
+						tooltip="popAsociacion" />
+						
+						<button id="btnTienda" label="asignar a tienda"
+						image="img/globales/16x16/guardarnuevo.png" />
+						
+						<button id="btnLimpiar" label="limpiar"
+						image="img/globales/16x16/nuevo.png" />
+						
+						<button id="btnTiendaTodos" label="asignar a todos"
+						image="img/globales/16x16/guardarnuevo.png" />
+
+					
+
+					
+
+					
+
+					<button id="btnConsultar" label="Consultar"
+						image="img/globales/16x16/consulta.png" />
+					
+
+					<groupbox mold="3d" width="100%" height="100%">
+						<caption label="Detalle de registros" />
+
+
+						<listbox id="lbxConsultaImpuesto" height="300px" 
+							mold="paging" pageSize="10" sizedByContent="true" vflex="true"
+							emptyMessage="No hay registros consultados">
+
+							<listhead>
+								
+								<listheader label="Impuesto" sort="auto"
+									 />
+								<listheader label="Tipo"
+									 />
+								<listheader label="Medio de Pago"
+									 />
+								<listheader label="Tipologia"
+									 />
+								<listheader label="Forma de Pago"
+									 />
+									<listheader label="Valor"
+									 />
+								<listheader label="Eliminar"
+									 />
+							</listhead>
+						</listbox>
+					</groupbox>
+
+
+				</groupbox>
+			</center>
+		</borderlayout>
+	</window>
+</zk>

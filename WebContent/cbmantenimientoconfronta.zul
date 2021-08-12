@@ -1,0 +1,233 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<script type="text/javascript"
+		src="javascripts/jquery.jgrowl_compressed.js" />
+	<window id="Tipologias" width="100%" title="" vflex="true"
+		border="normal"
+		apply="com.terium.siccam.controller.CBMantenimientoConfConfrontasController">
+		<borderlayout id="blyPrincipal">
+			<center autoscroll="true">
+				<div>
+					<hbox>
+						<groupbox mold="3d" width="400px">
+							<caption label="Datos configuración de confronta" />
+							<grid>
+								<columns>
+									<column width="178px" />
+									<column />
+								</columns>
+								<rows>
+									<row>
+										<hbox>
+											<label
+												value="Nombre configuración:" />
+										</hbox>
+										<hbox>
+											<textbox id="txtNombreConf" width="250px" maxlength="150" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Formato fecha: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="txtFormatoFecha" width="180px" maxlength="50" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label value="Estado:" />
+										</hbox>
+										<hbox>
+											<combobox id="cmbEstado" width="180px" readonly="true" 								
+									   		style="color:#2B547E;font-weight: bold;"/>
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label value="Delimitador:" />
+										</hbox>
+										<hbox>
+											<combobox id="cmbDelimitador" width="180px" readonly="true" 								
+									   		style="color:#2B547E;font-weight: bold;"/>
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label value="Linea donde empieza a leer:" />
+										</hbox>
+										<hbox>
+											<intbox id="txtLineaLectura" width="50px" maxlength="4" 
+											tooltip="popLineaLectura"
+											constraint="no negative: No se aceptan números negativos"/>
+										</hbox>
+									</row>
+									<row>
+										<cell colspan="2">
+											<button id="btnGuardar"
+												label="Guardar" image="img/globales/16x16/guardarnuevo.png" />
+											<button id="btnModificar"
+												label="Modificar" image="img/globales/16x16/modificar_1.png" />
+											<button id="btnLimpiar"
+												label="Limpiar" image="img/globales/16x16/nuevo.png" />
+											<button id="btnConsultar"
+												label="Consultar" image="img/globales/16x16/consulta.png" />
+										</cell>
+									</row>
+								</rows>
+							</grid>
+						</groupbox>
+						<groupbox mold="3d">
+							<caption label="Asignación de nomenclatura" />
+							<grid>
+								<columns>
+									<column width="100px" />
+									<column />
+									<column />
+									<column />
+								</columns>
+								<rows>
+									<row id="rowLongitudFila">
+										<hbox>
+											<label value="Longitud de fila:" />
+										</hbox>
+										<hbox>
+											<intbox id="txtLongitudFila" width="100px" maxlength="6" 
+													constraint="no negative: No se aceptan números negativos"/>
+										</hbox>
+										<hbox></hbox>
+										<hbox></hbox>
+									</row>
+									<row>
+										<hbox>
+											<label value="Nomenclatura" />
+										</hbox>
+										<cell colspan="2">
+											<combobox id="cmbNomenclatura" width="180px" readonly="true" 								
+									   		style="color:#2B547E;font-weight: bold;"/>
+										</cell>
+										<hbox>
+											<button id="btnAddNomen"
+												label="Agregar" image="img/globales/16x16/agregar.png" />
+										</hbox>
+									</row>
+									<row id="rowInicioFin">
+										<hbox><label value="Inicia:" /></hbox>
+										<hbox><intbox id="txtInicia" maxlength="4" 
+												constraint="no negative: No se aceptan números negativos"/></hbox>
+										<hbox><label value="Termina:" /></hbox>
+										<hbox><intbox id="txtTermina" maxlength="4" 
+												constraint="no negative: No se aceptan números negativos"/></hbox>
+									</row>
+									<row>
+										<cell colspan="3">
+											<label value="Cantidad de agrupación: " 
+												   style="color:#0d47a1; font-weight:bold;"/>
+											<label id="lblTotalNomen" value="0" 
+												   style="color:#0d47a1; font-weight:bold;"/>
+										</cell>
+										<hbox>
+											<button id="btnNuevaNomen"
+												label="Nueva" image="img/globales/16x16/nuevo.png" />
+										</hbox>
+									</row>
+									<row>
+										<cell colspan="4">
+											<groupbox id="gpbDelim" mold="3d" height="240px">
+												<caption label="Asignación de nomenclatura" />
+												<listbox
+													id="lbxNomenDelim" mold="paging"
+													sizedByContent="true" vflex="true" 
+													emptyMessage="No hay nomenclaturas asignadas">
+													<listhead>
+														<listheader
+															label="Nomenclatura" width="160px" />
+														<listheader
+															label="Identificador" width="100px" />
+														<listheader
+															label="Eliminar" width="70px" />
+													</listhead>
+												</listbox>
+											</groupbox>
+											<groupbox id="gpbNA" mold="3d" height="240px">
+												<caption label="Asignación de nomenclatura" />
+												<listbox id="lbxNomenNA" mold="paging" 
+													sizedByContent="true" vflex="true" 
+													emptyMessage="No hay nomenclaturas asignadas">
+													<listhead>
+														<listheader
+															label="Nomenclatura" width="160px" />
+														<listheader
+															label="Identificador" width="90px" />
+														<listheader
+															label="Inicio" />
+														<listheader
+															label="Fin" />
+														<listheader
+															label="Eliminar" width="60px" />
+													</listhead>
+												</listbox>
+											</groupbox>
+										</cell>
+									</row>
+								</rows>
+
+							</grid>
+						</groupbox>
+					</hbox>
+
+					<groupbox mold="3d" >
+						<caption label="Detalle de registros de configuraciones de confronta" />
+						<listbox id="lbxConsulta" height="360px "
+							mold="paging" pageSize="10" sizedByContent="true" vflex="true"
+							emptyMessage="No hay registros consultados">
+							<listhead>
+								<listheader label="Nombre" />
+								<listheader label="Delimitador" />
+								<listheader label="Nomenclatura" />
+								<listheader label="Cantidad agrupación" />
+								<listheader label="Formato fecha" />
+								<listheader label="Empieza a leer en línea" />
+								<listheader label="Longitud de cadena" />
+								<listheader label="Estado" />
+								<listheader label="Eliminar" />
+							</listhead>
+						</listbox>
+
+					</groupbox>
+
+				</div>
+			</center>
+		</borderlayout>
+		<popup id="popEliminarNomen" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Eliminar nomenclatura de la lista" style="font-weight: bold" />
+			</hbox>
+		</popup>
+		<popup id="popSelected" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Seleccionar registro para editar información" style="font-weight: bold" />
+			</hbox>
+		</popup>
+		<!-- Carlos Godinez - 31/10/2017 -->
+		<popup id="popLineaLectura" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Linea donde empieza a leer"
+					style="font-weight: bold" />
+			</hbox>
+			Indicar en que linea se empezarán a leer los datos de la
+			confronta cargada, para que el sistema ignore los
+			encabezados y/o las lineas que no contengan datos
+			importantes. Tome en cuenta que la linea 0 es la primera
+			linea del archivo que se leerá por defecto.
+
+			Si este campo se deja vacío se dejará el valor por defecto:
+			0
+		</popup>
+	</window>
+</zk>

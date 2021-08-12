@@ -1,0 +1,9 @@
+<popup id="${arg.identificador}">
+	<hbox align="center" pack="center">
+		<image src="/img/globales/16x16/info.png" />
+		<label value="${arg.titulo}" style="font-weight: bold" />
+	</hbox>
+	<div style="white-space: normal" width="88%" >
+		<label value="${arg.texto}" />
+	</div>
+</popup>

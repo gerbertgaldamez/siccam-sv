@@ -1,0 +1,99 @@
+<?page title="Consulta Contabilizacion modal" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<window id="contabilizacionModa" width="40%" height="40%" title=""
+	 border="normal"  mode="modal"  position="center,center"
+		apply="com.terium.siccam.controller.CBConsultaContabilizacionModalController"
+		closable="True"  sizable="true" >
+		<borderlayout id="blyPrincipal">
+			<center>
+				<div>
+					<hbox>
+						<groupbox mold="3d">
+							<caption label="Consulta Contabilizacion" />
+							<grid>
+								<columns>
+									<column />
+									<column />
+									<column />
+								</columns>
+								<rows>
+									<row>
+										<hbox>
+											<label
+												value="Centro de Costo: " width="100px" />
+
+											<textbox id="tbxCentroCosto"
+												maxlength="10" width="70px" />
+										</hbox>
+
+										<hbox>
+											<label value="Referencia: " />
+
+											<textbox id="tbxReferencia"
+												maxlength="16" width="100px" />
+										</hbox>
+
+										<hbox>
+											<label value="Cuenta	: " />
+
+											<textbox id="tbxCuenta"
+												maxlength="20" width="100px" />
+										</hbox>
+
+									</row>
+
+									<row>
+
+										<hbox>
+											<label
+												value="Clave contabiliza: " width="100px" />
+
+											<textbox id="tbxClave"
+												maxlength="2" width="40px" />
+										</hbox>
+										<hbox>
+											<label value="Texto: " />
+
+											<textbox id="tbxTexto"
+												maxlength="50" width="100px" />
+										</hbox>
+
+										<hbox>
+											<label value="Texto 2: " />
+
+											<textbox id="tbxTexto2"
+												maxlength="50" width="100px" />
+										</hbox>
+
+									</row>
+
+									<row>
+
+										<hbox>
+											<label
+												value="Observaciones: " />
+
+											<textbox
+												id="tbxObservaciones" maxlength="50" width="100px" />
+										</hbox>
+										
+									</row>
+
+								</rows>
+
+							</grid>
+						</groupbox>
+
+					</hbox>
+					<button id="btnModificar" label="Guardar"
+						image="img/globales/16x16/guardar.png" />
+
+					<button id="btnLimpiar" label="Limpiar"
+						image="img/globales/16x16/nuevo.png" />
+					<space width="2px" />
+					<button id="closeBtn" hflex="1" label="Cerrar" image="img/globales/16x16/cancelar.png" />
+				</div>
+			</center>
+		</borderlayout>
+	</window>
+</zk>

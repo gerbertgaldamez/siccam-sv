@@ -1,0 +1,70 @@
+<?import src="/util/comp_botones.zul" ?>
+<?import src="/util/comp_popups.zul" ?>
+<?page title="" contentType="text/html;charset=UTF-8"?>
+
+		
+		<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<window id="detalleCargdos" width="85%" height="85%" title="Detalle de Asignación" closable="True" 
+	 border="normal"  mode="modal"  position="center,center"
+		apply="com.terium.siccam.controller.CBConsultaDetalleCargadosController"
+		 sizable="true"   >	
+		<borderlayout >
+			<center >
+				<listbox id="lbxDetalle"  width="100%" mold="paging"  vflex="true"
+					sizedByContent="true" emptyMessage="0 Coincidencias" pageSize="10">	
+					<listhead>
+						<listheader label="Codigo Cliente"
+							sort="auto">
+						</listheader>
+						<listheader label="Telefono"
+							sort="auto">
+						</listheader>
+						<listheader label="Tipo"
+							sort="auto">
+						</listheader>
+						<listheader label="Fecha"
+							sort="auto">
+						</listheader>
+						<listheader label="Agrupación"
+							sort="auto">
+						</listheader>
+						<listheader label="Entidad"
+							sort="auto">
+						</listheader>
+						<listheader label="Monto"
+							sort="auto">
+						</listheader>
+						<listheader label="Transaccion"
+							sort="auto">
+						</listheader>
+						<listheader label="Estado"
+							sort="auto">
+						</listheader>
+						<listheader label="Mes"
+							sort="auto">
+						</listheader>
+						<listheader label="Texto 1"
+							sort="auto">
+						</listheader>
+						<listheader label="Texto 2"
+							sort="auto">
+						</listheader>
+						<listheader label="Usuario"
+							sort="auto">
+						</listheader>
+					</listhead>
+					
+				</listbox>
+			</center>
+			<south>
+				<h:table>
+					<h:tr>
+						<h:td colspan="2">
+							<botoncancelar id ="btnCerrarDetalleCargados" />
+						</h:td>
+					</h:tr>
+				</h:table>
+			</south>
+		</borderlayout>
+	</window>
+</zk>

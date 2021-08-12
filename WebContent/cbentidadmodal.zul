@@ -1,0 +1,136 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<script type="text/javascript"
+		src="javascripts/jquery.jgrowl_compressed.js" />
+	<window id="entidadModal" width="50%" height="70%"
+		title="Registro de entidad" closable="True" border="normal"
+		mode="modal" position="center,center"
+		apply="com.terium.siccam.controller.CBEntidadModalController"
+		sizable="true">
+		<borderlayout id="blyPrincipal">
+			<center autoscroll="true">
+				<div>
+					<hbox>
+						<groupbox mold="3d" width="100%">
+							<caption label="Datos" />
+							<grid>
+								<columns>
+									<column width="120px" />
+									<column />
+								</columns>
+								<rows>
+									<row>
+										<cell colspan="2">
+											<label
+												value="*Campos obligatorios" />
+										</cell>
+									</row>
+									<row>
+										<hbox>
+											<label value="*Agrupación:" />
+										</hbox>
+										<hbox>
+											<combobox id="cmbAgrupacion"
+												width="180px" readonly="true"
+												style="color:#2B547E;font-weight: bold;" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label value="*Nombre:" />
+										</hbox>
+										<hbox>
+											<textbox id="txtNombre"
+												width="180px" maxlength="150" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label value="Teléfono:" />
+										</hbox>
+										<hbox>
+											<textbox id="txtTelefono"
+												width="140px" maxlength="10" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label value="Dirección:" />
+										</hbox>
+										<hbox>
+											<textbox id="txtDireccion"
+												width="240px" maxlength="100" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Cuenta contable:" />
+										</hbox>
+										<hbox>
+											<textbox
+												id="txtCuentaContable" width="150px" maxlength="30" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label value="*Estado:" />
+										</hbox>
+										<hbox>
+											<combobox id="cmbEstado"
+												width="180px" readonly="true"
+												style="color:#2B547E;font-weight: bold;" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label value="Moneda:" />
+										</hbox>
+										<hbox>
+											<textbox id="txtMoneda"
+												width="30px" maxlength="3" />
+										</hbox>
+									</row>
+
+									<row>
+										<hbox>
+											<label
+												value="*Codigo Colector:" />
+										</hbox>
+										<hbox>
+											<textbox
+												id="txtCodigoColector" maxlength="50" />
+										</hbox>
+									</row>
+
+									<row>
+										<hbox>
+											<label value="*NIT:" />
+										</hbox>
+										<hbox>
+											<textbox id="txtNit"
+												width="130px" maxlength="20"
+												constraint="/^[0-9a-zA-Z \-]*$/">
+
+											</textbox>
+										</hbox>
+									</row>
+
+									<row>
+										<cell colspan="2">
+											<button id="btnGuardar"
+												label="Guardar" image="img/globales/16x16/guardarnuevo.png" />
+											<button id="btnModificar"
+												label="Modificar"
+												image="img/globales/16x16/modificar_1.png" />
+										</cell>
+									</row>
+								</rows>
+							</grid>
+						</groupbox>
+					</hbox>
+				</div>
+			</center>
+		</borderlayout>
+	</window>
+</zk>

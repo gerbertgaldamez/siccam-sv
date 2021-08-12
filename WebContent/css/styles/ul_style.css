@@ -1,0 +1,21 @@
+@CHARSET "ISO-8859-1";
+/*CSS for 2 demos on the page*/
+#orbs li{
+width: 32px; /*width of image container. Should be wider than contained images (before bubbling) */
+height:32px; /*height of image container. Should be taller than contained images (before bubbling) */
+}
+
+#orbs li img{
+width: 32px; /*width of each image before bubbling*/
+height: 32px; /*height of each image*/
+}
+
+#squares li{
+width: 32px; /*width of image container. Must be wider than contained images (before bubbling) */
+height:32px; /*height of image container. Must be taller than contained images (before bubbling) */
+}
+
+#squares li img{
+width: 32px; /*width of each image before bubbling*/
+height: 32px; /*height of each image*/
+}

@@ -1,0 +1,134 @@
+<zk>
+	<script type="text/javascript"
+		src="javascripts/jquery.jgrowl_compressed.js" />
+	<div vflex="true"
+		apply="com.terium.siccam.controller.ConciliacionController">
+		<borderlayout style="background:transparent;">
+			<north>
+				<div style="background:transparent;">
+				<groupbox mold="3d">
+				<caption label="Filtros"  />								
+					<grid>
+						<columns>
+							<column width="13%" />
+							<column width="20%"  />
+							<column width="13%" />
+							<column width="20%" />
+							<column width="13%"  />
+							<column width="21%"  />
+						</columns>
+						<rows>
+							<row>
+								<label value="Filtros:" style="font-weight: bold;"></label>
+							</row>
+							<row>
+								<label value="Entidad:" />
+								
+								<combobox id="cmbAgencia"
+									readonly="true">
+									<comboitem label="Todas" />
+								</combobox>
+								
+								<label value="Desde:" />
+								<datebox id="dtbDia"
+									format="dd/MM/yyyy" />
+								<label value="Estado:" />
+								<combobox id="cmbEstado"
+									readonly="true">
+									<comboitem label="Todos" />
+									<!-- 
+										<comboitem
+											label="Conciliado Automaticamente" />
+									
+										<comboitem label="Pendiente Conciliar" />
+										<comboitem label="Pendiente Confronta" />
+										<comboitem label="Pendiente Pagos" />
+										<comboitem label="Conciliado Manualmente" />
+										-->
+								</combobox>
+
+							</row>
+							<row>
+								<label value="Tipo: " />
+								<combobox id="cmbTipo"
+									readonly="true">
+									<comboitem label="Todos" />
+									
+									<!--  
+									<comboitem label="PRE-PAGO" />
+									<comboitem label="POST-PAGO" /> -->
+									
+								</combobox>
+								<label value="Hasta: " />
+								<datebox id="dtbDia2"
+									format="dd/MM/yyyy" />
+								<label value="Codigo Colector"/>
+								<textbox id="txtCodigoColector" maxlength="50"/>
+
+							</row>
+
+						</rows>
+					</grid>
+				</groupbox>
+					</div>
+					</north>
+					<center autoscroll="true">
+					<groupbox width="100%" height="100%">
+					<separator height="10px" />
+					<toolbar>
+						<button id="btnBuscar"
+							image="/img/globales/16x16/buscar.png" label="Buscar" />
+						<space width="2px" />
+						<button id="btnGeneraReporte"
+							label="Generar Reporte" image="/img/globales/16x16/xlsx.png"
+							disabled="self" />
+						
+					</toolbar>
+					<separator height="5px" />
+					
+						<listbox id="lbxConciliacion" mold="paging"
+							height="269px" pageSize="8" sizedByContent="true" vflex="true">
+							<frozen columns="4" ></frozen>
+							<auxhead>
+								<auxheader colspan="4" class="topic"></auxheader>
+					            <auxheader colspan="4" align="center" class="topic">Banco</auxheader>
+					            <auxheader colspan="4" align="center" class="topic">Sistema Comercial</auxheader>
+					            <auxheader colspan="5" align="center" class="topic">Resultados</auxheader>
+					        </auxhead>
+							<listhead>
+								<!-- Agrupacion Principal -->
+								<listheader label="Dia" sort="auto" />
+								<listheader label="Nombre" sort="auto" />
+								<listheader label="Código Colector" sort="auto" />
+								<listheader label="Tipo" sort="auto" />
+								<!-- Agrupacion Banco -->
+								<listheader label="Transacciones Banco" sort="auto" />
+								<listheader label="Pagos Banco" sort="auto" />
+								<listheader label="Manual Banco" sort="auto" />
+								<listheader label="Real Banco" sort="auto" />
+								<listheader label="No Conciliado Banco" sort="auto" />
+								<!-- Agrupacion Sistema comercial -->
+								<listheader label="Transacciones Telefonica" sort="auto" />
+								<listheader label="Pagos Telefonica" sort="auto" />
+								<listheader label="Manual Telefonica" sort="auto" />
+								<listheader label="Real Telefonica" sort="auto" />
+								<listheader label="No Conciliado Telca" sort="auto" />								<listheader label="Transacciones Telca" sort="auto" />
+								<!-- Agrupacion resultados -->
+								<listheader label="Transacciones Conciliadas" sort="auto" />
+								<listheader label="Diferencia Transacciones" sort="auto" />
+								<listheader label="Automatica" sort="auto" />
+								<listheader label="Efecto neto" sort="auto" />
+								<listheader label="Estado" sort="auto" />
+							</listhead>
+							<listitem>
+								<listcell />
+							</listitem>
+	
+						</listbox>
+					</groupbox>
+			
+			</center>
+		</borderlayout>
+		<separator height="10px" />
+	</div>
+</zk>

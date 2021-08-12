@@ -1,0 +1,24 @@
+<?page title="Ejecutar proceso de comisiones" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window id="ejecutaextracto" title="Ejecuta Proceso de extracto bancario"
+		border="normal" mode="modal" width="30%" height="15%"
+		position="center, center" closable="true"
+		apply="com.terium.siccam.controller.CBEjecutaExtractoController">
+
+		<grid>
+			<columns>
+				<column label="" width="50%" />
+				<column label="" width="50%" />
+			</columns>
+		
+		</grid>
+		<div align="center">
+			<toolbar width="100%">
+				<toolbarbutton id="btnEjecutarProcesoExtracto"
+					label="Ejecutar Proceso de extracto" image="img/globales/24x24/play.png" />
+			</toolbar>
+		</div>
+
+
+	</window>
+</zk>

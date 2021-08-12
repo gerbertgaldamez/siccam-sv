@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import src="/util/comp_popups.zul" ?>
+<?import src="/util/comp_botones.zul" ?>
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native">
+<window id="conexionConf" width="100%" title="Configuracion de Conexiones"
+		vflex="true" border="normal"
+		apply="com.terium.siccam.controller.CBConfiguracionConexionController">
+		<borderlayout id="blyPrincipal">
+			<north>
+				<div>
+					<groupbox width="100%" id="grpNorte" mold="3d"
+						closable="false">
+						<toolbar>
+						<button id="btnLimpiar" label="limpiar" tooltip="popLimpiar"
+								image="img/globales/16x16/nuevo.png" />
+							
+						</toolbar>
+						<separator height="10px" />
+						<h:table>
+							<h:tr>
+								<h:td>
+									<label value="* Nombre:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+								<textbox id="tbxNombreDeConexion"
+										width="120px" maxlength="100" />
+								</h:td>
+
+								<h:td>
+									<label value="* Ip Conexión:" />
+									<space width="20px"  />
+								</h:td>
+								<h:td>
+									<textbox
+										id= "tbxIpConexion" maxlength="20" 
+										width="120px" constraint="/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/" />
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<label value="* Usuario:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<textbox
+										id="tbxUsuarioConexion" width="120px" maxlength="20" />
+								</h:td>
+								<h:td>
+									<label value="* Contraseña:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<textbox type="password"
+										id="tbxPasswordConexion" width="120px" maxlength="20" />
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<separator height="10px" />
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+								<button id="btnGuardar"
+										label="Guardar" image="img/globales/16x16/guardarnuevo.png"
+										tooltip="popIngreso" />
+									
+								</h:td>
+								<h:td>
+								<button id="btnConsultar"
+										label="Consultar" image="img/globales/16x16/consulta.png"
+										tooltip="popConsulta" />
+								
+								</h:td>
+							</h:tr>
+						</h:table>
+					</groupbox>
+				</div>
+			</north>
+			<center autoscroll="true">
+				<groupbox width="100%" height="100%">
+				
+						<listbox id="lbxlistadoConexiones" height="300px"
+							mold="paging" pageSize="6" sizedByContent="true" vflex="true"
+							emptyMessage="No hay registros consultados">
+					
+						<listhead >
+							<listheader label="Nombre de Conexión"
+								sort="auto"  width="300px" >
+							</listheader>
+							<listheader label="Ip Conexión"
+								sort="auto"  width="300px" >
+							</listheader>
+							<listheader label="Usuario"
+								sort="auto"  width="160px" >
+							</listheader>
+						
+							<listheader label="Eliminar"
+									sort="auto"  width="120px" />
+							
+						</listhead>
+					</listbox>
+				</groupbox>
+			</center>
+			<south>
+				<div>
+					<groupbox width="100%" mold="3d" closable="false">
+						<caption label="Auditoria"
+							image="/img/globales/24x24/seguridad.png">
+						</caption>
+						<label value="Auditoria:" />
+						<h:table>
+							<h:tr>
+								<h:td>
+									<label value="Fecha Creación:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<textbox width="138px"
+										disabled="true" id="tbxfechaCreacion"
+										style="color:#2B547E;font-weight: bold;">
+									</textbox>
+								</h:td>
+								<h:td>
+									<label value="Fecha Modificación:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+
+									<textbox width="138px"
+										disabled="true" id="tbxfechaModificacion"
+										style="color:#2B547E;font-weight: bold;">
+									</textbox>
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<label value="Usuario Creador:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<textbox width="138px"
+										disabled="true" style="color:#2B547E;font-weight: bold;"
+										id="tbxcreadoPor" >
+									</textbox>
+								</h:td>
+								<h:td>
+									<label value="Usuario que Modifico" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<textbox width="138px"
+										disabled="true" id = "tbxmodificadoPor"
+										style="color:#2B547E;font-weight: bold;">
+									</textbox>
+								</h:td>
+							</h:tr>
+						</h:table>
+					</groupbox>
+					<separator />
+				</div>
+			</south>
+		</borderlayout>
+		<popup id="popIngreso" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Ingreso" style="font-weight: bold" />
+			</hbox>
+			Pulse aqui para ingresar el regsitro.
+		</popup>
+		<popup id="popConsulta" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Consultar" style="font-weight: bold" />
+			</hbox>
+			Pulse aqui para realizar la consulta de los registros.
+		</popup>
+		<popup id="popLimpiar" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Limpiar" style="font-weight: bold" />
+			</hbox>
+			Pulse aqui para limpiar los campos.
+		</popup>
+		<popup id="popModificar" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Modificar" style="font-weight: bold" />
+			</hbox>
+			Puede seleccionar una de las filas para su modificación.
+		</popup>
+		<popup id="popEliminar" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Eliminar" style="font-weight: bold" />
+			</hbox>
+			Pulse aqui para poder eliminar un registro.
+		</popup>
+	</window>
+</zk>

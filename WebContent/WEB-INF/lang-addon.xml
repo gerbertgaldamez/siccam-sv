@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language-addon>
+    <addon-name>menucardaddon</addon-name>
+    <language-name>xul/html</language-name>
+    <component>
+        <component-name>menucard</component-name>
+        <component-class>com.terium.utils.zk.Menucard</component-class>
+        <macro-uri>/macros/menucard.zul</macro-uri>
+    </component>
+    <component>
+        <component-name>quickitem</component-name>
+        <component-class>com.terium.utils.zk.Quickitem</component-class>
+        <macro-uri>/macros/quickitem.zul</macro-uri>
+    </component>
+</language-addon>

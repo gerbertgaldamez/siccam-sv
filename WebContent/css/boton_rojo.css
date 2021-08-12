@@ -1,0 +1,79 @@
+@CHARSET "ISO-8859-1";
+
+.divbtn .z-button-cr, .divbtn .z-button-cl, 
+.divbtn .z-button-bl, .divbtn .z-button-bm,
+.divbtn .z-button-br, .divbtn .z-button-tl,
+.divbtn .z-button-tm, .divbtn .z-button-tr {
+    background-image: none;
+}
+
+/*.divbtn .z-button-cl {
+	background-image : url("../img/botones/bton_izq.png");
+	background-repeat: no-repeat;
+}
+
+.divbtn .z-button-cr {
+	background-image : url("../img/botones/bton_der.png");
+	background-repeat: no-repeat;
+}*/
+	
+.divbtn .z-button-cl, .divbtn .z-button-cm, .divbtn .z-button-cr {
+    background : transparent url('') no-repeat 0 0 ;
+}
+
+.divbtn table {
+    width: 100%;
+    height: 100%;
+}
+
+.botonRojo {
+    height: 39px;
+    height: 37px\9;
+}
+
+.botonRojo .z-button-cm {
+    height: 31px;
+    color: black;
+}
+
+.botonRojo .z-button-cm { 
+    background-image : url("../img/globales/botones/bton_cen.png");
+    background-repeat: repeat-x;
+    color: white;
+    font-weight: bold;
+}
+
+.botonRojo .z-button-cl { 
+    background-image : url("../img/globales/botones/bton_izq.png");
+    background-repeat: no-repeat;
+}
+
+.botonRojo .z-button-cr { 
+    background-image : url("../img/globales/botones/bton_der.png");
+    background-repeat: no-repeat;
+}
+
+.z-button-focus .z-button-cl,
+.z-button-focus .z-button-cm,
+.z-button-focus .z-button-cr {
+    background-position: 0 -62px                    
+}
+
+.z-button-over .z-button-cl,
+.z-button-over .z-button-cm,
+.z-button-over .z-button-cr {
+    background-position: 0 -31px
+}
+
+.z-button-clk .z-button-cl,
+.z-button-clk .z-button-cm,
+.z-button-clk .z-button-cr {
+    background-position: 0 -93px                    
+}
+
+.z-button-disd .z-button-cl,
+.z-button-disd .z-button-cm,
+.z-button-disd .z-button-cr {
+    background-position: 0 -124px;
+    color: #DFDFDF;               
+} 

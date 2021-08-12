@@ -1,0 +1,45 @@
+<?page title="Asociación manual" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+<window id="asociaManual" width="30%" height="36%" title="Asociación manual" 
+		vflex="true" closable="true" mode="modal"
+		border="normal" apply="com.terium.siccam.controller.CBAsociacionManualController">
+		<borderlayout id="blyPrincipal">
+			<center >
+				<div>													
+					<groupbox mold="3d">
+						<caption label="Datos"/>
+						<h:table>
+							<h:tr>
+								<h:td>
+									<label value="Entidad:" />
+								</h:td>
+								<h:td>
+									<combobox id="cmbEntidad" width="220px" readonly="true" 								
+									   style="color:#2B547E;font-weight: bold;"/>
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<label value="Observaciones:" />
+								</h:td>
+								<h:td>
+									<textbox id="txtObservaciones" cols="30" rows="5" maxlength="200"></textbox>
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<button id="btnAsignar" label="Asociar entidad"
+										image="img/globales/16x16/check.png" />
+								</h:td>
+								<h:td>
+									<button id="btnDesasociar" label="Desasociar entidad"
+										image="img/globales/16x16/cancelar.png" />
+								</h:td>
+							</h:tr>
+						</h:table>
+					</groupbox>
+				</div>
+			</center>
+		</borderlayout>
+</window>
+</zk>

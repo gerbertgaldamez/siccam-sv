@@ -1,0 +1,18 @@
+<?page title="Tipo de carga" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wdTipoCarga" width="25%" popup="center"
+		height="25%" border="normal" mode="modal"
+		style="opacity:0.9; filter:alpha(opacity=90)" 
+		apply="com.terium.siccam.controller.SeleccionaCargaCredomaticController"
+		>
+	<caption image="img/ayuda.png" label="Tipo de carga" />	
+	<div align="center">
+		<label id="lblPregunta" />	
+		<separator height="20px" />
+		<hbox>
+			<button id="btnV1" label="Version 1" />
+			<button id="btnV2" label="Version 2" />
+		</hbox>
+	</div>
+</window>
+</zk>

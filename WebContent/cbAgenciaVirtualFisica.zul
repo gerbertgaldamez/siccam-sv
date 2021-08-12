@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import src="/util/comp_botones.zul" ?>
+<?import src="/util/comp_popups.zul" ?>
+<?page title="Banco Agencia Afiliaciones" contentType="text/html;charset=UTF-8"?>
+
+		
+		<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<window id="nVirtualFisiaca" width="50%" height="82%" title="Mantenimiento de sucursales" closable="True" 
+	 border="normal"  mode="modal"  position="center,center"
+		apply="com.terium.siccam.controller.CBAgenciaVirtualFisicaController"
+		 sizable="true" >
+		<borderlayout id="blyPrincipal">
+			<north>
+				<div>
+					<groupbox width="100%" height="100%" id="grpSur" mold="3d"
+						closable="true">
+						<caption label="Datos"></caption>
+						<h:table>
+							<h:tr>
+								<h:td>
+									<label value="Agrupación:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<label id="lblAgrupacion"> 
+								</label>
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<label value="Entidad:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<label id="lblNombreAgencia"> 
+									</label>
+								</h:td>
+							</h:tr>
+						</h:table>
+						<h:table>
+							<!-- INICIO Agregado por Ovidio Santos -QitCorp- -->
+							<h:tr>
+								<h:td>
+									<label value = " Tipo:" />
+								</h:td>
+								<h:td>
+									<combobox id="cmbTipo" readonly="true">
+									</combobox>
+								</h:td>
+
+							</h:tr>
+
+							<!-- finaliza Agregado por Ovidio Santos -QitCorp- -->
+							<h:tr>
+								<h:td>
+							<label value="Codigo Agencia:" />
+							<space width="20px" />
+						</h:td>
+						<h:td>
+							<textbox id="tbxCodigoAgencia"
+								maxlength="10"
+								width="200px" />
+						</h:td>
+							</h:tr>
+							<h:tr>
+						<h:td>
+							<label value="Nombre Agencia:" />
+							<space width="20px" />
+						</h:td>
+						<h:td>
+							<textbox id="tbxNombreAgencia"
+								width="200px" />
+						</h:td>
+					</h:tr>
+						</h:table>
+						<h:table>
+							<h:tr>
+								<h:td>
+									<button id="btnRegistrar" label="Guardar"
+					image="img/globales/16x16/guardarnuevo.png" />
+				<button id="btnConsultar" label="Consultar"
+					image="img/globales/16x16/consulta.png" />
+				<button id="btnLimpiar" label="Limpiar campos"
+					image="img/globales/16x16/nuevo.png" />
+
+								</h:td>
+							</h:tr>
+						</h:table>
+					</groupbox>
+				</div>
+			</north>
+			<center autoscroll="true">
+				
+					<groupbox width="100%" height="100%">
+					<separator height="10px" />
+						<listbox id="lbxagenciasListado" height="100%"
+							width="100%" mold="paging" pageSize="8" 
+							vflex="true" emptyMessage="No se encontraron resultados">
+							<listhead sizable="true">
+								<listheader label="Codigo" sort="auto" width="30%" />
+								<listheader label="Nombre" sort="auto" width="30%" />
+								<listheader label="Tipo" sort="auto" width="30%" />
+								<listheader label="Eliminar" width="10%" />
+							</listhead>
+
+						</listbox>
+					</groupbox>
+
+			</center>
+		</borderlayout>
+		<popup id="popEliminar" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Eliminar" style="font-weight: bold" />
+			</hbox>
+		</popup>
+	</window>
+</zk>

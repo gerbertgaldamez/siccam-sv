@@ -1,0 +1,24 @@
+<?page title="Detalle comsiones" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window id="wddetallecomisiones" title="Detalle comision"
+		border="normal" mode="modal" width="60%" height="50%"
+		position="center, center" closable="true"
+		apply="com.terium.siccam.controller.CBDetalleComisionesController">
+
+		<listbox id="lbxHistorialscec" mold="paging" height="50%"
+			pageSize="5" sizedByContent="true" vflex="true"
+			emptyMessage="No hay historico para este detalle">
+			<listhead>
+				<listheader label="forma de pago" sort="auto" />
+				<listheader label="Tipo" sort="auto"  />
+				<listheader label="Tipologia" sort="auto"  />
+				<listheader label="Cargo" sort="auto" />
+				<listheader label="Medio de pago" sort="auto"  />
+				<listheader label="Monto" sort="auto"   />
+			
+
+			</listhead>
+		</listbox>
+
+	</window>
+</zk>

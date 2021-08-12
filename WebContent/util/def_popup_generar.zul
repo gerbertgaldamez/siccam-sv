@@ -1,0 +1,7 @@
+<popup id="${arg.identificador}" >
+	<hbox align="center" pack="center">
+		<image src="/img/globales/16x16/info.png"/>
+		<label value="Generar" style="font-weight: bold" />
+	</hbox>
+	Pulse aqui para Generar el Reporte.
+</popup>

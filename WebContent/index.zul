@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window>
+	My ZK application
+        
+        <a href="cbConsultaBanco.zul">
+            Banco
+        </a>        
+        <a href="cbAgencia.zul">
+            Nueva Agencia
+        </a>
+              
+        <a href="cbConsultaAgencia.zul">
+            Agencia
+        </a>
+        <a href="cbConsultaConfronta.zul">
+            Confronta
+        </a>
+        <a href="fileTxtUpload.zul">
+            upload zul
+        </a>
+    </window>
+</zk>
+-->
+<?page title="Confronta" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window border="none" apply="com.terium.siccam.composer.Index">
+Confronta:  Abrir menu
+
+</window>
+</zk>

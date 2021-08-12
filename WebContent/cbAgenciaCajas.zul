@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import src="/util/comp_botones.zul" ?>
+<?import src="/util/comp_popups.zul" ?>
+<?page title="Banco Agencia Cajas" contentType="text/html;charset=UTF-8"?>
+
+	
+	
+	<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<window id="cajas" width="50%" height="82%" title="Mantenimiento de cajas" closable="True" 
+	 border="normal"  mode="modal"  position="center,center"
+		apply="com.terium.siccam.controller.CBCatalogoAgenciaCajasController"
+		 sizable="true" >
+		<borderlayout id="blyPrincipal">
+			<north>
+				<div>
+					<!-- INICIO Agregado por CarlosGodínez -QitCorp- -->
+					<groupbox width="100%" id="grpSur" mold="3d"
+						closable="true">
+						<caption label="Datos"></caption>
+						<h:table>
+							<h:tr>
+								<h:td>
+									<label value="Agrupación:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<label id="lblAgrupacion"/> 
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<label value="Entidad:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<label id="lblNombreAgencia"/> 
+								</h:td>
+							</h:tr>
+						</h:table>
+						<h:table>
+							<h:tr>
+								<h:td>
+									<label value="Código de oficina:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<textbox id="txtCodOficina"  
+									maxlength="2"/>
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<label value="Código de caja:" /> 
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<textbox id="txtCodCaja"  
+									maxlength="4"/>
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<label value="Cajero:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<textbox id="txtCajero" 
+									maxlength="30"/>
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<label value="Estado:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<!-- Modificado Omar Gomez -Qit- 12/01/2017 -->
+								<combobox id="cmbEstado" readonly="true" >
+									</combobox>
+								</h:td>
+							</h:tr>
+						</h:table>
+						<h:table>
+							<h:tr>
+								<h:td>
+								<button id="btnRegistrar"
+										label="Registrar" image="img/globales/16x16/guardarnuevo.png" />
+									<button id="btnModificar"
+										label="Modificar" image="img/globales/16x16/edit.png" />
+									<button id="btnLimpiar"
+										label="Limpiar campos" image="img/globales/16x16/nuevo.png" />
+									<button id="btnConsultar"
+										label="Consultar" image="img/globales/16x16/consulta.png" />
+								</h:td>
+							</h:tr>
+						</h:table>
+					</groupbox>
+				</div>
+			</north>
+			<center>
+				<div>
+					<groupbox width="100%" height="100%">
+					<listbox id="lbxConsulta" height="225px"
+							mold="paging" pageSize="15" sizedByContent="true" vflex="true"
+							emptyMessage="No se encontraron resultados">
+						
+							<listhead sizable="true">
+								<listheader label="Código de oficina" width="120px" >
+								</listheader>
+								<listheader label="Código de caja" 
+									width="150px" >
+								</listheader>
+								<listheader label="Cajero" width="200px" >
+								</listheader>
+								<listheader
+									label="Estado" width="120px">
+								</listheader>
+								<listheader label="Acción" width="60px">
+								</listheader>
+							</listhead>
+						
+						</listbox>
+					</groupbox>
+					<!-- FIN Agregado por CarlosGodínez -QitCorp- -->
+				</div>
+			</center>
+		</borderlayout>
+		<popup id="popEliminar" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Eliminar" style="font-weight: bold" />
+			</hbox>
+		</popup>
+	</window>
+</zk>

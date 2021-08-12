@@ -1,0 +1,7 @@
+<popup id="${arg.identificador}" width="300px">
+	<hbox align="center" pack="center">
+		<image src="/img/globales/16x16/info.png" />
+		<label value="Guardar y Cerrar" style="font-weight: bold" />
+	</hbox>
+	Crea un nuevo registro y cierra la ventana.
+</popup>

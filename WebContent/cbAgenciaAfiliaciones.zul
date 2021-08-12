@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import src="/util/comp_botones.zul" ?>
+<?import src="/util/comp_popups.zul" ?>
+<?page title="Banco Agencia Afiliaciones" contentType="text/html;charset=UTF-8"?>
+
+		
+		<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<window id="afiliaciones" width="50%" height="82%" title="Mantenimiento de afiliaciones" closable="True" 
+	 border="normal"  mode="modal"  position="center,center"
+		apply="com.terium.siccam.controller.CBBancoAgenciaAfiliacionesController"
+		 sizable="true" >
+		<borderlayout id="blyPrincipal">
+			<north>
+				<div>
+					<!-- INICIO Agregado por CarlosGodínez -QitCorp- -->
+					<groupbox width="100%" id="grpSur" mold="3d"
+						closable="true">
+						<caption label="Datos"></caption>
+						<h:table>
+							<h:tr>
+								<h:td>
+									<label value="Agrupación:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<label id="lblAgrupacion"> 
+								</label>
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<label value="Entidad:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<label id="lblNombreAgencia"> 
+									</label>
+								</h:td>
+							</h:tr>
+						</h:table>
+						<h:table>
+							<!-- INICIO Agregado por Ovidio Santos -QitCorp- -->
+							<h:tr>
+								<h:td>
+									<label value = " Tipo:" />
+								</h:td>
+								<h:td>
+									<combobox id="cmbTipo" readonly="true">
+									</combobox>
+								</h:td>
+
+							</h:tr>
+
+							<!-- finaliza Agregado por Ovidio Santos -QitCorp- -->
+							<h:tr>
+								<h:td>
+									<label value="Afiliación:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<textbox id="txtAfiliacion" maxlength="15" />
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<label value="Estado:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<combobox id="cmbEstado" readonly="true" >
+									</combobox>
+								</h:td>
+							</h:tr>
+						</h:table>
+						<h:table>
+							<h:tr>
+								<h:td>
+									<button id="btnRegistrar"
+										label="Registrar" image="img/globales/16x16/guardarnuevo.png" />
+									<button id="btnModificar"
+										label="Modificar" image="img/globales/16x16/edit.png" />
+									<button id="btnLimpiar"
+										label="Limpiar campos" image="img/globales/16x16/nuevo.png" />
+									<button id="btnConsultar"
+										label="Consultar" image="img/globales/16x16/consulta.png" />
+
+								</h:td>
+							</h:tr>
+						</h:table>
+					</groupbox>
+				</div>
+			</north>
+			<center>
+				<div>
+					<groupbox width="100%" height="100%">
+						<listbox id="lbxConsulta" height="225px"
+							mold="paging" pageSize="15" sizedByContent="true" vflex="true"
+							emptyMessage="No se encontraron resultados">
+
+
+
+							<listhead sizable="true">
+								<listheader label="Tipo"
+									width="120px" />
+
+									<listheader label="Afiliación"
+										width="150px" />
+
+										<listheader label="Estado"
+											width="120px" />
+											
+											<listheader label="Asignar impuestos"
+											width="120px" />
+
+											<listheader label="Acción"
+												width="60px" />
+
+							</listhead>
+
+
+						</listbox>
+					</groupbox>
+
+				</div>
+			</center>
+		</borderlayout>
+		<popup id="popEliminar" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Eliminar" style="font-weight: bold" />
+			</hbox>
+		</popup>
+		<popup id="popAsignacionImpuestos" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Asignacion de impuestos"
+					style="font-weight: bold" />
+			</hbox>
+			Ingrese al mantenimiento de impuestos configuradas para esta asignación.
+		</popup>
+	</window>
+</zk>

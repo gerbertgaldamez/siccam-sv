@@ -1,0 +1,86 @@
+<?import src="/util/comp_botones.zul" ?>
+<?page id="pagePrincipal" title="SICCAM" contentType="text/html;charset=UTF-8"?>
+<?link rel="shortcut icon" type="image/x-icon" href="/img/principal/favicon/favicon.ico"?>
+<zk xmlns:n="native" xmlns="http://www.zkoss.org/2005/zul">
+	<script type="text/javascript"
+		src="javascripts/jquery.jgrowl_compressed.js" />
+	<style src="css/jquery.jgrowl.css" />
+	<style src="css/slide.css" />
+	<style src="css/estilos.css" />
+	<style dynamic="true">
+		.headerPrincipal { width:980px; margin-left:auto;
+		margin-right:auto; } .header { height:60px; color:white;margin-top:10px;
+		text-align: center;
+		background:url(img/principal/logo_movistar.png) top right
+		no-repeat; margin: 5px 0 0px 0; } div.principal { width:1050px;
+		height:500px; margin-left:auto; margin-right:auto; }
+		.z-menubar-hor, .z-menubar-ver { border: 1px solid #D8D8D8; }
+		.tituloapp { font-family:'TelefonicaTextBold',arial, serif;
+		font-size:20pt; } .descripcionapp { position:relative;
+		top:-10px; font-family:'TelefonicaTextRegular',arial, serif;
+		font-size:12pt; } .z-loading-icon {
+		background-image:url(img/principal/progress.gif); }
+		.z-modal-mask { background-color: rgb(190,190,190); }
+
+		.menuCard{ min-width:450px; max-width:99%; padding-top:2px; }
+	</style>
+	<window width="100%" height="100%" border="none" id="wdinicio"
+		style="margin-left:-2px; "
+		apply="com.terium.siccam.controller.InicioController">
+		<button id="btnDummy" visible="false" />
+		<borderlayout style="border:0px solid black;">
+			<north border="none" style="background-color:black"
+				size="32px">
+				<div align="right" width="110%"
+					style="min-width:450px; max-width:99%; padding-top:2px">
+					<n:table border="0" width="100%">
+						<n:tr>
+							<n:td align="left" width="20px">
+								<image
+									src="/img/principal/iconos/img_cuenta.png" width="20px" />
+							</n:td>
+							<n:td align="left">
+								<label value="Bienvenido"
+									style="color:#45B3CA; font-weight:bold; margin-left:5px" />
+								<label id="lblUsuario"
+									style="color:white; margin-left:5px" />
+							</n:td>
+							<n:td align="right">
+								<label value="" 
+									id="lblFecha" style="color:white" />
+							</n:td>
+						</n:tr>
+					</n:table>
+				</div>
+			</north>
+			<center border="none" autoscroll="true"
+				style="background: url('img/principal/fndpage.jpg'); margin-top:-1px;"
+				flex="true">
+				<div id="divTotal" align="center">	
+				<div sclass="header">
+					<label value="Conciliacion Bancaria" sclass="tituloapp" />	
+				</div>		               
+                </div>
+            </center>
+            <south border="none" style="background-color:#005179;"
+                   size="24px" flex="true">
+                <n:table border="0" width="100%"
+                         style="margin-top:1px; margin-left:5px; margin-right:5px">
+                    <n:tr>
+                        <n:td>
+                            <label style="color:white"
+                                   value="Telefonica Móviles Centroamérica, S. A." />
+                        </n:td>
+                       <n:td align="right">
+                        	<label style="color:white" id="lblAnio"
+                                   value="" />
+                            <label style="color:white"
+                                   value=" Todos los derechos reservados v2.1.1" />
+                        </n:td>
+                    </n:tr>
+                </n:table>
+            </south>
+        </borderlayout>
+        <image  ></image>
+    </window>	
+</zk>

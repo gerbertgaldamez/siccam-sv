@@ -1,0 +1,63 @@
+<?page title="Historal de Acciones" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wdwHistorial" title="Conciliación Manual"
+			width="650px" height="400px" visible="false">
+			<listbox id="lbxHistorialAcciones" mold="paging"
+				height="300px" pageSize="8" sizedByContent="true" vflex="true"
+				emptyMessage="No hay historico para este detalle">
+				<listhead>
+					<listheader label="Tipologias" sort="auto" />
+					<listheader label="Monto" sort="auto" />
+					<listheader label="Observaciones" sort="auto" />
+					<listheader label="Creado Por " sort="auto" />
+					<listheader label="Fecha de Creacion " sort="auto" />
+					<listheader label="Modificado Por " sort="auto" />
+					<listheader label="Fecha de Modificacion "
+						sort="auto" />
+				</listhead>
+			</listbox>
+			<borderlayout height="150px">
+				<north></north>
+				<center>
+					<grid>
+						<columns>
+							<column label="" width="20%" />
+							<column label="" width="30%" />
+							<column label="" width="20%" />
+							<column label="" width="30%" />
+						</columns>
+						<rows>
+							<row>
+								<label value="Accion: " />
+								<combobox id="cmbAccion"
+									readonly="true" />
+
+								<label value="Observaciones: " />
+								<textbox id="txtObservaciones" />
+							</row>
+							<row>
+								<label value="Monto: " />
+								<textbox id="txtMonto" />
+								<label id="lblPendiente" />
+								<textbox id="txtPendiente" />
+							</row>
+						</rows>
+					</grid>
+
+				</center>
+				<south>
+					<toolbar width="100%">
+						<toolbarbutton id="btnAgregar" label="Agregar"
+							image="/img/agregar_16.png" />
+						<toolbarbutton id="btnGuardar" label="Guardar"
+							image="/img/modificar_16.png" />
+						<toolbarbutton id="btnEliminar" label="Eliminar"
+							image="/img/eliminar.png" />
+						<toolbarbutton id="btnCerrar" label="Cerrar"
+							image="/img/eliminar_16.png" />
+					</toolbar>
+
+				</south>
+			</borderlayout>
+		</window>
+</zk>

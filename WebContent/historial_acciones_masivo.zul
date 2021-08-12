@@ -1,0 +1,46 @@
+<?page title="Historal de Acciones" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="Historial de Acciones"  closable="true" width="650px" height="200px"
+		apply="com.terium.siccam.controller.CBHistorialDeAccionesController">
+		<borderlayout height="150px">
+			<north></north>
+			<center>
+				<grid>
+					<columns>
+						<column label="" />
+						<column label="" />
+						<column label="" />
+						<column label="" />
+					</columns>
+					<rows>
+						<row>
+							<label value="Accion: " />
+							<textbox id="txtAccion" />
+
+							<label value="Observaciones: " />
+							<textbox id="txtObservaciones" />
+
+						</row>
+						<row>
+							<label value="Monto: "  visible="false"/>
+							<textbox id="txtMonto"  visible="false"/>
+						</row>
+					</rows>
+				</grid>
+
+			</center>
+			<south>
+				<toolbar width="100%">
+					<toolbarbutton id="btnAgregar" label="Agregar"
+						image="/img/agregar_16.png" />
+					<toolbarbutton id="btnGuardar" label="Guardar"
+						image="/img/modificar_16.png" />
+					<toolbarbutton id="btnEliminar" label="Eliminar"
+						image="/img/eliminar_16.png" />
+				</toolbar>
+
+			</south>
+		</borderlayout>
+	</window>
+
+</zk>

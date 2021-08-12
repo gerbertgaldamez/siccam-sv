@@ -1,0 +1,21 @@
+<?page title="Ayuda Menu" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<listbox id="lbxHelpMenu" width="650px" mold="paging" pageSize="1"
+		height="530px" pagingPosition="top">
+		<listitem disabled="true">
+			<listcell Image="/img/ayuda/menu/confrontas.png" />
+		</listitem>
+		<listitem disabled="true">
+			<listcell Image="/img/ayuda/menu/Ayuda2.png" />
+		</listitem>
+		<listitem disabled="true">
+			<listcell Image="/img/ayuda/menu/Ayuda3.png" />
+		</listitem>
+		<listitem disabled="true">
+			<listcell Image="/img/ayuda/menu/Ayuda4.png" />
+		</listitem>
+		<listitem disabled="true">
+			<listcell Image="/img/ayuda/menu/Ayuda5.png" />
+		</listitem>
+	</listbox>
+</zk>

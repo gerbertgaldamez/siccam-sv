@@ -1,0 +1,240 @@
+<?import src="/util/comp_botones.zul" ?>
+<?import src="/util/comp_popups.zul" ?>
+<?page title="Estados de Cuenta" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<window id="consultacontabilizacion" width="100%" title=""
+		vflex="true" border="normal"
+		apply="com.terium.siccam.controller.CBConsultaContabilizacionController">
+
+		<borderlayout id="blyPrincipal">
+			<north>
+
+
+				<div>
+
+					<groupbox width="100%" mold="3d">
+						<caption label="Consulta Contabilizacion" />
+						<grid>
+							<columns>
+								<column />
+								<column />
+								<column />
+							</columns>
+							<rows>
+								<row>
+									<hbox>
+										<label value="Entidad:" />
+										<separator width="43px" />
+										<combobox id="cmbAgencia"
+											readonly="true">
+
+										</combobox>
+									</hbox>
+
+									<hbox>
+										<label value="Agrupacion:" />
+										<space width="25px" />
+										<combobox id="cmbBanco"
+											readonly="true">
+
+										</combobox>
+									</hbox>
+									<hbox>
+										<label value="Entidad Ingreso:" />
+										<space width="16px" />
+										<combobox id="cmbAgenciaIngreso"
+											readonly="true">
+
+										</combobox>
+									</hbox>
+
+
+
+
+								</row>
+
+
+
+
+
+
+
+								<row>
+									<hbox>
+										<label value="Centro de Costo: "
+											width="100px" />
+
+										<textbox id="tbxCentroCosto"
+											maxlength="10" width="70px" />
+									</hbox>
+
+									<hbox>
+										<label value="Referencia: " />
+										<separator width="25px" />
+										<textbox id="tbxReferencia"
+											maxlength="16" width="100px" />
+									</hbox>
+
+									<hbox>
+										<label value="Cuenta	: " />
+										<separator width="59px" />
+										<textbox id="tbxCuenta"
+											maxlength="20" width="100px" />
+									</hbox>
+
+
+								</row>
+
+								<row>
+
+									<hbox>
+										<label
+											value="Clave contabiliza: " width="100px" />
+
+										<textbox id="tbxClave"
+											maxlength="2" width="40px" />
+									</hbox>
+									<hbox>
+										<label value="Texto: "
+											maxlength="52" />
+										<separator width="54px" />
+
+										<textbox id="tbxTexto"
+											maxlength="50" width="100px" />
+									</hbox>
+									<hbox>
+										<label value="Texto 2: " />
+										<separator width="64px" />
+										<textbox id="tbxTexto2"
+											maxlength="50" width="100px" />
+									</hbox>
+
+
+
+								</row>
+
+								<row>
+
+									<hbox>
+										<label value="Observaciones	: " />
+										<space width="2px" />
+
+										<textbox id="tbxObservaciones"
+											maxlength="50" width="100px" />
+									</hbox>
+
+									<hbox>
+										<label value="Desde:" />
+										<separator width="47px" />
+										<datebox id="dtbDesde"
+											format="dd/MM/yyyy" />
+									</hbox>
+									<hbox>
+										<label value="Hasta:   " />
+										<separator width="68px" />
+										<datebox id="dtbHasta"
+											format="dd/MM/yyyy" width="110px" />
+									</hbox>
+
+
+								</row>
+
+							</rows>
+
+						</grid>
+					</groupbox>
+
+				</div>
+			</north>
+			<center autoscroll="true">
+				<groupbox>
+					<!-- Agrega Carlos Godinez -> 03/11/2017 -->
+					<button id="btnConsultar" label="Consultar"
+						image="img/globales/16x16/consulta.png" />
+					<button id="btnLimpiar" label="Limpiar"
+						image="img/globales/16x16/nuevo.png" />
+					<separator bar="true" orient="vertical" />
+					<button id="btnSAP" label="Generar SAP"
+						image="img/globales/16x16/download.png" />
+					<button id="btnDescargarSAP" label="SAP"
+						image="img/globales/16x16/down_plus.png" />
+					<button id="btnDescargarSAP2" label="SAP2"
+						image="img/globales/16x16/down_plus.png" />
+					<button id="btnFTPSAP" label="Subir SAP por FTP"
+						image="img/globales/16x16/alta_16.png" />
+					<separator bar="true" orient="vertical" />
+					<button id="btnExcel" label="Reporte"
+						image="/img/globales/16x16/xlsx.png" disabled="self" />
+					<!-- FIN Agrega Carlos Godinez -> 03/11/2017 -->
+					<button id="btnGenerarInfo"
+						label="Generar informacion"
+						image="img/globales/16x16/download.png" />
+
+
+					<groupbox height="450px" mold="3d" >
+						<listbox id="lbxConsulta" height="250px"
+							mold="paging" multiple="true" checkmark="true" pageSize="10"
+							sizedByContent="true" vflex="true"
+							emptyMessage="No hay registros.">
+							<frozen columns="3"></frozen>
+							<listhead>
+								<listheader label="Fecha" sort="auto" />
+								<listheader label="Fecha ingreso"
+									sort="auto" />
+								<listheader label="Banco" sort="auto" />
+								<listheader label="Agencia" sort="auto" />
+								<listheader label="Referencia"
+									sort="auto" />
+
+								<listheader label="Texto" sort="auto" />
+								<listheader label="Texto2" sort="auto" />
+								<listheader label="Observaciones"
+									sort="auto" />
+								<listheader
+									label="Clave Contabilizacion" sort="auto" />
+
+								<listheader label="Terminacion"
+									sort="auto" />
+								<listheader label="Centro costo "
+									sort="auto" />
+								<listheader label="Nombre" sort="auto" />
+								<listheader label="Cuenta" sort="auto" />
+								<listheader label="Tipo" sort="auto" />
+								<listheader label="Monto" sort="auto" />
+
+								<listheader
+									label="Fecha contabilizacion" sort="auto" />
+								<listheader label="estado" sort="auto" />
+								<listheader label="Modificado por"
+									sort="auto" />
+
+								<listheader>
+									<checkbox id="ckbMarcarAll"
+										label="Todos" />
+								</listheader>
+
+							</listhead>
+						</listbox>
+					</groupbox>
+
+				</groupbox>
+
+			</center>
+		</borderlayout>
+		<popup id="popAsociacion" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label
+					value="Haga doble clic sobre un registro para modificar"
+					style="font-weight: bold" />
+			</hbox>
+		</popup>
+		<popup id="popAgregar" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="la fecha que debe seleccionar es desde"
+					style="font-weight: bold" />
+			</hbox>
+		</popup>
+	</window>
+</zk>

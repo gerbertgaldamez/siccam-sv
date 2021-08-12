@@ -1,0 +1,28 @@
+<?page title="Detalle contabilizacion" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window id="wddetallecontabilizacion" title="Detalle Contabilizacion"
+		border="normal" mode="modal" width="600px" height="380px"
+		position="center, center" closable="true"
+		apply="com.terium.siccam.controller.CBDetalleContabilizacionController">
+		
+		<label id="lblFechas" style="font-weight:bold;"></label>
+		<separator height="10px"/>
+		<label value="Ultima carga" style="font-weight:bold;"></label>
+
+		<listbox id="lbxHistorialscec" mold="paging" height="230px"
+			pageSize="5"
+			emptyMessage="No hay historico para este detalle">
+			<listhead>
+				<listheader label="Fecha" sort="auto" />
+				<listheader label="Estado" sort="auto"  />
+			
+
+			</listhead>
+		</listbox>
+		
+		<button id="closeBtn" hflex="1" label="Cerrar" image="img/globales/16x16/cancelar.png" style="margin-right:15px;margin-top:15px;"/>
+		<button id="btnCargarInfo" hflex="1" label="Cargar informacion" image="img/globales/16x16/actualizar.png" style="margin-right:15px;margin-top:15px;"/>
+		<button id="btnActualizar" hflex="1" label="Actualizar" image="img/globales/16x16/actualizar.png" style="margin-top:15px;"/>
+
+	</window>
+</zk>

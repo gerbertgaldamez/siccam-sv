@@ -1,0 +1,438 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<window id="contabilizacionModa" width="80%" height="75%" title="Tipologias Poliza" closable="True" 
+	 border="normal"  mode="modal"  position="center,center"
+		apply="com.terium.siccam.controller.CBTipologiasPolizaModalController"
+		 sizable="true" >
+	<borderlayout id="blyPrincipal">
+				<center autoscroll="true">
+				<div>
+					<hbox>
+						<groupbox mold="3d">
+							<caption label="Campos adicionales" />
+							<grid>
+								<columns>
+									<column />
+									<column />
+								</columns>
+								<rows>
+
+									<row>
+										<hbox>
+											<label
+												value="Centro de beneficio: " />
+										</hbox>
+										<hbox>
+											<textbox id="tbxCentroBeneficio"
+												maxlength="10" width="80px"  />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Division: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxDivision" maxlength="4" width="40px" />
+										</hbox>
+									</row>
+
+									<row>
+										<hbox>
+											<label
+												value="Orden de proyecto	: " />
+										</hbox>
+										<hbox>
+											<textbox id="tbxOrdenProyecto"
+												maxlength="12" width="80px"  />
+										</hbox>
+									</row>
+
+									<row>
+										<hbox>
+											<label
+												value="Tipo de cambio: " />
+										</hbox>
+										<hbox>
+											<textbox id="tbxTipoCambio"
+												maxlength="9" width="80px" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Fecha de conversion: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxFechaConversion" maxlength="8" width="80px"  />
+										</hbox>
+									</row>
+
+								<row>
+										<hbox>
+											<label value="Indicador cme: " />
+										</hbox>
+										<hbox>
+
+											<textbox id="tbxIndicadorcme"
+												maxlength="2" width="40px"  />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Car pa segmento: " />
+										</hbox>
+										<hbox>
+											<textbox id="tbxCarPaSegmento"
+												maxlength="2" width="40px"  />
+										</hbox>
+									</row>
+									
+										<row>
+										<hbox>
+											<label
+												value="Car pa servicio	: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxCarPaServicio" maxlength="3" width="40px" />
+										</hbox>
+									</row>
+									
+									<row>
+										<hbox>
+											<label
+												value="Car pa tipo trafico: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxCarPaTipoTrafico" maxlength="2" width="40px"  />
+										</hbox>
+									</row>
+									
+										<row>
+										<hbox>
+											<label
+												value="Sociedad: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxSociedad" maxlength="4" width="40px" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label value="Nombre: " />
+										</hbox>
+										<hbox>
+										<label id="lblNombre"/> 
+										</hbox>
+									</row>
+
+								</rows>
+
+							</grid>
+						</groupbox>
+
+						<groupbox mold="3d">
+							<caption label="" />
+							<grid>
+								<columns>
+									<column />
+									<column />
+								</columns>
+								<rows>
+
+									<row>
+										<hbox>
+											<label
+												value="Car pa ambito: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxCarPaAmbito" maxlength="2" width="40px" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Car pa licencia: " />
+										</hbox>
+										<hbox>
+
+											<textbox
+												id="tbxCarPaLicencia" maxlength="2" width="40px"  />
+										</hbox>
+									</row>
+
+								
+									<row>
+										<hbox>
+											<label
+												value="Car pa region:     " />
+										</hbox>
+										<hbox>
+											<textbox id="tbxCarPaRegion"
+												maxlength="2" width="40px" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Sub tipo linea:     " />
+										</hbox>
+										<hbox>
+											<textbox id="tbxSubTipoLinea"
+												maxlength="2" width="40px" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Canal: " />
+										</hbox>
+										<hbox>
+											<textbox id="tbxCanal"
+												maxlength="2" width="40px"  />
+										</hbox>
+									</row>
+								
+								
+								<row>
+										<hbox>
+											<label
+												value="Bundle: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxBundle" maxlength="2" width="40px" />
+										</hbox>
+									</row>
+
+									<row>
+										<hbox>
+											<label
+												value="Producto	: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxProducto" maxlength="4" width="40px"  />
+										</hbox>
+									</row>
+									
+									<row>
+										<hbox>
+											<label
+												value="Tcode	: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxTcode" maxlength="4" width="40px"  />
+										</hbox>
+									</row>
+									
+									<row>
+										<hbox>
+											<label
+												value="Proc	: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxProc" maxlength="2" width="40px"  />
+										</hbox>
+									</row>
+									
+									<row>
+										<hbox>
+											<label
+												value="Calc Auto IVA	: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxCalcAutoIva" maxlength="6" width="40px"  />
+										</hbox>
+									</row>
+								
+							
+									
+											<row>
+										<hbox>
+											<label
+												value="Fecha Valor:" />
+										</hbox>
+										<hbox>
+
+											<combobox
+												id="cmbFechaValor" readonly="true" width="121px">
+
+											</combobox>
+										</hbox>
+									</row>
+								
+								</rows>
+
+							</grid>
+						</groupbox>
+
+						<groupbox mold="3d">
+							<caption label="" />
+							<grid>
+								<columns>
+									<column />
+									<column />
+								</columns>
+								<rows>
+									
+									
+									
+									
+									<row>
+										<hbox>
+											<label
+												value="Empresa grupo: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxEmpresaGrupo" maxlength="4" width="40px" />
+										</hbox>
+									</row>
+									
+									<row>
+										<hbox>
+											<label
+												value="Proyecto: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxProyecto" maxlength="24" width="130px" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Sociedad asociada: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxSociedadAsociada" maxlength="6" width="60px" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Grafo 1: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxGrafo1" maxlength="12" width="80px" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Grafo 2: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxGrafo2" maxlength="12" width="80px" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Sub Segmento: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxSubSegmento" maxlength="2" width="40px" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Ref 1: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxRef1" maxlength="12" width="80px" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Ref 2: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxRef2" maxlength="12" width="80px" />
+										</hbox>
+									</row>
+									
+									<row>
+										<hbox>
+											<label
+												value="Llave	: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxLlave" maxlength="4" width="40px"  />
+										</hbox>
+									</row>
+									
+									
+									
+									<row>
+										<hbox>
+											<label
+												value="Ref3	: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxRef3" maxlength="12" width="80px"  />
+										</hbox>
+									</row>
+
+								</rows>
+
+							</grid>
+						</groupbox>
+
+					</hbox>
+
+				
+
+						
+						<groupbox mold="3d">
+							
+					<button id="btnModificar" label="Guardar"
+						image="img/globales/16x16/guardarnuevo.png" />
+					
+					</groupbox>
+							
+
+
+					
+				</div>
+			</center>
+		</borderlayout>
+		<popup id="popAsociacion" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label
+					value="Haga clic sobre un registro para modificar "
+					style="font-weight: bold" />
+			</hbox>
+		</popup>
+		<popup id="popEliminar" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Eliminar" style="font-weight: bold" />
+			</hbox>
+			Pulse aqui para poder eliminar un registro.
+		</popup>
+</window>
+</zk>

@@ -1,0 +1,7 @@
+<div id="${arg.id}" style="cursor:pointer;" sclass="lblNonSelect">
+	<hbox align="center" pack="center">
+		<image src="${arg.image}" width="32px" height="32px"/>
+		<label value="${arg.label}" sclass="lblNonSelect2"
+			style="color:${arg.color}; font-size:14px; user-select: none;" />
+	</hbox>
+</div>

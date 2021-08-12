@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import src="/util/comp_botones.zul" ?>
+<?import src="/util/comp_popups.zul" ?>
+<?page title="carga confrontas" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+<window id="cargaConfronta" width="100%" title="" vflex="true"
+		border="normal" apply="com.terium.siccam.controller.CBProcessFileUploadController">
+		<borderlayout id="blyPrincipal">
+			<center>
+				<div>
+				
+					<groupbox width="100%" id="grpNorte" mold="3d"
+						closable="false">
+						<caption
+							label="Carga de Archivo de Confrontas">
+						</caption>
+						<h:table>
+							<h:tr>
+								<h:td>
+									<label value="Agrupación:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<combobox width="200px"
+										readonly="true" style="color:#2B547E;font-weight: bold;"
+										id="cmbBanco" />
+
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<label value="Entidad:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<combobox width="200px"
+										readonly="true" style="color:#2B547E;font-weight: bold;"
+										id="cmbAgencia" />
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<label value="Confronta:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<combobox width="200px"
+										readonly="true" style="color:#2B547E;font-weight: bold;"
+										id="cmbConfronta" />
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<separator height="5px" />
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td colspan="6">
+									<hbox>
+											
+											<button id="btnArchivoEstados" upload="true"  mold="trendy"
+										label="Seleccionar archivo" image="img/globales/24x24/consulta.png" />
+										
+										
+										<button id="btnCargaConfrontas"
+											mold="trendy" width="150px" label="Cargar archivo"
+											image="img/globales/24x24/play.png" />
+
+										<space width="5px" />
+									</hbox>
+								</h:td>
+							</h:tr>
+							
+						</h:table>
+						<h:table>
+						<h:tr>
+								<h:td>
+									<label id="lblMensaje" />
+								</h:td>
+								<h:td>
+									<image id="imgEstatus" />
+								</h:td>
+							</h:tr>
+						</h:table>
+					</groupbox>
+				</div>
+			</center>
+
+		</borderlayout>
+	</window>
+</zk>

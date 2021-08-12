@@ -1,0 +1,259 @@
+<zk>
+	<script type="text/javascript"
+		src="javascripts/jquery.jgrowl_compressed.js" />
+	<div vflex="true"
+		apply="com.terium.siccam.controller.ConciliacionDetalleController">
+		<borderlayout style="background:transparent;">
+			<north>
+				<div style="background:transparent;">
+					<groupbox mold="3d">
+						<grid>
+							<columns>
+								<column width="10%" label="" />
+								<column width="15%" label="" />
+								<column width="10%" label="" />
+								<column width="15%" label="" />
+								<column width="10%" label="" />
+								<column width="15%" label="" />
+								<column width="10%" label="" />
+								<column width="15%" label="" />
+							</columns>
+							<rows>
+								<row>
+									<label value="Entidad:" />
+									<!--  <label id="lblAgencia" /> -->
+
+									<combobox id="cmbAgencia"
+										readonly="true">
+
+									</combobox>
+
+									<label value="Tipo:" />
+
+									<combobox id="cmbTipo"
+										readonly="true">
+										<comboitem label="TODOS" />
+									</combobox>
+									<!-- 
+										<label value="Dia:" />
+										<label id="lblDia" />
+										
+										<datebox id="dtbDia"
+										format="dd/MM/yyyy" />
+									-->
+									<label value="Teléfono / Cliente:" />
+									<intbox id="txtNumYCuenta"
+										maxlength="8" />
+									<label value="Estado:" />
+
+									<combobox id="cmbEstado"
+										readonly="true">
+										<comboitem label="Todos" />
+
+										<!-- 
+											<comboitem
+											label="Conciliado Automaticamente" />
+											
+											<comboitem
+											label="Pendiente Conciliar" />
+											<comboitem
+											label="Conciliado Manualmente" />
+											<comboitem label="Ajustes Automaticos" />
+											<comboitem label="Pendiente Dif Fechas" />
+											<comboitem label="Ajuste Aplicado Dif Fechas" />
+											<comboitem label="Ajuste No Aplicado Dif Fechas" /> 
+											<comboitem label="Reenviar Manual" />-->
+
+									</combobox>
+								</row>
+								<row>
+									<label value="Desde:" />
+
+									<datebox id="dtbDia"
+										format="dd/MM/yyyy" />
+									<label value="Hasta:" />
+
+									<datebox id="dtbHasta"
+										format="dd/MM/yyyy" />
+
+								</row>
+							</rows>
+						</grid>
+
+					</groupbox>
+				</div>
+			</north>
+			<center autoscroll="true">
+				<groupbox width="100%" height="100%">
+
+					<toolbar>
+						<button id="btnBuscar"
+							image="/img/globales/16x16/buscar.png" label="Buscar" />
+						<space width="2px" />
+						<button id="btnGeneraReporte"
+							label="Generar Reporte" image="/img/globales/16x16/xlsx.png"
+							disabled="self" />
+
+						<button id="btnAcciones"
+							label="Conciliar Manual"
+							image="/img/globales/16x16/modificar.png" disabled="self" />
+
+						<button id="btnReenviarManual"
+							label="Reenviar Manual" 
+							image="/img/globales/16x16/siguiente.png"  />				
+						
+						<button id="btnEliminarAccion"
+							label="Eliminar Accion"
+							image="/img/globales/16x16/delete.png"  />
+							
+					</toolbar>
+					<listbox id="lbxConciliacionDetalle" mold="paging"
+						multiple="true" checkmark="true" height="360px" pageSize="10"
+						sizedByContent="true" vflex="true"
+						emptyMessage="No detalles para esta conciliacion">
+						<listhead id="lstheadDetalle">
+							<listheader label="Entidad" sort="auto" />
+							<listheader label="Dia" sort="auto" />
+							<listheader label="Tipo" sort="auto" />
+							<listheader label="Cliente" sort="auto" />
+							<listheader label="Nombre" sort="auto" />
+							<listheader label="Des Pago" sort="auto" />
+							<listheader label="Trans Telca" sort="auto" />
+							<listheader label="Telefono" sort="auto" />
+							<listheader label="Trans Banco" sort="auto" />
+							<listheader label="Pago Telefonica"
+								sort="auto" />
+							<listheader label="Pago Banco" sort="auto" />
+							<listheader label="Manual" sort="auto" />
+							<listheader label="Pendiente Banco"
+								sort="auto" />
+							<listheader label="Pendiente Telefonica"
+								sort="auto" />
+							<listheader label="Sucursal" sort="auto" />
+							<listheader label="Nombre Sucursal"
+								sort="auto" />
+							<listheader label="Tipo Sucursal"
+								sort="auto" />
+							<listheader label="Comision" sort="auto" />
+							<listheader label="Monto Comision"
+								sort="auto" />
+								<listheader label="Aplicado Real"
+								sort="auto" />
+							<listheader label="Respuesta Accion"
+								sort="auto" />
+							<listheader label="Estado" sort="auto" />
+						</listhead>
+
+					</listbox>
+				</groupbox>
+
+			</center>
+		</borderlayout>
+
+		<window id="wdwHistorial" title="Conciliación Manual"
+			width="650px" height="400px" visible="false">
+			<listbox id="lbxHistorialAcciones" mold="paging"
+				height="210px" pageSize="8" sizedByContent="true" vflex="true"
+				emptyMessage="No hay historico para este detalle">
+				<listhead>
+					<listheader label="Tipologias" sort="auto" />
+					<listheader label="Monto" sort="auto" />
+					<listheader label="Observaciones" sort="auto" />
+					<listheader label="Creado Por " sort="auto" />
+					<listheader label="Fecha de Creacion " sort="auto" />
+					<listheader label="Modificado Por " sort="auto" />
+					<listheader label="Fecha de Modificacion "
+						sort="auto" />
+				</listhead>
+			</listbox>
+			<borderlayout height="150px">
+				<north></north>
+				<center>
+					<grid>
+						<columns>
+							<column label="" width="20%" />
+							<column label="" width="30%" />
+							<column label="" width="20%" />
+							<column label="" width="30%" />
+						</columns>
+						<rows>
+							<row>
+								<label value="Accion: " />
+								<combobox id="cmbAccion"
+									readonly="true" />
+
+								<label value="Observaciones: " />
+								<textbox id="txtObservaciones" />
+							</row>
+							<row>
+								<label value="Monto: " />
+								<textbox id="txtMonto" />
+								<label id="lblPendiente" />
+								<textbox id="txtPendiente" />
+							</row>
+						</rows>
+					</grid>
+
+				</center>
+				<south>
+					<toolbar width="100%">
+						<toolbarbutton id="btnAgregar" label="Agregar"
+							image="/img/agregar_16.png" />
+						<toolbarbutton id="btnGuardar" label="Guardar"
+							image="/img/modificar_16.png" />
+						<toolbarbutton id="btnEliminar" label="Eliminar"
+							image="/img/eliminar.png" />
+						<toolbarbutton id="btnCerrar" label="Cerrar"
+							image="/img/eliminar_16.png" />
+					</toolbar>
+
+				</south>
+			</borderlayout>
+		</window>
+
+		<window id="wdwHistorial2" title="Conciliación Manual"
+			width="300px" height="210px" visible="false">
+			<borderlayout height="180px">
+				<north></north>
+				<center>
+					<grid>
+						<columns>
+							<column label="" width="30%" />
+							<column label="" width="70%" />
+
+						</columns>
+						<rows>
+							<row>
+								<label value="Accion: " />
+								<combobox id="cmbAccion2"
+									readonly="true" />
+
+
+							</row>
+							<row>
+								<label value="Observaciones: " />
+								<textbox id="txtObservaciones2"
+									multiline="true" height="50px" width="95%" />
+
+							</row>
+						</rows>
+					</grid>
+
+				</center>
+				<south>
+					<toolbar width="100%">
+						<toolbarbutton id="btnGuardar2" label="Guardar"
+							image="/img/modificar_16.png" />
+
+						<toolbarbutton id="btnCerrar2" label="Cerrar"
+							image="/img/eliminar_16.png" />
+						<!--
+							<toolbarbutton id="btnTestWS" label="Test"
+							image="/img/ayuda.png" />-->
+					</toolbar>
+
+				</south>
+			</borderlayout>
+		</window>
+	</div>
+</zk>

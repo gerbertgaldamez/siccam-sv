@@ -1,0 +1,97 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<script type="text/javascript" src="javascripts/jquery.jgrowl_compressed.js" />
+	
+		
+		
+	<window id="tipologiaEntidadModal" width="50%" height="86%" title="Asociación de entidades a tipologías de póliza" closable="True" 
+	 border="normal"  mode="modal"  position="center,center"
+		apply="com.terium.siccam.controller.CBTipologiasEntidadesController"
+		 sizable="true" >
+		<borderlayout id="blyPrincipal">
+			<center autoscroll="true">
+				<div>
+					<hbox>
+						<groupbox mold="3d" width="100%">
+							<caption label="Datos" />
+							<grid>
+								<columns>
+									<column width="120px" />
+									<column />
+								</columns>
+								<rows>
+									<row>
+										<cell colspan="2">
+											<label id="lblEntidadSeleccionada" value="" />
+										</cell>
+									</row>
+									<row>
+										<hbox>
+											<label value="Agrupación:" />
+										</hbox>
+										<hbox>
+											<combobox id="cmbAgrupacion"
+												width="225px" readonly="true"
+												style="color:#2B547E;font-weight: bold;">
+												<comboitem label="Todas" />
+											</combobox>
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label value="Entidad:" />
+										</hbox>
+										<hbox>
+											<combobox id="cmbEntidad"
+												width="225px" readonly="true"
+												style="color:#2B547E;font-weight: bold;">
+												<comboitem label="Todas" />
+											</combobox>
+										</hbox>
+									</row>
+									<row>
+										<cell colspan="2">
+											<checkbox id="chkFiltroTipolSelected"
+												label="Entidades asociadas a tipología de póliza seleccionada"/>
+										</cell>
+									</row>
+									<row>
+										<cell colspan="2">
+											<button id="btnGuardar"
+												label="Asociar entidades" image="img/globales/16x16/guardar.png" />
+											<button id="btnConsultar"
+												label="Consultar" image="img/globales/16x16/consulta.png" />
+											<checkbox id="chkMarcarTodas"
+												label="Marcar Todas"/>
+										</cell>
+									</row>
+								</rows>
+							</grid>
+						</groupbox>
+					</hbox>
+					<groupbox mold="3d" height="100%">
+						<caption label="Detalle de entidades" />
+						<listbox id="lbxConsulta" height="250px"
+							checkmark="true" multiple="true" mold="paging" pageSize="10"
+							sizedByContent="true" vflex="true"
+							emptyMessage="No hay registros consultados">
+							<listhead>
+								<listheader label="" width="30px"/>
+								<listheader label="Agrupación" />
+								<listheader label="Entidad" />
+								<listheader label="Asociada" />
+								<listheader label="Eliminar" />
+							</listhead>
+						</listbox>
+					</groupbox>
+				</div>
+			</center>
+		</borderlayout>
+		<popup id="popEliminar" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Eliminar asociación de entidad" style="font-weight: bold" />
+			</hbox>
+		</popup>
+	</window>
+</zk>

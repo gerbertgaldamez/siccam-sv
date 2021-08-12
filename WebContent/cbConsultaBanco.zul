@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import src="/util/comp_popups.zul" ?>
+<?import src="/util/comp_botones.zul" ?>
+<?page title="Consulta Entidades Bancarias" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native">
+	<window id="cBanco" width="100%" height="500px" title=""
+		vflex="true" border="normal"
+		apply="com.terium.siccam.controller.CBCatalogoBancoController">
+
+		<borderlayout id="blyPrincipal">
+			<north>
+				<div>
+					<groupbox width="100%" id="grpNorte" mold="3d"
+						height="100px" closable="false">
+						<caption
+							label="Consulta agrupación de entidades">
+						</caption>
+						<h:table>
+							<h:tr>
+								<h:td>
+									<label value="Nombre:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<textbox id="tbxNombre"
+										maxlength="50" width="200px" />
+
+								</h:td>
+								<!-- Comentariado por Carlos Godinez - Qitcorp - 04/07/2017 
+									<h:td>
+									<label value="Telefono:" />
+									<space width="20px" />
+									</h:td>
+									<h:td>
+									<textbox maxlength="10"
+									value="@bind(cBanco.telefono)" width="200px" />
+									</h:td>
+								-->
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<label value="Estado:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<combobox id="cmbEstado"
+										autocomplete="true" readonly="true" width="200px">
+
+									</combobox>
+								</h:td>
+								<h:td>
+									<label value="Tipo de Entidad:" />
+								</h:td>
+								<h:td>
+									<combobox id="cmbTipo"
+										autocomplete="true" readonly="true" width="200px">
+									</combobox>
+								</h:td>
+							</h:tr>
+						</h:table>
+					</groupbox>
+					<toolbar align="end">
+						<button id="btnConsultar" label="Consultar"
+							image="img/globales/16x16/consulta.png" />
+						<button id="btnNuevo" label="Nueva agrupacion"
+							tooltip="popGuardar" image="img/globales/16x16/agregar_1.png" />
+							
+							
+
+					</toolbar>
+				</div>
+			</north>
+			<center>
+				<groupbox width="100%" mold="3d" closable="false"
+					height="100%">
+					<label value="Resultados" />
+					<separator height="10px" />
+					<listbox id="lbxListaBanco" height="100%"
+						mold="paging" pageSize="8" sizedByContent="true" vflex="true"
+						emptyMessage="No hay registros consultados" autopaging="true">
+
+						<listhead sizable="true">
+							<listheader label="Codigo" sort="auto" width="200px" >
+							</listheader>
+							<listheader label="Nombre" sort="auto" width="200px" >
+							</listheader>
+							<!-- Comentariado por Carlos Godinez - Qitcorp - 04/07/2017 
+								<listheader label="Telefono"
+								sort="auto(telefono)" sortDirection="descending"
+								valign="middle">
+								</listheader>
+							-->
+							<listheader label="Estado" sort="auto" width="200px" >
+							</listheader>
+							<!-- Comentariado por Carlos Godinez - Qitcorp - 04/07/2017 
+								<listheader label="Contacto"
+								sort="auto(contacto)" sortDirection="descending"
+								valign="middle">
+								</listheader>
+							-->
+							<listheader label="Tipo de Entidad"
+								sort="auto" width="200px" >
+							</listheader>
+							
+							<listheader label="Eliminar"
+								sort="auto" width="100px" >
+							</listheader>
+						</listhead>
+
+					</listbox>
+				</groupbox>
+			</center>
+		</borderlayout>
+	</window>
+</zk>

@@ -1,0 +1,49 @@
+/***** clearfix *****/
+.clear {clear: both;height: 0;line-height: 0;}
+.clearfix:after {content: ".";display: block;height: 0;clear: both;visibility: hidden;}
+.clearfix {display: inline-block;}
+/* oculta para IE-mac \*/
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+/* fin de la calse oculta clearfix from IE-mac */
+.clearfix {height: 1%;}
+.clearfix {display: block;}
+
+
+.boxgrid{
+			width: 90px;
+			height: 83px;
+			margin:10px;
+			float:left;
+			overflow: hidden;
+			position: relative;
+		}
+		.boxgrid img{
+			position: absolute;
+			top: 0;
+			left: 0;
+			border: 0;
+		}
+		.boxcaption{
+			float: left;
+			position: absolute;
+			/*background: #333;*/
+			background: #031B25;
+			top:100px;
+			height: 30px;
+			width: 340px;
+			color:white;
+			 opacity: .75;
+			/*  Para IE 5-7 */
+			filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
+			/* Para IE 8 */
+			 -MS-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)"; /**/
+		 }
+		 .captionfull .boxcaption {
+		 	top: 100;
+		 	left: 0;
+		 }
+		 .caption .boxcaption {
+		 	top: 100;
+		 	left: 0;
+		 }

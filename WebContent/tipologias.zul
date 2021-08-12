@@ -1,0 +1,505 @@
+<?page title="Tipologias" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<div id="creacionTipologias" vflex="true"
+		apply="com.terium.siccam.controller.CBTipologiasPolizaController">
+		<borderlayout id="blyPrincipal" height="100%">
+			<center autoscroll="true">
+				<div>
+					<hbox>
+						<groupbox mold="3d">
+							<caption label="Creacion Tipologias" />
+							<grid>
+								<columns>
+									<column />
+									<column />
+								</columns>
+								<rows>
+
+									<row width="80%">
+										<hbox>
+											<label
+												value="Centro de Costo: " />
+										</hbox>
+										<hbox>
+											<textbox id="tbxCosto"
+												maxlength="10" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Clave contabiliza: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxContabilizacion" maxlength="2" width="40px" />
+										</hbox>
+									</row>
+
+									<row>
+										<hbox>
+											<label
+												value="Descripcion	: " />
+										</hbox>
+										<hbox>
+											<textbox id="tbxDescripcion"
+												maxlength="100" />
+										</hbox>
+									</row>
+
+									<row>
+										<hbox>
+											<label
+												value="Terminacion: " />
+										</hbox>
+										<hbox>
+											<textbox id="tbxTerminacion"
+												maxlength="2" width="40px" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Indicador Iva:     " />
+										</hbox>
+										<hbox>
+											<textbox id="tbxIva"
+												maxlength="2" width="40px" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Actividad	:               " />
+										</hbox>
+										<hbox>
+											<textbox id="tbxActividad"
+												maxlength="10" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Cuenta Ingreso: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxCuenta_Ingreso" maxlength="10" />
+										</hbox>
+									</row>
+
+									<row>
+										<hbox>
+											<label value="Nombre: " />
+										</hbox>
+										<hbox>
+
+											<textbox id="tbxNombre"
+												maxlength="30" />
+										</hbox>
+									</row>
+
+
+									<row>
+										<hbox>
+											<label value="Convenio:" />
+										</hbox>
+										<hbox>
+
+											<combobox id="cmbConvenio"
+												readonly="true" width="121px">
+
+											</combobox>
+										</hbox>
+									</row>
+
+
+									<row>
+										<hbox>
+											<label
+												value="Pide Entidad:" />
+										</hbox>
+										<hbox>
+
+											<combobox
+												id="cmbPideEntidad" readonly="true" width="121px">
+
+											</combobox>
+										</hbox>
+									</row>
+
+
+
+
+								</rows>
+
+							</grid>
+						</groupbox>
+
+						<groupbox mold="3d">
+							<caption label="Cuenta Contrapartida" />
+							<grid>
+								<columns>
+									<column />
+									<column />
+								</columns>
+								<rows>
+									<row>
+										<hbox>
+											<label
+												value="Centro de Costo: " />
+										</hbox>
+										<hbox>
+											<textbox id="tbxCostocp"
+												maxlength="10" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Clave contabiliza: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxContabilizacioncp" maxlength="2" width="40px" />
+										</hbox>
+									</row>
+
+									<row>
+										<hbox>
+											<label
+												value="Descripcion	: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxDescripcioncp" maxlength="25" />
+										</hbox>
+									</row>
+
+									<row>
+										<hbox>
+											<label
+												value="Terminacion: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxTerminacioncp" maxlength="2" width="40px" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Cuenta Contrapartida: " />
+										</hbox>
+										<hbox>
+
+											<textbox
+												id="tbxContrapartida" maxlength="10" />
+										</hbox>
+									</row>
+
+
+
+
+
+
+
+
+
+									<row>
+										<hbox>
+											<label
+												value="Indicador iva : " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxIndicadorIvacp" maxlength="2" width="40px" />
+										</hbox>
+
+									</row>
+
+									<row>
+										<hbox>
+											<label value="Actividad : " />
+										</hbox>
+										<hbox>
+											<textbox id="tbxActividadcp"
+												maxlength="15" width="80px" />
+										</hbox>
+
+									</row>
+
+
+
+
+
+									<row>
+										<hbox>
+											<label value="Tipo:" />
+										</hbox>
+										<hbox>
+
+											<combobox id="cmbTipo"
+												readonly="true" width="121px">
+
+											</combobox>
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Tipo de documento: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxTipoDocumento" maxlength="2" width="40px" />
+										</hbox>
+
+									</row>
+
+									<row>
+										<hbox>
+											<label
+												value="Identificacion : " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxIdentificacion" maxlength="6" width="80px" />
+										</hbox>
+
+									</row>
+
+
+
+
+
+
+								</rows>
+
+							</grid>
+						</groupbox>
+
+						<groupbox mold="3d">
+							<caption label="Diferencias" />
+							<grid>
+								<columns>
+									<column />
+									<column />
+								</columns>
+								<rows>
+
+									<row>
+										<hbox>
+											<label
+												value="Centro de Costo: " />
+										</hbox>
+										<hbox>
+											<textbox id="tbxCostodf"
+												maxlength="10" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Clave contabiliza: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxContabilizaciondf" maxlength="2" width="40px" />
+										</hbox>
+									</row>
+
+									<row>
+										<hbox>
+											<label
+												value="Descripcion	: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxDescripciondf" maxlength="25" />
+										</hbox>
+									</row>
+
+									<row>
+										<hbox>
+											<label
+												value="Terminacion: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxTerminaciondf" maxlength="2" width="40px" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Cuenta Ingreso: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxCuenta_Ingresodf" maxlength="10" />
+										</hbox>
+
+									</row>
+
+									<row>
+										<hbox>
+											<label
+												value="Clave diferencia negativa: " />
+										</hbox>
+										<hbox>
+											<textbox
+												id="tbxClaveDiferenciaNegativa" maxlength="4" width="40px" />
+										</hbox>
+
+									</row>
+
+									<row>
+										<hbox>
+											<label value="Secuencia: " />
+										</hbox>
+										<hbox>
+											<textbox id="tbxSecuencia"
+												maxlength="6" />
+										</hbox>
+
+									</row>
+
+								</rows>
+
+							</grid>
+						</groupbox>
+
+					</hbox>
+
+					<button id="btnNuevo" label="Guardar"
+						image="img/globales/16x16/guardarnuevo.png" />
+
+					<button id="btnLimpiar" label="Limpiar"
+						image="img/globales/16x16/nuevo.png" />
+
+					<button id="btnModificar" label="Modificar"
+						image="img/globales/16x16/modificar_1.png"
+						tooltip="popAsociacion" />
+
+					<button id="btnConsultar" label="Consultar"
+						image="img/globales/16x16/consulta.png" />
+
+					<button id="btnAsignarEntidades"
+						label="Asociar entidades" image="img/globales/16x16/edit.png"
+						tooltip="popAsignarEntidades" />
+
+					<button id="btnExcel" label="Generar reporte"
+						image="img/globales/16x16/xlsx.png" />
+
+					<groupbox height="46%">
+
+						<listbox id="lbxConsulta" height="315px"
+							mold="paging" pageSize="8" sizedByContent="true" vflex="true"
+							emptyMessage="No hay registros consultados">
+							<listhead>
+								<listheader label="Código" sort="auto" />
+								<listheader label="Centro de costo"
+									sort="auto" />
+								<listheader
+									label="Clave contabilizacion" sort="auto" />
+								<listheader label="Descripcion"
+									sort="auto" />
+								<listheader label="Terminacion"
+									sort="auto" />
+
+								<listheader label="Cuenta Ingreso"
+									sort="auto" />
+								<listheader label="Nombre" sort="auto" />
+
+								<listheader label="Centro de costo cp"
+									sort="auto" />
+								<listheader
+									label="Clave contabilizacion cp" sort="auto" />
+								<listheader label="Descripcion cp"
+									sort="auto" />
+								<listheader label="Terminacion cp"
+									sort="auto" />
+								<listheader label="Cuenta Contrapartida"
+									sort="auto" />
+
+								<listheader label="Indicador IVA"
+									sort="auto" />
+								<listheader label="Actividad"
+									sort="auto" />
+
+								<listheader label="Centro de costo df"
+									sort="auto" />
+								<listheader
+									label="Clave contabilizacion df" sort="auto" />
+								<listheader label="Descripcion df"
+									sort="auto" />
+								<listheader label="Terminacion df"
+									sort="auto" />
+
+								<listheader label="Cuenta Ingreso df"
+									sort="auto" />
+
+								<listheader
+									label="Clave diferencia negativa" sort="auto" />
+
+								<listheader label="Convenio" sort="auto" />
+
+								<listheader label="Entidad" sort="auto" />
+
+								<listheader label="Indicador iva cp"
+									sort="auto" />
+								<listheader label="Actividad cp"
+									sort="auto" />
+								<listheader label="Secuencia"
+									sort="auto" />
+
+								<listheader label="Tipo de documento"
+									sort="auto" />
+								<listheader label="Identificacion"
+									sort="auto" />
+									<listheader label="Tipo" sort="auto" />
+								<listheader label="Eliminar"
+									sort="auto" />
+							</listhead>
+						</listbox>
+
+					</groupbox>
+
+				</div>
+			</center>
+		</borderlayout>
+		<popup id="popAsociacion" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label
+					value="Haga clic sobre un registro para modificar "
+					style="font-weight: bold" />
+			</hbox>
+		</popup>
+		<popup id="popAsignarEntidades" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label
+					value="Seleccione una tipología de poliza y asigne sus respectivas entidades"
+					style="font-weight: bold" />
+			</hbox>
+		</popup>
+		<popup id="popAsociacionModal" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label
+					value="Haga doble clic sobre un registro para configurar campos adicionales "
+					style="font-weight: bold" />
+			</hbox>
+		</popup>
+		<popup id="popEliminar" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Eliminar" style="font-weight: bold" />
+			</hbox>
+			Pulse aqui para poder eliminar un registro.
+		</popup>
+
+	</div>
+</zk>

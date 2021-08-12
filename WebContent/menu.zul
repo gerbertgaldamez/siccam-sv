@@ -1,0 +1,451 @@
+<?import src="/util/comp_botones.zul" ?>
+<?page id="pagePrincipal" title="Movistar | Conciliación Bancaria" contentType="text/html;charset=UTF-8"?>
+<?link rel="shortcut icon" type="image/x-icon" href="/img/principal/favicon/favicon.ico"?>
+<zk xmlns:n="native" xmlns="http://www.zkoss.org/2005/zul">
+	<script type="text/javascript"
+		src="javascripts/jquery.jgrowl_compressed.js" />
+	<style src="css/jquery.jgrowl.css" />
+	<style src="css/slide.css" />
+	<style src="css/estilos.css" />
+	<style dynamic="true">
+		.headerPrincipal { width:980px; margin-left:auto;
+		margin-right:auto; } .header { height:60px; color:white;
+		text-align: left;
+		background:url(img/principal/logo_movistar.png) top right
+		no-repeat; margin: 5px 0 0px 0; } div.principal { width:1050px;
+		height:500px; margin-left:auto; margin-right:auto; }
+		.z-menubar-hor, .z-menubar-ver { border: 1px solid #D8D8D8; }
+		.tituloapp { font-family:'TelefonicaTextBold',arial, serif;
+		font-size:20pt; } .descripcionapp { position:relative;
+		top:-10px; font-family:'TelefonicaTextRegular',arial, serif;
+		font-size:12pt; } .z-loading-icon {
+		background-image:url(img/principal/progress.gif); }
+		.z-modal-mask { background-color: rgb(190,190,190); }
+
+		.menuCard{ min-width:450px; max-width:99%; padding-top:2px; }
+	</style>
+	<window width="100%" height="700px" minheight="600" border="none" id="cMenuPrincipal"
+		style="margin-left:-2px; "
+		apply="com.terium.siccam.controller.MenuController">
+		<button id="btnDummy" visible="false" />
+		<borderlayout style="border:0px solid black;" height="500">
+			<north border="none" style="background-color:black"
+				size="32px">
+				<div align="right" width="110%"
+					style="min-width:450px; max-width:99%; padding-top:2px">
+					<n:table border="0" width="100%">
+						<n:tr>
+							<n:td align="left" width="20px">
+								<image
+									src="/img/principal/iconos/img_cuenta.png" width="20px" />
+							</n:td>
+							<n:td align="left">
+								<label value="Bienvenido"
+									style="color:#45B3CA; font-weight:bold; margin-left:5px" />
+								<label id="lblUsuario"
+									style="color:white; margin-left:5px" />
+									<label id="lblPais"
+									style="color:white; margin-left:5px" />
+									
+									
+							</n:td>
+							<n:td align="right">
+								<label value="" id="lblFecha" style="color:white" />
+							</n:td>
+						</n:tr>
+					</n:table>
+				</div>
+			</north>
+			<center border="none" autoscroll="true"
+				style="background: url('img/principal/fndpage.jpg'); margin-top:-1px;"
+				flex="true">
+				<div id="divTotal" align="center">
+					<div sclass="headerPrincipal" id="divTitulo">
+						<div sclass="header">
+							<vbox>
+								<label
+									value="SICCAM - Sistema de Conciliación para Costa Rica"
+									id="lblTitulo" sclass="tituloapp" />
+								<label
+									value="Permite conciliar la recaudación de los distintos canales"
+									sclass="descripcionapp" />
+							</vbox>
+						</div>
+					</div>
+					<div id="divPrincipal"
+						style="background-image: url('img/principal/transparente1.png'); overflow:auto;"
+						height="100% " width="965px" zclass="divPrincipal" >
+						<div align="left" height="100%">
+							<tabbox id="tbxPrincipal"
+								style="background:transparent;" tabscroll="true" height="100%"
+								vflex="true" hflex="true">
+								<tabs style="background:transparent;">
+									<tab id="tabPrincipal"
+										image="img/principal/iconos/home16.png" label="Inicio"
+										style="background-color:rgb(238,238,252)" />
+								</tabs>
+								<toolbar>
+									<toolbarbutton id="btnInicio"
+										image="img/principal/iconos/home16.png"
+										tooltip="popInicio,position=after_start" />
+									<botonayuda id="btnAyuda"
+										image="img/principal/iconos/ayudaPrincipal.png" />
+									<toolbarbutton id="btnMaxSize"
+										image="img/principal/iconos/zoom.png"
+										tooltip="popMaximizar,position=after_start" />
+								</toolbar>
+								<tabpanels >
+									<tabpanel id="pnltabPrincipal"
+										style="border:0px">
+										<div id="divMenu"
+											style="margin-left:25px; padding-left:25px;margin-right:285px; padding-right:320px; ">
+											<div
+												style="margin-left:5px">
+												<label
+													style="color:#005179; font-size:12px;"
+													value="Selecciona una de las siguientes opciones a trabajar" />
+											</div>
+											<space orient="horizontal" />
+											<vbox>
+												<hbox>
+													<menucard
+														class="menuCard" id="cMantenimiento" bgCard=""
+														title="Resumen Diario de Conciliaciones"
+														image="img/menu/conciliacion.png">
+														<attribute
+															name="description">
+															Módulo que
+															permite
+															visualizar
+															un resumen
+															diario por
+															entidad
+															bancaria de
+															las
+															conciliaciones.
+														</attribute>
+													</menucard>
+													<menucard
+														id="cConfronta" bgCard=""
+														title="Carga de Confrontas"
+														image="img/menu/confrontas.png">
+														<attribute
+															name="description">
+															Opción para
+															realizar la
+															carga de los
+															archivos de
+															las
+															distintas
+															agencias
+															bancarias.
+														</attribute>
+													</menucard>
+
+												</hbox>
+												<hbox>
+													<menucard
+														id="consultaCargasMas" bgCard=""
+														title="Consulta de Cargas"
+														image="img/menu/cargas.png">
+														<attribute
+															name="description">
+															Módulo que
+															permite
+															visualizar
+															las cargas y
+															el detalle
+															de la misma.
+														</attribute>
+													</menucard>
+													<menucard
+														id="opLiquidacionCajeros" bgCard=""
+														title="Liquidacion de cajeros"
+														image="img/menu/liquidacion.png">
+														<attribute
+															name="description">
+															Agregar y
+															consultar
+															liquidación
+															de créditos.
+														</attribute>
+													</menucard>
+												</hbox>
+												<hbox>
+													<menucard
+														id="cargaEstadoCuentas" bgCard=""
+														title="Carga estado de cuentas"
+														image="img/menu/cargacuentas.png">
+														<attribute
+															name="description">
+															Módulo que
+															permite
+															cargar los
+															estados de
+															cuentas.
+														</attribute>
+													</menucard>
+													<menucard
+														id="consultaConciliacionCajeros" bgCard=""
+														title="Consulta Conciliacion Cajeros"
+														image="img/menu/consultaliquidacion.png">
+														<attribute
+															name="description">
+															Modulo que
+															permite
+															consultar la
+															conciliacion
+															de cajeros.
+														</attribute>
+													</menucard>
+												</hbox>
+												<hbox>
+													<menucard
+														id="consultaEstadoCuentas" bgCard=""
+														title="Consulta Estado de Cuentas"
+														image="img/menu/consultacuentas.png">
+														<attribute
+															name="description">
+															Módulo que
+															permite
+															consultar
+															los estados
+															de cuentas.
+														</attribute>
+													</menucard>
+													<menucard
+														id="consultaConciliaBanco" bgCard=""
+														title="Consulta Conciliacion Bancos"
+														image="img/menu/banco.png">
+														<attribute
+															name="description">
+															Módulo que
+															permite
+															consultar la
+															conciliacion
+															de bancos.
+														</attribute>
+													</menucard>
+												</hbox>
+												<hbox>
+												<menucard
+													id="consultaEstadoCuentasTarjeta" bgCard=""
+													title="Consulta Estado de Cuentas de Tarjetas"
+													image="img/menu/tarjetas.png">
+													<attribute
+														name="description">
+														Módulo que
+														permite
+														consultar los
+														estados de
+														cuentas de
+														tarjetas.
+													</attribute>
+												</menucard>
+												<menucard
+														id="consultacontabilizacion" bgCard=""
+														title="Consulta Contabilizacion"
+														image="img/menu/contabilizacion.png">
+														<attribute
+															name="description">
+															Módulo que
+															permite
+															consultar
+															los estados
+															de
+															contabilizacion.
+														</attribute>
+													</menucard>
+													</hbox>	
+												<hbox></hbox>
+												<space height="7px"
+													orient="horizontal" />
+												<space height="7px"
+													orient="horizontal" />
+											</vbox>
+										</div>
+									</tabpanel>
+								</tabpanels>
+							</tabbox>
+							<zscript>
+					<![CDATA[
+							if (execution.isExplorer()) {
+								tbxPrincipal.setHeight("95%");
+							} else if (execution.isGecko()) {
+								tbxPrincipal.setHeight("95%");
+							} else if (execution.isSafari()) {
+								tbxPrincipal.setHeight("95%");
+							} else
+								tbxPrincipal.setHeight("95%");
+						]]>
+                            </zscript>
+                        </div>
+                    </div>
+                </div>
+            </center>
+            <south border="none" style="background-color:#005179;"
+                   size="24px" flex="true">
+                <n:table border="0" width="100%"
+                         style="margin-top:1px; margin-left:5px; margin-right:5px">
+                    <n:tr>
+                        <n:td>
+                            <label style="color:white"
+              value="Telefonica Móviles Costa Rica, S. A." />
+                        </n:td>
+                       <n:td align="right">
+                        	<label style="color:white" id="lblAnio"
+                                   value="" />
+                            <label style="color:white"
+                                   value=" Todos los derechos reservados v2.1.1" />
+                        </n:td>
+                    </n:tr>
+                </n:table>
+            </south>
+        </borderlayout>
+        <div zclass="divquick"
+             style="background:transparent; position:absolute; left:-310px; top:0px; z-index:500; "
+             height="700px" width="330px" vflex="true">
+            <div width="312px" vflex="true" height="100%" >
+                <div style="background-color: #434343; float:left; "
+                     width="300px" height="100%">
+                    <vbox style="margin:15px 15px 15px 10px;" hflex="true">
+                        <hbox>
+                            <label value="Acceso" 
+                                   style="color:#28A8EE; font-size:20px; font-weight:bold;"/>
+                            <label value="rápido" 
+                                   style="color:white; font-size:20px; font-weight:bold;"/>   
+                        </hbox>
+                        <div style="border-top:1px solid white;" width="100%" height="2px"/>
+                        <space orient="horizontal" height="3px"/>
+                        <vbox>
+                        	<quickitem label="Conciliacion Detallada" image="img/quick/general.png"
+                                       id="qkiConciliaciondet" color="white"/>
+                            <quickitem label="Recaudacion y Regularizacion" image="img/quick/recaudacion.png"
+                                       id="qkiRecaRegu" color="white"/>           
+                        	<quickitem label="Reportes Conciliaciones" image="img/quick/reporte.png"
+                                       id="qkiReportesCon" color="white"/>
+                           <quickitem label="Agrupacion de entidades" image="img/quick/agrupacion.png"
+                                       id="qkiEntidadBanc" color="white"/>
+                           <quickitem label="Catálogo de entidades" image="img/quick/entidad.png"
+                                       id="qkiAgenciasBanck" color="white"/>
+                            <quickitem label="Configuracion de Confrontas" image="img/quick/confrontas.png"
+                                       id="qkiConfConfrontasDos" color="white"/>
+                            <quickitem label="Mantenimiento de Tipologias de Conciliación" image="img/quick/conciliacion.png"
+                                       id="qkiCausasDos" color="white"/>
+                            <quickitem label="Mantenimiento de Tipologias de Poliza" image="img/quick/poliza.png"
+                                       id="qkiTipologias" color="white"/>  
+                            <quickitem label="Configuración de Conexiones" image="img/quick/conexion.png"
+                                       id="qkiConfConexion" color="white"/>
+                            <quickitem label="Aplica o desaplica pagos" image="img/quick/aplicapago.png"
+                                       id="qkiConfAplicaDesaplica" color="white"/> 
+                            <quickitem label="Configuración de Depositos" image="img/quick/agrupacion.png"
+                                       id="qkiConfDepositosRec" color="white"/>   
+                            <quickitem label="Configuración de parametros generales" image="img/quick/029-shield.png"
+                                       id="qkiConfParamGenerales" color="white"/>                
+                           <!-- oculta manual usuario
+                            <quickitem label="Manual del usuario" image="img/quick/book.png"
+                                       id="qkiManualUsuario" color="white"/>      
+                                      
+                            <quickitem label="Ayuda" image="img/quick/ayuda.png"
+                                       id="qkiAyuda" color="white"/>
+                                        -->
+                            <!--  <quickitem label="Regresar a Portal de Aplicaciones" image="img/quickAccess/ButtonEject_tlk_32.png"
+                                       id="qkiSalir" color="white"/>-->
+                        </vbox>
+                    </vbox>
+                </div>
+                <!--  
+                <div
+                    style="background:url('img/principal/shadow.png'); float:left" width="12px"
+                                                                                   height="100%"/>-->
+            </div>
+
+        </div>
+        <button id="btnFocusTab" visible="false"/>
+    </window>
+    <script>
+        zk.afterMount(function() {
+				
+        // valores para el zoom de la imagen
+        var factor = "1.15";
+        var $imgs=$('.imgzoom');
+        jQuery.each($imgs, 
+        function(){
+        var $img=$(this);
+						
+        var $parentli=$img.offsetParent();
+        var od={width:this.offsetWidth, height:this.offsetHeight};
+        var nd={width:od.width*factor, height:od.height*factor};
+        var ncoords=[-(nd.width-od.width)/2, -(nd.height-od.height)/2];
+						
+        $img.data("specs", { //cache image specs
+        od: od,
+        nd: nd,
+        ncoords: ncoords
+        });		
+        });
+				
+        $('.lblNonSelect2').hover (function() {
+        $(this).css("text-decoration", "underline"); 
+        }, function() {
+        $(this).css('text-decoration', 'none');
+        } 
+        );
+				
+        // agregamos el efecto 
+        $('.divCard').hover(function(){
+        $cover = $(".cover", this);
+					
+        fecha1 = new Date();
+        $cover.animate({top:'53px'},{queue:false,duration:360});
+					
+					
+        setTimeout(function() {
+        fecha2 = new Date();
+        var i=0;
+        // Este loop es para cuando el usuario hace un cambio rapido entre cards
+        while ((fecha2.getTime() - fecha1.getTime()) &lt; 1500) {
+        setTimeOut(function() { i = 1}, 1500);
+        fecha2 = new Date();
+        } 
+        $cover.animate({top:'110px'},{queue:false,duration:500});
+        }, 1500);
+					
+					
+					
+        //zoom in	
+        var $img=$(this).find('.imgzoom');					
+        var imgspecs=$img.data('specs');
+        var ncoords=imgspecs.ncoords
+        var od=imgspecs.od
+        var nd=imgspecs.nd
+        $(this).css('background', "url('img/cards/card.png')");
+        $img.stop().animate({left:ncoords[0], top:ncoords[1], width:nd.width, height:nd.height}, 400 );
+					
+					
+        }, function() {
+        $(".cover", this).stop().animate({top:'110px'},{queue:false,duration:260});
+					
+        //zoom out
+        var $img=$(this).find('.imgzoom');	
+        var imgspecs=$img.data('specs');
+        var od=imgspecs.od
+        var nd=imgspecs.nd
+        $(this).css('background', "transparent");
+        $img.stop().animate({left:0, top:0, width:od.width, height:od.height}, 400);
+        });
+				
+        $('.divquick').hover(function(){
+        $('.divquick').stop().animate({left:'0px'},{queue:false,duration:460});
+        }, function() {
+        $('.divquick').stop().animate({left:'-310px'},{queue:false,duration:430});
+        }
+        );
+				
+        $.jGrowl.defaults.position = 'bottom-right';
+        $.jGrowl.defaults.closerTemplate = '&lt;div&gt;Cerrar notificaciones&lt;/div&gt;';
+        $.jGrowl("Seleccione una de las opciones del menú.", { header: 'Bienvenido', life:5000});
+				
+        }, 0); 
+    </script>		
+</zk>

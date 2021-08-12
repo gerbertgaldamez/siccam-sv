@@ -1,0 +1,5 @@
+<window width="80%" title="Session Timeout" border="normal">
+	<vbox>
+Por seguridad su sesion a sido cerrada, favor recargar la pagina para entrar a las opciones del modulo.
+	</vbox>
+</window>

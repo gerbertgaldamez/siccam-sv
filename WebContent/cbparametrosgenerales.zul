@@ -1,0 +1,113 @@
+<?page title="Estados de Cuenta" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+<window id="consultaCuentas" width="100%" title="" vflex="true"
+		border="normal" apply="com.terium.siccam.controller.CBParametrosGeneralesController">
+	<borderlayout id="blyPrincipal">
+		<north>
+				<div>													
+					<groupbox mold="3d">
+					<caption label="Configuración de parametros generales" />
+						<grid>
+							<columns>
+								<column />
+								<column />
+								<column />
+							</columns>
+							<rows>
+								<row>
+									<hbox>
+										<label value="* Módulo: " />
+										<textbox id="txtModulo" tooltip="popModulo" maxlength="100" width="180px"/>
+									</hbox>
+									<hbox>
+										<label value="* Tipo objeto: " />
+										<textbox id="txtTipoObjeto" tooltip="popTipoObjeto" maxlength="100" width="180px"/>
+									</hbox>	
+									<hbox>
+										<label value="* Objeto: " />
+										<textbox id="txtObjeto" maxlength="100" width="180px"/>
+									</hbox>														
+								</row>
+								<row>
+									<hbox>
+										<label value="* Valor 1: " />
+										<textbox id="txtValor1" maxlength="4000" width="180px"/>
+									</hbox>
+									<hbox>
+										<label value="Valor 2: " />
+										<textbox id="txtValor2" maxlength="4000" width="180px"/>
+									</hbox>
+									<hbox>
+										<label value="Valor 3: " />
+										<textbox id="txtValor3" maxlength="4000" width="180px"/>
+									</hbox>
+								</row>
+								<row>
+									<hbox>
+										<label value="Descripcion: " />
+										<textbox id="txtDescripcion" width="260px" maxlength="4000"/>
+									</hbox>
+									<hbox>
+										<label value="* Estado: " />
+										<combobox id="cmbEstado" width="180px" readonly="true" 								
+									   		style="color:#2B547E;font-weight: bold;"/>
+									</hbox>
+								</row>
+							</rows>
+						</grid>
+						</groupbox>
+						</div>
+						</north>
+			<center autoscroll="true">
+						<groupbox height="100%">
+						<button id="btnConsultar" label="Consultar" image="img/globales/16x16/consulta.png"/>
+						<button id="btnRegistrar" label="Registrar" image="img/globales/16x16/guardarnuevo.png"/>
+						<button id="btnModificar" label="Modificar" image="img/globales/16x16/edit.png"/>
+						<button id="btnLimpiar" label="Limpiar campos" image="img/globales/16x16/nuevo.png"/>	
+						<groupbox height="95%">
+							<listbox id="lstConsulta" height="340px" mold="paging" pageSize="8" 
+								sizedByContent="true" vflex="true"
+								emptyMessage="No se encontraron resultados">
+								<listhead>
+									<listheader label="Módulo" sort="auto" />
+									<listheader label="Tipo objeto" sort="auto" />
+									<listheader label="Objeto" sort="auto" />
+									<listheader label="Valor 1" sort="auto" />
+									<listheader label="Valor 2" sort="auto" />
+									<listheader label="Valor 3" sort="auto" />
+									<listheader label="Descripción" sort="auto" />
+									<listheader label="Estado" sort="auto" />
+									<listheader label="Acción" sort="auto" />
+								</listhead>
+							</listbox>
+						</groupbox>
+					</groupbox>
+				
+			</center>
+		</borderlayout>
+		<popup id="popSelected" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Seleccione un registro para poder editar información del mismo" style="font-weight: bold" />
+			</hbox>
+		</popup>
+		<popup id="popEliminar" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Eliminar un parametro general" style="font-weight: bold" />
+			</hbox>
+		</popup>
+		<popup id="popModulo" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Tomar en cuenta que el nombre del módulo que se ingrese se registrará sin espacios en blanco, con guiones bajos y en mayúsculas. Ej: MODULO_GENERAL" style="font-weight: bold" />
+			</hbox>
+		</popup>
+		<popup id="popTipoObjeto" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Tomar en cuenta que el tipo de objeto que se ingrese se registrará sin espacios en blanco, con guiones bajos y en mayúsculas. Ej: TIPO_TARJETA" style="font-weight: bold" />
+			</hbox>
+		</popup>
+</window>
+</zk>

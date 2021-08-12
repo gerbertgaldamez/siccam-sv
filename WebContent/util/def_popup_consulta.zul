@@ -1,0 +1,7 @@
+<popup id="${arg.identificador}" width="300px">
+	<hbox align="center" pack="center">
+		<image src="/img/globales/16x16/info.png" />
+		<label value="Información del registro" style="font-weight: bold" />
+	</hbox>
+	Pulse doble click para ver toda información del registro.
+</popup>

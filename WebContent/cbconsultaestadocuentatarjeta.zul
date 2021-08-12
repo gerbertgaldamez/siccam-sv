@@ -1,0 +1,112 @@
+<?page title="Estados de Cuenta" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<window id="consultaCuentas" width="100%" title="" vflex="true"
+		border="normal"
+		apply="com.terium.siccam.controller.CBConsultaEstadoCuentasTarjetaController">
+		<borderlayout id="blyPrincipal">
+			<center autoscroll="true">
+		<groupbox>
+					<groupbox mold="3d" >
+						<caption
+							label="Consulta estados de cuenta de tarjeta" />
+						<grid>
+							<columns>
+								<column />
+								<column />
+								<column />
+							</columns>
+							<rows>
+								<row>
+									<hbox>
+										<label value="Tipo:" />
+										<separator width="15px" />
+										<combobox id="cmbTipo" readonly="true" width="220px" >
+											<comboitem label="TODOS" />
+
+											</combobox>
+								
+									
+							
+											
+									</hbox>
+									<hbox>
+										<label value="Desde:" />
+										<separator width="10px" />
+										<datebox id="dtbDesde"
+											format="dd/MM/yyyy" width="190px" />
+									</hbox>
+									<hbox>
+										<label value="Hasta: " />
+										<datebox id="dtbHasta"
+											format="dd/MM/yyyy" width="190px" />
+									</hbox>
+								</row>
+								<row>
+									<hbox>
+										<label value="Entidad: " />
+										<combobox id="cmbEntidad"
+											width="220px" readonly="true"
+											style="color:#2B547E;font-weight: bold;">
+											<comboitem label="Todas" />
+											<comboitem
+												label="(No asociada)" />
+										</combobox>
+									</hbox>
+									<hbox>
+										<label value="Afiliación: " />
+										<textbox id="txtAfiliacion" width="190px" />
+									</hbox>
+								</row>
+							</rows>
+						</grid>
+						</groupbox>
+						<button id="btnConsulta" label="Consultar"
+							image="img/globales/16x16/consulta.png" />
+						<button id="btnAsignarTodos"
+							label="Asociación manual a todos"
+							image="img/globales/16x16/edit.png" />
+						<button id="btnDesasociarTodos"
+							label="Desasociar entidad a todos"
+							image="img/globales/16x16/forbidden.png" />
+						<button id="btnExcel"
+							label="Exportar datos a Excel"
+							image="img/globales/16x16/xlsx.png" />
+<groupbox mold="3d"  width="100%" height="450px">
+						<separator height="5px" />
+						
+							<listbox id="lstConsulta" height="320px"
+								mold="paging" pageSize="12" sizedByContent="true" vflex="true"
+								emptyMessage="No hay registros consultados">
+								<frozen columns="4"></frozen>
+								<listhead>
+									<listheader label="Tipo tarjeta" />
+									<listheader
+										label="Fecha transacción" />
+									<listheader label="Afiliación" sort="auto" />
+									<listheader label="Tipo" sort="auto" />
+									<listheader label="Referencia" sort="auto" />
+									<listheader label="Liquido" sort="auto" />
+									<listheader label="Comisión" sort="auto" />
+									<listheader label="Iva" sort="auto" />
+									<listheader label="Retención" sort="auto" />
+									<listheader label="Consumo" sort="auto" />
+									<listheader label="Entidad" sort="auto" />
+									<listheader label="Observaciones" sort="auto" />
+								</listhead>
+							</listbox>
+							</groupbox>
+				
+		
+				</groupbox>
+	</center>
+		</borderlayout>
+		<popup id="popAsociacion" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label
+					value="Haga doble clic sobre un registro para asociar una agencia."
+					style="font-weight: bold" />
+			</hbox>
+		</popup>
+	</window>
+</zk>

@@ -1,0 +1,148 @@
+<?page title="Asignar tipología a estado de cuenta" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<window id="asignaTipologia" width="45%" height="55%" title="Asignar tipología poliza a estado de cuenta" closable="True" 
+	 border="normal"  mode="modal"  position="center,center"
+		apply="com.terium.siccam.controller.CBEstadoCuentasTipologiaController"
+		 sizable="true" >
+
+	
+		<borderlayout id="blyPrincipal">
+			<center>
+				<div>
+					<groupbox mold="3d">
+						<caption label="Datos" />
+						<h:table>
+							<h:tr>
+								<h:td>
+									<label value="Tipología:" />
+								</h:td>
+								<h:td>
+									<combobox id="cmbTipologia"
+										width="150px" readonly="true"
+										style="color:#2B547E;font-weight: bold;" />
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<label value="Entidad:" />
+								</h:td>
+								<h:td>
+									<combobox id="cmbEntidad"
+										width="150px" readonly="true"
+										style="color:#2B547E;font-weight: bold;" />
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<label value="Fecha:" />
+								</h:td>
+								<h:td>
+									<datebox id="dbFecha" cols="16"
+										format="dd/MM/yyyy" />
+								</h:td>
+							</h:tr>
+							<!-- CarlosGodinez - 30/10/2017 -->
+							<h:tr>
+								<h:td></h:td>
+								<h:td>
+									<checkbox id="chkFecha"
+										label="Fecha del depósito" />
+
+								</h:td>
+								<h:td>
+									<checkbox
+										id="chkFechaRegularizacion" label="Fecha regularizacion" />
+
+								</h:td>
+
+
+
+							</h:tr>
+
+
+							<h:tr>
+								<h:td></h:td>
+
+
+
+								<h:td>
+									<checkbox id="chktipologia"
+										label="Sin tipologia asociada" />
+
+								</h:td>
+
+							</h:tr>
+
+
+
+							<!-- FIN CarlosGodinez - 30/10/2017 -->
+							<h:tr>
+								<h:td>
+									<label value="Observaciones:" />
+								</h:td>
+								<h:td>
+									<textbox id="txtObservaciones"
+										cols="30" rows="5" maxlength="200"
+										tooltip="popCausaDesasociacion">
+									</textbox>
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<button id="btnSubirDepositos"
+										upload="true" mold="trendy" label="Subir archivo de depósitos"
+										tooltip="popArchivoDep"
+										tooltiptext="El archivo debe llevar unicamente el numero del deposito"
+										
+										image="img/globales/16x16/alta_16.png" />
+								</h:td>
+								<h:td>
+									<button id="btnAsignar"
+										label="Asignar tipología"
+										image="img/globales/16x16/check.png" />
+								</h:td>
+								<h:td>
+									<button id="btnDesasociar"
+										label="Desasociar tipología"
+										image="img/globales/16x16/cancelar.png" />
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<separator height="12px" />
+								<hbox align="center">
+									<image id="imgEstatus" />
+									<label id="lblMensaje" />
+								</hbox>
+							</h:tr>
+						</h:table>
+					</groupbox>
+				</div>
+			</center>
+		</borderlayout>
+		<popup id="popArchivoDep" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label
+					value="Al subir un archivo se le asignará la tipología poliza a los registros que contengan los depósitos leídos de dicho archivo y no a los registros consultados."
+					style="font-weight: bold" />
+			</hbox>
+		</popup>
+		
+		<popup id="popArchivoDepositoformato" width="300px">
+			<hbox align="center" pack="center">
+				<label
+					value="El archivo de deposito debe llevar unicamente el numero del deposito."
+					style="font-weight: bold" />
+			</hbox>
+		</popup>
+
+		<popup id="popCausaDesasociacion" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label
+					value="Para desasociar registros es necesario agregar la causa del cambio en el campo observaciones."
+					style="font-weight: bold" />
+			</hbox>
+		</popup>
+	</window>
+</zk>

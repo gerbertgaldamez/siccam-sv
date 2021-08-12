@@ -1,0 +1,120 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<script type="text/javascript"
+		src="javascripts/jquery.jgrowl_compressed.js" />
+	<div vflex="true"
+		apply="com.terium.siccam.controller.CBConciliacionCajasController">
+		<borderlayout style="background:transparent;">
+			<center autoscroll="true">
+			<groupbox mold="3d" >
+					
+					<groupbox width="100%"  mold="3d"
+						closable="false">
+					<caption label="Filtros" />
+						<grid>
+							<columns>
+								<column />
+								<column />
+								<column />
+								<column />
+							</columns>
+							<rows>
+								<row>
+									<hbox>
+										<label value="Agrupación:" />
+										<combobox id="cmbEntidad" readonly="true" width="150px">
+											<comboitem label="Todas" />
+										</combobox>	
+									</hbox>	
+									<hbox>
+										<label value="Entidad:" />
+										<combobox id="cmbAgencia" readonly="true" >
+											<comboitem label="Todas" />
+										</combobox>
+									</hbox>
+									<hbox>
+										<label value="Desde:" />
+										<datebox id="dtbDesde" format="dd/MM/yyyy" />
+									</hbox>							
+									<hbox>
+										<label value="Hasta: " />
+										<datebox id="dtbHasta" format="dd/MM/yyyy" />
+									</hbox>
+								</row>
+							</rows>
+						</grid>
+							
+					</groupbox>
+						
+			
+						<groupbox height="450px">
+					<separator height="10px" />
+					<toolbar>
+						<button id="btnBuscar"
+							image="/img/globales/16x16/buscar.png" label="Buscar" />
+						<space width="2px" />
+						<button id="btnReporte"
+							label="Generar Reporte" image="/img/globales/16x16/xlsx.png"
+							disabled="true" />
+					</toolbar>
+					<separator height="5px" />
+					
+					<listbox id="lbxConsulta" mold="paging"
+						height="350px" pageSize="12" sizedByContent="true" vflex="true">
+						<frozen columns="3" ></frozen>
+						<auxhead>
+							<auxheader colspan="3" class="topic"></auxheader>
+				            <auxheader colspan="8" align="center" class="topic">Caja</auxheader>
+				            <auxheader colspan="7" align="center" class="topic">Sistema Comercial</auxheader>
+				            <auxheader colspan="9" align="center" class="topic">Estado de Cuenta</auxheader>
+				        </auxhead>
+						<listhead>
+							<!-- Columnas de agrupacion GENERAL -->
+							<listheader label="Agrupación" sort="auto" />
+							<listheader label="Entidad" sort="auto" />
+							<listheader label="Fecha" sort="auto" />
+							
+							<!-- Columnas de agrupacion CAJA -->
+							<listheader label="Efectivo" sort="auto" />
+							<listheader label="Cheque" sort="auto" />
+							<listheader label="Extension" sort="auto" />
+							<listheader label="Cuotas Credomatic" sort="auto" />
+							<listheader label="Cuotas Otras" sort="auto"  /><!-- Este campo se utiliza para cuotas visa  -->
+							<listheader label="Tarjeta Credomatic" sort="auto" />
+							<listheader label="Tarjeta Otras" sort="auto" />
+							 <listheader label="Tarjeta Visa" sort="auto"  />  <!-- falta ver que nombre se le pondra para version unificada -->
+							
+							<!-- Columnas de agrupacion SISTEMA COMERCIAL -->
+							<listheader label="Pagos Dia" sort="auto" />
+							<listheader label="Pagos OD" sort="auto" />
+							<listheader label="Pagos OM" sort="auto" />
+							<listheader label="Reversa OD" sort="auto" />
+							<listheader label="Reversa OM" sort="auto" />
+							<listheader label="Total dia" sort="auto" />
+							<listheader label="Total General" sort="auto" />
+							
+							<!-- Columnas de agrupacion ESTADO DE CUENTA -->
+							<listheader label="Deposito" sort="auto" />
+							<listheader label="Consumo Credomatic" sort="auto" />
+							<listheader label="Retención Credomatic" sort="auto" />
+							<listheader label="Liquido Credomatic" sort="auto" />
+						<!-- Inician campos para version unificada visa -->
+							<listheader label="Consumo Otros" sort="auto"  />
+							<listheader label="Retención Otros" sort="auto"  />
+							<listheader label="Liquido Otros" sort="auto"  />
+							 <!-- finalizan los campos version unificada visa-->
+							<listheader label="Totalec" sort="auto" />
+							<listheader label="Diferencia" sort="auto" />
+						</listhead>
+						<listitem>
+							<listcell />
+						</listitem>
+
+					</listbox>
+						</groupbox>
+					
+					</groupbox>
+					</center>
+		</borderlayout>
+	</div>
+</zk>

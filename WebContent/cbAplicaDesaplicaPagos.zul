@@ -1,0 +1,140 @@
+<zk>
+
+	<div vflex="true"
+		apply="com.terium.siccam.controller.CBAplicaDesaplicaPagosController">
+		<borderlayout style="background:transparent;">
+			<north>
+				<div style="background:transparent;">
+					<grid>
+
+						<columns>
+							<column width="13%" />
+							<column width="20%" />
+							<column width="13%" />
+							<column width="20%" />
+							<column width="13%" />
+							<column width="21%" />
+						</columns>
+						<rows>
+							<row>
+								<label value="Agrupacion:" />
+								<combobox id="cmbBanco">
+
+								</combobox>
+
+								<label value="Entidad:" />
+								<combobox id="cmbAgencia">
+
+								</combobox>
+
+
+								<label value="Desde:" />
+								<datebox id="dtbDia"
+									format="dd/MM/yyyy" />
+
+
+							</row>
+							<row>
+								<label value="Tipo: " />
+								<combobox id="cmbTipo"
+									readonly="true">
+									<comboitem label="Todos" />
+									
+
+								</combobox>
+
+								<label value="Estado:" />
+								<combobox id="cmbEstado"
+									readonly="true">
+									<comboitem label="Todos" />
+								</combobox>
+
+								<label value="Hasta: " />
+								<datebox id="dtbDia2"
+									format="dd/MM/yyyy" />
+								<label />
+								<label />
+
+							</row>
+
+						</rows>
+					</grid>
+					
+				
+					
+						</div>
+							</north>
+								<center style="background:transparent;">
+								<groupbox height="100%">
+					<separator height="10px" />
+					<toolbar>
+						<button id="btnBuscar"
+							image="/img/globales/16x16/buscar.png" label="Buscar" />
+						<space width="2px" />
+						<button id="btnExcel" label="Generar Reporte"
+							image="/img/globales/16x16/xlsx.png" disabled="self" />
+							<button id="btnAplicaDesaplica" label="Generar archivo aplica desaplica pagos"
+						image="img/globales/16x16/download.png" />
+					</toolbar>
+					<separator height="5px" />
+				
+					<listbox id="lbxlistado" mold="paging"
+						multiple="true" checkmark="true" height="380px" pageSize="10"
+						sizedByContent="true" vflex="true"
+						emptyMessage="No hay resgistros de conciliacion">
+						<frozen columns="2"></frozen>
+						<listhead id="lstheadDetalle">
+							<listheader label="Entidad" sort="auto" />
+							<listheader label="Dia"  sort="auto" />
+							<listheader label="Tipo" sort="auto" />
+							<listheader label="Cliente" sort="auto" />
+							<listheader label="Nombre" sort="auto" />
+							<listheader label="Des Pago" sort="auto" />
+							<listheader label="Trans Telca" sort="auto" />
+							<listheader label="Telefono" sort="auto" />
+							<listheader label="Trans Banco" sort="auto" />
+							<listheader label="Pago Telefonica" sort="auto" />
+							<listheader label="Pago Banco" sort="auto"/>
+							<listheader label="Manual" sort="auto" />
+							<listheader label="Pendiente Banco" sort="auto" />
+							<listheader label="Pendiente Telefonica" sort="auto"/>
+							<listheader label="Sucursal" sort="auto"/>
+							<listheader label="Nombre Sucursal" sort="auto" />
+							<listheader label="Tipo Sucursal" sort="auto" />
+							<listheader label="Comision" sort="auto" />
+							<listheader label="Monto Comision" sort="auto"/>
+							<listheader label="Estado" sort="auto"/>
+							<listheader>
+								<checkbox id="ckbDeleteAll"
+									label="Todos" />
+							</listheader>
+
+
+						</listhead>
+
+					</listbox>
+					</groupbox>
+			
+			</center>
+		</borderlayout>
+
+		<popup id="popAsociacion" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label
+					value="los registros color verde = pago realizado con exito,
+					color naranja = pago manual completados, color rojo posee pagos pendientes  "
+					style="font-weight: bold" />
+			</hbox>
+		</popup>
+
+		<popup id="popMarcarTodos" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label
+					value="marcar si se desea generar reporte con todos los registros consultados "
+					style="font-weight: bold" />
+			</hbox>
+		</popup>
+	</div>
+</zk>

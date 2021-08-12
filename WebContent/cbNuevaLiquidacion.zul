@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import src="/util/comp_botones.zul" ?>
+<?import src="/util/comp_popups.zul" ?>
+<?page title="Nueva liquidación" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+<window id="nuevaTransacciones" width="60%"  height="85%" title="Nueva transacción"  vflex="true"
+		border="normal" position="center,center" closable="true" mode="modal"
+		apply="com.terium.siccam.controller.CBLiquidacionCajeroModalNuevoController">
+	
+		<borderlayout id="blyPrincipal">
+			<north>
+				<div>
+					<!-- INICIO Agregado por CarlosGodínez -QitCorp- -->
+					<groupbox width="100%" id="grpSur" mold="3d"
+						closable="true">
+						<caption label="Liquidación de cajeros"></caption>
+						
+						<div>
+							<h:table>
+								<h:tr>
+									<h:td>
+										<label value="Nombre de usuario:" />
+										<space width="20px" />
+									</h:td>
+									<h:td>
+										<textbox id="txtUser"   maxlength="50" ></textbox>
+										<!-- constraint="/([a-zA-Z0-9\s])\w+/"  contring del textbox -->
+									</h:td>
+								</h:tr>
+								<h:tr>
+									<h:td>
+										<label
+											value="Fecha de transacción:" />
+										<space width="20px" />
+									</h:td>
+									<h:td>
+										<datebox id="dbFechTran"  cols="16"
+											format="dd-MM-yyyy" />
+									</h:td>
+								</h:tr>
+								<h:tr>
+									<h:td>
+										<button id="btnConsultar" image="img/globales/16x16/consulta.png" mold="trendy"
+											label="Consultar" >
+										</button>
+										<space width="30px" />
+									</h:td>
+									<h:td>
+										<button id="btnRegistrar" image="img/globales/16x16/guardarnuevo.png" mold="trendy"
+											label="Registrar"  >
+										</button>
+									</h:td>
+								</h:tr>
+							</h:table>
+						</div>
+						
+					</groupbox>
+					<!-- FIN Agregado por CarlosGodínez -QitCorp- -->
+				</div>
+			</north>
+			<center autoscroll="true">
+				<div>
+					<groupbox width="100%" height="100%">
+						<caption label="Datos de consulta" />
+						<separator height="10px" />
+						<listbox id="lstQuery" height="300px "
+							mold="paging" pageSize="15" sizedByContent="true" vflex="true"
+							emptyMessage="No se han encontrado resultados">
+						
+							<listhead sizable="true">
+								<listheader label="Tipo de valor" width="90px"
+									sortDirection="descending" valign="middle">
+								</listheader>
+								<listheader label="Tipo de pago" width="150px"
+									sortDirection="descending" valign="middle">
+								</listheader>
+								<listheader label="Código tipo tarjeta" width="120px"
+									sortDirection="descending" valign="middle">
+								</listheader>
+								<listheader
+									label="Descripción tipo tarjeta" width="310px"
+									sortDirection="descending" valign="middle">
+								</listheader>
+								<listheader label="Total" width="100px"
+									sortDirection="descending" valign="middle">
+								</listheader>
+							</listhead>
+							
+						</listbox>
+					</groupbox>
+				</div>
+			</center>
+		</borderlayout>
+	</window>
+</zk>

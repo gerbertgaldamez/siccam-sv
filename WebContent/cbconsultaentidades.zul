@@ -1,0 +1,155 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<script type="text/javascript"
+		src="javascripts/jquery.jgrowl_compressed.js" />
+	<window id="entidad" width="100%" title="" vflex="true"
+		border="normal"
+		apply="com.terium.siccam.controller.CBConsultaEntidadesController">
+		<borderlayout id="blyPrincipal">
+			<center autoscroll="true">
+				<div>
+					<hbox>
+						<groupbox mold="3d" width="100%">
+							<caption
+								label="Filtros consulta catálogo de entidades" />
+							<grid>
+								<columns>
+									<column width="120px" />
+									<column />
+									<column width="80px" />
+									<column />
+									<column width="80px" />
+									<column />
+								</columns>
+								<rows>
+									<row>
+										<hbox>
+											<label value="Agrupación:" />
+										</hbox>
+										<hbox>
+											<combobox id="cmbAgrupacion"
+												width="180px" readonly="true"
+												style="color:#2B547E;font-weight: bold;">
+												<comboitem
+													label="Todas" />
+											</combobox>
+										</hbox>
+										<hbox>
+											<label value="Nombre:" />
+										</hbox>
+										<hbox>
+											<textbox id="txtNombre"
+												width="180px" maxlength="150" />
+										</hbox>
+
+										<hbox>
+											<label
+												value="Codigo Colector:" />
+										</hbox>
+										<hbox>
+											<textbox
+												id="txtCodigoColector" maxlength="50" />
+										</hbox>
+
+									</row>
+									<row>
+										<hbox>
+											<label
+												value="Cuenta contable:" />
+										</hbox>
+										<hbox>
+											<textbox
+												id="txtCuentaContable" width="150px" maxlength="150" />
+										</hbox>
+										<hbox>
+											<label value="Estado:" />
+										</hbox>
+										<hbox>
+											<combobox id="cmbEstado"
+												width="180px" readonly="true"
+												style="color:#2B547E;font-weight: bold;">
+												<comboitem
+													label="Todos" />
+											</combobox>
+										</hbox>
+
+										<hbox>
+											<label value="NIT:" />
+										</hbox>
+										<hbox>
+											<textbox id="txtNit"
+												width="120px" maxlength="20">
+
+											</textbox>
+										</hbox>
+
+									</row>
+									<row>
+										<cell colspan="6">
+											<button id="btnConsultar"
+												label="Consultar" image="img/globales/16x16/consulta.png" />
+											<button id="btnNuevaEntidad"
+												label="Nueva entidad" image="img/globales/16x16/nuevo.png" />
+											<separator
+												orient="vertical" />
+											<separator bar="true"
+												orient="vertical" />
+											<separator
+												orient="vertical" />
+											<button
+												id="btnAsignarConfronta" label="Asignar confrontas"
+												image="img/globales/16x16/edit.png" />
+											<button id="btnSucursales"
+												label="Sucursales" image="img/globales/16x16/edit.png" />
+											<button id="btnCajas"
+												label="Cajas" image="img/globales/16x16/edit.png" />
+											<button id="btnAfiliaciones"
+												label="Afiliaciones" image="img/globales/16x16/edit.png" />
+											<button id="btnExcel"
+												label="Generar reporte" image="img/globales/16x16/xlsx.png" />
+										</cell>
+									</row>
+								</rows>
+							</grid>
+						</groupbox>
+					</hbox>
+					<groupbox>
+						<caption
+							label="Detalle de registros de configuraciones de confronta" />
+						<listbox id="lbxConsulta" height="330px "
+							mold="paging" pageSize="10" sizedByContent="true" vflex="true"
+							emptyMessage="No se han encontrado resultados">
+							<listhead>
+								<listheader label="Correlativo"
+									width="70px" />
+								<listheader label="Código Colector"
+									width="100px" />
+								<listheader label="Agrupación"
+									width="160px" />
+								<listheader label="Entidad"
+									width="250px" />
+								<listheader label="Teléfono"
+									width="90px" />
+								<listheader label="Dirección"
+									width="90px" />
+								<listheader label="Cuenta contable"
+									width="150px" />
+								<listheader label="Estado" width="90px" />
+								<listheader label="Moneda" width="90px" />
+								<listheader label="NIT" width="145px" />
+							</listhead>
+						</listbox>
+					</groupbox>
+				</div>
+			</center>
+		</borderlayout>
+		<popup id="popSelected" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label
+					value="Doble clic sobre el registro para editar información"
+					style="font-weight: bold" />
+			</hbox>
+		</popup>
+	</window>
+</zk>

@@ -1,0 +1,103 @@
+<?page title="Reportes" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+<window id="reportes" width="100%" title="" vflex="true"
+		border="normal" apply="com.terium.siccam.controller.CBReportesController">
+	<borderlayout id="blyPrincipal">
+			<center >
+				<div>													
+					<groupbox mold="3d">
+					<caption label="Reporte a generar" />
+						<grid>
+							<columns>
+								<column />
+								<column />
+								<column />
+								<column />
+							</columns>
+							<rows>
+								<row>
+									<hbox>
+										<label value="Reporte a generar:" />
+									</hbox>	
+									<hbox width="180px">	
+										<combobox id="cmbTipoReporte" width="180px" readonly="true"									
+											style="color:#2B547E;font-weight: bold;"/>
+									</hbox>													
+								</row>
+								<row id="fila1Grid">
+									<hbox>
+										<label id="lblUsuario" value="Usuario: " />
+									</hbox>
+									<hbox>
+										<textbox id="txtUsuario" width="150px"/>
+									</hbox>
+									<hbox></hbox>
+									<hbox></hbox>
+								</row>
+								<row id="fila2Grid">
+									<hbox>
+										<label id="lblInicio" value="Fecha inicio:" />
+									</hbox>	
+									<hbox>	
+										<datebox id="dtbInicio" width="150px" format="dd/MM/yyyy" />
+									</hbox>	
+									<hbox>
+										<label id="lblAgrupacion" value="Agrupación: " />
+									</hbox>
+									<hbox>
+										<combobox id="cmbAgrupacion" width="150px" readonly="true"									
+											style="color:#2B547E;font-weight: bold;"/>
+									</hbox>
+								</row>
+								<row id="fila3Grid">
+									<hbox>
+										<label id="lblFin" value="Fecha fin:" />
+									</hbox>
+									<hbox>
+										<datebox id="dtbFin" width="150px" format="dd/MM/yyyy" />
+									</hbox>	
+									<hbox>
+										<label id="lblEntidad" value="Entidad: " />
+									</hbox>
+									<hbox>
+										<combobox id="cmbEntidad" width="150px" readonly="true"									
+											style="color:#2B547E;font-weight: bold;"/>
+									</hbox>
+								</row>
+								<row id="fila4Grid">
+									<hbox>
+										<label id="lblTipo" value="Tipo: " />
+									</hbox>
+									<hbox>
+										<combobox id="cmbTipo" width="150px" readonly="true"									
+											style="color:#2B547E;font-weight: bold;"/>
+									</hbox>
+									<hbox>
+										<label id="lblTipoEntidad" value="Tipo entidad: " />
+									</hbox>
+									<hbox>
+										<combobox id="cmbTipoEntidad" width="150px" readonly="true"									
+											style="color:#2B547E;font-weight: bold;"/>
+									</hbox> 
+								</row>
+								<row id="fila5Grid">
+									<hbox>
+										<label id="lblEstado" value="Estado: " />
+									</hbox>
+									<hbox>
+										<combobox id="cmbEstado" width="150px" readonly="true"									
+											style="color:#2B547E;font-weight: bold;"/>
+									</hbox>
+									<hbox></hbox>
+									<hbox></hbox>
+								</row>
+							</rows>
+						</grid>
+						<button id="btnExcel" label="Generar excel" image="img/globales/16x16/xlsx.png"/>
+						<button id="btnLimpiar" label="Limpiar campos" image="img/globales/16x16/nuevo.png"/>
+					</groupbox>
+				</div>
+			</center>
+		</borderlayout>
+</window>
+</zk>

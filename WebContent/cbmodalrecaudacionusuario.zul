@@ -1,0 +1,57 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+
+		
+			<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<window id="usuarioModal" width="50%" height="29%" title="Modificación de usuario para recaudación" closable="True" 
+	 border="normal"  mode="modal"  position="center,center"
+		apply="com.terium.siccam.controller.CBRecaudacionUsuarioController"
+		 sizable="true" >
+		<borderlayout id="blyPrincipal">
+			<center autoscroll="true">
+				<div>
+					<hbox>
+						<groupbox mold="3d" width="100%">
+							<caption label="Datos" />
+							<grid>
+								<columns>
+									<column width="120px" />
+									<column />
+								</columns>
+								<rows>
+									<row>
+										<hbox>
+											<label value="Entidad:" />
+										</hbox>
+										<hbox>
+											<combobox id="cmbEntidad"
+												width="225px" readonly="true"
+												style="color:#2B547E;font-weight: bold;">
+												<comboitem label="Bancos" value="0" />
+											</combobox>
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label value="Cajero:" />
+										</hbox>
+										<hbox>
+											<combobox id="cmbUsuario"
+												width="180px" readonly="true"
+												style="color:#2B547E;font-weight: bold;" />
+										</hbox>
+									</row>
+									<row>
+										<cell colspan="2">
+											<button id="btnModificarUsuario" label="Modificar Usuario" 
+													image="img/globales/16x16/edit.png" />
+										</cell>
+									</row>
+								</rows>
+							</grid>
+						</groupbox>
+					</hbox>
+				</div>
+			</center>
+		</borderlayout>
+	</window>
+</zk>

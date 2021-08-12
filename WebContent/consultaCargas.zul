@@ -1,0 +1,229 @@
+<?import src="/util/comp_botones.zul" ?>
+<?import src="/util/comp_popups.zul" ?>
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<window id="cbCargaArchivo" width="100%" title="" vflex="true"
+		border="normal"
+		apply="com.terium.siccam.controller.CBConsultaCargasController">
+
+		<borderlayout id="blyPrincipal">
+			<center autoscroll="true">
+
+				<div>
+					<hbox>
+						<groupbox mold="3d" width="100%" height="100px">
+							<caption
+								label="Datos configuración de carga de archivos " />
+							<grid>
+								<columns>
+									<column width="178px" />
+									<column />
+								</columns>
+
+								<rows>
+									<row>
+										<hbox>
+											<label
+												value="Tipo de Carga  :" />
+										</hbox>
+										<hbox>
+											<combobox id="cmbTipoCarga"
+												width="180px" readonly="true"
+												style="color:#2B547E;font-weight: bold;" />
+										</hbox>
+									</row>
+								</rows>
+							</grid>
+						</groupbox>
+					</hbox>
+
+					<groupbox width="100%" id="gpbDelim" mold="3d"
+						closable="false">
+						<caption label="Detalle de Cargas"></caption>
+						<h:table>
+
+							<h:tr>
+								<h:td>
+									<label value="Agrupación:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<combobox id="combxBanco" readonly="true"
+										width="190px" style="color:#2B547E;font-weight: bold;">
+									</combobox>
+								</h:td>
+								<h:td>
+									<label value="Desde:" />
+								</h:td>
+								<h:td>
+									<datebox id="dbxfechaDesde"
+										width="130px" format="dd/MM/yy"
+										style="color:#2B547E;font-weight: bold;">
+									</datebox>
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<label value="Entidad:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<combobox id="combxAgencia" readonly="true"
+										width="190px"
+										style=" color: #2 B547E ;
+										font-weight: bold ;">
+									</combobox>
+								</h:td>
+								<h:td>
+									<label value="Hasta:" />
+								</h:td>
+								<h:td>
+									<datebox id="dbxfechaHasta"
+										width="130px" format="dd/MM/yy" readonly="true"
+										style="color:#2B547E;font-weight: bold;">
+
+									</datebox>
+								</h:td>
+							</h:tr>
+						</h:table>
+					</groupbox>
+
+					<groupbox  id="gpbDelimcuenta" mold="3d"  width="100%"
+						closable="false">
+						<caption
+							label="Detalle de Cargas Estado Cuenta">
+						</caption>
+						<h:table>
+							<h:tr>
+
+								<h:td>
+									<label value="Desde:" />
+								</h:td>
+								<h:td>
+									<datebox
+										id="dbxfechaDesdeCargaEstadoCuenta" width="130px"
+										format="dd/MM/yy" style="color:#2B547E;font-weight: bold;">
+									</datebox>
+								</h:td>
+
+								<h:td>
+									<label value="Hasta:" />
+								</h:td>
+								<h:td>
+									<datebox
+										id="dbxfechaHastaCargaEstadoCuenta" width="130px"
+										format="dd/MM/yy" readonly="true"
+										style="color:#2B547E;font-weight: bold;">
+
+									</datebox>
+								</h:td>
+							</h:tr>
+
+						</h:table>
+					</groupbox>
+
+
+
+
+					<groupbox width="100%" height="400px"
+						id="gpbDelim1">
+						<toolbar>
+							<button id="btnConsulta"
+								tooltip="popLimpiar" label="Consultar" visible="true"
+								image="/img/globales/16x16/consulta.png">
+							</button>
+					
+							<button id="btnExcel"
+								tooltip="popLimpiar" label="Generar Reporte" visible="true"
+								image="/img/globales/16x16/xlsx.png">
+							</button>
+						</toolbar>
+						<separator width="10px" />
+						<listbox id="listadoDetalleCargados"
+							vflex="true"  mold="paging" height="300px"
+							sizedByContent="true" emptyMessage="0 Coincidencias"
+							pageSize="10">
+							<listhead>
+								<listheader label="Nombre de Archivo"
+									sort="auto">
+								</listheader>
+								<listheader label="Fecha" sort="auto">
+								</listheader>
+								<listheader label="Banco" sort="auto">
+								</listheader>
+								<listheader label="Agencia"
+									sort="auto">
+								</listheader>
+								<listheader label="Usuario"
+									sort="auto">
+								</listheader>
+								<listheader label="Grabados"
+									image="/img/globales/16x16/consulta.png" valign="middle">
+								</listheader>
+								<listheader label="No Grabados"
+									image="/img/globales/16x16/consulta.png" valign="middle">
+								</listheader>
+								<listheader label="Eliminar Cargas"
+									image="/img/globales/16x16/delete.png" valign="middle"
+									sort="auto">
+								</listheader>
+							</listhead>
+
+						</listbox>
+					</groupbox>
+
+
+					<groupbox width="100%" height="400px"
+						id="gpbDelimcuenta1">
+						<toolbar>
+							<button id="btnConsultaCargaEstadoCuenta"
+								tooltip="popLimpiar" label="Consultar" visible="true"
+								image="/img/globales/16x16/consulta.png">
+							</button>
+						
+							<button id="btnExcel2"
+								tooltip="popLimpiar" label="Generar Reporte" visible="true"
+								image="/img/globales/16x16/xlsx.png">
+							</button>
+						</toolbar>
+						<separator height="10px" />
+						<listbox id="listadoDetalleCargadosEstadoCuenta"
+							vflex="true"  mold="paging" height="300px"
+							sizedByContent="true" emptyMessage="0 Coincidencias"
+							pageSize="10">
+							<listhead>
+								<listheader label="Nombre de Archivo"
+									sort="auto" width="250px">
+								</listheader>
+								<listheader label="Tipo de Carga"
+									sort="auto" width="200px">
+								</listheader>
+								<listheader label="Cargado por"
+									sort="auto" width="150px">
+								</listheader>
+								<listheader label="Fecha Carga"
+									sort="auto" width="150px">
+								</listheader>
+
+								<listheader label="Eliminar Cargas"
+									image="/img/globales/16x16/delete.png" valign="middle"
+									sort="auto" width="150px">
+								</listheader>
+							</listhead>
+
+						</listbox>
+					</groupbox>
+
+				</div>
+			</center>
+		</borderlayout>
+		<popup id="popDetallaCarga" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Consultar" style="font-weight: bold" />
+			</hbox>
+			Presione doble click para poder visualizar el detalle de la
+			carga.
+		</popup>
+	</window>
+</zk>

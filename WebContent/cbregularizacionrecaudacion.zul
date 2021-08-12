@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native">
+	<window id="wdRecaRegularizacion" width="100%"
+		title="Manejo de Regularizacion y Recaudacion" vflex="true" border="normal"
+		apply="com.terium.siccam.controller.CBRecaReguController">
+		<grid>
+			<columns>
+				<column label="" width="20%" />
+				<column label="" width="30%" />
+				<column label="" width="20%" />
+				<column label="" width="30%" />
+			</columns>		
+			<rows>
+				<row>
+					<label value="* Fecha inicio" />
+					<datebox id="dbxFechaini" format="dd/MM/yyyy" />
+					<label value="* Fecha fin" />
+					<datebox id="dbxFechafin" format="dd/MM/yyyy" />
+				</row>
+				<row>
+					<label value="Cliente" />
+					<textbox id="tbxCliente" />
+					<label value="* Usuario" />
+					<textbox id="tbxUsuario" />	
+				</row>			
+			</rows>
+		</grid>
+		<div align="center">
+			<toolbar width="100%">
+				<toolbarbutton id="btnBuscar" label="Buscar"
+					image="/img/globales/16x16/consulta.png" />
+				<toolbarbutton id="btnModificarUsuario" label="Modificar Usuario"
+					image="/img/globales/16x16/modificar_1.png" />
+			</toolbar>
+		</div>
+
+		<listbox id="lbxPagos" mold="paging" height="50%"
+			pageSize="13" sizedByContent="true" vflex="true"
+			emptyMessage="No se han consultado registros de recaudación">
+			<listhead>
+				<listheader label="Fecha Efectiva" sort="auto" />
+				<listheader label="Fecha Pago" sort="auto" />
+				<listheader label="Código Cliente" sort="auto" />
+				<listheader label="Nombre Cliente" sort="auto" />
+				<listheader label="Numero Secuencia" sort="auto" />
+				<listheader label="Monto" sort="auto" /> 
+				<listheader label="Transacción" sort="auto" />
+				<listheader label="Tipo Transacción" sort="auto" />
+				<listheader label="Código Oficina" sort="auto" />
+				<listheader label="Descripción Oficina" sort="auto" />
+				<listheader label="Tipo Mov Caja" sort="auto" />
+				<listheader label="Descripción Mov Caja" sort="auto" />
+				<listheader label="Tipo Valor" sort="auto" />
+				<listheader label="Descripción Tipo Valor" sort="auto" />
+				<listheader label="Usuario" sort="auto"  />				
+				<listheader label="Código Banco" sort="auto" />
+				<listheader label="Banco" sort="auto" />
+				<listheader label="Código Caja" sort="auto" />
+				<listheader label="Descripción Caja" sort="auto" />
+				<listheader label="Observación" sort="auto" />
+			</listhead>
+		</listbox>
+
+	</window>
+</zk>

@@ -1,0 +1,19 @@
+@CHARSET "ISO-8859-1";
+
+.niceList ul li { 
+	background-image:url(../img/bullet_ball_yellow.gif) no-repeat;
+}
+ 
+ul.niceList {
+	list-style-type: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+ul.niceList li {
+	background-image: url(../img/bullet_ball_yellow.gif);
+	background-repeat: no-repeat;
+	background-position: left 10px; 
+	padding-left: 14px;
+	padding-top: 10px; 
+}

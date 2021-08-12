@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import src="/util/comp_popups.zul" ?>
+<?import src="/util/comp_botones.zul" ?>
+<?page title="Actualizar datos agrupacion" contentType="text/html;charset=UTF-8"?>
+
+
+
+
+
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<window id="aBanco" width="50%" height="48%" title="Actualizar datos agrupacion" closable="True" 
+	 border="normal"  mode="modal"  position="center,center"
+		apply="com.terium.siccam.controller.CBCatalogoBancoModalModificarController"
+		 sizable="true" >
+		<borderlayout id="blyPrincipal">
+			<north>
+				<div>
+					<groupbox width="100%" id="grpNorte" mold="3d"
+						height="240xp" closable="false"
+						form="@id('fb') @load(aBanco.bancoM) @save(aBanco.bancoM, before='grabarActualiza')">
+						<caption
+							label="Datos de la agrupacion seleccionada">
+						</caption>
+						<h:table>
+							<h:tr>
+								<h:td>
+									<label value="Nombre:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<textbox
+										value="@bind(fb.cbcatalogobancoid)" visible="false" />
+									<textbox id="tbxNombre"
+										maxlength="50" constraint="no empty: Ingrese un Nombre"
+										width="200px" />
+								</h:td>
+							</h:tr>
+							<!-- Comentariado por Carlos Godinez - Qitcorp - 04/07/2017 
+								<h:tr>
+								<h:td>
+								<label value="Telefono:" />
+								<space width="20px" />
+								</h:td>
+								<h:td>
+								<textbox value="@bind(fb.telefono)"
+								maxlength="10" 
+								width="200px" />
+								</h:td>
+								</h:tr>
+								<h:tr>
+								<h:td>
+								<label value="Contacto" />
+								<space width="20px" />
+								</h:td>
+								<h:td>
+								<textbox value="@bind(fb.contacto)"
+								maxlength="50" constraint="" width="200px" />
+								</h:td>
+								</h:tr>
+								<h:tr>
+								<h:td>
+								<label value="Extension" />
+								<space width="20px" />
+								</h:td>
+								<h:td>
+								<textbox value="@bind(fb.extension)"
+								maxlength="5" constraint="" width="200px" />
+								</h:td>
+								</h:tr>
+							-->
+							<h:tr>
+								<h:td>
+									<label value="Estado:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<combobox id="cmbEstado"
+										autocomplete="true" readonly="true" width="200px">
+									</combobox>
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<label value="Tipo de Entidad:" />
+								</h:td>
+								<h:td>
+
+									<combobox id="cmbTipo"
+										autocomplete="true" readonly="true" width="200px">
+									</combobox>
+								</h:td>
+							</h:tr>
+						</h:table>
+					</groupbox>
+
+					<toolbar align="end">
+						<button id="btnGuardar" tooltip="popLimpiar"
+							mold="trendy" label="Guardar cambios" visible="true" image="img/globales/16x16/guardar.png" />
+
+						<!-- Comentariado por Carlos Godinez - Qitcorp - 04/07/2017 
+							<botonnuevo id="" tooltip="popGuardar"
+							mold="trendy" label="Nuevo" visible="true"
+							onClick="@command('nuevo')" />
+						-->
+					</toolbar>
+				</div>
+			</north>
+			<center>
+				<div>
+					<groupbox width="100%" mold="3d" closable="false"
+						form="@id('bC') @load(aBanco.bancoM)">
+						<caption label="Auditoria"
+							image="/img/globales/24x24/seguridad.png">
+						</caption>
+						<label value="Auditoria:" />
+						<h:table>
+							<h:tr>
+								<h:td>
+									<label value="Fecha Creación:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+
+									<textbox width="138px"
+										disabled="true" id="tbxFechaCreacion"
+										style="color:#2B547E;font-weight: bold;">
+									</textbox>
+								</h:td>
+								<h:td>
+									<label value="Fecha Modificación:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<textbox width="138px"
+										disabled="true" id="tbxFechaModificacion"
+										style="color:#2B547E;font-weight: bold;">
+									</textbox>
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<label value="Usuario Creador:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<textbox width="138px"
+										disabled="true" style="color:#2B547E;font-weight: bold;"
+										id="tbxUsuarioCreador">
+									</textbox>
+								</h:td>
+								<h:td>
+									<label value="Usuario que Modifico" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<textbox width="138px"
+										disabled="true" id="tbxUsuarioModifica"
+										style="color:#2B547E;font-weight: bold;">
+									</textbox>
+								</h:td>
+							</h:tr>
+						</h:table>
+					</groupbox>
+					<separator />
+				</div>
+			</center>
+		</borderlayout>
+	</window>
+</zk>

@@ -1,0 +1,211 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<script type="text/javascript" src="javascripts/jquery.jgrowl_compressed.js" />
+
+		
+		
+	<window id="entidadModal" width="85%" height="85%" title="Asignar configuraciones de confronta a entidades" closable="True" 
+	 border="normal"  mode="modal"  position="center,center"
+		apply="com.terium.siccam.controller.CBAsociacionConfrontasController"
+		 sizable="true" >
+		<borderlayout id="blyPrincipal">
+			<center autoscroll="true">
+				<div>
+					<hbox>
+						<groupbox mold="3d" width="100%">
+							<caption label="Datos" />
+							<grid>
+								<columns>
+									<column width="155px" />
+									<column />
+									<column width="150px" />
+									<column />
+									<column width="150px" />
+									<column />
+								</columns>
+								<rows>
+									<row>
+										<cell colspan="6">
+											<label value="*Campos obligatorios" />
+										</cell>
+									</row>
+									<row>
+										<hbox>
+											<label value="*Configuracion confronta:" />
+										</hbox>
+										<hbox>
+											<combobox id="cmbConfConfronta"
+												width="205px" readonly="true"
+												style="color:#2B547E;font-weight: bold;" />
+										</hbox>
+										<hbox>
+											<label value="Confronta asociada:" />
+										</hbox>
+										<hbox>
+											<combobox id="cmbConfrontaPadre"
+												width="205px" readonly="true"
+												style="color:#2B547E;font-weight: bold;" >
+											
+										</combobox>	
+										</hbox>
+											<hbox>
+											<label value="Aproximacion:" />
+										</hbox>
+										<hbox>
+											<textbox id="txtAproximacion" width="70px" xmlns:w="client" 
+													 value="0.0">
+												<attribute
+														w:name="doKeyPress_">
+														<![CDATA[ function(evt) { if
+														(!this._shallIgnore(evt,
+														"+-.0123456789"))
+														this.$doKeyPress_(evt); }
+														]]>
+														</attribute>	
+											</textbox>
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label value="*Tipo:" />
+										</hbox>
+										<hbox>
+											<combobox id="cmbTipo"
+												width="180px" readonly="true"
+												style="color:#2B547E;font-weight: bold;" />
+										</hbox>
+										<hbox>
+											<label value="Cantidad ajustes:" />
+										</hbox>
+										<hbox>
+											<textbox id="txtCantidadAjustes" width="50px" instant="true" 
+													value="0" constraint="no empty"/>
+										</hbox>
+											<hbox>
+											<label value="Conexión:" />
+										</hbox>
+										<hbox>
+											<combobox id="cmbConexion" width="180px" readonly="true"
+												style="color:#2B547E;font-weight: bold;" />
+										</hbox>
+									</row>
+									<row>
+										<hbox>
+											<label value="*Estado confronta:" />
+										</hbox>
+										<hbox>
+											<combobox id="cmbEstado"
+												width="180px" readonly="true"
+												style="color:#2B547E;font-weight: bold;" />
+										</hbox>
+										<hbox>
+											<label value="Descartar transaccion:" />
+										</hbox>
+										<hbox>
+											<textbox id="txtDescartarTrans" tooltip="popDescartar" width="150px" />
+										</hbox>
+									<hbox>
+											<label value="Nombre busqueda:" />
+										</hbox>
+										<hbox>
+											<textbox id="txtNombreBusqueda" tooltip="popDescartar" width="150px" />
+										</hbox>
+								
+								</row>
+								<row>
+								
+										
+										
+										
+										
+										
+										<hbox>
+											<label value="Asociada con:" />
+										</hbox>
+										<hbox>
+											<combobox id="cmbconfrontasocia"
+												width="205px" readonly="true"
+												style="color:#2B547E;font-weight: bold;" >
+											
+										</combobox>	
+										</hbox>
+									</row>
+									
+									<row>
+										<cell colspan="6">
+											<label value="*Path archivo:  " />
+											<textbox id="txtPathArchivo" tooltip="popDescartar" width="500px" />
+										</cell>
+									</row>
+									
+									<row>
+										<cell colspan="6">
+											<button id="btnGuardar" label="Guardar" 
+													image="img/globales/16x16/guardarnuevo.png" />
+											<button id="btnModificar" label="Modificar" 
+													image="img/globales/16x16/modificar_1.png" />
+											<button id="btnLimpiar" label="Limpiar" 
+													image="img/globales/16x16/nuevo.png" />
+										</cell>
+									</row>
+								</rows>
+							</grid>
+						</groupbox>
+					</hbox>
+					<groupbox mold="3d" height="82%">
+						<caption
+							label="Detalle de asignaciones de configuraciones de confronta" />
+						<listbox id="lbxConsulta" height="175px "
+							mold="paging" pageSize="10" sizedByContent="true" vflex="true"
+							emptyMessage="No se han encontrado resultados">
+							<listhead>
+								<listheader label="Nombre" />
+								<listheader label="Delimitador" />
+								<listheader label="Nomenclatura" />
+								<listheader label="Ruta del archivo" />
+								<listheader label="Nombre de conexión" />
+								<listheader label="Confronta principal"/>
+								<listheader label="Agencia comercial"/>
+								<listheader label="Asignar impuestos"/>
+								<listheader label="Eliminar asignación"/>
+							</listhead>
+						</listbox>
+					</groupbox>
+				</div>
+			</center>
+		</borderlayout>
+		<popup id="popDescartar" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Palabra a Buscar"
+					style="font-weight: bold" />
+			</hbox>
+			Esta palabra o frase se buscara dentro de la nomenclatura TEXTO1
+			definida en la configuracion de la confronta.
+		</popup>
+		<popup id="popAgenciaComercial" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Agencia comercial"
+					style="font-weight: bold" />
+			</hbox>
+			Ingrese al mantenimiento de agencias comerciales configuradas para esta asignación.
+		</popup>
+		<popup id="popAsignacionImpuestos" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Asignacion de impuestos"
+					style="font-weight: bold" />
+			</hbox>
+			Ingrese al mantenimiento de impuestos configuradas para esta asignación.
+		</popup>
+		<popup id="popEliminar" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Agencia comercial"
+					style="font-weight: bold" />
+			</hbox>
+			Ingrese al mantenimiento de agencias comerciales configuradas para esta asignación.
+		</popup>
+	</window>
+</zk>

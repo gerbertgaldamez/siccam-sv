@@ -1,0 +1,60 @@
+<?component 
+    name="botonnuevo" extends="button" label="Nuevo" 
+    image="/img/globales/16x16/nuevo.png"
+    autodisable="self"  ?>
+<?component 
+    name="botonguardarnuevo" extends="button" label="Guardar" 
+    image="/img/globales/16x16/guardarnuevo.png"
+    autodisable="self" ?>
+<?component 
+    name="botonguardarcerrar" extends="button" label="Guardar y Cerrar" 
+    image="/img/globales/16x16/guardarcerrar.png"
+    autodisable="self" ?>
+<?component 
+    name="botonmodificar" extends="button" label="Modificar" 
+    image="/img/globales/16x16/modificar.png"
+    autodisable="self" ?>
+<?component 
+    name="botoncancelar" extends="button" label="Cerrar" 
+    image="/img/globales/16x16/cancelar.png"
+    autodisable="self" ?>
+<?component 
+    name="botonbuscar" extends="button" label="Buscar" 
+    image="/img/globales/16x16/buscar.png"
+    autodisable="self" ?>
+<?component 
+    name="botonconsulta" extends="button" label="Consultar" 
+    image="/img/globales/16x16/consulta.png"
+    autodisable="self" ?>
+<?component 
+    name="botoneliminar" extends="button" label="Eliminar" 
+    image="/img/globales/16x16/delete.png"
+    autodisable="self" ?>
+<?component 
+    name="botonexcel" extends="button" label="Exportar a Excel" 
+    image="/img/globales/16x16/xlsx.png"
+    autodisable="self" ?>
+<?component 
+    name="botonrelax" extends="button" label="Pruebanueva" 
+    sclass="myBlack" image="/img/globales/16x16/xlsx.png"
+    autodisable="self" ?>
+<?component 
+    name="botonayuda" extends="toolbarbutton" label=""
+    sclass="myBlack" image="img/principal/iconos/ayuda.png" ?>
+<?component 
+    name="botondescarga" extends="button" label="Descargar documento" 
+    image="/img/globales/16x16/down_plus.png"
+    autodisable="self" ?>
+<?component 
+    name="botoncargararchivo" extends="button" label="Cargar Archivo"
+    image=""
+    autodisable="self" ?>
+<?component 
+    name="botoncierre" extends="button" label="Cierre de Ciclo" 
+    image="/img/globales/16x16/down_plus.png"
+    autodisable="self" ?>
+    <?component 
+    name="botonagregarmas" extends="button" label="Agregar" 
+    image="/img/globales/16x16/add_1.png"
+    autodisable="self" ?>
+<zk />

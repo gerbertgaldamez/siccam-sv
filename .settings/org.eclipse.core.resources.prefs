@@ -1,0 +1,16 @@
+eclipse.preferences.version=1
+encoding//src/_1/_0/_0/_127/PagoOnLineWS.java=UTF-8
+encoding//src/_1/_0/_0/_127/PagoOnLineWSLocator.java=UTF-8
+encoding//src/_1/_0/_0/_127/PagoOnLineWSPort.java=UTF-8
+encoding//src/_1/_0/_0/_127/PagoOnLineWSPortStub.java=UTF-8
+encoding//src/com/icon/gac/ServicioCasos.java=UTF-8
+encoding//src/com/icon/gac/ServicioCasosService.java=UTF-8
+encoding//src/com/icon/gac/ServicioCasosServiceLocator.java=UTF-8
+encoding//src/com/icon/gac/ServicioCasosSoapBindingStub.java=UTF-8
+encoding//src/dto/pagoonlinecommon/gte/tmmas/com/PagoDTO.java=UTF-8
+encoding//src/dto/pagoonlinecommon/gte/tmmas/com/RespuestaDTO.java=UTF-8
+encoding//src/dto/pagoonlinecommon/gte/tmmas/com/RespuestaPagoDTO.java=UTF-8
+encoding//src/dto/pagoonlinecommon/gte/tmmas/com/RespuestaReversaDTO.java=UTF-8
+encoding//src/dto/pagoonlinecommon/gte/tmmas/com/ReversaDTO.java=UTF-8
+encoding//src/exception/framework/cl/tmmas/com/GeneralException.java=UTF-8
+encoding//src/exception/pagoonlinecommon/gte/tmmas/com/PagoOnLineException.java=UTF-8

@@ -1,0 +1,79 @@
+<?import src="/util/comp_botones.zul" ?>
+<?import src="/util/comp_popups.zul" ?>
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<window id="detalleCarga" width="80%" title="Detalle de Carga"
+		height="70%" vflex="true" border="normal"
+		apply="org.zkoss.bind.BindComposer"
+		action="show: slideDown ; hide:
+		slideUp" closable="false"
+		position="center,center"
+		viewModel="@id('detalleCarga') @init('com.terium.siccam.controller.CBProcessFileUploadController')">
+		<borderlayout>
+			<center>
+				<listbox vflex="true" width="100%" mold="paging"
+					height="300px" sizedByContent="true" emptyMessage="0 Coincidencias"
+					pageSize="10" model="@load(detalleCarga.listDataBanco)">
+					<listhead sizable="true">
+						<listheader label="Telefono"
+							sort="auto(telefono)" sortDirection="descending"
+							valign="middle">
+						</listheader>
+						<listheader label="Monto" sort="auto(monto)"
+							sortDirection="descending" valign="middle">
+						</listheader>
+						<listheader label="Fecha" sort="auto(fecha)"
+							sortDirection="descending" valign="middle">
+						</listheader>
+						<listheader label="Transaccion "
+							sort="auto(transaccion)" sortDirection="descending"
+							valign="middle">
+						</listheader>
+						<listheader label="No Aplica"
+							sort="auto(texto1)" sortDirection="descending" valign="middle">
+						</listheader>
+						<listheader label="Entidad" sort="auto(texto2)"
+							sortDirection="descending" valign="middle">
+						</listheader>
+					</listhead>
+					<template name="model">
+						<listitem>
+							<listcell>
+								<label value="@bind(each.telefono)" />
+							</listcell>
+							<listcell>
+								<label value="@bind(each.monto)" />
+							</listcell>
+							<listcell>
+								<label value="@bind(each.fecha)" />
+							</listcell>
+							<listcell>
+								<label value="@bind(each.transaccion)" />
+							</listcell>
+							<listcell>
+								<label value="@bind(each.texto1)" />
+							</listcell>
+							<listcell>
+								<label value="@bind(each.texto2)" />
+							</listcell>
+						</listitem>
+					</template>
+				</listbox>
+			</center>
+			<south>
+				<h:table>
+					<h:tr>
+						<h:td colspan="2">
+							<botonguardarnuevo
+								onClick="@command('grabarData')" />
+						</h:td>
+						<h:td colspan="2">
+							<botoncancelar autodisable="self"
+								onClick="@command('cerrarDetalleCarga')" />
+						</h:td>
+					</h:tr>
+				</h:table>
+			</south>
+		</borderlayout>
+	</window>
+</zk>

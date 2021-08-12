@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<window id="manualUsuario" width="30%" height="25%"
+		title="Descargar manual de usuario" border="normal" vflex="true" closable="true"
+		mode="modal" apply="com.terium.siccam.controller.CBManualUsuarioController">
+		<borderlayout>
+			<center>
+				<h:table>
+					<h:tr>
+						<h:td colspan="3">
+							<separator height="10px" />
+							<h:center>
+								<label value="En esta sección se puede descargar el Manual del Usuario 
+								de la aplicación SICCAM desde el servidor FTP configurado." />
+							</h:center>
+						</h:td>
+					</h:tr>
+					<h:tr>
+						<h:td colspan="3">
+							<separator height="10px" />
+						</h:td>
+					</h:tr>
+					<h:tr>
+						<h:td>
+							<h:center>
+								<button id="btnDescargarArchivo"
+									mold="trendy" width="95px" height="10%"
+									label="Descargar archivo"
+									image="img/globales/16x16/download.png" />
+								<space width="100px" />
+								<button id="btnCancelar" mold="trendy"
+									width="95px" height="10%" label="Cancelar"
+									image="img/globales/16x16/cancelar_1.png" />
+							</h:center>
+						</h:td>
+					</h:tr>
+				</h:table>
+			</center>
+		</borderlayout>
+	</window>
+</zk>

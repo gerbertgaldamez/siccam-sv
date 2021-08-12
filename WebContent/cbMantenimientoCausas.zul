@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import src="/util/comp_popups.zul" ?>
+<?import src="/util/comp_botones.zul" ?>
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native">
+	<window id="causas" width="100%" title="Mantenimiento de Tipologias"
+		vflex="true" border="normal"
+		apply="com.terium.siccam.controller.CBCausasController">
+
+		<borderlayout id="blyPrincipal">
+			<north>
+				<div>
+					<groupbox width="100%" id="grpNorte" mold="3d"
+						closable="false">
+						<toolbar>
+							<button id="btnLimpiar" label="limpiar"
+								image="img/globales/16x16/nuevo.png" />
+
+
+						</toolbar>
+						<separator height="10px" />
+						<h:table >
+							<h:tr>
+								<h:td>
+									<label value="*Tipologia:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<textbox id="tbxCausa" width="280px"
+										maxlength="50" />
+									<space width="35px" />
+								</h:td>
+
+								<h:td>
+									<label
+										value="*Codigo de Tipologia:" />
+									<space width="25px" />
+								</h:td>
+								<h:td>
+									<textbox id="tbxCodigo" width="80px"
+										maxlength="6" />
+
+								</h:td>
+
+
+
+							</h:tr>
+
+
+							<h:tr>
+
+
+								<h:td>
+									<label value="*Tipo :" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<combobox id="cmbTipoConciliacion"
+										width="280px" readonly="true">
+
+									</combobox>
+
+								</h:td>
+
+								<h:td>
+									<label
+										value="*Tipologia Poliza Asociada :" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<combobox id="cmbTipologiaasociada"
+										width="200px" readonly="true">
+
+									</combobox>
+									
+								</h:td>
+                                
+                                
+								<h:td>
+								
+								
+									<label value="*Sistema :" />
+									<space width="25px" />
+									
+								</h:td>
+								<h:td>
+									<combobox id="cmbSistema"
+										width="200px" readonly="true">
+
+									</combobox>
+
+								</h:td>
+
+								<h:td>
+									<label value="*Convenio :" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<combobox id="cmbConvenio"
+										width="200px" readonly="true">
+										<comboitem value="1" label=" 001">
+											
+										</comboitem>
+										<comboitem value="2" label=" 002">
+											
+										</comboitem>
+									</combobox>
+
+								</h:td>
+							</h:tr>
+
+							<h:tr>
+								<h:td>
+									<button id="btnGuardar"
+										label="Guardar" image="img/globales/16x16/guardarnuevo.png"
+										tooltip="popIngreso" />
+
+
+								</h:td>
+								<h:td>
+									<button id="btnConsultar"
+										label="Consultar" image="img/globales/16x16/consulta.png"
+										tooltip="popConsulta" />
+
+
+								</h:td>
+							</h:tr>
+						</h:table>
+					</groupbox>
+				</div>
+			</north>
+			<center autoscroll="true">
+				<groupbox width="100%" height="100%">
+					<separator height="10px" />
+
+					<listbox id="lbxlistadoCausas" height="300px "
+						width="100%" mold="paging" pageSize="6" sizedByContent="true"
+						vflex="true" emptyMessage="No hay registros consultados">
+
+						<listhead>
+							<listheader label="Codigo" sort="auto"
+								width="80px">
+							</listheader>
+							<listheader
+								label="Tipologias de Conciliación" sort="auto" width="200px">
+							</listheader>
+							<listheader label="Tipo" sort="auto"
+								width="150px">
+							</listheader>
+							<listheader
+								label="Tipologia Poliza Asociada" sort="auto" width="200px">
+							</listheader>
+
+							<listheader label="Creado Por" sort="auto"
+								width="110px">
+							</listheader>
+							<listheader label="Fecha Creación"
+								sort="auto" width="110px">
+							</listheader>
+
+							<listheader label="Sistema" sort="auto"
+								width="150px">
+							</listheader>
+
+							<listheader label="Convenio" sort="auto"
+								width="150px">
+							</listheader>
+							<listheader label="Eliminar" sort="auto"
+								width="80px">
+							</listheader>
+
+
+						</listhead>
+
+					</listbox>
+				</groupbox>
+			</center>
+			<south>
+				<div>
+					<groupbox width="100%" mold="3d" closable="false">
+						<caption label="Auditoria"
+							image="/img/globales/24x24/seguridad.png">
+						</caption>
+						<label value="Auditoria:" />
+						<h:table>
+							<h:tr>
+								<h:td>
+									<label value="Fecha Creación:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<textbox width="138px"
+										id="tbxfechaCreacion" disabled="true"
+										style="color:#2B547E;font-weight: bold;">
+									</textbox>
+								</h:td>
+								<h:td>
+									<label value="Fecha Modificación:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<textbox width="138px"
+										disabled="true" id="tbxfechaModificacion"
+										style="color:#2B547E;font-weight: bold;">
+									</textbox>
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<label value="Usuario Creador:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<textbox width="138px"
+										disabled="true" style="color:#2B547E;font-weight: bold;"
+										id="tbxusuarioCreador">
+									</textbox>
+								</h:td>
+								<h:td>
+									<label value="Usuario que Modifico" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<textbox width="138px"
+										disabled="true" id="tbxmodificadoPor"
+										style="color:#2B547E;font-weight: bold;">
+									</textbox>
+								</h:td>
+							</h:tr>
+						</h:table>
+					</groupbox>
+					<separator />
+				</div>
+			</south>
+		</borderlayout>
+		<popup id="popIngreso" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Ingreso" style="font-weight: bold" />
+			</hbox>
+			Pulse aqui para ingresar el regsitro.
+		</popup>
+		<popup id="popConsulta" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Consultar" style="font-weight: bold" />
+			</hbox>
+			Pulse aqui para realizar la consulta de los registros.
+		</popup>
+		<popup id="popLimpiar" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Limpiar" style="font-weight: bold" />
+			</hbox>
+			Pulse aqui para limpiar los campos.
+		</popup>
+		<popup id="popModificar" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Modificar" style="font-weight: bold" />
+			</hbox>
+			Puede seleccionar una de las filas para su modificación.
+		</popup>
+		<popup id="popEliminar" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Eliminar" style="font-weight: bold" />
+			</hbox>
+			Pulse aqui para poder eliminar un registro.
+		</popup>
+	</window>
+</zk>

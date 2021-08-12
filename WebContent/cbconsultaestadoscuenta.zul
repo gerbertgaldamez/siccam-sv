@@ -1,0 +1,172 @@
+<?page title="Estados de Cuenta" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<window id="consultaCuentas" width="100%" title="" vflex="true"
+		border="normal" apply="com.terium.siccam.controller.CBConsultaEstadoCuentasController">
+		
+		<borderlayout id="blyPrincipal">
+
+
+			<center autoscroll="true">
+				<groupbox>
+					<groupbox mold="3d">
+						<caption label="Consulta estados de cuenta" />
+						<grid>
+							<columns>
+								<column />
+								<column />
+								<column />
+							</columns>
+							<rows>
+								<row>
+									<hbox>
+										<label value="Agrupación:" />
+										<combobox id="cmbxBanco"
+											width="190px" readonly="true"
+											style="color:#2B547E;font-weight: bold;">
+											<comboitem label="Todas" value="0"/>
+										</combobox>
+									</hbox>
+									<hbox>
+										<label value="Entidad:" />
+										<separator width="44px" />
+										<combobox id="cmbxAgencia"
+											width="150px" readonly="true"
+											style="color:#2B547E;font-weight: bold;" />
+									</hbox>
+									<hbox>
+										<label value="Desde:" />
+										<separator width="44px" />
+										<datebox id="dtbDesde"
+											format="dd/MM/yyyy" />
+									</hbox>
+								</row>
+								<row>
+									<hbox>
+										<label value="Texto: " />
+										<separator width="29px" />
+										<textbox id="tbxTexto" width="190px" />
+									</hbox>
+									<hbox>
+										<label value="Observaciones: " />
+										<separator width="5px" />
+										<textbox id="tbxObservaciones" width="150px"/>
+									</hbox>
+									<hbox>
+										<label value="Hasta: " />
+										<separator width="46px" />
+										<datebox id="dtbHasta"
+											format="dd/MM/yyyy" />
+									</hbox>
+								</row>
+								<!-- Agregado por Carlos Godínez - 07/03/2017 -->
+								<row>
+									<hbox>
+										<label value="Tipología: " />
+											<separator width="6px" />
+										<combobox id="cmbTipologia"
+											width="190px" readonly="true"
+											style="color:#2B547E;font-weight: bold;">
+											<comboitem label="Todas" value="Todas"/>
+											<comboitem label="(No asignada)" value="(No asignada)"/>
+										</combobox>
+									</hbox>
+									<hbox>
+										<label
+											value="Entidad tipología: " />
+										<combobox
+											id="cmbAgenciaTipologia" width="150px" readonly="true"
+											style="color:#2B547E;font-weight: bold;">
+											<comboitem label="Todas" value="Todas"/>
+											<comboitem label="(No asignada)" value="(No asignada)"/>
+										</combobox>
+									</hbox>
+									<hbox>
+										<label value="Fecha ingresos: " />
+										<datebox id="dtbFechaIngresos"
+											format="dd/MM/yyyy" />
+									</hbox>
+								</row>
+
+
+							</rows>
+						</grid>
+
+					</groupbox>
+
+
+					<button id="btnConsuta" label="Consultar"
+						image="img/globales/16x16/consulta.png" />
+							<button id="btnExcel" label="Exportar datos"
+						image="img/globales/16x16/xlsx.png" />
+					<button id="btnAsignarTodos"
+						label="Asignar tipología a todos"
+						image="img/globales/16x16/edit.png" />
+					<button id="btnDesasociarTodos"
+						label="Desasociar tipología a todos"
+						image="img/globales/16x16/forbidden.png" style="align:left"/>
+						
+						<button id="btnAsignarDepositosTodos"
+						label="Subir depositos"
+						image="img/globales/16x16/edit.png" />
+						
+						<button id="btnEjecutarComisiones" label="Ejecutar extracto"
+							tooltip="popGuardar" image="img/globales/16x16/download.png" />
+				
+					<separator height="5px" />
+
+					<groupbox mold="3d" width="100%" height="400px">
+						<caption label="Detalle de registros" />
+
+
+						<listbox id="lbxConsulta" height="300px"
+							mold="paging" pageSize="10" sizedByContent="true" vflex="true"
+							emptyMessage="No hay registros consultados">
+							<frozen columns="4"></frozen>
+							<listhead>
+								<listheader label="Agrupación"
+									sort="auto" />
+								<listheader label="Entidad" sort="auto" />
+								<listheader label="Cuenta" sort="auto" />
+								<listheader label="Asignación"
+									sort="auto" /><!-- CarlosGodinez -> 07/07/2017 -->
+								<listheader label="Fecha" sort="auto" />
+								<listheader label="Texto" sort="auto" />
+								<listheader label="Debe" sort="auto" />
+								<listheader label="Haber" sort="auto" />
+								<listheader label="Identificador"
+									sort="auto" />
+								<!-- Agregado por CarlosGodinez 01/03/2017 -->
+								<listheader label="Tipología"
+									sort="auto" />
+								<listheader label="Entidad tipología"
+									sort="auto" />
+								<listheader label="Texto cab. documento"
+									sort="auto" /><!-- CarlosGodinez -> 07/07/2017 -->
+								<listheader label="Observaciones"
+									sort="auto" />
+								<listheader label="Fecha ingresos"
+									sort="auto" />
+								<listheader label="Numero de documento"
+									sort="auto" />
+									<listheader label="Modificado por"
+									sort="auto" />
+								<listheader label="Fecha Modificacion"
+									sort="auto" />
+							</listhead>
+						</listbox>
+					</groupbox>
+
+
+				</groupbox>
+			</center>
+		</borderlayout>
+		<popup id="popTipologia" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label
+					value="Haga doble clic sobre un registro para asignar una tipología poliza"
+					style="font-weight: bold" />
+			</hbox>
+		</popup>
+	</window>
+</zk>

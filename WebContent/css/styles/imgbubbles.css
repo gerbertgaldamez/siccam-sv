@@ -1,0 +1,34 @@
+.bubblewrap{
+list-style-type:none;
+margin:0;
+padding:0;
+}
+
+.bubblewrap li{
+display:inline-block;
+zoom:1; /*Trigger haslayout in IE7 and less*/
+*display:inline; /*For IE7 and less*/
+position:relative;
+width: 80px;
+height: 64px;
+margin-top:10px;
+margin-left:25px;
+}
+
+.bubblewrap li img{
+position:absolute;
+width: 32px; /*default width of each image.*/
+height: 32px; /*default height of each image.*/
+left:0;
+top:0;
+border:0;
+}
+
+.bubblewrap .tooltip{ /*CSS for image tooltip (alt attribute of image)*/
+position:absolute;
+font:bold 12px Arial;
+padding:2px;
+width:100px;
+text-align:center;
+background:white;
+}

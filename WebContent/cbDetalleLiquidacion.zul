@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import src="/util/comp_botones.zul" ?>
+<?import src="/util/comp_popups.zul" ?>
+<?page title="Detalle liquidación" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+<window id="detalle" width="60%" title="Detalle liquidación seleccionada" vflex="true"
+		border="normal" height="82%" closable="true"
+		position="center,center"
+		apply="com.terium.siccam.controller.CBLiquidacionCajeroAgregarDescController">
+		<borderlayout id="blyPrincipal">
+			<north>
+				<div>
+					<!-- INICIO Agregado por CarlosGodínez -QitCorp- -->
+					<groupbox width="100%" id="grpSur" mold="3d"
+						closable="true">
+						<caption label="Datos liquidación seleccionada"></caption>
+						<h:table>
+							<h:tr>
+								<h:td>
+									<label value="Nombre de usuarios:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<label id="lblNombreUser"  />
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<label
+										value="Fecha de transacción:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<label id="lblfecha" />
+								</h:td>
+							</h:tr>
+						</h:table>
+					</groupbox>
+					<!-- FIN Agregado por CarlosGodínez -QitCorp- -->
+				</div>
+			</north>
+			<center>
+				<div>
+					<groupbox width="100%" height="90%" mold="3d"
+						closable="true">
+						<caption label="Detalle de liquidación seleccionado"></caption>
+						<h:table>
+							<h:tr>
+								<h:td>
+									<label value="Descripción tipo tarjeta:" />
+								</h:td>
+								<h:td>
+									<textbox id="txtDescTipoTarjeta" width="200px" 
+										 maxlength="100" >
+									</textbox>
+								</h:td>
+								<h:td>
+									<button id="btnRegistrarDesc" width="125px"
+										image="img/globales/16x16/guardarnuevo.png" mold="trendy"
+										label="Registrar" >
+									</button>
+									<button id="btnModificar" width="125px"
+										 mold="trendy"
+										label="Modificar"
+										image="img/globales/16x16/edit.png" >
+									</button>
+									<button id="btnLimpiar" width="125px"
+										image="img/globales/16x16/nuevo.png" mold="trendy"
+										label="Limpiar campos" >
+									</button>
+								</h:td>
+							</h:tr>
+						</h:table>
+						<h:table>
+							<h:tr>
+								
+							</h:tr>
+						</h:table>
+					</groupbox>
+				</div>
+			</center>
+			<south>
+				<div>
+					<!-- INICIO Agregado por CarlosGodínez -QitCorp- -->
+					<groupbox width="100%" height="100%">
+						<listbox id="lstDetalle" vflex="true"
+							width="100%" mold="paging" height="250px" sizedByContent="true"
+							model="@load(detalle.listadoDetalle)"
+							emptyMessage="0 Coincidencias" pageSize="15">
+							<listhead sizable="true">
+								<listheader label="Tipo de valor"
+									width="90px" sortDirection="descending" valign="middle">
+								</listheader>
+								<listheader label="Tipo de pago"
+									width="150px" sortDirection="descending" valign="middle">
+								</listheader>
+								<listheader label="Código tipo tarjeta"
+									width="120px" sortDirection="descending" valign="middle">
+								</listheader>
+								<listheader
+									label="Descripción tipo tarjeta" width="320px"
+									sortDirection="descending" valign="middle">
+								</listheader>
+								<listheader label="Total" width="100px"
+									sortDirection="descending" valign="middle">
+								</listheader>
+							</listhead>
+							
+						</listbox>
+					</groupbox>
+					<!-- FIN Agregado por CarlosGodínez -QitCorp- -->
+				</div>
+			</south>
+		</borderlayout>
+	</window>
+</zk>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import src="/util/comp_botones.zul" ?>
+<?import src="/util/comp_popups.zul" ?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?page title="Liquidación de cajeros" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+<window id="liquidaciones" width="100%" title="" vflex="true"
+		border="normal"
+		apply="com.terium.siccam.controller.CBLiquidacionCajeroController">
+	
+		<borderlayout id="blyPrincipal">
+			<north>
+				<div>
+					<!-- INICIO Agregado por CarlosGodínez -QitCorp- -->
+					<groupbox width="100%" id="grpSur" mold="3d"
+						closable="true">
+						<caption label="Liquidación de cajeros"></caption>
+						<div >
+							<h:table>
+								<h:tr>
+									<label value="Filtros de búsqueda:" style="font-weight: bold;" visible="false"/>
+								</h:tr>
+								
+								<h:tr>
+									<h:td>
+										<label value="Nombre de usuario:" />
+										<space width="20px" />
+									</h:td>
+									<h:td>
+										<textbox id="txtUserFiltro" maxlength="50">
+										</textbox>
+									</h:td>
+								</h:tr>
+								<h:tr>
+									<h:td>
+										<label
+											value="Fecha de transacción:" />
+										<space width="20px" />
+									</h:td>
+									<h:td>
+										<datebox id="dbFechFiltro"
+											format="dd-MM-yyyy" />
+									</h:td>
+								</h:tr>
+								<h:tr>
+									<h:td>
+										<button id="btnNueva"
+											 mold="trendy"
+											label="Nueva liquidación"
+											image="img/globales/16x16/agregar.png" />
+									</h:td>
+									<h:td>
+										<button id="btnConsultar"
+											mold="trendy"
+											label="Consultar" image="img/globales/16x16/consulta.png" 
+											width="150px"/>
+									</h:td>
+	
+								</h:tr>
+							</h:table>
+						</div>
+					
+					</groupbox>
+					
+				</div>
+			</north>
+			<center autoscroll="true">
+				<div>
+					<groupbox width="100%" height="100%">
+						<caption label="Carga de liquidaciones" />
+						<separator height="10px" />
+						<listbox id="lstLiquidaciones" height="319px "
+							mold="paging" pageSize="15" sizedByContent="true" vflex="true"
+							emptyMessage="No se han encontrado resultados">
+						
+							<listhead sizable="true">
+								<listheader label="Nombre" width="150px"
+									sortDirection="descending" valign="middle" sort="auto">
+								</listheader>
+								<listheader
+									label="Fecha" width="80px"
+									sortDirection="descending" valign="middle" sort="auto" >
+								</listheader>
+								<listheader label="Efectivo" 
+									sortDirection="descending" valign="middle" sort="auto">
+								</listheader>
+								<!-- campo cuotas visa -->
+								<listheader label="Cuotas Otras"
+									sortDirection="descending" valign="middle" sort="auto">
+								</listheader>
+									 
+								<listheader label="Cuotas Credo" 
+									sortDirection="descending" valign="middle" sort="auto" >
+								</listheader>
+									<!-- campo  visa -->
+								<listheader label="Tarjeta Otras" 
+									sortDirection="descending" valign="middle" sort="auto">
+								</listheader>
+									 
+								<listheader label="Credo" 
+									sortDirection="descending" valign="middle" sort="auto" >
+								</listheader>
+								<listheader label="Otras" 
+									sortDirection="descending" valign="middle" sort="auto" >
+								</listheader>
+								<listheader label="Cheque" 
+									sortDirection="descending" valign="middle" sort="auto">
+								</listheader>
+								<listheader label="Exención IVA" 
+									sortDirection="descending" valign="middle" sort="auto" >
+								</listheader>
+								<listheader label="Deposito" 
+									sortDirection="descending" valign="middle" sort="auto" >
+								</listheader>
+								<listheader label="Usuario" width="105px"
+									sortDirection="descending" valign="middle" sort="auto" >
+								</listheader>
+								<listheader label="Creación" 
+									sortDirection="descending" valign="middle" sort="auto" >
+								</listheader>
+								<listheader label="Acción" width="50px"
+									sortDirection="descending" valign="middle" sort="auto" >
+								</listheader>
+							</listhead>
+							
+						</listbox>
+					</groupbox>
+				</div>
+			</center>
+		</borderlayout>
+		<popup id="popEliminar" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Eliminar" style="font-weight: bold" />
+			</hbox>
+		</popup>
+		<popup id="popDetalle" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label value="Haga doble clic sobre el registro para ver el detalle de la liquidación" style="font-weight: bold" />
+			</hbox>
+		</popup>
+	</window>
+</zk>

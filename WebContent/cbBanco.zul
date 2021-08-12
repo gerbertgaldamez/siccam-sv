@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import src="/util/comp_popups.zul" ?>
+<?import src="/util/comp_botones.zul" ?>
+<?page title="Mantenimiento Entidad Bancaria" contentType="text/html;charset=UTF-8"?>
+
+	
+	
+	<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<window id="nBanco" width="30%" height="30%" title="Nueva agrupacion" closable="True" 
+	 border="normal"  mode="modal"  position="center,center"
+		apply="com.terium.siccam.controller.CBCatalogoBancoNuevoController"
+		 sizable="true" >
+		<borderlayout id="blyPrincipal">
+			<north height="100%">
+				<div>
+					<groupbox width="100%" id="grpNorte" mold="3d"
+						height="100%" closable="false">
+						<caption label="Registro de agrupacion"></caption>
+						<h:table>
+							<h:tr>
+								<h:td>
+									<label value="Nombre:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<textbox
+										id ="tbxNombre" maxlength="50"
+										constraint="no empty: Ingrese un Nombre" width="200px" />
+								</h:td>
+							</h:tr>
+							<!--  Comentariado por Carlos Godinez - 30/06/2017
+							<h:tr>
+								<h:td>
+									<label value="Telefono:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<textbox maxlength="10"
+										value="@bind(nBanco.telefono)" width="200px" />
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<label value="Contacto" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<textbox maxlength="50"
+										value="@bind(nBanco.contacto)" constraint="" width="200px" />
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<label value="Extension" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<textbox maxlength="5"
+										value="@bind(nBanco.extension)" constraint="" width="200px" />
+								</h:td>
+							</h:tr>
+							-->
+							<h:tr>
+								<h:td>
+									<label value="Estado:" />
+									<space width="20px" />
+								</h:td>
+								<h:td>
+									<combobox id="cmbEstado"
+										autocomplete="true" readonly="true" width="200px">
+
+									</combobox>
+								</h:td>
+							</h:tr>
+							<h:tr>
+								<h:td>
+									<label value="Tipo de Entidad:" />
+								</h:td>
+								<h:td>
+								
+									<!-- Modificado Omar Gomez -Qit- 12/01/2017 -->
+								<combobox id="cmbTipo"
+										autocomplete="true" readonly="true" width="200px">
+
+									</combobox>
+								</h:td>
+							</h:tr>
+						</h:table>
+					</groupbox>
+					<toolbar align="end">
+					<button id="btnGuardar" label="Guardar" tooltip="popLimpiar"
+							image="img/globales/16x16/guardar.png" />
+					
+					</toolbar>
+				</div>
+			</north>
+		</borderlayout>
+	</window>
+</zk>

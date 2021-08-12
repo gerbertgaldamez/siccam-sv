@@ -1,0 +1,74 @@
+<?page title="Historial Sitema comercial vs Estado de cuenta" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window id="wdHistorialScec" title="Conciliación Manual"
+		border="normal" mode="modal" width="70%" height="60%"
+		position="center, center" closable="true"
+		apply="com.terium.siccam.controller.CBHistorialSCECController">
+
+		<grid>
+			<columns>
+				<column label="" width="20%" />
+				<column label="" width="30%" />
+				<column label="" width="20%" />
+				<column label="" width="30%" />
+			</columns>
+			<rows>
+				<row>
+					<label value="Causa Conciliacion: " />
+					<combobox id="cmbxCusas" readonly="true" />
+
+					<label value="Observaciones: " />
+					<textbox id="tbxObservacion" multiline="true" />
+				</row>
+				<row>
+					<label value="Estado Cuenta: " />
+					<textbox id="dmbxMontoEC" readonly="true" />
+					<label value="Sistema Comercial: " />
+					<textbox id="dmbxMontoSC" readonly="true" />
+				</row>
+				<row>
+					<label value="Monto Acumulado: " />
+					<textbox id="dmbxMontoAcumulado" readonly="true" />
+						<label value="Diferencia Total: " />
+					<textbox id="dmbxDiferenciaTotal" readonly="true" />
+				
+				</row>
+				<row>
+					<label value="Monto: " />
+					<textbox id="dmbxMonto" />
+					<label value="Monto Total: "  visible="false" />
+					<textbox id="dmbxMontoTotal" readonly="true"  visible="false"  />
+				</row>
+			</rows>
+		</grid>
+		<div align="center">
+			<toolbar width="100%">
+				<toolbarbutton id="btnAgregar" label="Agregar"
+					image="/img/agregar_16.png" />
+				<toolbarbutton id="btnActualizar" label="Actualizar"
+					image="/img/modificar_16.png" />
+
+				<toolbarbutton id="btnLimpiar" label="Limpiar"
+					image="img/globales/16x16/nuevo.png" />
+
+			</toolbar>
+		</div>
+
+		<listbox id="lbxHistorialscec" mold="paging" height="50%"
+			pageSize="8" sizedByContent="true" vflex="true"
+			emptyMessage="No hay historico para este detalle">
+			<listhead>
+				<listheader label="Tipologia" sort="auto" />
+				<listheader label="Monto" sort="auto" />
+				<listheader label="Observacion" sort="auto" />
+				<listheader label="Creado Por" sort="auto" />
+				<listheader label="Fecha de Creacion" sort="auto" />
+				<listheader label="Modificado Por" sort="auto" />
+				<listheader label="Fecha de Modificacion" sort="auto" />
+				<listheader label="Accion" />
+
+			</listhead>
+		</listbox>
+
+	</window>
+</zk>

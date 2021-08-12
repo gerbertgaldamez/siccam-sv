@@ -1,0 +1,46 @@
+<?import src="/util/comp_botones.zul" ?>
+<?import src="/util/comp_popups.zul" ?>
+<?page title="" contentType="text/html;charset=UTF-8"?>
+
+		
+		<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<window id="detalleNoCargados" width="85%" height="85%" title="Detalle de Asignación" closable="True" 
+	 border="normal"  mode="modal"  position="center,center"
+		apply="com.terium.siccam.controller.CBConsultaDetalleNoCargadosController"
+		 sizable="true" >
+		<borderlayout>
+			<center>
+				<listbox id="lbxDetalleNoCargados" vflex="true" width="100%" mold="paging"
+					sizedByContent="true" emptyMessage="0 Coincidencias" pageSize="15">
+					<listhead>
+						<listheader label="Nombre Archivo"
+							sort="auto">
+						</listheader>
+						<listheader label="Data Archivo"
+							sort="auto">
+						</listheader>
+						<listheader label="Causa"
+							sort="auto">
+						</listheader>
+						<listheader label="Estado"
+							sort="auto">
+						</listheader>
+						<listheader label="Usuario"
+							sort="auto">
+						</listheader>
+					</listhead>
+				
+				</listbox>
+			</center>
+			<south>
+				<h:table>
+					<h:tr>
+						<h:td colspan="2">
+							<botoncancelar id ="btnDetalleNoCargdos" />
+						</h:td>
+					</h:tr>
+				</h:table>
+			</south>
+		</borderlayout>
+	</window>
+</zk>

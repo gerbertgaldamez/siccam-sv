@@ -1,0 +1,142 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<script type="text/javascript"
+		src="javascripts/jquery.jgrowl_compressed.js" />
+	<div vflex="true"
+		apply="com.terium.siccam.controller.CBConciliacionBancoController">
+		<borderlayout style="background:transparent;">
+		<center autoscroll="true">
+			<groupbox mold="3d" >
+					
+					<groupbox width="100%"  mold="3d"
+						closable="false">
+					
+					<caption label="Filtros" />
+						<grid>
+							<columns>
+								<column />
+								<column />
+								<column />
+								<column />
+							</columns>
+							<rows>
+								<row>
+									<hbox>
+										<label value="Entidad:" />
+										<combobox id="cmbAgencia"
+											readonly="true">
+											<comboitem label="Todas" />
+										</combobox>
+									</hbox>
+									<hbox>
+										<label value="Desde:" />
+										<datebox id="dtbDesde"
+											format="dd/MM/yyyy" />
+									</hbox>
+									<hbox>
+										<label value="Hasta: " />
+										<datebox id="dtbHasta"
+											format="dd/MM/yyyy" />
+									</hbox>
+										<hbox>
+										<label value="Codigo Colector: " />
+										<textbox id="txtCodigoColector" maxlength="50"/>
+									</hbox>
+								</row>
+							</rows>
+						</grid>
+						
+					</groupbox>
+						
+			
+						<groupbox height="600px">
+					<separator height="10px" />
+					<toolbar>
+						<button id="btnBuscar"
+							image="/img/globales/16x16/buscar.png" label="Buscar" />
+						<space width="2px" />
+						<button id="btnReporte" label="Generar Reporte"
+							image="/img/globales/16x16/xlsx.png" disabled="true" />
+							<space width="2px" />
+							<button id="btnEjecutarComisiones" label="Ejecutar proceso comisiones"
+							tooltip="popGuardar" image="img/globales/16x16/download.png" />
+					</toolbar>
+					<separator height="5px" />
+				
+					<listbox id="lbxConsulta" mold="paging" emptyMessage="No hay registros consultados"
+						height="330px" pageSize="12" sizedByContent="true" vflex="true">
+						<frozen columns="3" ></frozen>
+						<!-- Renombrar campos de grid, agrupacion y ocultar campos con el nombre Prepago-->
+						<!-- Modificado por CarlosGodinez 18/09/2017 -->
+						<auxhead>
+							<auxheader colspan="3" class="topic"></auxheader>
+				            <auxheader colspan="3" align="center" class="topic">Confronta vs Estado de cuenta</auxheader>
+				            <auxheader colspan="8" align="center" class="topic">Sistema Comercial vs Estado de cuenta</auxheader>
+				            <auxheader colspan="1" class="topic"></auxheader>
+				            <auxheader colspan="7" align="center" class="topic">Comisiones y recaudaciones</auxheader>
+				        </auxhead>
+						<listhead>
+								<!-- Columnas de agrupacion GENERAL -->
+								<listheader label="Fecha" sort="auto" />
+								<listheader label="Entidad" sort="auto" />
+								<listheader label="Código Colector" sort="auto" />
+								
+								<!-- Columnas de agrupacion Confronta vs Estado de cuent -->
+								<!--  
+								<listheader label="Estado Prepago" sort="auto" visible="false"/>
+								<listheader label="Confronta Prepago" sort="auto" visible="false"/>
+								<listheader label="Diferencia Prepago" sort="auto" visible="false"/>
+								-->
+								
+								<listheader label="Estado cuenta" sort="auto" />
+								<listheader label="Confronta" sort="auto" />
+								<listheader label="Diferencia" sort="auto" />
+								
+								<!-- Columnas de agrupacion Sistema Comercial vs Estado de cuenta -->
+								<listheader label="Pagos del dia" sort="auto" />
+								<listheader label="Pagos otros dias" sort="auto" />
+								<listheader label="Pagos otros meses" sort="auto" />
+								<listheader label="Reversas otros dias" sort="auto" />
+								<listheader label="Reversas otros meses" sort="auto" />
+								<listheader label="Total dia" sort="auto" />
+								<listheader label="Estado cuenta" sort="auto" />
+								<listheader label="Conciliado manual" sort="auto" />
+								<listheader label="Diferencia total" sort="auto" />
+								
+								<!-- Columnas de agrupacion X -->
+								<listheader label="Total general" sort="auto" />
+								
+								<!-- Columnas de agrupacion Comisiones y recaudaciones -->
+								<listheader label="Porcentaje" sort="auto" />
+								<listheader label="Comision confronta" sort="auto" />
+								<listheader label="Comision" sort="auto" />
+								<listheader label="Detalle comision" sort="auto" />
+								<listheader label="Diferencia comision" sort="auto" />
+								
+								<!--  
+								<listheader label="Porcentaje prepago" sort="auto" visible="false"/>
+								<listheader label="Comision confronta prepago" sort="auto" visible="false"/>
+								<listheader label="Comision prepago" sort="auto" visible="false"/>
+								<listheader label="Diferencia comision prepago" sort="auto" visible="false"/>
+								-->
+								
+								<listheader label="Comision total" sort="auto" />
+								<listheader label="Recaudación final" sort="auto" />
+								
+								<!--  
+								<listheader label="Recaudación final prepago" sort="auto" visible="false"/>
+								-->
+								
+								<listheader label="Total final" sort="auto" />
+							</listhead>
+					</listbox>
+					</groupbox>
+					
+					</groupbox>
+					</center>
+				
+	
+			
+		</borderlayout>
+	</div>
+</zk>

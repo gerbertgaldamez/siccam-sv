@@ -1,0 +1,33 @@
+@CHARSET "ISO-8859-1";
+
+@font-face {
+    font-family: 'TelefonicaTextRegular';
+    src: url('../fuentes/telefonicatext-regular-webfont.eot');
+    src: url('../fuentes/telefonicatext-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fuentes/telefonicatext-regular-webfont.woff') format('woff'),
+         url('../fuentes/telefonicatext-regular-webfont.ttf') format('truetype'),
+         url('../fuentes/telefonicatext-regular-webfont.svg#TelefonicaTextRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'TelefonicaTextBold';
+    src: url('../fuentes/telefonicatext-bold-webfont.eot');
+    src: url('../fuentes/telefonicatext-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fuentes/telefonicatext-bold-webfont.woff') format('woff'),
+         url('../fuentes/telefonicatext-bold-webfont.ttf') format('truetype'),
+         url('../fuentes/telefonicatext-bold-webfont.svg#TelefonicaTextBold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+.negrilla {
+	font-weight: bold;
+}
+
+.noeditable {
+	color: #2B547E;
+	font-weight: bold;
+}

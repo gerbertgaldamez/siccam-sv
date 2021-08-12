@@ -1,0 +1,11 @@
+<?component name="popnuevo" macroURI="/util/def_popup_nuevo.zul" ?>
+<?component name="popmodificar" macroURI="/util/def_popup_modificar.zul" ?>
+<?component name="popconsulta" macroURI="/util/def_popup_consulta.zul" ?>
+<?component name="popcancelar" macroURI="/util/def_popup_cancelar.zul" ?>
+<?component name="popguardarnuevo" macroURI="/util/def_popup_guardarnuevo.zul" ?>
+<?component name="popguardarcerrar" macroURI="/util/def_popup_guardarcerrar.zul" ?>
+<?component name="popbuscar" macroURI="/util/def_popup_buscar.zul" ?>
+<?component name="popeliminar" macroURI="/util/def_popup_eliminar.zul" ?>
+<?component name="popgenerar" macroURI="/util/def_popup_generar.zul" ?>
+<?component name="popgenerico" macroURI="/util/def_popup_generico.zul" ?>
+<zk/>

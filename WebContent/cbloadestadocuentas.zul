@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import src="/util/comp_botones.zul" ?>
+<?import src="/util/comp_popups.zul" ?>
+<?page title="Carga estado de cuentas" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+<window id="cargaCuentas" width="100%" title="" vflex="true"
+		border="normal" apply="com.terium.siccam.controller.CBEstadoCuentasController">
+	<borderlayout id="blyPrincipal">
+		<center >
+			<div align="center">								
+				<groupbox width="100%" id="grpSur" mold="3d"
+					closable="true">
+					<caption
+						label="Carga estados de cuenta">
+					</caption>
+					<h:table>
+						<h:tr>
+							<h:td>
+								<label value="Tipo origen:" />
+								<space width="20px" />
+							</h:td>
+							<h:td>
+								<combobox width="150px" readonly="true"									
+									style="color:#2B547E;font-weight: bold;"
+									id="cmbxEntidad" />
+							</h:td>
+						</h:tr>
+						<h:tr>
+							<h:td>
+								<button id="btnArchivoEstados" upload="true"  mold="trendy"
+										label="Seleccionar archivo" image="img/globales/24x24/consulta.png" />
+							</h:td>
+							<h:td>
+								<button id="btnCargaEstados" mold="trendy"
+										width="150px" label="Cargar archivo" image="img/globales/24x24/play.png" />
+							</h:td>
+						</h:tr>							
+					</h:table>
+					<separator height="15px" />
+					<hbox>
+						<label id="lblMensaje" />
+						<image id="imgEstatus"  />
+					</hbox>
+				</groupbox>					
+			</div>
+		</center>
+	</borderlayout>
+</window>
+</zk>

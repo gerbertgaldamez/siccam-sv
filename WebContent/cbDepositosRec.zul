@@ -1,0 +1,122 @@
+<?page title="Estados de Cuenta" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+	<window id="depositos" width="100%" title="" vflex="true"
+		border="normal" apply="com.terium.siccam.controller.CBDepositosRecController">
+		
+		<borderlayout id="blyPrincipal">
+
+
+			<center autoscroll="true">
+				<groupbox>
+					<groupbox width="100%"  mold="3d">
+						<caption label="Consulta Depositos Rec" />
+					<grid>
+								<columns>
+									<column />
+									<column />
+									<column />
+									<column />
+								</columns>
+								<rows>
+
+									<row>
+									
+									
+
+
+										<hbox>
+											<label value="Entidad a la que pertenece el ingreso:" />
+										</hbox>
+										<hbox>
+											<combobox id="cmbEntidad"
+												readonly="true"   width="210px">
+											</combobox>
+										</hbox>
+										<hbox>
+											<label value="Tipologia:" />
+										</hbox>
+										<hbox>
+											<combobox id="cmbTipologias"
+												readonly="true"  width="210px">
+											</combobox>
+										</hbox>
+									</row>
+
+
+									<row>
+									<hbox>
+											<label value="Texto : " />
+										</hbox>
+										<hbox>
+										<textbox id="tbxTexto"
+										cols="35" rows="2" maxlength="30"
+										tooltip="popCausaDesasociacion">
+									</textbox>
+											
+										</hbox>
+										
+								
+										<hbox>
+											<label
+												value="Tipo de fecha:" />
+										</hbox>
+										<hbox>
+											<combobox id="cmbTipoFechas"
+												readonly="true"  width="210px" >
+											</combobox>
+										</hbox>
+									</row>
+
+								</rows>
+
+							</grid>
+
+					</groupbox>
+
+
+					<button id="btnNuevo" label="Guardar"
+						image="img/globales/16x16/guardarnuevo.png" />
+
+					<button id="btnLimpiar" label="limpiar"
+						image="img/globales/16x16/nuevo.png" />
+
+					<button id="btnModificar" label="Modificar"
+						image="img/globales/16x16/modificar_1.png"
+						tooltip="popAsociacion" />
+
+					<button id="btnConsultar" label="Consultar"
+						image="img/globales/16x16/consulta.png" />
+
+					<groupbox mold="3d" width="100%" height="100%">
+						<caption label="Detalle de registros" />
+
+
+						<listbox id="lbxConsultaDepositos" height="300px"
+							mold="paging" pageSize="10" sizedByContent="true" vflex="true"
+							emptyMessage="No hay registros consultados">
+							
+							<listhead>
+								<listheader label="Entidad"
+									sort="auto"  width="200px"/>
+								<listheader label="Tipologia" sort="auto"  width="200px" />
+								<listheader label="Texto" sort="auto"  width="200px" />
+								<listheader label="Tipo fecha"  width="200px" />
+									<listheader label="Eliminar"  width="80px"/>
+							</listhead>
+						</listbox>
+					</groupbox>
+
+
+				</groupbox>
+			</center>
+		</borderlayout>
+		<popup id="popTipologia" width="300px">
+			<hbox align="center" pack="center">
+				<image src="/img/globales/16x16/info.png" />
+				<label
+					value="Haga doble clic sobre un registro para asignar una tipología poliza"
+					style="font-weight: bold" />
+			</hbox>
+		</popup>
+	</window>
+</zk>

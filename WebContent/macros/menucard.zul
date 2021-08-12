@@ -1,0 +1,35 @@
+<div zclass="divCard" id="${arg.id}"
+     style="background: url('${arg.bgCard}'); position: relative; cursor:pointer; user-select: none;"
+     width="430px" height="100px">
+    <hbox>
+        <div width="75px"
+             style='min-width:75px; max-width:75px; position:relative; overflow:hidden'>
+            <image zclass="imgzoom" src="${arg.image}"
+                   width="64px" height="64px"
+                   style="margin-left:10px; margin-top:10px; position:relative;" />
+        </div>
+        <div zclass="boxgrid captionfull" width="330px"
+             style="float:left; position:relative">
+            <vbox style="margin-top:10px" hflex="true" width="330px">
+                <label width="330px" sclass="lblNonSelect" 
+                       style="color:#005179; font-size:14px; font-weight:bold; user-select: none; -o-user-select: none;"
+                       value="${arg.title}" />
+                <separator bar="true" orient="horizontal" width="330px" />
+                <hbox width="330px">
+                    <label style="color:#005179; font-size:12px;" sclass="lblNonSelect">
+                        <attribute name="value">
+                            ${arg.description}
+                        </attribute>
+                    </label>
+                </hbox>
+                <div zclass="cover boxcaption" height="30px" width="340px">
+                    <hbox align="center" pack="center" hflex="true"
+                          vflex="true">
+                        <label sclass="lblNonSelect"
+                               value="Da doble clic para acceder a esta opción." style="color:white" />
+                    </hbox>
+                </div>
+            </vbox>
+        </div>
+    </hbox>
+</div>

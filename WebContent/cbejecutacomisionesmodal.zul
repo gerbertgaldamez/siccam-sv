@@ -1,0 +1,37 @@
+<?page title="Ejecutar proceso de comisiones" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window id="ejecutacomisiones" title="Ejecuta Proceso de comisiones"
+		border="normal" mode="modal" width="30%" height="30%"
+		position="center, center" closable="true"
+		apply="com.terium.siccam.controller.CBEjecutaComisionesController">
+
+		<grid>
+			<columns>
+				<column label="" width="50%" />
+				<column label="" width="50%" />
+			</columns>
+			<rows>
+				<row>
+					<label value="Desde:" />
+					<datebox id="dtbDesde" format="dd/MM/yyyy" />
+
+
+				</row>
+				<row>
+					<label value="Hasta:   " />
+					<datebox id="dtbHasta" format="dd/MM/yyyy" />
+				</row>
+
+
+			</rows>
+		</grid>
+		<div align="center">
+			<toolbar width="100%">
+				<toolbarbutton id="btnEjecutarProcesoComisiones"
+					label="Ejecutar Proceso de comisiones" image="img/globales/24x24/play.png" />
+			</toolbar>
+		</div>
+
+
+	</window>
+</zk>
