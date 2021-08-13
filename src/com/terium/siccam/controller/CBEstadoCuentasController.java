@@ -13,11 +13,10 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -58,6 +57,8 @@ import com.terium.siccam.utils.Tools;
  * @author Juankrlos
  */
 public class CBEstadoCuentasController extends ControladorBase implements SeleccionaCargaCredomaticInfz {
+
+	private static Logger logger = Logger.getLogger(CBEstadoCuentasController.class);
 
 	/**
 	 * 
@@ -156,18 +157,23 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 				return;
 			} else {
 				// validar formato del archivo
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-						"Formato del archivo " + media.getFormat());
+				logger.debug("onClick$btnCargaEstados() - " + "Formato del archivo " + media.getFormat());
+//				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//						"Formato del archivo " + media.getFormat());
 
 				if (media.getFormat().equals(Constantes.XLSX) || media.getFormat().equals(Constantes.XLS)
 						|| media.getFormat().equals(Constantes.TXT) || media.getFormat().equals(Constantes.CSV2)) {
 
 					int id = cmbxEntidad.getSelectedItem().getValue();
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "id que valida banco: ",
-							id + " archivo: " + media.getName() + " Fecha: " + objDaoDelete.obtieneFecha());
+					logger.debug("onClick$btnCargaEstados() - " + "id que valida banco: " + id + " archivo: "
+							+ media.getName() + " Fecha: " + objDaoDelete.obtieneFecha());
+//					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "id que valida banco: ",
+//							id + " archivo: " + media.getName() + " Fecha: " + objDaoDelete.obtieneFecha());
 					objModelDelete = objDaoDelete.validaCarga(id, media.getName(), objDaoDelete.obtieneFecha());
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "Objeto: ",
-							objModelDelete);
+					logger.debug(
+							"onClick$btnCargaEstados() - " + "id que valida banco: " + "Objeto: " + objModelDelete);
+//					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "Objeto: ",
+//							objModelDelete);
 					if (objModelDelete != null) {
 						Messagebox.show(
 								"Ya hay registros para " + cmbxEntidad.getSelectedItem().getLabel()
@@ -206,7 +212,9 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 			else
 				cambiaEstadoMensaje(false, "Archivo desconocido o no cargado");
 
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+			logger.debug("onClick$btnCargaEstados() - Error ", e);
+			// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+			// null, e);
 		}
 
 	}
@@ -223,34 +231,44 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 		try {
 			if ("BANCO NACIONAL".equals(cmbxEntidad.getSelectedItem().getLabel())) {
 				int totalname = media.getName().length();
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-						"extension: " + media.getName().substring((totalname - 3), totalname));
+				logger.debug(
+						"ingresaRegistro() - " + "extension: " + media.getName().substring((totalname - 3), totalname));
+//				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//						"extension: " + media.getName().substring((totalname - 3), totalname));
 				try {
 					if (media == null) {
 						Messagebox.show("Primero debe seleccionar un archivo... ", Constantes.ATENCION, Messagebox.OK,
 								Messagebox.EXCLAMATION);
 						return;
 					} else {
-						Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-								"pasa al siguiente nivel en banco nacional");
+						logger.debug("ingresaRegistro() - " + "pasa al siguiente nivel en banco nacional");
+
+//						Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//								"pasa al siguiente nivel en banco nacional");
 						if (isReloadFile) {
 							if (objModelDelete != null) {
 								eliminaRegistros();
 							} else {
-								Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-										"No hay datos ingresados");
+								logger.debug("ingresaRegistro() - " + "No hay datos ingresados");
+//								Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//										"No hay datos ingresados");
 							}
 							ingresaArchivo();
 							leerArchivoBancoNacional();
 						} else {
-							Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-									"Usuario cancela accion");
+							logger.debug("ingresaRegistro() - " + "Usuario cancela accion");
+//							Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//									"Usuario cancela accion");
 						}
 					}
 				} catch (NumberFormatException e) {
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+					logger.debug("ingresaRegistro() - Error ", e);
+					// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+					// null, e);
 				} catch (ParseException e) {
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+					logger.debug("ingresaRegistro() - Error ", e);
+					// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+					// null, e);
 				}
 
 			} else if (cmbxEntidad.getSelectedItem().getLabel().equals("VISA")) {
@@ -264,30 +282,37 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 
 					} else {
 
-						Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-								"pasa al siguiente nivel");
+						logger.debug("ingresaRegistro() - pasa al siguiente nivel");
+//						Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//								"pasa al siguiente nivel");
 
 						if (isReloadFile) {
 							if (objModelDelete != null) {
 								eliminaRegistros();
 
 							} else {
-								Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-										"No hay datos ingresados");
+								logger.debug("ingresaRegistro() - " + "No hay datos ingresados");
+//								Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//										"No hay datos ingresados");
 							}
 
 							ingresaArchivo();
 							leerArchivoVisa();
 
 						} else {
-							Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-									"Usuario cancela accion");
+							logger.debug("ingresaRegistro() - Usuario cancela accion");
+//							Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//									"Usuario cancela accion");
 						}
 					}
 				} catch (NumberFormatException e) {
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+					logger.debug("ingresaRegistro() - Error ", e);
+					// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+					// null, e);
 				} catch (ParseException e) {
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+					logger.debug("ingresaRegistro() - Error ", e);
+					// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+					// null, e);
 				}
 
 			} else if ("CREDOMATIC".equals(cmbxEntidad.getSelectedItem().getLabel().trim())) {
@@ -296,13 +321,16 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 							Messagebox.EXCLAMATION);
 					return;
 				} else {
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"pasa al siguiente nivel");
+					logger.debug("ingresaRegistro() - pasa al siguiente nivel");
+//					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//							"pasa al siguiente nivel");
 
 					int totalname = media.getName().length();
 
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "extension: ",
-							media.getName().substring((totalname - 3), totalname));
+					logger.debug("ingresaRegistro() - " + "extension: "
+							+ media.getName().substring((totalname - 3), totalname));
+//					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "extension: ",
+//							media.getName().substring((totalname - 3), totalname));
 
 					String format = null;
 
@@ -323,29 +351,35 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 						if (objModelDelete != null) {
 							eliminaRegistros();
 						} else {
-							Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-									"No hay datos ingresados");
+							logger.debug("ingresaRegistro() - " + "No hay datos ingresados");
+//							Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//									"No hay datos ingresados");
 						}
 						ingresaArchivo();
 						if (media.getName().toUpperCase().contains("LIQ")) {
-							Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-									"Encuentra que el archivo es liquidacion");
+							logger.debug("ingresaRegistro() - " + "Encuentra que el archivo es liquidacion");
+//							Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//									"Encuentra que el archivo es liquidacion");
 							leerCredomaticEncabezado(format);
 						} else if (media.getName().toUpperCase().contains("TRX")
 								|| media.getName().toUpperCase().contains("DET")) {
-							Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-									"Encuentra que el archivo es detalle");
+							logger.debug("ingresaRegistro() - " + "Encuentra que el archivo es detalle");
+//							Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//									"Encuentra que el archivo es detalle");
 							leerCredomaticDetalle(format);
 						} else if (misession.getAttribute(Constantes.CONEXION).equals(Tools.SESSION_CR)) {
 							leerCredomaticEncabezado(format);
-							System.out.println("carga para CR " + format);
+							logger.debug("ingresaRegistro() - " + "carga para CR " + format);
 						} else {
-							Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-									"El nombre del archivo no es correcto: " + media.getName());
+							logger.debug("ingresaRegistro() - " + "El nombre del archivo no es correcto: "
+									+ media.getName());
+//							Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//									"El nombre del archivo no es correcto: " + media.getName());
 						}
 					} else {
-						Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-								"Cancela accion...");
+						logger.debug("ingresaRegistro() - " + "Cancela accion...");
+//						Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//								"Cancela accion...");
 					}
 				}
 			} else if (Constantes.EXTRACTO_BANCARIO.equals(cmbxEntidad.getSelectedItem().getLabel().toUpperCase())) {
@@ -354,81 +388,69 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 							Messagebox.EXCLAMATION);
 					return;
 				} else {
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"pasa al siguiente nivel");
-
+					logger.debug("ingresaRegistro() - " + "pasa al siguiente nivel");
 					if (isReloadFile) {
 						if (objModelDelete != null) {
 							eliminaRegistros();
 
 						} else {
-							Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-									"No hay datos ingresados");
+							logger.debug("ingresaRegistro() - " + "No hay datos ingresados");
 						}
 						ingresaArchivo();
 						leerArchivoSociedad();
 					} else {
-						Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "Cancela accion");
+						logger.debug("ingresaRegistro() - " + "Cancela accion");
 					}
 				}
 
 			} else if ("LIQUIDACIONES".equals(cmbxEntidad.getSelectedItem().getLabel())) {
 				int totalname = media.getName().length();
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-						"extension: " + media.getName().substring((totalname - 3), totalname));
-				
+				logger.debug(
+						"ingresaRegistro() - " + "extension: " + media.getName().substring((totalname - 3), totalname));
 				try {
 					if (media == null) {
 						Messagebox.show("Primero debe seleccionar un archivo... ", Constantes.ATENCION, Messagebox.OK,
 								Messagebox.EXCLAMATION);
-						System.out.println("entra al if donde se valida la media");
+						logger.debug("ingresaRegistro() - " + " media is null ");
 						return;
 					} else {
-						Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-								"pasa al siguiente nivel en cierre caja");
+						logger.debug("ingresaRegistro() - " + "pasa al siguiente nivel en cierre caja");
 						if (isReloadFile) {
 							if (objModelDelete != null) {
 								eliminaRegistros();
 							} else {
-								Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-										"No hay datos ingresados");
-								
+								logger.debug("ingresaRegistro() - " + "No hay datos ingresados");
 							}
-							
 							ingresaArchivo();
 							leerArchivoReporteCierreCaja();
 						} else {
-							Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-									"Usuario cancela accion");
+							logger.debug("ingresaRegistro() - " + "Usuario cancela accion");
 						}
 					}
 				} catch (NumberFormatException e) {
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+					logger.error("ingresaRegistro() - Error ", e);
 				} catch (ParseException e) {
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
-
+					logger.error("ingresaRegistro() - Error ", e);
 				}
 			} else if (cmbxEntidad.getSelectedItem().getLabel().toUpperCase()
 					.equals("SISTEMA COMERCIAL".toUpperCase())) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "SISTEMA COMERCIAL");
+				logger.debug("ingresaRegistro() - SISTEMA COMERCIAL");
 				if (media == null) {
 					Messagebox.show("Primero debe seleccionar un archivo... ", Constantes.ATENCION, Messagebox.OK,
 							Messagebox.EXCLAMATION);
 					return;
 				} else {
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"pasa al siguiente nivel");
+					logger.debug("ingresaRegistro() - pasa al siguiente nivel");
 					if (isReloadFile) {
 						if (objModelDelete != null) {
 							eliminaRegistros(); // eliminar registros previamente cargados
 						} else {
-							Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-									"No hay datos ingresados");
+							logger.debug("ingresaRegistro() - No hay datos ingresados");
 						}
 						ingresaArchivo();
 						leerArchivoSistemaComercial();
 					} else {
-						Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "Cancela accion");
+						logger.debug("ingresaRegistro() - Cancela accion");
 					}
 
 				}
@@ -442,7 +464,8 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 			else
 				cambiaEstadoMensaje(false, "Archivo desconocido o no cargado");
 
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+			logger.error("ingresaRegistro() - error ", e);
+
 		}
 	}
 
@@ -454,7 +477,6 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 	 * @author Omar Gomez Sistema Comercial
 	 */
 	public void eliminaRegistros() {
-
 		int idarchivo = cmbxEntidad.getSelectedItem().getValue();
 		if (cmbxEntidad.getSelectedItem().getLabel().toUpperCase().equals("BANCO NACIONAL".toUpperCase())) {
 			objDaoDelete.eliminarRegistros(objModelDelete.getCbestadocuentaarchivosid(), idarchivo, media.getName(),
@@ -479,29 +501,22 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 					CBEstadoCuentaDAO.DELETE_REGISTROS_ARCHIVO);
 
 			if (media.getName().toUpperCase().contains("LIQ")) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-						"Elimina liquidacion credo");
-
+				logger.debug("eliminaRegistros() - Elimina liquidacion credo");
 				objDaoDelete.eliminarRegistros(objModelDelete.getCbestadocuentaarchivosid(), idarchivo, media.getName(),
 						CBEstadoCuentaDAO.DELETE_REGISTROS_CREDO);
 
 			} else if (media.getName().toUpperCase().contains("TRX") || media.getName().toUpperCase().contains("DET")) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "Elimina detalle credo");
-
+				logger.debug("eliminaRegistros() - Elimina liquidacion credo");
 				objDaoDelete.eliminarRegistros(objModelDelete.getCbestadocuentaarchivosid(), idarchivo, media.getName(),
 						CBEstadoCuentaDAO.DELETE_REGISTROS_CREDODET);
 
 			} else if (misession.getAttribute(Constantes.CONEXION).equals(Tools.SESSION_CR)) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-						"Elimina liquidacion credo");
-
+				logger.debug("eliminaRegistros() - Elimina liquidacion credo");
 				objDaoDelete.eliminarRegistros(objModelDelete.getCbestadocuentaarchivosid(), idarchivo, media.getName(),
 						CBEstadoCuentaDAO.DELETE_REGISTROS_CREDO);
 
 			} else {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-						"El nombre del archivo no es correcto: " + media.getName());
-
+				logger.debug("eliminaRegistros() - " + "El nombre del archivo no es correcto: " + media.getName());
 			}
 
 		} else if (Constantes.EXTRACTO_BANCARIO.toUpperCase()
@@ -516,15 +531,15 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 			objDaoDelete.actualizaLiquidacionDetalle(idArchivo);
 
 		} else if (cmbxEntidad.getSelectedItem().getLabel().toUpperCase().equals("SISTEMA COMERCIAL".toUpperCase())) {
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "eliminar registros "
-					+ objModelDelete.getCbestadocuentaarchivosid() + " " + idarchivo + " " + media.getName());
+			logger.debug("eliminaRegistros() - " + "eliminar registros " + objModelDelete.getCbestadocuentaarchivosid()
+					+ " " + idarchivo + " " + media.getName());
 
 			objDaoDelete.eliminarRegistros(objModelDelete.getCbestadocuentaarchivosid(), idarchivo, media.getName(),
 					CBEstadoCuentaDAO.DELETE_REGISTROS_ARCHIVO);
 
 			objDaoDelete.eliminarRegistros(objModelDelete.getCbestadocuentaarchivosid(), idarchivo, media.getName(),
 					CBEstadoCuentaDAO.DELETE_REGISTROS_SYS_COMERCIAL);
-		//agregado por Gerbert	
+			// agregado por Gerbert
 		} else if (cmbxEntidad.getSelectedItem().getLabel().toUpperCase().equals("LIQUIDACIONES".toUpperCase())) {
 			objDaoDelete.eliminarRegistros(objModelDelete.getCbestadocuentaarchivosid(), idarchivo, media.getName(),
 					CBEstadoCuentaDAO.DELETE_REGISTROS_ARCHIVO);
@@ -542,8 +557,7 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 
 		int idBanco = cmbxEntidad.getSelectedItem().getValue();
 
-		Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-				"Id obtenido: " + idArchivo + " id banco: " + idBanco);
+		logger.debug("ingresaArchivo() - " + "Id obtenido: " + idArchivo + " id banco: " + idBanco);
 
 		objModel.setCbestadocuentaarchivosid(idArchivo);
 		objModel.setCbestadocuentaconfid(idBanco);
@@ -552,9 +566,10 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 		objModel.setUsuario(getUsuario());
 
 		if (objDao.insertTableArchivos(objModel) > 0)
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "Inserta archivo");
+			logger.debug("ingresaArchivo() - " + "Inserta archivo");
 		else
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "No inserta archivo");
+			logger.debug("ingresaArchivo() - " + "No inserta archivo");
+
 	}
 
 	/**
@@ -619,35 +634,36 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 			misession.setAttribute("isReloadFile", isReloadFile);
 			misession.setAttribute("listCredomatic", listCredomatic);
 			misession.setAttribute("interfaceEstadoCuenta", CBEstadoCuentasController.this);
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-					"datos recibidos de la sesion user " + getUsuario());
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-					"datos recibidos de la sesion nombreArchivoCredomatic " + nombreArchivoCredomatic);
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-					"datos recibidos de la sesion idArchivo " + idArchivo);
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-					"datos recibidos de la sesion media " + media);
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-					"datos recibidos de la sesion isReloadFile " + isReloadFile);
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-					"datos recibidos de la sesion listCredomatic " + listCredomatic.size());
+			logger.debug("leerCredomaticEncabezado - " + "datos recibidos de la sesion user " + getUsuario());
+			logger.debug("leerCredomaticEncabezado - " + "datos recibidos de la sesion nombreArchivoCredomatic "
+					+ nombreArchivoCredomatic);
+			logger.debug("leerCredomaticEncabezado - " + "datos recibidos de la sesion idArchivo " + idArchivo);
+			logger.debug("leerCredomaticEncabezado - " + "datos recibidos de la sesion media " + media);
+			logger.debug("leerCredomaticEncabezado - " + "datos recibidos de la sesion isReloadFile " + isReloadFile);
+			logger.debug("datos recibidos de la sesion listCredomatic " + listCredomatic.size());
+
 			if (misession.getAttribute("conexion").equals(Tools.SESSION_SV)) {
-				cbutil.leerCredomaticEncabezado(format);
+				logger.debug("leerCredomaticEncabezado()" + " - SESSION : " + Tools.SESSION_SV);
+				cbutil.leerCredomaticEncabezado(format,Tools.SESSION_SV);
 
 			}
 			if (misession.getAttribute(Constantes.CONEXION).equals(Tools.SESSION_NI)) {
-				cbutil.leerCredomaticEncabezado(format);
+				logger.debug("leerCredomaticEncabezado()" + " - SESSION : " + Tools.SESSION_NI);
+				cbutil.leerCredomaticEncabezado(format,Tools.SESSION_NI);
 
 			}
 			if (misession.getAttribute(Constantes.CONEXION).equals(Tools.SESSION_PA)) {
-				cbutil.leerCredomaticEncabezado(format);
+				logger.debug("leerCredomaticEncabezado()" + " - SESSION : " + Tools.SESSION_PA);
+				cbutil.leerCredomaticEncabezado(format,Tools.SESSION_PA);
 
 			}
 			if (misession.getAttribute(Constantes.CONEXION).equals(Tools.SESSION_CR)) {
+				logger.debug("leerCredomaticEncabezado()" + " - SESSION : " + Tools.SESSION_CR);
 				cbutil.leerCredomaticEncabezadoCR(format);
 
 			}
 			if (misession.getAttribute(Constantes.CONEXION).equals(Tools.SESSION_GT)) {
+				logger.debug("leerCredomaticEncabezado()" + " - SESSION : " + Tools.SESSION_GT);
 				cbutil.leerCredomaticEncabezadoGT(format);
 
 			}
@@ -731,7 +747,7 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 						Messagebox.EXCLAMATION);
 				return;
 			}
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "id idBAC: " + idBAC);
+			logger.debug("leerArchivoBancoNacional() - " + "id idBAC: " + idBAC);
 			try {
 				Reader read = media.getReaderData();
 				BufferedReader reader = new BufferedReader(read);
@@ -742,8 +758,7 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 				while ((line = reader.readLine()) != null) {
 					fila++;
 					objVisa = new CBEstadoCuentasModel();
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"Leyendo fila: " + line);
+					logger.debug("leerArchivoBancoNacional() " + "Leyendo fila: " + line);
 					if (line.startsWith(UTF8_BOM)) {
 						line = line.substring(1);
 					}
@@ -856,8 +871,8 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 						objVisa.setUsuario(user);
 					}
 					celda = 0;
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"fecha a validar en isdate " + objVisa.getFechatransaccion());
+					logger.debug(
+							"leerArchivoBancoNacional() - fecha a validar en isdate " + objVisa.getFechatransaccion());
 					if (isDate(objVisa.getFechatransaccion())) {
 						listVisa.add(objVisa);
 					}
@@ -869,19 +884,16 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 					return;
 				}
 				if (objDao.insertCuentasBancoNacional(listVisa)) {
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"Ejecuta primer insert visa");
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"lista en el control envia " + listVisa.size());
+					logger.debug("leerArchivoBancoNacional() - " + "Ejecuta primer insert visa");
+					logger.debug("leerArchivoBancoNacional() - " + "lista en el control envia " + listVisa.size());
 					Messagebox.show(
 							"Los datos han sido ingresados de forma correcta para el archivo: " + media.getName(),
 							Constantes.ATENCION, Messagebox.OK, Messagebox.INFORMATION);
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"inserta BANCO NACIONAL ==> " + objDao.ejecutaSPBancoNacional());
+					logger.debug("leerArchivoBancoNacional() - " + "inserta BANCO NACIONAL ==> "
+							+ objDao.ejecutaSPBancoNacional());
 					cambiaEstadoMensaje(true, media.getName());
 				} else {
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"No Ejecuta BANCO NACIONAL");
+					logger.debug("leerArchivoBancoNacional() - " + "No Ejecuta BANCO NACIONAL");
 					Messagebox.show("Error al cargar el archivo seleccionado, favor validar", Constantes.ATENCION,
 							Messagebox.OK, Messagebox.EXCLAMATION);
 					cambiaEstadoMensaje(false, media.getName());
@@ -889,18 +901,16 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 				listVisa.clear();
 				isReloadFile = false;
 			} catch (IOException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-						"Error ioException: " + e.getMessage());
+				logger.error("leerArchivoBancoNacional() - Error ", e);
 			} catch (IllegalArgumentException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-						"Archivo con errores leyendo como streemData: " + e.getMessage());
+				logger.error("leerArchivoBancoNacional() - Error ", e);
 				Messagebox.show("El archivo cargado contiene errores o esta daOado, favor validarlo",
 						Constantes.ATENCION, Messagebox.OK, Messagebox.EXCLAMATION);
 			}
 		} else {
 			Messagebox.show("El formato del archivo no es valido, porfavor validar ", Constantes.ATENCION,
 					Messagebox.OK, Messagebox.EXCLAMATION);
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "el formato no es valido: ");
+			logger.error("leerArchivoBancoNacional() - el formato no es valido");
 		}
 	}
 
@@ -930,7 +940,7 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 						Messagebox.EXCLAMATION);
 				return;
 			}
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "id idBAC: " + idBAC);
+			logger.debug("leerArchivoVisa() - " + "id idBAC: " + idBAC);
 
 			// int fila = 0;
 			String registro = "";
@@ -1109,15 +1119,14 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 							if (isDate(objVisa.getFechatransaccion())) {
 								listVisaDet.add(objVisa);
 							} else {
-								Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-										"No agrega detalle: " + objVisa.getAfilicacion());
+								logger.debug(
+										"leerArchivoVisa()() - " + "No agrega detalle: " + objVisa.getAfilicacion());
 							}
 						} else {
 							if (isDate(objVisa.getFechatransaccion())) {
 								listVisa.add(objVisa);
 							} else {
-								Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-										"No agrega visa normal");
+								logger.debug("leerArchivoVisa() - " + "No agrega visa normal");
 							}
 						}
 					}
@@ -1127,20 +1136,16 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 				CBEstadoCuentaDAO objDao = new CBEstadoCuentaDAO();
 				boolean insert = objDao.insertCuentasVisa(listVisa);
 				if (insert) {
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"Ejecuta primer insert visa");
+					logger.debug("leerArchivoVisa() - " + "Ejecuta primer insert visa");
 				} else {
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"No Ejecuta primer insert visa");
+					logger.debug("leerArchivoVisa() - " + "No Ejecuta primer insert visa");
 				}
 				if (insert && objDao.insertCuentasVisaDet(listVisaDet)) {
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"ejecuta segundo insert");
+					logger.debug("leerArchivoVisa() - " + "ejecuta segundo insert");
 					Messagebox.show(
 							"Los datos han sido ingresados de forma correcta para el archivo: " + media.getName(),
 							Constantes.ATENCION, Messagebox.OK, Messagebox.INFORMATION);
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"inserta visa ==> " + objDao.ejecutaSPVisa());
+					logger.debug("leerArchivoVisa() - " + "inserta visa ==> " + objDao.ejecutaSPVisa());
 					cambiaEstadoMensaje(true, media.getName());
 				} else {
 					Messagebox.show("Error al cargar el archivo seleccionado, favor validar", Constantes.ATENCION,
@@ -1153,11 +1158,11 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 				conDet = 0;
 				isReloadFile = false;
 			} catch (InvalidFormatException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				logger.error("leerArchivoVisa()() - Error ", e);
 			} catch (IOException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				logger.error("leerArchivoVisa()() - Error ", e);
 			} catch (IllegalArgumentException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				logger.error("leerArchivoVisa()() - Error ", e);
 				Messagebox.show("El archivo cargado contiene errores o esta daOado, favor validarlo",
 						Constantes.ATENCION, Messagebox.OK, Messagebox.EXCLAMATION);
 			}
@@ -1174,7 +1179,7 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 						Messagebox.EXCLAMATION);
 				return;
 			}
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "id idBAC: " + idBAC);
+			logger.debug("leerArchivoVisa() - " + "id idBAC: " + idBAC);
 
 			// int fila = 0;
 			String registro = "";
@@ -1355,8 +1360,8 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 								// "+objVisa.getAfilicacion()+" fecha:
 								// "+objVisa.getFechacierre());
 							} else {
-								Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-										"No agrega detalle");
+								logger.debug("No agrega detalle");
+
 							}
 						} else {
 							if (isDate(objVisa.getFechatransaccion())) {
@@ -1364,8 +1369,7 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 								// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,"agrega
 								// visa normal");
 							} else {
-								Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-										"No agrega visa normal");
+								logger.debug("No agrega visa normal");
 							}
 						}
 					}
@@ -1375,20 +1379,17 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 				CBEstadoCuentaDAO objDao = new CBEstadoCuentaDAO();
 				boolean insert = objDao.insertCuentasVisa(listVisa);
 				if (insert) {
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"Ejecuta primer insert visa");
+					logger.debug("leerArchivoVisa() - " + "Ejecuta primer insert visa");
 				} else {
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"No Ejecuta primer insert visa");
+					logger.debug("leerArchivoVisa() - " + "No Ejecuta primer insert visa");
+
 				}
 				if (insert && objDao.insertCuentasVisaDet(listVisaDet)) {
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"ejecuta segundo insert");
+					logger.debug("leerArchivoVisa() - " + "ejecuta segundo insert");
 					Messagebox.show(
 							"Los datos han sido ingresados de forma correcta para el archivo: " + media.getName(),
 							Constantes.ATENCION, Messagebox.OK, Messagebox.INFORMATION);
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"inserta visa ==> " + objDao.ejecutaSPVisa());
+					logger.debug("leerArchivoVisa() - " + "inserta visa ==> " + objDao.ejecutaSPVisa());
 					cambiaEstadoMensaje(true, media.getName());
 				} else {
 					Messagebox.show(
@@ -1405,11 +1406,11 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 				conDet = 0;
 				isReloadFile = false;
 			} catch (InvalidFormatException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				logger.error("leerArchivoVisa() - Error ", e);
 			} catch (IOException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				logger.error("leerArchivoVisa() - Error ", e);
 			} catch (IllegalArgumentException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				logger.error("leerArchivoVisa() - Error ", e);
 				Messagebox.show("El archivo cargado contiene errores o esta daOado, favor validarlo",
 						Constantes.ATENCION, Messagebox.OK, Messagebox.EXCLAMATION);
 			}
@@ -1633,10 +1634,9 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 					// DESCOMENTA OVIDIO SANTOS 13072017
 					boolean ex = objDao.ejecutaSPExtracto();
 
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"****************** EJECUTA SP  ===> ");
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"inserta Sociedad ===> " + ex);
+					logger.debug("leerArchivoSociedad() - EJECUTA SP  ===> ");
+					logger.debug("leerArchivoSociedad() - inserta Sociedad ===> ");
+
 				} else {
 					Messagebox.show("Error al cargar archivo seleccionado, favor validar", Constantes.ATENCION,
 							Messagebox.OK, Messagebox.EXCLAMATION);
@@ -1651,15 +1651,12 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 				Messagebox.show("Error al cargar archivo seleccionado, favor validar", Constantes.ATENCION,
 						Messagebox.OK, Messagebox.EXCLAMATION);
 				cambiaEstadoMensaje(false, media.getName());
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				logger.error("leerArchivoSociedad() - Error  ", e);
 			} catch (Exception e) {
 				Messagebox.show("Se ha producido un error al cargar el archivo.", Constantes.ATENCION, Messagebox.OK,
 						Messagebox.ERROR);
 				cambiaEstadoMensaje(false, media.getName());
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-						"Se ha producido un error = " + e.getMessage());
-
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				logger.error("leerArchivoSociedad() - Error  ", e);
 			}
 		} else {
 			Messagebox.show("El formato del archivo no es correcto, favor seleccionar otro!", Constantes.ATENCION,
@@ -1690,7 +1687,7 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 						Messagebox.EXCLAMATION);
 				return;
 			}
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "id idBAC: " + idBAC);
+			logger.debug("id idBAC: " + idBAC);
 
 			// int fila = 0;
 			String registro = "";
@@ -1800,11 +1797,11 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 				listSociedad.clear();
 				isReloadFile = false;
 			} catch (InvalidFormatException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				logger.error("leerArchivoSociedad2() - Error ", e);
 			} catch (IOException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				logger.error("leerArchivoSociedad2() - Error ", e);
 			} catch (IllegalArgumentException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				logger.error("leerArchivoSociedad2() - Error ", e);
 				Messagebox.show("El archivo cargado contiene errores o esta daOado, favor validarlo",
 						Constantes.ATENCION, Messagebox.OK, Messagebox.EXCLAMATION);
 
@@ -1822,7 +1819,8 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 						Messagebox.EXCLAMATION);
 				return;
 			}
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "id idBAC: " + idBAC);
+
+			logger.debug("leerArchivoSociedad2() - " + "id idBAC: " + idBAC);
 
 			String registro = "";
 			try {
@@ -1918,7 +1916,9 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 					Messagebox.show(
 							"Los datos para: " + media.getName() + " han sido ingresados de forma " + "correcta",
 							Constantes.ATENCION, Messagebox.OK, Messagebox.INFORMATION);
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "inserta Sociedad");
+
+					logger.debug("inserta Sociedad");
+
 				} else {
 					Messagebox.show("No se a cargado la informacion de manera correcta, favor validar el " + "archivo "
 							+ media.getName(), Constantes.ATENCION, Messagebox.OK, Messagebox.INFORMATION);
@@ -1928,13 +1928,13 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 				cambiaEstadoMensaje(true, media.getName());
 				isReloadFile = false;
 			} catch (IOException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				logger.error(" error : ", e);
 			} catch (IllegalArgumentException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				logger.error(" error : ", e);
 				Messagebox.show("El archivo cargado contiene errores o esta daOado, favor validarlo",
 						Constantes.ATENCION, Messagebox.OK, Messagebox.EXCLAMATION);
 			} catch (InvalidFormatException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				logger.error(" error : ", e);
 			}
 
 		} else {
@@ -2132,9 +2132,7 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 				 */
 
 				if (objComercial != null) {
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"Fecha de pagos de archivo cargado = " + objComercial.getFecEfectividad());
-
+					logger.debug("Fecha de pagos de archivo cargado = " + objComercial.getFecEfectividad());
 					Runnable hiloLiquidaciones = new CBProcesaLiquidacionesThread(objComercial.getFecEfectividad(), 1,
 							usuario);
 					Thread hilo = new Thread(hiloLiquidaciones);
@@ -2150,7 +2148,7 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 				Messagebox.show("Error al cargar archivo seleccionado, favor validar", Constantes.ATENCION,
 						Messagebox.OK, Messagebox.EXCLAMATION);
 				cambiaEstadoMensaje(false, media.getName());
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				logger.error(" Error ", e);
 			}
 		} else {
 			Messagebox.show("El formato del archivo no es correcto, favor seleccionar otro!", Constantes.ATENCION,
@@ -2181,7 +2179,7 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 						Messagebox.EXCLAMATION);
 				return;
 			}
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "id idBAC: " + idBAC);
+			logger.debug("id idBAC: " + idBAC);
 
 			// int fila = 0;
 			String registro = "";
@@ -2289,11 +2287,11 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 				listCierreCaja.clear();
 				isReloadFile = false;
 			} catch (InvalidFormatException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				logger.error("Error : ", e);
 			} catch (IOException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				logger.error("Error : ", e);
 			} catch (IllegalArgumentException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				logger.error("Error : ", e);
 				Messagebox.show("El archivo cargado contiene errores o esta daOado, favor validarlo",
 						Constantes.ATENCION, Messagebox.OK, Messagebox.EXCLAMATION);
 
@@ -2312,7 +2310,7 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 						Messagebox.EXCLAMATION);
 				return;
 			}
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "id idBAC: " + idBAC);
+			logger.debug("id idBAC: " + idBAC);
 
 			String registro = "";
 			try {
@@ -2343,19 +2341,19 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 								registro = "  ";
 							} else {
 								switch (row.getCell(celda).getCellType()) {
-									case Cell.CELL_TYPE_NUMERIC:
-										if (DateUtil.isCellDateFormatted(row.getCell(celda))) {
-											registro = df.format(row.getCell(celda).getDateCellValue());
-										} else {
-											registro = formatter.formatCellValue(row.getCell(celda));
-										}
-										break;
-									case Cell.CELL_TYPE_STRING:
+								case Cell.CELL_TYPE_NUMERIC:
+									if (DateUtil.isCellDateFormatted(row.getCell(celda))) {
+										registro = df.format(row.getCell(celda).getDateCellValue());
+									} else {
 										registro = formatter.formatCellValue(row.getCell(celda));
-										break;
-								/*	case Cell.:
-										registro = formatter.formatCellValue(row.getCell(celda));
-										break;*/
+									}
+									break;
+								case Cell.CELL_TYPE_STRING:
+									registro = formatter.formatCellValue(row.getCell(celda));
+									break;
+								/*
+								 * case Cell.: registro = formatter.formatCellValue(row.getCell(celda)); break;
+								 */
 								}
 
 								objReporte.setCbestadocuentaconfid(idBAC);
@@ -2440,7 +2438,8 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 					Messagebox.show(
 							"Los datos para: " + media.getName() + " han sido ingresados de forma " + "correcta",
 							Constantes.ATENCION, Messagebox.OK, Messagebox.INFORMATION);
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "inserta Sociedad");
+					logger.debug("inserta Sociedad");
+
 				} else {
 					Messagebox.show("No se a cargado la informacion de manera correcta, favor validar el " + "archivo "
 							+ media.getName(), Constantes.ATENCION, Messagebox.OK, Messagebox.INFORMATION);
@@ -2450,13 +2449,13 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 				cambiaEstadoMensaje(true, media.getName());
 				isReloadFile = false;
 			} catch (IOException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				logger.error("Error : ", e);
 			} catch (IllegalArgumentException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				logger.error("Error : ", e);
 				Messagebox.show("El archivo cargado contiene errores o esta daOado, favor validarlo",
 						Constantes.ATENCION, Messagebox.OK, Messagebox.EXCLAMATION);
 			} catch (InvalidFormatException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				logger.error("Error : ", e);
 			}
 
 		} else {
@@ -2490,10 +2489,10 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 			fec = format.parse(fecha);
 			return true;
 		} catch (ParseException e) {
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+			logger.error("Error : ", e);
 			return false;
 		} catch (NullPointerException e) {
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+			logger.error("Error : ", e);
 			return false;
 		}
 	}
@@ -2511,12 +2510,10 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 			// parseada: " + fec);
 			return true;
 		} catch (ParseException e) {
-			// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,e.getMessage());
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "fecha con error: " + fecha);
+			logger.error("isDateCredo() - Error : ", e);
 			return false;
 		} catch (NullPointerException e) {
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, e.getMessage());
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "fecha null: " + fecha);
+			logger.error("isDateCredo() - Error : ", e);
 			return false;
 		}
 	}
@@ -2530,17 +2527,12 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 		Date fec;
 		try {
 			fec = format.parse(fecha);
-			// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,"fecha
-			// parseada: " + fec);
 			return true;
 		} catch (ParseException e) {
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
-			// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,"fecha
-			// con error: "+fecha);
+			logger.error("isDateCredoEncabezado() - Error : ", e);
 			return false;
 		} catch (NullPointerException e) {
-			// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,e.getMessage());
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+			logger.error("isDateCredoEncabezado() - Error : ", e);
 			return false;
 		}
 	}
@@ -2551,13 +2543,9 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 	public String changeDate(String fecha) {
 		String result = "";
 		try {
-			// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,"fecha:
-			// "+fecha);
 			result = fecha.replace(".", "/");
-			// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,"result:
-			// "+result);
 		} catch (Exception e) {
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+			logger.error("isDateCredoEncabezado() - Error : ", e);
 		}
 		return result;
 	}
@@ -2570,7 +2558,7 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 			lblMensaje.setValue("Archivo cargado correctamente: " + mensaje);
 			lblMensaje.setStyle("color:green;");
 			imgEstatus.setSrc("img/ok.png");
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO, "cambia estado");
+			logger.debug("cambiaEstadoMensaje() - cambia estado");
 		} else {
 			lblMensaje.setValue("Ocurrio un error: " + mensaje);
 			lblMensaje.setStyle("color:red;");
@@ -2607,16 +2595,13 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 		imgEstatus = param6;
 
 		if (media.getName().toUpperCase().contains("LIQ")) {
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-					"Encuentra que el archivo es liquidacion");
+			logger.debug("seleccionaVdos() - " + "Encuentra que el archivo es liquidacion");
 			leerCredomaticEncabezado(param4);
 		} else if (media.getName().toUpperCase().contains("TRX") || media.getName().toUpperCase().contains("DET")) {
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-					"Encuentra que el archivo es detalle");
+			logger.debug("seleccionaVdos() - " + "Encuentra que el archivo es detalle");
 			leerCredomaticDetalle(param4);
 		} else {
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-					"El nombre del archivo no es correcto: " + media.getName());
+			logger.debug("seleccionaVdos() - " + "El nombre del archivo no es correcto: " + media.getName());
 		}
 	}
 

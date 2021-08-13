@@ -4,17 +4,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -23,6 +24,7 @@ import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -37,7 +39,12 @@ import com.terium.siccam.controller.CBEstadoCuentasController;
 import com.terium.siccam.dao.CBEstadoCuentaDAO;
 import com.terium.siccam.model.CBEstadoCuentasModel;
 
+import groovyjarjarasm.asm.commons.Method;
+
 public class CBEstadoCuentaUtils extends ControladorBase {
+
+	private static Logger log = Logger.getLogger(CBEstadoCuentaUtils.class);
+
 	/**
 	 * 
 	 */
@@ -55,6 +62,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 	// carga estado cuenta credomatic sv
 	@SuppressWarnings("unchecked")
 	public void leerArchivoCredo(String format) {
+		String methodName = "leerArchivoCredo()";
 		CBEstadoCuentasController fpu = new CBEstadoCuentasController();
 		user = (String) misession.getAttribute("user");
 		nombreArchivoCredomatic = (String) misession.getAttribute("nombreArchivoCredomatic");
@@ -66,8 +74,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 
 		CBEstadoCuentasModel objCredo = null;
 
-		Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-				"id idBAC: " + idBAC + " formato: " + media.getFormat());
+		log.debug(methodName + " - id idBAC: " + idBAC + " formato: " + media.getFormat());
 
 		if ("xlsx".equals(format)) {
 			// int fila = 0;
@@ -152,11 +159,17 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				isEnd = false;
 				isReloadFile = false;
 			} catch (InvalidFormatException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				log.debug(methodName + "Archivo con errores", e);
+				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+				// null, e);
 			} catch (IOException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				log.debug(methodName + "Archivo con errores", e);
+				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+				// null, e);
 			} catch (IllegalArgumentException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				log.debug(methodName + "Archivo con errores", e);
+				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+				// null, e);
 				Messagebox.show("El archivo cargado contiene errores o esta danado, favor validarlo", "ATENCION",
 						Messagebox.OK, Messagebox.EXCLAMATION);
 
@@ -221,8 +234,9 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 					Messagebox.show(
 							"Los datos han sido ingresados de forma correcta para el archivo: " + media.getName(),
 							"ATENCION", Messagebox.OK, Messagebox.INFORMATION);
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"inserta credomatic ==>: " + objDao.ejecutaSPCredomatic());
+					log.debug(methodName + "inserta credomatic ==>: " + objDao.ejecutaSPCredomatic());
+//					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//							"inserta credomatic ==>: " + objDao.ejecutaSPCredomatic());
 				} else {
 					fpu.cambiaEstadoMensaje(false, media.getName());
 					Messagebox.show("Ocurrio un error en la carga del archivo, favor intentarlo nuevamente...",
@@ -233,7 +247,9 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				fila = 0;
 				read.close();
 			} catch (IOException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				log.debug(methodName + " error ", e);
+				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+				// null, e);
 			}
 		} else if ("xls".equals(format)) {
 			// int fila = 0;
@@ -304,8 +320,9 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 					Messagebox.show(
 							"Los datos han sido ingresados de forma correcta para el archivo: " + media.getName(),
 							"ATENCION", Messagebox.OK, Messagebox.INFORMATION);
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"inserta credomatic ==>: " + objDao.ejecutaSPCredomatic());
+					log.debug(methodName + "inserta credomatic ==>: " + objDao.ejecutaSPCredomatic());
+//					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//							"inserta credomatic ==>: " + objDao.ejecutaSPCredomatic());
 				} else {
 					fpu.cambiaEstadoMensaje(false, media.getName());
 					Messagebox.show("Ocurrio un error en la carga del archivo, favor intentarlo nuevamente...",
@@ -315,11 +332,17 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				isEnd = false;
 				isReloadFile = false;
 			} catch (InvalidFormatException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				log.debug(methodName + " Error ", e);
+				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+				// null, e);
 			} catch (IOException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				log.debug(methodName + " Error ", e);
+				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+				// null, e);
 			} catch (IllegalArgumentException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				log.debug(methodName + " Error ", e);
+				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+				// null, e);
 				Messagebox.show("El archivo cargado contiene errores o esta daOado, favor validarlo", "ATENCION",
 						Messagebox.OK, Messagebox.EXCLAMATION);
 			}
@@ -334,10 +357,12 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 	 * Obtenemos los archivos de tipo Liquidacion (Encabezado)
 	 * 
 	 * @param format
+	 * @param session
 	 */
 	// modificado Ovidio Santos 21042017
 	@SuppressWarnings({ "unchecked", "unchecked" })
-	public void leerCredomaticEncabezado(String format) {
+	public void leerCredomaticEncabezado(String format, String session) {
+		String methodName = "leerCredomaticEncabezado()";
 		CBEstadoCuentasController fpu = new CBEstadoCuentasController();
 
 		user = (String) misession.getAttribute("user");
@@ -356,9 +381,20 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 		System.out.println("datos recibidos de la sesion media " + media);
 		System.out.println("datos recibidos de la sesion isReloadFile " + isReloadFile);
 		System.out.println("datos recibidos de la sesion listCredomatic " + listCredomatic.size());
-		Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-				"id idBAC: " + idBAC + " formato: " + media.getFormat());
+		log.debug(methodName + " - id idBAC: " + idBAC + " formato: " + media.getFormat());
+//		Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//				"id idBAC: " + idBAC + " formato: " + media.getFormat());
 		if ("xls".equals(media.getFormat())) {
+			if (Tools.SESSION_SV.equals(session)) {
+				try {
+					leerCredomaticEncabezadoNew(user, nombreArchivoCredomatic, media, idBAC, isReloadFile,
+							listCredomatic, idArchivo, fpu, objCredo);
+				} catch (Exception e) {
+					log.debug("leerCredomaticEncabezadoCR() - Error ", e);
+				}
+				return;
+			}
+
 			String registro = "";
 			DateFormat df = new SimpleDateFormat("yyyyMMdd");
 			DataFormatter formatter = new DataFormatter();
@@ -505,8 +541,9 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 					// System.out.println("inserta credomatic ==>: " +
 					// objDao.ejecutaSPCredomatic());
 					boolean ex = objDao.ejecutaSPCredomatic();
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"inserta credomatic encabezado ==> " + ex);
+					log.debug(methodName + "inserta credomatic encabezado ==> " + ex);
+//					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//							"inserta credomatic encabezado ==> " + ex);
 				} else {
 					fpu = (CBEstadoCuentasController) misession.getAttribute("interfaceEstadoCuenta");
 					fpu.cambiaEstadoMensaje(false, media.getName());
@@ -518,16 +555,19 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				fpu.cambiaEstadoMensaje(true, media.getName());
 				isReloadFile = false;
 			} catch (IOException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				log.debug(methodName + " error " + e);
+//				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
 
 			} catch (InvalidFormatException e) {
-
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				log.debug(methodName + " error " + e);
+				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+				// null, e);
 			}
 
 		} else {
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-					"el formato no es valido: " + format);
+			log.debug(methodName + "el formato no es valido: " + format);
+//			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//					"el formato no es valido: " + format);
 		}
 	}
 
@@ -539,6 +579,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 	// modificado Ovidio Santos 24/04/2017
 	@SuppressWarnings("unchecked")
 	public void leerCredomaticDetalle(String format) {
+		String methodName = "leerCredomaticDetalle()";
 		CBEstadoCuentasModel objCredo = null;
 		CBEstadoCuentasController fpu = new CBEstadoCuentasController();
 
@@ -550,8 +591,9 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 		isReloadFile = (Boolean) misession.getAttribute("isReloadFile");
 		listCredomatic = (List<CBEstadoCuentasModel>) misession.getAttribute("listCredomatic");
 
-		Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-				"id idBAC: " + idBAC + " formato: " + media.getFormat());
+		log.debug(methodName + "id idBAC: " + idBAC + " formato: " + media.getFormat());
+//		Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//				"id idBAC: " + idBAC + " formato: " + media.getFormat());
 		if ("xls".equals(media.getFormat())) {
 			String registro = "";
 			DateFormat df = new SimpleDateFormat("dd/MM/yy");
@@ -672,8 +714,9 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 							"Los datos han sido ingresados de forma correcta para el archivo: " + media.getName(),
 							"ATENCION", Messagebox.OK, Messagebox.INFORMATION);
 					boolean ex = objDao.ejecutaSPCredomatic();
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-							"inserta credomatic detalle ==>: " + ex);
+					log.debug(methodName + "  inserta credomatic detalle ==>: " + ex);
+//					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//							"inserta credomatic detalle ==>: " + ex);
 				} else {
 
 					fpu = (CBEstadoCuentasController) misession.getAttribute("interfaceEstadoCuenta");
@@ -688,41 +731,47 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				fpu.cambiaEstadoMensaje(true, media.getName());
 
 			} catch (IOException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				log.debug(methodName + " error ", e);
+				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+				// null, e);
 
 			} catch (InvalidFormatException e) {
-
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				log.debug(methodName + " error ", e);
+				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+				// null, e);
 			}
 
 		} else {
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-					"el formato no es valido: " + format);
+			log.debug(methodName + " el formato no es valido: " + format);
+//			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//					"el formato no es valido: " + format);
 		}
 	}
-	
+
 	/**
-	 * Credomatic
-	 * Validamos si el string enviado es fecha
-	 * */
-	public boolean isDateCredoGT(String fecha){
+	 * Credomatic Validamos si el string enviado es fecha
+	 */
+	public boolean isDateCredoGT(String fecha) {
 		DateFormat format = new SimpleDateFormat("yyyyMMdd");
 		Date fec;
 		try {
 			fec = format.parse(fecha);
-			//System.out.println("fecha parseada: "+fec);
+			// System.out.println("fecha parseada: "+fec);
 			return true;
 		} catch (ParseException e) {
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
-			//System.out.println("fecha con error: "+fecha);
+			log.debug("isDateCredoGT() - " + e);
+			// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+			// null, e);
+			// System.out.println("fecha con error: "+fecha);
 			return false;
-		} catch (NullPointerException e){
-			//System.out.println(e.getMessage());
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+		} catch (NullPointerException e) {
+			// System.out.println(e.getMessage());
+			log.debug("isDateCredoGT() - " + e);
+			// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+			// null, e);
 			return false;
 		}
 	}
-	
 
 	/**
 	 * Credomatic Validamos si el string enviado es fecha
@@ -737,11 +786,10 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 			return true;
 		} catch (ParseException e) {
 			// System.out.println(e.getMessage());
-			System.out.println("fecha con error: " + fecha);
+			log.debug("isDateCredo() -f echa con error: " + e);
 			return false;
 		} catch (NullPointerException e) {
-			System.out.println(e.getMessage());
-			System.out.println("fecha null: " + fecha);
+			log.debug("isDateCredo() - " + e);
 			return false;
 		}
 	}
@@ -759,163 +807,165 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 		isReloadFile = (Boolean) misession.getAttribute("isReloadFile");
 		listCredomatic = (List<CBEstadoCuentasModel>) misession.getAttribute("listCredomatic");
 
-		Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-				"id idBAC: " + idBAC + " formato: " + media.getFormat());
+		log.debug("leerCredomaticEncabezadoCR() - " + "id idBAC: " + idBAC + " formato: " + media.getFormat());
+//		Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//				"id idBAC: " + idBAC + " formato: " + media.getFormat());
 
-		System.out.println("id idBAC: " + idBAC + " formato: " + media.getFormat());
 		if ("xlsx".equals(format)) {
 			// obtiene el id de configuracion
-			DateFormat df = new SimpleDateFormat("yyyyMMdd");
-			DataFormatter formatter = new DataFormatter();
-
-			String registro = "";
 			try {
-				XSSFWorkbook libro = new XSSFWorkbook(OPCPackage.open(media.getStreamData()));
-				XSSFSheet hoja = libro.getSheetAt(0);
-				Iterator<Row> rows = hoja.iterator();
-				while (rows.hasNext()) {
-					XSSFRow row = (XSSFRow) rows.next();
-					// validamos si el sector del archivo pertenece a detalle
-					if (row.getRowNum() > 0) {
-						objCredo = new CBEstadoCuentasModel();
-
-						for (int celda = 0; celda <= 24; celda++) {
-
-							if (row.getCell(celda) == null) {
-								registro = "  ";
-							} else {
-								switch (row.getCell(celda).getCellType()) {
-								case Cell.CELL_TYPE_NUMERIC:
-									if (DateUtil.isCellDateFormatted(row.getCell(celda))) {
-										registro = df.format(row.getCell(celda).getDateCellValue());
-									} else {
-										registro = formatter.formatCellValue(row.getCell(celda));
-									}
-									break;
-								case Cell.CELL_TYPE_STRING:
-									registro = formatter.formatCellValue(row.getCell(celda));
-									break;
-								}
-
-								objCredo.setCbestadocuentaconfid(idBAC);
-								objCredo.setCbestadocuentaarchivosid(idArchivo);
-
-								switch (celda) {
-								// Mapeo apegando el contenido a los archivos
-								// Credomatic
-								case 0:
-									// para el campo Cod afiliacion
-									objCredo.setAfilicacion(registro.trim());
-									break;
-
-								case 1:
-									// para el campo ID_TERMINAL
-									objCredo.setDescripcion(registro.trim());
-									break;
-								case 2:
-									// para el campo DE350FRE
-									objCredo.setIva(registro.trim());
-									break;
-								case 3:
-									// para el campo DE350SUC
-									objCredo.setCodigo_lote(registro.trim());
-									break;
-								case 4:
-									// para el campo DE350LDE
-									objCredo.setCredito(registro.trim());
-									break;
-								case 5:
-									// para el campo NUMERO_TARJETA
-									objCredo.setDocumento(registro.trim());
-									break;
-
-								case 6:
-									// para el campo MONTO_TRANSACCION
-									objCredo.setConsumo(registro.trim());
-									break;
-								case 7:
-									// para el campo FECHA_TRANSACCION
-									objCredo.setFechatransaccion(registro.trim());
-									break;
-								case 8:
-									// para el campo HORA_TRANSACCION
-									objCredo.setImpturismo(registro.trim());
-									break;
-								case 9:
-									// para el campo CODIGO_AUTORIZACION
-									objCredo.setPropina(registro.trim());
-									break;
-								case 10:
-									// para el campo DE350CVE //campo no se toma en cuenta
-									objCredo.setCtacp(registro.trim());
-									break;
-								case 11:
-									// para el campo LIQUIDACION
-									objCredo.setReferencia(registro.trim());
-									break;
-								case 12:
-									// para el campo VENTAS
-									objCredo.setDebito(registro.trim());
-									break;
-								case 13:
-									// para el campo comision
-									objCredo.setComision(registro.trim());
-									break;
-								case 14:
-									// para el campo IMP VENTA
-									objCredo.setIvacomision(registro.trim());
-									break;
-								case 15:
-									// para el campo IMP RENTA
-									objCredo.setRetencion(registro.trim());
-									break;
-								case 16:
-									// para el campo AJUSTES
-									objCredo.setBalance(registro.trim());
-									break;
-								case 17:
-									// para el campo NETO PAGO
-									objCredo.setLiquido(registro.trim());
-									break;
-								}
-								objCredo.setUsuario(user);
-								objCredo.setTipo("CREDOMATIC");
-							}
-						}
-						if (isDateCredoEncabezado(objCredo.getFechatransaccion())) {
-							listCredomatic.add(objCredo);
-						}
-
-					}
-
-				}
-
-				CBEstadoCuentaDAO objDao = new CBEstadoCuentaDAO();
-				if (objDao.insertCuentasCredoEncabezadoCR(listCredomatic)) {
-					fpu = (CBEstadoCuentasController) misession.getAttribute("interfaceEstadoCuenta");
-					fpu.cambiaEstadoMensaje(true, media.getName());
-					Messagebox.show(
-							"Los datos han sido ingresados de forma correcta para el archivo: " + media.getName(),
-							"ATENCION", Messagebox.OK, Messagebox.INFORMATION);
-					boolean ex = objDao.ejecutaSPCredomatic();
-					System.out.println("inserta credomatic encabezado ==> " + ex);
-				} else {
-					fpu = (CBEstadoCuentasController) misession.getAttribute("interfaceEstadoCuenta");
-					fpu.cambiaEstadoMensaje(false, media.getName());
-					Messagebox.show("Ocurrio un error en la carga del archivo, favor intentarlo nuevamente...",
-							"ATENCION", Messagebox.OK, Messagebox.EXCLAMATION);
-				}
-				listCredomatic.clear();
-
-				fpu = (CBEstadoCuentasController) misession.getAttribute("interfaceEstadoCuenta");
-				fpu.cambiaEstadoMensaje(true, media.getName());
-				isReloadFile = false;
-
-			} catch (IOException e) {
-				System.out.println("Error invalidformatException: " + e.getMessage());
-			} catch (InvalidFormatException e) {
-				System.err.println(e.getMessage());
+				leerCredomaticEncabezadoNew(user, nombreArchivoCredomatic, media, idBAC, isReloadFile, listCredomatic,
+						idArchivo, fpu, objCredo);
+			} catch (Exception e) {
+				log.debug("leerCredomaticEncabezadoCR() - Error ", e);
 			}
+//			try {
+//				XSSFWorkbook libro = new XSSFWorkbook(OPCPackage.open(media.getStreamData()));
+//				XSSFSheet hoja = libro.getSheetAt(0);
+//				Iterator<Row> rows = hoja.iterator();
+//				while (rows.hasNext()) {
+//					XSSFRow row = (XSSFRow) rows.next();
+//					// validamos si el sector del archivo pertenece a detalle
+//					if (row.getRowNum() > 0) {
+//						objCredo = new CBEstadoCuentasModel();
+//
+//						for (int celda = 0; celda <= 24; celda++) {
+//
+//							if (row.getCell(celda) == null) {
+//								registro = "  ";
+//							} else {
+//								switch (row.getCell(celda).getCellType()) {
+//								case Cell.CELL_TYPE_NUMERIC:
+//									if (DateUtil.isCellDateFormatted(row.getCell(celda))) {
+//										registro = df.format(row.getCell(celda).getDateCellValue());
+//									} else {
+//										registro = formatter.formatCellValue(row.getCell(celda));
+//									}
+//									break;
+//								case Cell.CELL_TYPE_STRING:
+//									registro = formatter.formatCellValue(row.getCell(celda));
+//									break;
+//								}
+//
+//								objCredo.setCbestadocuentaconfid(idBAC);
+//								objCredo.setCbestadocuentaarchivosid(idArchivo);
+//
+//								switch (celda) {
+//								// Mapeo apegando el contenido a los archivos
+//								// Credomatic
+//								case 0:
+//									// para el campo Cod afiliacion
+//									objCredo.setAfilicacion(registro.trim());
+//									break;
+//
+//								case 1:
+//									// para el campo ID_TERMINAL
+//									objCredo.setDescripcion(registro.trim());
+//									break;
+//								case 2:
+//									// para el campo DE350FRE
+//									objCredo.setIva(registro.trim());
+//									break;
+//								case 3:
+//									// para el campo DE350SUC
+//									objCredo.setCodigo_lote(registro.trim());
+//									break;
+//								case 4:
+//									// para el campo DE350LDE
+//									objCredo.setCredito(registro.trim());
+//									break;
+//								case 5:
+//									// para el campo NUMERO_TARJETA
+//									objCredo.setDocumento(registro.trim());
+//									break;
+//
+//								case 6:
+//									// para el campo MONTO_TRANSACCION
+//									objCredo.setConsumo(registro.trim());
+//									break;
+//								case 7:
+//									// para el campo FECHA_TRANSACCION
+//									objCredo.setFechatransaccion(registro.trim());
+//									break;
+//								case 8:
+//									// para el campo HORA_TRANSACCION
+//									objCredo.setImpturismo(registro.trim());
+//									break;
+//								case 9:
+//									// para el campo CODIGO_AUTORIZACION
+//									objCredo.setPropina(registro.trim());
+//									break;
+//								case 10:
+//									// para el campo DE350CVE //campo no se toma en cuenta
+//									objCredo.setCtacp(registro.trim());
+//									break;
+//								case 11:
+//									// para el campo LIQUIDACION
+//									objCredo.setReferencia(registro.trim());
+//									break;
+//								case 12:
+//									// para el campo VENTAS
+//									objCredo.setDebito(registro.trim());
+//									break;
+//								case 13:
+//									// para el campo comision
+//									objCredo.setComision(registro.trim());
+//									break;
+//								case 14:
+//									// para el campo IMP VENTA
+//									objCredo.setIvacomision(registro.trim());
+//									break;
+//								case 15:
+//									// para el campo IMP RENTA
+//									objCredo.setRetencion(registro.trim());
+//									break;
+//								case 16:
+//									// para el campo AJUSTES
+//									objCredo.setBalance(registro.trim());
+//									break;
+//								case 17:
+//									// para el campo NETO PAGO
+//									objCredo.setLiquido(registro.trim());
+//									break;
+//								}
+//								objCredo.setUsuario(user);
+//								objCredo.setTipo("CREDOMATIC");
+//							}
+//						}
+//						if (isDateCredoEncabezado(objCredo.getFechatransaccion())) {
+//							listCredomatic.add(objCredo);
+//						}
+//
+//					}
+//
+//				}
+//
+//				CBEstadoCuentaDAO objDao = new CBEstadoCuentaDAO();
+//				if (objDao.insertCuentasCredoEncabezadoCR(listCredomatic)) {
+//					fpu = (CBEstadoCuentasController) misession.getAttribute("interfaceEstadoCuenta");
+//					fpu.cambiaEstadoMensaje(true, media.getName());
+//					Messagebox.show(
+//							"Los datos han sido ingresados de forma correcta para el archivo: " + media.getName(),
+//							"ATENCION", Messagebox.OK, Messagebox.INFORMATION);
+//					boolean ex = objDao.ejecutaSPCredomatic();
+//					System.out.println("inserta credomatic encabezado ==> " + ex);
+//				} else {
+//					fpu = (CBEstadoCuentasController) misession.getAttribute("interfaceEstadoCuenta");
+//					fpu.cambiaEstadoMensaje(false, media.getName());
+//					Messagebox.show("Ocurrio un error en la carga del archivo, favor intentarlo nuevamente...",
+//							"ATENCION", Messagebox.OK, Messagebox.EXCLAMATION);
+//				}
+//				listCredomatic.clear();
+//
+//				fpu = (CBEstadoCuentasController) misession.getAttribute("interfaceEstadoCuenta");
+//				fpu.cambiaEstadoMensaje(true, media.getName());
+//				isReloadFile = false;
+//
+//			} catch (IOException e) {
+//				System.out.println("Error invalidformatException: " + e.getMessage());
+//			} catch (InvalidFormatException e) {
+//				System.err.println(e.getMessage());
+//			}
 
 		} else if ("xls".equals(format)) {
 			String registro = "";
@@ -1082,7 +1132,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 					objCredo.setCbestadocuentaconfid(idBAC);
 					objCredo.setCbestadocuentaarchivosid(idArchivo);
 					if (fila > 1) {
-					//	System.out.println("fila:" + fila);
+						// System.out.println("fila:" + fila);
 						while (token.hasMoreTokens()) {
 							registro = token.nextToken();
 							celda++;
@@ -1106,21 +1156,21 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 								break;
 							case 5:
 								// para el campo entrada
-								objCredo.setCodigo_lote(registro.replace("\"", "").trim()); //setDebito
+								objCredo.setCodigo_lote(registro.replace("\"", "").trim()); // setDebito
 								break;
 							case 6:
 								// para el campo cheque
-								objCredo.setDocumento(registro.replace("\"", "").trim()); //setBalance
+								objCredo.setDocumento(registro.replace("\"", "").trim()); // setBalance
 								break;
 							case 7:
 								// para el campo cantdoc
-								objCredo.setImpuestoturis(registro.replace("\"", "").trim()); //setIva
+								objCredo.setImpuestoturis(registro.replace("\"", "").trim()); // setIva
 								break;
 							case 8:
 								// para el campo lote
 								System.out.println("campo consumo antes:" + registro);
-								objCredo.setConsumo((registro.replace(",", ".")).replace("\"", "").trim());//setCodigo_lote
-							//	System.out.println("campo consumo:" +objCredo.getConsumo());
+								objCredo.setConsumo((registro.replace(",", ".")).replace("\"", "").trim());// setCodigo_lote
+								// System.out.println("campo consumo:" +objCredo.getConsumo());
 								break;
 							case 9:
 								// para el campo venta
@@ -1149,23 +1199,14 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 								break;
 							case 15:
 								// para el campo pago
-							//	System.out.println("registro:" + registro);
+								// System.out.println("registro:" + registro);
 								objCredo.setPropina(registro.replace("\"", "").trim());
 								break;
-								/*
-							case 16:
-								// para el campo docrev
-								objCredo.setDocumento(registro);
-								break;
-							case 17:
-								// para el campo montorev
-								objCredo.setCredito(registro);
-								break;
-							case 18:
-								// para el campo liquidacion
-								objCredo.setReferencia(registro);
-								break;
-								*/
+							/*
+							 * case 16: // para el campo docrev objCredo.setDocumento(registro); break; case
+							 * 17: // para el campo montorev objCredo.setCredito(registro); break; case 18:
+							 * // para el campo liquidacion objCredo.setReferencia(registro); break;
+							 */
 							}
 							objCredo.setUsuario(user);
 							objCredo.setTipo("CREDOMATIC");
@@ -1197,7 +1238,9 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				fila = 0;
 				read.close();
 			} catch (IOException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				log.debug("leerCredomaticEncabezadoCR() - Error ", e);
+				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+				// null, e);
 			} finally {
 				try {
 					if (ir != null)
@@ -1205,15 +1248,218 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 					if (read != null)
 						read.close();
 				} catch (Exception e) {
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+					log.debug("leerCredomaticEncabezadoCR() -  Error ", e);
+					// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+					// null, e);
 				}
 			}
-		} 
-		
+		}
+
 		else {
 			Messagebox.show("No se ha cargado un archivo excel... ", "ATENCION", Messagebox.OK, Messagebox.EXCLAMATION);
 			return;
 		}
+	}
+
+	private void leerCredomaticEncabezadoNew(String user, String nombreArchivoCredomatic, Media media, int idBAC,
+			boolean isReloadFile, List<CBEstadoCuentasModel> listCredomatic, int idArchivo,
+			CBEstadoCuentasController fpu, CBEstadoCuentasModel objCredo) {
+		// TODO Auto-generated method stub
+		String methodName = "leerCredomaticEncabezadoNew()";
+		DateFormat df = new SimpleDateFormat("yyyyMMdd");
+		DataFormatter formatter = new DataFormatter();
+		String registro = " ";
+		try {
+			// leer el archivo xlsx
+			XSSFWorkbook libro = new XSSFWorkbook(OPCPackage.open(media.getStreamData()));
+			// obtener la hoja que se va leer
+			XSSFSheet hoja = libro.getSheetAt(0);
+			// obtener todas las filas de la hoja excel
+			Iterator<Row> row = hoja.iterator();
+
+			FormulaEvaluator evaluator = libro.getCreationHelper().createFormulaEvaluator();
+
+			while (row.hasNext()) {
+				XSSFRow nextRow = (XSSFRow) row.next();
+				Iterator<Cell> cellIterator = nextRow.cellIterator();
+				if (nextRow.getRowNum() > 0) {
+					objCredo = new CBEstadoCuentasModel();
+					while (cellIterator.hasNext()) {
+
+						Cell cell = cellIterator.next();
+
+						if (cell != null) {
+							registro = getCellType(cell, evaluator);
+
+							objCredo.setCbestadocuentaconfid(idBAC);
+							objCredo.setCbestadocuentaarchivosid(idArchivo);
+
+							switch (cell.getColumnIndex()) {
+							case 0:
+								objCredo.setArchivo(registro.trim());
+								break;
+							case 1:
+								objCredo.setIvaCCF(Double.parseDouble(registro.trim()));
+								break;
+							case 2:
+								objCredo.setComisionCCF(Double.parseDouble(registro.trim()));
+								break;
+							case 3:
+								objCredo.setNumberCCF(registro.trim());
+								break;
+							case 4:
+								objCredo.setNeto(Double.parseDouble(registro.trim()));
+								break;
+							case 5:
+								objCredo.setComisionIva(Double.parseDouble(registro.trim()));
+								break;
+							case 6:
+								objCredo.setRetencionD(Double.parseDouble(registro.trim()));
+								break;
+							case 7:
+								objCredo.setComisionD(Double.parseDouble(registro.trim()));
+								break;
+							case 8:
+								objCredo.setMonto(Double.parseDouble(registro.trim()));
+								break;
+							case 9:
+								objCredo.setTrs(Integer.parseInt(registro.trim()));
+								break;
+							case 10:
+								objCredo.setLiquidacion(Long.parseLong(registro.trim()));
+								break;
+							case 11:
+								objCredo.setCodigoAfiliado(Long.parseLong(registro.trim()));
+								break;
+							case 12:
+								objCredo.setFechaSv(registro);
+								break;
+							case 13:
+								objCredo.setSerieDCL(registro.trim());
+								break;
+							case 14:
+								objCredo.setDcl(Long.parseLong(registro.trim()));
+								break;
+							case 15:
+								objCredo.setNombreAfiliado(registro.trim());
+								break;
+							case 16:
+								objCredo.setCompCom(Boolean.parseBoolean(registro.trim()));
+								break;
+							case 17:
+								objCredo.setCompIva(Boolean.parseBoolean(registro.trim()));
+								break;
+							case 18:
+								float floatValue = Float.parseFloat(registro.toString());
+								objCredo.setMontoNeto(roundDecimals(floatValue));
+								break;
+							case 20:
+								objCredo.setMontoRet(Double.parseDouble(registro.trim()));
+								break;
+							case 21:
+								objCredo.setComIva(Double.parseDouble(registro.trim()));
+								break;
+							case 22:
+								objCredo.setValidacionTotal(Double.parseDouble(registro.trim()));
+								break;
+							case 23:
+								objCredo.setDifAjuste(Double.parseDouble(registro.trim()));
+								break;
+							case 24:
+								objCredo.setDclConcat(registro);
+								break;
+							case 25:
+								objCredo.setAjuste(Double.parseDouble(registro.trim()));
+								break;
+							case 26:
+								objCredo.setComisionAjuste(Double.parseDouble(registro.trim()));
+								break;
+							case 27:
+								objCredo.setIvaComAjuste(Double.parseDouble(registro.trim()));
+								break;
+
+							}
+							objCredo.setUsuario(user);
+							objCredo.setTipo("CREDOMATIC");
+							// if (isDateCredoEncabezado(objCredo.getFechaD()))
+
+						}
+					}
+					listCredomatic.add(objCredo);
+
+				}
+
+			}
+
+			CBEstadoCuentaDAO objDao = new CBEstadoCuentaDAO();
+			if (objDao.insertCuentasCredoEncabezadoCR(listCredomatic)) {
+				fpu = (CBEstadoCuentasController) misession.getAttribute("interfaceEstadoCuenta");
+				fpu.cambiaEstadoMensaje(true, media.getName());
+				Messagebox.show("Los datos han sido ingresados de forma correcta para el archivo: " + media.getName(),
+						"ATENCION", Messagebox.OK, Messagebox.INFORMATION);
+				boolean ex = objDao.ejecutaSPCredomatic();
+				System.out.println("inserta credomatic encabezado ==> " + ex);
+			} else {
+				log.debug(methodName + " - Ocurrio un error en la carga del archivo ++++++++++");
+				fpu = (CBEstadoCuentasController) misession.getAttribute("interfaceEstadoCuenta");
+				fpu.cambiaEstadoMensaje(false, media.getName());
+				Messagebox.show("Ocurrio un error en la carga del archivo, favor intentarlo nuevamente...", "ATENCION",
+						Messagebox.OK, Messagebox.EXCLAMATION);
+			}
+			listCredomatic.clear();
+
+			fpu = (CBEstadoCuentasController) misession.getAttribute("interfaceEstadoCuenta");
+			fpu.cambiaEstadoMensaje(true, media.getName());
+			isReloadFile = false;
+
+		} catch (IOException e) {
+			System.out.println("errrrrroooooooorrrrrr ++++++++++");
+			System.out.println("Error invalidformatException: " + e.getMessage());
+			// e.printStackTrace();
+		} catch (InvalidFormatException e) {
+			System.out.println("errrrrroooooooorrrrrr22222 ++++++++++");
+			System.err.println("EEEERRROOOOOOOOR " + e.getMessage());
+			// e.printStackTrace();
+		}
+
+	}
+
+	private double roundDecimals(double value) {
+		NumberFormat formatter = NumberFormat.getInstance(Locale.US);
+		formatter.setMaximumFractionDigits(2);
+		return Double.valueOf(formatter.format(value));
+	}
+
+	private String getCellType(Cell cell, FormulaEvaluator evaluator) {
+		DataFormatter formatter = new DataFormatter();
+		DateFormat df = new SimpleDateFormat("yyyyMMdd");
+		String registro = null;
+		if (cell == null)
+			return null;
+		switch (cell.getCellType()) {
+		case Cell.CELL_TYPE_BOOLEAN:
+			registro = "" + cell.getBooleanCellValue();
+			break;
+
+		case Cell.CELL_TYPE_NUMERIC:
+			if (DateUtil.isCellDateFormatted(cell))
+				registro = "" + df.format(cell.getDateCellValue());
+
+			else
+				registro = "" + formatter.formatCellValue(cell);
+
+			break;
+		case Cell.CELL_TYPE_STRING:
+			registro = cell.getStringCellValue();
+			break;
+		case Cell.CELL_TYPE_BLANK:
+			registro = "";
+			break;
+		case Cell.CELL_TYPE_FORMULA:
+			registro = "" + formatter.formatCellValue(cell, evaluator);
+			break;
+		}
+		return registro;
 	}
 
 	/**
@@ -1234,8 +1480,9 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 		isReloadFile = (Boolean) misession.getAttribute("isReloadFile");
 		listCredomatic = (List<CBEstadoCuentasModel>) misession.getAttribute("listCredomatic");
 
-		Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-				"id idBAC: " + idBAC + " formato: " + media.getFormat());
+		log.debug("leerCredomaticEncabezadoGT() - id idBAC: " + idBAC + " formato: " + media.getFormat());
+//		Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//				"id idBAC: " + idBAC + " formato: " + media.getFormat());
 
 		if ("csv".equals(format)) {
 			System.out.println("id idBAC: " + idBAC + " formato: " + media.getFormat());
@@ -1363,7 +1610,9 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				fila = 0;
 				read.close();
 			} catch (IOException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				log.debug("leerCredomaticEncabezadoGT() -  Error ", e);
+				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+				// null, e);
 			} finally {
 				try {
 					if (ir != null)
@@ -1371,7 +1620,9 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 					if (read != null)
 						read.close();
 				} catch (Exception e) {
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+					log.debug("leerCredomaticEncabezadoGT() -  Error ", e);
+					// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+					// null, e);
 				}
 			}
 		} else {
@@ -1396,9 +1647,9 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 		idBAC = (Integer) misession.getAttribute("idBAC");
 		isReloadFile = (Boolean) misession.getAttribute("isReloadFile");
 		listCredomatic = (List<CBEstadoCuentasModel>) misession.getAttribute("listCredomatic");
-
-		Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-				"id idBAC: " + idBAC + " formato: " + media.getFormat());
+		log.debug("leerCredomaticDetalleGT() -  " + "id idBAC: " + idBAC + " formato: " + media.getFormat());
+//		Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//				"id idBAC: " + idBAC + " formato: " + media.getFormat());
 
 		if ("csv".equals(format)) {
 			System.out.println("id idBAC: " + idBAC + " formato: " + media.getFormat());
@@ -1516,7 +1767,9 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				fila = 0;
 				read.close();
 			} catch (IOException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				log.debug("leerCredomaticDetalleGT() -  Error ", e);
+				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+				// null, e);
 			} finally {
 				try {
 					if (ir != null)
@@ -1524,7 +1777,9 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 					if (read != null)
 						read.close();
 				} catch (Exception e) {
-					Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+					log.debug("leerCredomaticDetalleGT() -  Error ", e);
+					// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+					// null, e);
 				}
 			}
 		} else {
@@ -1544,12 +1799,16 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 			// System.out.println("fecha parseada: " + fec);
 			return true;
 		} catch (ParseException e) {
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+			log.debug("isDateCredoEncabezado() -  Error ", e);
+			// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+			// null, e);
 			// System.out.println("fecha con error: "+fecha);
 			return false;
 		} catch (NullPointerException e) {
 			// System.out.println(e.getMessage());
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+			log.debug("isDateCredoEncabezado() -  Error ", e);
+			// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+			// null, e);
 			return false;
 		}
 	}
@@ -1566,15 +1825,19 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 			// System.out.println("fecha: " + fec.getDate());
 			return true;
 		} catch (ParseException e) {
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+			log.debug("isDate() -  Error ", e);
+			// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+			// null, e);
 			return false;
 		} catch (NullPointerException e) {
-			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+			log.debug("isDate() -  Error ", e);
+			// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+			// null, e);
 			return false;
 		}
 	}
-	
-	//creado por Gerbert
+
+	// creado por Gerbert
 	public void leerArchivoReporteCierreCaja(String format) {
 		CBEstadoCuentasController fpu = new CBEstadoCuentasController();
 		user = (String) misession.getAttribute("user");
@@ -1587,8 +1850,9 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 
 		CBEstadoCuentasModel objCredo = null;
 
-		Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-				"id idBAC: " + idBAC + " formato: " + media.getFormat());
+		log.debug("leerArchivoReporteCierreCaja() - id idBAC: " + idBAC + " formato: " + media.getFormat());
+//		Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
+//				"id idBAC: " + idBAC + " formato: " + media.getFormat());
 
 		if ("xlsx".equals(format)) {
 			// int fila = 0;
@@ -1626,54 +1890,54 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 							switch (contaCredi) {
 							case 1:
 								objCredo.setFecha_solicitud(registro);
-								
+
 								break;
-							
-							/*case 2:
-								objVisa.setCaso(registro);
-								break;*/
-							
+
+							/*
+							 * case 2: objVisa.setCaso(registro); break;
+							 */
+
 							case 2:
 								objCredo.setEstado(registro);
-								System.out.println("el estado es: " +objCredo);
+								System.out.println("el estado es: " + objCredo);
 								break;
-							
+
 							case 3:
 								objCredo.setCap(registro);
 								break;
-							
+
 							case 4:
 								objCredo.setDictamen_tersoreria(registro);
 								break;
-							
+
 							case 5:
 								objCredo.setSolicitante(registro);
 								break;
-							
+
 							case 6:
 								objCredo.setTotalgeneralcolones(registro);
 								break;
-							
+
 							case 7:
 								objCredo.setTotalgeneralvalores(registro);
 								break;
-							
-							/*case 9:
-								objVisa.setFila(registro);
-								break;*/
-							
+
+							/*
+							 * case 9: objVisa.setFila(registro); break;
+							 */
+
 							case 8:
 								objCredo.setBoleta_deposito(registro);
 								break;
-							
+
 							case 9:
 								objCredo.setMoneda(registro);
 								break;
-							
+
 							case 10:
 								objCredo.setValor_tipo_cambio(registro);
 								break;
-					
+
 							}
 							objCredo.setUsuario(user);
 
@@ -1692,7 +1956,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 					Messagebox.show(
 							"Los datos han sido ingresados de forma correcta para el archivo: " + media.getName(),
 							"ATENCION", Messagebox.OK, Messagebox.INFORMATION);
-					
+
 				} else {
 					fpu.cambiaEstadoMensaje(false, media.getName());
 					Messagebox.show("Ocurrio un error en la carga del archivo, favor intentarlo nuevamente...",
@@ -1702,11 +1966,16 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				isEnd = false;
 				isReloadFile = false;
 			} catch (InvalidFormatException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				log.debug("leerArchivoReporteCierreCaja() - Error ", e);
+				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+				// null, e);
 			} catch (IOException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				log.debug("leerArchivoReporteCierreCaja() - Error ", e);
+				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+				// null, e);
 			} catch (IllegalArgumentException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				log.debug("leerArchivoReporteCierreCaja() - Error ", e);
+//				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
 				Messagebox.show("El archivo cargado contiene errores o esta danado, favor validarlo", "ATENCION",
 						Messagebox.OK, Messagebox.EXCLAMATION);
 
@@ -1737,51 +2006,51 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 							case 1:
 								objCredo.setFecha_solicitud(registro);
 								break;
-							
-							/*case 2:
-								objVisa.setCaso(registro);
-								break;*/
-							
+
+							/*
+							 * case 2: objVisa.setCaso(registro); break;
+							 */
+
 							case 2:
 								objCredo.setEstado(registro);
 								break;
-							
+
 							case 3:
 								objCredo.setCap(registro);
 								break;
-							
+
 							case 4:
 								objCredo.setDictamen_tersoreria(registro);
 								break;
-							
+
 							case 5:
 								objCredo.setSolicitante(registro);
 								break;
-							
+
 							case 6:
 								objCredo.setTotalgeneralcolones(registro);
 								break;
-							
+
 							case 7:
 								objCredo.setTotalgeneralvalores(registro);
 								break;
-							
-							/*case 9:
-								objVisa.setFila(registro);
-								break;*/
-							
+
+							/*
+							 * case 9: objVisa.setFila(registro); break;
+							 */
+
 							case 8:
 								objCredo.setBoleta_deposito(registro);
 								break;
-							
+
 							case 9:
 								objCredo.setMoneda(registro);
 								break;
-							
+
 							case 10:
 								objCredo.setValor_tipo_cambio(registro);
 								break;
-					
+
 							}
 							objCredo.setUsuario(user);
 						}
@@ -1798,7 +2067,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 					Messagebox.show(
 							"Los datos han sido ingresados de forma correcta para el archivo: " + media.getName(),
 							"ATENCION", Messagebox.OK, Messagebox.INFORMATION);
-					
+
 				} else {
 					fpu.cambiaEstadoMensaje(false, media.getName());
 					Messagebox.show("Ocurrio un error en la carga del archivo, favor intentarlo nuevamente...",
@@ -1809,7 +2078,9 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				fila = 0;
 				read.close();
 			} catch (IOException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				log.debug("leerArchivoReporteCierreCaja() - Error ", e);
+				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+				// null, e);
 			}
 		} else if ("xls".equals(format)) {
 			// int fila = 0;
@@ -1846,51 +2117,51 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 							case 1:
 								objCredo.setFecha_solicitud(registro);
 								break;
-							
-							/*case 2:
-								objVisa.setCaso(registro);
-								break;*/
-							
+
+							/*
+							 * case 2: objVisa.setCaso(registro); break;
+							 */
+
 							case 2:
 								objCredo.setEstado(registro);
 								break;
-							
+
 							case 3:
 								objCredo.setCap(registro);
 								break;
-							
+
 							case 4:
 								objCredo.setDictamen_tersoreria(registro);
 								break;
-							
+
 							case 5:
 								objCredo.setSolicitante(registro);
 								break;
-							
+
 							case 6:
 								objCredo.setTotalgeneralcolones(registro);
 								break;
-							
+
 							case 7:
 								objCredo.setTotalgeneralvalores(registro);
 								break;
-							
-							/*case 9:
-								objVisa.setFila(registro);
-								break;*/
-							
+
+							/*
+							 * case 9: objVisa.setFila(registro); break;
+							 */
+
 							case 8:
 								objCredo.setBoleta_deposito(registro);
 								break;
-							
+
 							case 9:
 								objCredo.setMoneda(registro);
 								break;
-							
+
 							case 10:
 								objCredo.setValor_tipo_cambio(registro);
 								break;
-					
+
 							}
 							objCredo.setUsuario(user);
 
@@ -1907,7 +2178,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 					Messagebox.show(
 							"Los datos han sido ingresados de forma correcta para el archivo: " + media.getName(),
 							"ATENCION", Messagebox.OK, Messagebox.INFORMATION);
-					
+
 				} else {
 					fpu.cambiaEstadoMensaje(false, media.getName());
 					Messagebox.show("Ocurrio un error en la carga del archivo, favor intentarlo nuevamente...",
@@ -1917,11 +2188,17 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				isEnd = false;
 				isReloadFile = false;
 			} catch (InvalidFormatException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				log.debug("leerArchivoReporteCierreCaja() - Error ", e);
+				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+				// null, e);
 			} catch (IOException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				log.debug("leerArchivoReporteCierreCaja() - Error ", e);
+				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+				// null, e);
 			} catch (IllegalArgumentException e) {
-				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				log.debug("leerArchivoReporteCierreCaja() - Error ", e);
+				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
+				// null, e);
 				Messagebox.show("El archivo cargado contiene errores o esta daOado, favor validarlo", "ATENCION",
 						Messagebox.OK, Messagebox.EXCLAMATION);
 			}
