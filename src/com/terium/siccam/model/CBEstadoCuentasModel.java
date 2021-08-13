@@ -1,5 +1,7 @@
 package com.terium.siccam.model;
 
+import java.util.Date;
+
 /**
  * @author Juankrlos - 11/01/2017 -
  * */
@@ -127,6 +129,38 @@ public class CBEstadoCuentasModel {
     private String boleta_deposito;
     private String moneda;
     private String valor_tipo_cambio;
+    
+    
+ // requerimiento SV 2021
+ 	private String archivo;
+ 	private double ivaCCF;
+ 	private double comisionCCF;
+ 	private String numberCCF;
+ 	private double neto;
+ 	private double comisionIva;
+ 	private double retencionD;
+ 	private double comisionD;
+ 	private double monto;
+ 	private int trs;
+ 	private long liquidacion;
+ 	private long codigoAfiliado;
+ 	private String fechaSv;
+ 	private String serieDCL;
+ 	private long dcl;
+ 	private String nombreAfiliado;
+ 	private boolean compCom;
+ 	private boolean compIva;
+ 	private double montoNeto;
+ 	private double montoRet;
+ 	private double comIva;
+ 	private double validacionTotal;
+ 	private double difAjuste;
+ 	private String dclConcat;
+ 	private double ajuste;
+ 	private double comisionAjuste;
+ 	private double ivaComAjuste;
+ 	private Date fechaD;
+
     
     public String getMl() {
 		return ml;
@@ -705,5 +739,173 @@ public class CBEstadoCuentasModel {
 		}
 		public void setValor_tipo_cambio(String valor_tipo_cambio) {
 			this.valor_tipo_cambio = valor_tipo_cambio;
+		}
+		public String getArchivo() {
+			return archivo;
+		}
+		public void setArchivo(String archivo) {
+			this.archivo = archivo;
+		}
+		public double getIvaCCF() {
+			return ivaCCF;
+		}
+		public void setIvaCCF(double ivaCCF) {
+			this.ivaCCF = ivaCCF;
+		}
+		public double getComisionCCF() {
+			return comisionCCF;
+		}
+		public void setComisionCCF(double comisionCCF) {
+			this.comisionCCF = comisionCCF;
+		}
+		public String getNumberCCF() {
+			return numberCCF;
+		}
+		public void setNumberCCF(String numberCCF) {
+			this.numberCCF = numberCCF;
+		}
+		public double getNeto() {
+			return neto;
+		}
+		public void setNeto(double neto) {
+			this.neto = neto;
+		}
+		public double getComisionIva() {
+			return comisionIva;
+		}
+		public void setComisionIva(double comisionIva) {
+			this.comisionIva = comisionIva;
+		}
+		public double getRetencionD() {
+			return retencionD;
+		}
+		public void setRetencionD(double retencionD) {
+			this.retencionD = retencionD;
+		}
+		public double getComisionD() {
+			return comisionD;
+		}
+		public void setComisionD(double comisionD) {
+			this.comisionD = comisionD;
+		}
+		public double getMonto() {
+			return monto;
+		}
+		public void setMonto(double monto) {
+			this.monto = monto;
+		}
+		public int getTrs() {
+			return trs;
+		}
+		public void setTrs(int trs) {
+			this.trs = trs;
+		}
+		public long getLiquidacion() {
+			return liquidacion;
+		}
+		public void setLiquidacion(long liquidacion) {
+			this.liquidacion = liquidacion;
+		}
+		public long getCodigoAfiliado() {
+			return codigoAfiliado;
+		}
+		public void setCodigoAfiliado(long codigoAfiliado) {
+			this.codigoAfiliado = codigoAfiliado;
+		}
+		public String getFechaSv() {
+			return fechaSv;
+		}
+		public void setFechaSv(String fechaSv) {
+			this.fechaSv = fechaSv;
+		}
+		public String getSerieDCL() {
+			return serieDCL;
+		}
+		public void setSerieDCL(String serieDCL) {
+			this.serieDCL = serieDCL;
+		}
+		public long getDcl() {
+			return dcl;
+		}
+		public void setDcl(long dcl) {
+			this.dcl = dcl;
+		}
+		public String getNombreAfiliado() {
+			return nombreAfiliado;
+		}
+		public void setNombreAfiliado(String nombreAfiliado) {
+			this.nombreAfiliado = nombreAfiliado;
+		}
+		public boolean isCompCom() {
+			return compCom;
+		}
+		public void setCompCom(boolean compCom) {
+			this.compCom = compCom;
+		}
+		public boolean isCompIva() {
+			return compIva;
+		}
+		public void setCompIva(boolean compIva) {
+			this.compIva = compIva;
+		}
+		public double getMontoNeto() {
+			return montoNeto;
+		}
+		public void setMontoNeto(double montoNeto) {
+			this.montoNeto = montoNeto;
+		}
+		public double getMontoRet() {
+			return montoRet;
+		}
+		public void setMontoRet(double montoRet) {
+			this.montoRet = montoRet;
+		}
+		public double getComIva() {
+			return comIva;
+		}
+		public void setComIva(double comIva) {
+			this.comIva = comIva;
+		}
+		public double getValidacionTotal() {
+			return validacionTotal;
+		}
+		public void setValidacionTotal(double validacionTotal) {
+			this.validacionTotal = validacionTotal;
+		}
+		public double getDifAjuste() {
+			return difAjuste;
+		}
+		public void setDifAjuste(double difAjuste) {
+			this.difAjuste = difAjuste;
+		}
+		public String getDclConcat() {
+			return dclConcat;
+		}
+		public void setDclConcat(String dclConcat) {
+			this.dclConcat = dclConcat;
+		}
+		public double getAjuste() {
+			return ajuste;
+		}
+		public void setAjuste(double ajuste) {
+			this.ajuste = ajuste;
+		}
+		public double getComisionAjuste() {
+			return comisionAjuste;
+		}
+		public void setComisionAjuste(double comisionAjuste) {
+			this.comisionAjuste = comisionAjuste;
+		}
+		public double getIvaComAjuste() {
+			return ivaComAjuste;
+		}
+		public void setIvaComAjuste(double ivaComAjuste) {
+			this.ivaComAjuste = ivaComAjuste;
+		}
+		public Date getFechaD() {
+			return fechaD;
+		}
+		public void setFechaD(Date fechaD) {
+			this.fechaD = fechaD;
 		}
 }
