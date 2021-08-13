@@ -382,19 +382,18 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 		System.out.println("datos recibidos de la sesion isReloadFile " + isReloadFile);
 		System.out.println("datos recibidos de la sesion listCredomatic " + listCredomatic.size());
 		log.debug(methodName + " - id idBAC: " + idBAC + " formato: " + media.getFormat());
-//		Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
-//				"id idBAC: " + idBAC + " formato: " + media.getFormat());
-		if ("xls".equals(media.getFormat())) {
-			if (Tools.SESSION_SV.equals(session)) {
-				try {
-					leerCredomaticEncabezadoNew(user, nombreArchivoCredomatic, media, idBAC, isReloadFile,
-							listCredomatic, idArchivo, fpu, objCredo);
-				} catch (Exception e) {
-					log.debug("leerCredomaticEncabezadoCR() - Error ", e);
-				}
-				return;
-			}
 
+		if (Constantes.XLSX.equals(media.getFormat()) && Tools.SESSION_SV.equals(session)) {
+			log.debug(methodName + " format : " + media.getFormat() + " and session SV");
+			try {
+				leerCredomaticEncabezadoNew(user, nombreArchivoCredomatic, media, idBAC, isReloadFile, listCredomatic,
+						idArchivo, fpu, objCredo);
+			} catch (Exception e) {
+				log.debug("leerCredomaticEncabezado() - Error ", e);
+			}
+			return;
+		}
+		if ("xls".equals(media.getFormat())) {
 			String registro = "";
 			DateFormat df = new SimpleDateFormat("yyyyMMdd");
 			DataFormatter formatter = new DataFormatter();
@@ -565,7 +564,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 			}
 
 		} else {
-			log.debug(methodName + "el formato no es valido: " + format);
+			log.debug(methodName + " el formato no es valido: " + format);
 //			Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
 //					"el formato no es valido: " + format);
 		}

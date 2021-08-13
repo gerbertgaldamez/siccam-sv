@@ -827,9 +827,9 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 		try {
 			con = obtenerDtsPromo().getConnection();
 
-			ps = con.prepareStatement(INSERT_CREDO_CR_SQ2);
+			ps = con.prepareStatement(INSERT_CREDO_SV_SQL);
 			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO, "tama�o de lista: " + list.size());
-			System.out.println("query insert " + INSERT_CREDO_CR_SQ2);
+			System.out.println("query insert " + INSERT_CREDO_SV_SQL);
 			Iterator<CBEstadoCuentasModel> it = list.iterator();
 			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
 					"entra al metodo para insertar encabezado credo " + list.size());

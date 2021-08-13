@@ -367,7 +367,7 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 //							Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.INFO,
 //									"Encuentra que el archivo es detalle");
 							leerCredomaticDetalle(format);
-						} else if (misession.getAttribute(Constantes.CONEXION).equals(Tools.SESSION_CR)) {
+						} else if (misession.getAttribute(Constantes.CONEXION).equals(Tools.SESSION_SV)) {
 							leerCredomaticEncabezado(format);
 							logger.debug("ingresaRegistro() - " + "carga para CR " + format);
 						} else {

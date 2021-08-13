@@ -9,7 +9,7 @@
 	</appender>
 
 	<appender name="file" class="org.apache.log4j.RollingFileAppender">
-		<param name="File" value="home/weblogic/siccam_log/sv/siccamController.log" />
+		<param name="File" value="/home/siccamController.log" />
 		<param name="MaxBackupIndex" value="10" />
 		<param name="MaxFileSize" value="10MB" />
 		<layout class="org.apache.log4j.PatternLayout">
