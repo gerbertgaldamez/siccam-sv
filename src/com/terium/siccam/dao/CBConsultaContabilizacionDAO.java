@@ -682,82 +682,81 @@ System.out.println("query" + INSERT_CONTABILIZACION_SQ+where);
 	 * Ejecutamos el Store procedure para contabilizacion
 	 * */
 	public static final String CARGA_CONTABILIZACION_SP = "{CALL CB_CARGA_CONTABILIZACION_SP(?,?)}";
-	public boolean ejecutaSPContabilizacion(String fecha, String fechaHasta, String pais, String token) {
+	public static boolean ejecutaSPContabilizacion(String fecha, String fechaHasta, String pais, String token) {
 		boolean result = false;
 		Connection conn = null;
 		CallableStatement cmd = null;
+		int ret = 0;
+		// PreparedStatement cst = null;
+
 		try {
-		conn = ControladorBase.obtenerDtsPromo().getConnection();
-		cmd = conn.prepareCall(CARGA_CONTABILIZACION_SP);
-		cmd.setString( 1,fecha);
-		cmd.setString( 2,fechaHasta);
-		cmd.setString(3, pais);
-		cmd.setString(4, token);
-		result = cmd.executeUpdate() >0;
-		
-		System.out.println("Entra a ejecutaSPContabilizacion");
-		System.out.println("fecha inicio en el dao sp " + fecha);
-		System.out.println("fecha inicio en el dao sp " + fechaHasta);
-		String Query1 = " ";
-		Query1 += "BEGIN CB_CARGA_CONTABILIZACION2_SP('" + fecha + "','" + fechaHasta + "'); END;";
-		System.out.println("SP EN EL DAO CONTA " + Query1);
+			conn = obtenerDtsPromo().getConnection();
+			cmd = conn.prepareCall(CARGA_CONTABILIZACION_SP);
 
-			
-				System.out.println("obtiene conexion");
-				
+			cmd.setString(1, fecha);
+			cmd.setString(2, fechaHasta);
+			//cmd.setString(3, pais);
+			//cmd.setString(4, token);
+			result = cmd.executeUpdate() > 0;
 
-			System.out.println("SP EN EL DAO CONTA " + Query1);
-			System.out.println("token:" + token);
-			
-			//con = obtenerDtsPromo().getConnection();
-		//	ps = con.prepareStatement(VERIFICA_CARGA_DATA_BANCO);
-			
-	//		cst.setString(1, fecha);
+			Logger.getLogger("Entra a ejecutaSPContabilizacion"+ " [CARGA_CONTABILIZACION_SP]");
+			Logger.getLogger("fecha inicio en el dao sp " + fecha);
+			Logger.getLogger("fecha inicio en el dao sp " + fechaHasta);
+			String Query1 = " ";
+			Query1 += "BEGIN CB_CARGA_CONTABILIZACION2_SP('" + fecha + "','" + fechaHasta + "'); END;";
+			Logger.getLogger("SP EN CBConsultaContabilizacionDAO " + Query1);
+
+			// try {
+			Logger.getLogger("obtiene conexion");
+			//conn = obtenerDtsPromo().getConnection();
+			//QueryRunner qry = new QueryRunner();
+
+			Logger.getLogger("SP EN EL CBConsultaContabilizacionDAO" + Query1);
+			Logger.getLogger("CARGA_CONTABILIZACION_SP  token:" + token);
+			// cmd = conn.prepareCall(Query1);
+			// con = obtenerDtsPromo().getConnection();
+			// ps = con.prepareStatement(VERIFICA_CARGA_DATA_BANCO);
+
+			// cst.setString(1, fecha);
 //			cst.setString(2, fechaHasta);
-			System.out.println("fecha inicio en el dao sp " + fecha);
-			System.out.println("fecha inicio en el dao sp " + fechaHasta);
+			Logger.getLogger("fecha inicio en el dao sp " + fecha);
+			Logger.getLogger("fecha inicio en el dao sp " + fechaHasta);
 
-			
-			
-      //      ret= qry.update(conn, Query1);
-			
-		//	int exec = cst.executeUpdate();
-	//		if(exec > 0){
-				result = true;
-				System.out.println("trono ");
-		//		System.out.println(exec);
+			// ResultSet rs = null;
+			// Statement cmd = null;
 
-				CBBitacoraLogDAO dao = new CBBitacoraLogDAO();
-				dao.updateBitacoraThread(token, pais, 2);
-		//	}
-			System.out.println("Carga exitosa para el dia: " + fecha);
-			
-			
-			
-			
-		}catch (Exception e) {
+			// rs = cmd.executeQuery(Query1);
+
+			// ret= qry.update(conn, Query1);
+
+			// int exec = cst.executeUpdate();
+			// if(exec > 0){
+			//result = true;
+			Logger.getLogger("se detuvo el proceso ");
+			// System.out.println(exec);
+
+			CBBitacoraLogDAO dao = new CBBitacoraLogDAO();
+			boolean bitacora = dao.updateBitacoraThread(token, pais, 2);
+			// }
+			Logger.getLogger("Carga exitosa para el dia: " + fecha);
+
+		} catch (Exception e) {
 			CBBitacoraLogDAO dao = new CBBitacoraLogDAO();
 			dao.updateBitacoraThread(token, pais, 1);
 			Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 			e.printStackTrace();
-		}finally {
-			if(cmd != null)
-				try {
-					cmd.close();
-				} catch (SQLException el) {
-					Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE,null , el);
-				}
+		} finally {
 			try {
-				if(conn != null)
+				if (cmd != null)
+					cmd.close();
+				if (conn != null)
 					conn.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 				Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
 	}
-	
-	
 	
 	//agrega ovidio
 	private static String OBTIENE_BANCO_SQ = "select cbcatalogobancoid, nombre " + "from cb_catalogo_banco "

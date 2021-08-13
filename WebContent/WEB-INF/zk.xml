@@ -8,10 +8,10 @@
 		<timeout-uri>/inicio.zul</timeout-uri><!-- An empty URL can cause the browser 
 			to reload the same URL -->
 	</device-config>
-	 <!--  <system-config>
+	   <system-config>
 		<max-upload-size>200000</max-upload-size>
-		<disable-event-thread>false</disable-event-thread>
-	</system-config>-->
+		<disable-event-thread>True</disable-event-thread>
+	</system-config>
 	<library-property>
 		<name>org.zkoss.zul.Button.mold</name>
 		<value>trendy</value>
