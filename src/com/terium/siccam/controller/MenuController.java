@@ -71,11 +71,11 @@ public class MenuController extends ControladorBase {
 		try {
 			super.doAfterCompose(comp);
 			
-			misession.setAttribute("conexion", Tools.SESSION_CR);
-			misession.setAttribute("pais", Tools.CODE_CR);
+			misession.setAttribute("conexion", Tools.SESSION_SV);
+			misession.setAttribute("pais", Tools.CODE_SV);
 			
-			Tools.setCookie("conexion", Tools.SESSION_CR);
-			Tools.setCookie("pais", String.valueOf(Tools.CODE_CR));			
+			Tools.setCookie("conexion", Tools.SESSION_SV);
+			Tools.setCookie("pais", String.valueOf(Tools.CODE_SV));			
 
 			if (Tools.getCookie("conexion") == null || Tools.getCookie("conexion") == "") {
 				System.out.println("sesion null");
@@ -100,7 +100,7 @@ public class MenuController extends ControladorBase {
 		//		} else if (Tools.getCookie("conexion").equals(Tools.SESSION_PA)) {
 			//		lblPais.setValue("Panama");
 	//			} else if (Tools.getCookie("conexion").equals(Tools.SESSION_NI)) {
-					lblPais.setValue("Costa Rica");
+					lblPais.setValue("El Salvador");
 		//		}
 		
 				// System.out.println("usuario: " + lblUsuario.getValue());

@@ -45,11 +45,11 @@ public class InicioController extends ControladorBase{
 			misession.setAttribute("pais", null);
 			
 			
-			misession.setAttribute("conexion", Tools.SESSION_CR);
-			misession.setAttribute("pais", Tools.CODE_CR);
+			misession.setAttribute("conexion", Tools.SESSION_SV);
+			misession.setAttribute("pais", Tools.CODE_SV);
 			
-			Tools.setCookie("conexion", Tools.SESSION_CR);
-			Tools.setCookie("pais", String.valueOf(Tools.CODE_CR));
+			Tools.setCookie("conexion", Tools.SESSION_SV);
+			Tools.setCookie("pais", String.valueOf(Tools.CODE_SV));
 
 				execution.sendRedirect(Tools.REDIRECT_MENU);
 			

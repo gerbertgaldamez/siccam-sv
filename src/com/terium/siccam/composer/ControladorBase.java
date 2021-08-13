@@ -43,7 +43,7 @@ public class ControladorBase extends GenericForwardComposer<Component> {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public static final String nombreAplicacion = "SICCAMCR";
+	public static final String nombreAplicacion = "SICCAMSV";
 	
 	static HttpSession misession = (HttpSession) Sessions.getCurrent().getNativeSession();
 	static Desktop desktop = Executions.getCurrent().getDesktop();

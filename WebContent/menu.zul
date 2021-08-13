@@ -64,7 +64,7 @@
 						<div sclass="header">
 							<vbox>
 								<label
-									value="SICCAM - Sistema de Conciliación para Costa Rica"
+									value="SICCAM - Sistema de Conciliación para El Salvador"
 									id="lblTitulo" sclass="tituloapp" />
 								<label
 									value="Permite conciliar la recaudación de los distintos canales"
@@ -290,7 +290,7 @@
                     <n:tr>
                         <n:td>
                             <label style="color:white"
-              value="Telefonica Móviles Costa Rica, S. A." />
+              value="Telefonica Móviles El Salvador, S. A." />
                         </n:td>
                        <n:td align="right">
                         	<label style="color:white" id="lblAnio"
