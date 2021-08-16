@@ -5,8 +5,6 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbutils.DbUtils;
+import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Desktop;
@@ -38,35 +37,37 @@ import com.terium.siccam.utils.Tools;
 
 public class ControladorBase extends GenericForwardComposer<Component> {
 
+	private static Logger log = Logger.getLogger(ControladorBase.class);
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	public static final String nombreAplicacion = "SICCAMSV";
-	
+
 	static HttpSession misession = (HttpSession) Sessions.getCurrent().getNativeSession();
 	static Desktop desktop = Executions.getCurrent().getDesktop();
 
-	//public ControladorBase() {}
+	// public ControladorBase() {}
 	Connection conn = null;
-	
+
 	@SuppressWarnings("unchecked")
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
-		//obtenerDtsPromo();
-	//obtenerDtsModsec();//
-		
+		String methodName = "doAfterCompose()";
+		// obtenerDtsPromo();
+		// obtenerDtsModsec();//
+
 		try {
 			conn = obtenerDtsModsec().getConnection();
 			SeguridadWeb segWeb = new SeguridadWeb();
 			Usuario usuario = null;
-			
+
 			SeguridadZK segZK = new SeguridadZK();
 			List<PermisosGenerales> permisos;
 			List<Elemento> elementos;
 			Aplicacion aplicacion = null;
-			
 
 			if (Executions.getCurrent().getParameter("autoriza") != null) {
 				String codArea = null;
@@ -79,7 +80,7 @@ public class ControladorBase extends GenericForwardComposer<Component> {
 				String param = (String) Executions.getCurrent().getParameter("autoriza");
 
 				/** Obtener valor del parametro de url pais */
-				if (Executions.getCurrent().getParameter("pais") == null) { //cambios para pruebas 
+				if (Executions.getCurrent().getParameter("pais") == null) { // cambios para pruebas
 					codArea = (String) Executions.getCurrent().getParameter("pais");
 					desktop.getSession().setAttribute("paisAPP_" + nombreAplicacion, codArea);
 				}
@@ -90,7 +91,7 @@ public class ControladorBase extends GenericForwardComposer<Component> {
 				 */
 				desktop.getSession().setAttribute("permisosUsr_" + nombreAplicacion, null);
 				desktop.getSession().setAttribute("elementosApp_" + nombreAplicacion, null);
-				HttpServletRequest hsr = (HttpServletRequest)execution.getNativeRequest();
+				HttpServletRequest hsr = (HttpServletRequest) execution.getNativeRequest();
 
 				/**
 				 * .invocar el método @validaAutorización, por medio del cuál se verificará que
@@ -106,66 +107,64 @@ public class ControladorBase extends GenericForwardComposer<Component> {
 				Tools.setCookie("userId", String.valueOf(usuario.getSecusuarioid()));
 
 			}
-			
-			if(Tools.getCookie("userName") != null && Tools.getCookie("userName") != "") {
-				
-				if(Tools.getCookie("pais") != null && Tools.getCookie("pais") != "") {
+
+			if (Tools.getCookie("userName") != null && Tools.getCookie("userName") != "") {
+
+				if (Tools.getCookie("pais") != null && Tools.getCookie("pais") != "") {
 
 					usuario = new Usuario();
 					usuario.setUsuario(Tools.getCookie("userName"));
 					usuario.setSecusuarioid(new BigDecimal(Tools.getCookie("userId")));
-					
+
 					/** Obtener información de aplicación */
 					aplicacion = segWeb.obtenerAplicacion(conn, nombreAplicacion);
 					desktop.getSession().setAttribute("SecAplicacion_" + nombreAplicacion, aplicacion);
 
 					/** Obtener Permisos configurados para el usuario */
-					
+
 					int pais = Integer.parseInt(Tools.getCookie("pais"));
-					
-					
-					Logger.getLogger(ControladorBase.class.getName()).log(Level.INFO,
-							"SICCAM pais:" + pais);
+
+					log.debug(methodName + " - SICCAM pais:" + pais);
 					permisos = segWeb.obtenerPermisos(conn, usuario, aplicacion.getNombre(), new BigDecimal(pais));
-					
+
 					desktop.getSession().setAttribute("permisosUsr_" + nombreAplicacion, permisos);
-					
 
 					if (desktop.getSession().getAttribute("elementosApp_" + nombreAplicacion) == null) {
 						/** Obtener listado de elementos de aplicación */
 						elementos = segWeb.obtenerElementosApp(conn, aplicacion.getSecaplicacionid());
 						desktop.getSession().setAttribute("elementosApp_" + nombreAplicacion, elementos);
-					}else
-						elementos = (List<Elemento>) desktop.getSession().getAttribute("elementosApp_" + nombreAplicacion);
-					
+					} else
+						elementos = (List<Elemento>) desktop.getSession()
+								.getAttribute("elementosApp_" + nombreAplicacion);
 
 					if (permisos != null && elementos != null && aplicacion != null) {
-						//permisos = (List<PermisosGenerales>) desktop.getSession().getAttribute("permisosUsr_" + nombreAplicacion);
-						//elementos = (List<Elemento>) desktop.getSession().getAttribute("elementosApp_" + nombreAplicacion);
-						//aplicacion = (Aplicacion) desktop.getSession().getAttribute("SecAplicacion_" + nombreAplicacion);
+						// permisos = (List<PermisosGenerales>)
+						// desktop.getSession().getAttribute("permisosUsr_" + nombreAplicacion);
+						// elementos = (List<Elemento>)
+						// desktop.getSession().getAttribute("elementosApp_" + nombreAplicacion);
+						// aplicacion = (Aplicacion) desktop.getSession().getAttribute("SecAplicacion_"
+						// + nombreAplicacion);
 						/** Habilitar o Deshabilitar componentes de Zk, automáticamente */
 						segZK.generacionComponentesSeguridad(null, permisos, elementos, comp, usuario,
 								aplicacion.getSecaplicacionid(), aplicacion);
-						
+
 						/*
-						Messagebox.show("Genera componentes de seguridad", Constantes.ATENCION, Messagebox.OK,
-								Messagebox.INFORMATION);
-								*/
-						
-						Logger.getLogger(ControladorBase.class.getName()).log(Level.INFO,
-								"SICCAM Genera Componentes de Seguridad.....");
+						 * Messagebox.show("Genera componentes de seguridad", Constantes.ATENCION,
+						 * Messagebox.OK, Messagebox.INFORMATION);
+						 */
+						log.debug(methodName + " - SICCAM Genera Componentes de Seguridad");
 					}
 				}
-				
-			}else {
+
+			} else {
 				String url = new SeguridadWeb().obtenerUrlPortal(conn, nombreAplicacion);
-				
+
 				Tools.eraseCookie("userName");
 				Tools.eraseCookie("userId");
 				Tools.eraseCookie("conexion");
 				Tools.eraseCookie("pais");
 				/** Redirigir a AVI */
-				
+
 				execution.sendRedirect(url);
 			}
 
@@ -175,7 +174,7 @@ public class ControladorBase extends GenericForwardComposer<Component> {
 			Log.error(e.getMessage(), e);
 		} finally {
 			DbUtils.closeQuietly(conn);
-		} 
+		}
 	}
 
 	public static boolean validarEmail(String email) {
@@ -203,16 +202,16 @@ public class ControladorBase extends GenericForwardComposer<Component> {
 //			return ret;
 			try {
 				String url = new SeguridadWeb().obtenerUrlPortal(conn, nombreAplicacion);
-				
+
 				Tools.eraseCookie("userName");
 				Tools.eraseCookie("conexion");
 				Tools.eraseCookie("pais");
-				
+
 				/** Redirigir a AVI */
 				execution.sendRedirect(url);
-			}catch (Exception e) {
+			} catch (Exception e) {
 				// TODO: handle exception
-				Logger.getLogger(ControladorBase.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerUsuario() - Error ", e);
 			}
 
 		}
@@ -222,39 +221,24 @@ public class ControladorBase extends GenericForwardComposer<Component> {
 
 	public static DataSource obtenerDtsPromo() {
 		DataSource dts = null;
-		System.out.println("entrando a dtspromo " );		
-		Logger.getLogger(ControladorBase.class.getName()).log(Level.INFO, null, "entrando a controlador base" );
-				try {
-			
+		String methodName = "obtenerDtsPromo()";
+		log.debug(methodName + " - inicio controlador base");
+		try {
 			Context contexto = new InitialContext();
-			System.out.println("entrando a dtspromo 1" );
-			System.out.println( Tools.getCookie("conexion") );
-			System.out.println("cooooookie" );
+			log.debug(methodName + " Conexion getCookie " + Tools.getCookie("conexion"));
 			if (Tools.getCookie("conexion") == null || Tools.getCookie("conexion") == "conexion") {
-				Logger.getLogger(ControladorBase.class.getName()).log(Level.INFO, null,
-						"la conexion es nula: " + misession.getAttribute(Constantes.CONEXION));
-				System.out.println("entrando a dtspromo 2" );	
-			} else if (Tools.getCookie("conexion").equals(Constantes.CONEXION)) {//Tools.SESSION_SV
-				dts = (DataSource) contexto.lookup(Constantes.STR_CONEX + Tools.CONEXION_SV);//CONEXION_CR
-
-					Logger.getLogger(ControladorBase.class.getName()).log(Level.INFO, null,
-						"obteniendo conexion PA ");
-			System.out.println("entrando a dtspromo 3" );
-			System.out.println(Constantes.STR_CONEX );
-			System.out.println(Tools.CONEXION_SV );		}	//	CONEXION_CR
-
-			
-            else {
-
-			dts = (DataSource) contexto.lookup(Constantes.STR_CONEX + Tools.CONEXION_SV);//CONEXION_CR
-			System.out.println("entrando a dtspromo 5" );			
-                 }
-
+				log.debug(methodName + "la conexion es nula: " + misession.getAttribute(Constantes.CONEXION));
+			} else if (Tools.getCookie("conexion").equals(Constantes.CONEXION)) {// Tools.SESSION_SV
+				dts = (DataSource) contexto.lookup(Constantes.STR_CONEX + Tools.CONEXION_SV);// CONEXION_CR
+				log.debug(methodName + " JNDI conexion : " + Constantes.STR_CONEX + Tools.CONEXION_SV);
+			} // CONEXION_CR
+			else {
+				dts = (DataSource) contexto.lookup(Constantes.STR_CONEX + Tools.CONEXION_SV);// CONEXION_CR
+				log.debug(methodName + " JNDI contexto : " + Constantes.STR_CONEX + Tools.CONEXION_SV);
+			}
 
 		} catch (NamingException e) {
-			Logger.getLogger(ControladorBase.class.getName()).log(Level.INFO, null,
-					"No logro la conexion");
-			Logger.getLogger(ControladorBase.class.getName()).log(Level.SEVERE, null, e);
+			log.error(methodName + " - No se ha podido obtener la conexion ", e);
 			/*
 			 * Messagebox .show(
 			 * "Ocurrió un error al tratar de obtener la conexión a DB, comúníquese con su administrador."
@@ -263,62 +247,54 @@ public class ControladorBase extends GenericForwardComposer<Component> {
 		}
 		return dts;
 	}
-	
-		
-/* version ovidio
-	public static DataSource obtenerDtsPromo() {
-		DataSource dts = null;
-		System.out.println("entrando a dtspromo " );		
-		Logger.getLogger(ControladorBase.class.getName()).log(Level.INFO, null, "entrando a controlador base" );
-				try {
-			
-			Context contexto = new InitialContext();
-			System.out.println("entrando a dtspromo 1" );
-//			System.out.println(Tools.getCookie("conexion") );
-				Logger.getLogger(ControladorBase.class.getName()).log(Level.INFO, null,
-						"la conexion es nula: " + misession.getAttribute(Constantes.CONEXION));
-		
 
-			dts = (DataSource) contexto.lookup(Constantes.STR_CONEX + Tools.CONEXION_CR);
-			System.out.println("entrando a dtspromo 5" );			
-                 
+	/*
+	 * version ovidio public static DataSource obtenerDtsPromo() { DataSource dts =
+	 * null; System.out.println("entrando a dtspromo " );
+	 * Logger.getLogger(ControladorBase.class.getName()).log(Level.INFO, null,
+	 * "entrando a controlador base" ); try {
+	 * 
+	 * Context contexto = new InitialContext();
+	 * System.out.println("entrando a dtspromo 1" ); //
+	 * System.out.println(Tools.getCookie("conexion") );
+	 * Logger.getLogger(ControladorBase.class.getName()).log(Level.INFO, null,
+	 * "la conexion es nula: " + misession.getAttribute(Constantes.CONEXION));
+	 * 
+	 * 
+	 * dts = (DataSource) contexto.lookup(Constantes.STR_CONEX + Tools.CONEXION_CR);
+	 * System.out.println("entrando a dtspromo 5" );
+	 * 
+	 * 
+	 * 
+	 * } catch (NamingException e) {
+	 * Logger.getLogger(ControladorBase.class.getName()).log(Level.INFO, null,
+	 * "No logro la conexion");
+	 * Logger.getLogger(ControladorBase.class.getName()).log(Level.SEVERE, null, e);
+	 * /* Messagebox .show(
+	 * "Ocurrió un error al tratar de obtener la conexión a DB, comúníquese con su administrador."
+	 * , "Error", Messagebox.OK, Messagebox.ERROR);
+	 */
+	/*
+	 * } return dts; }
+	 */
 
-
-		} catch (NamingException e) {
-			Logger.getLogger(ControladorBase.class.getName()).log(Level.INFO, null,
-					"No logro la conexion");
-			Logger.getLogger(ControladorBase.class.getName()).log(Level.SEVERE, null, e);
-			/*
-			 * Messagebox .show(
-			 * "Ocurrió un error al tratar de obtener la conexión a DB, comúníquese con su administrador."
-			 * , "Error", Messagebox.OK, Messagebox.ERROR);
-			 */
-/*		}
-		return dts;
-	}
-	*/
-	
 //	public static DataSource obtenerDtsPromos(String pais) {
 	public static DataSource obtenerDtsPromos() {
+		String methodName = "obtenerDtsPromos()";
 		String pais;
 		DataSource dts = null;
-		pais = "SV";//CR
-		Logger.getLogger(ControladorBase.class.getName()).log(Level.INFO, null, "entrando a controlador base" );
+		pais = "SV";// CR
+		log.debug(methodName + " - inicio ");
 		try {
-			Logger.getLogger(ControladorBase.class.getName()).log(Level.INFO, null,
-					"obteniendo conexion SV ");	//CR		
+			log.debug(methodName + " - obteniendo conexion SV");
 			Context contexto = new InitialContext();
-
 			if (pais == null || pais == "") {
-				Logger.getLogger(ControladorBase.class.getName()).log(Level.INFO, null,
-						"la conexion es nula: " + misession.getAttribute(Constantes.CONEXION));
-
-				dts = (DataSource) contexto.lookup(Constantes.STR_CONEX + Tools.CONEXION_SV);//CONEXION_CR
-																				 
+				log.debug(methodName + " - la conexion es nula: " + misession.getAttribute(Constantes.CONEXION));
+				dts = (DataSource) contexto.lookup(Constantes.STR_CONEX + Tools.CONEXION_SV);// CONEXION_CR
 			}
 
 		} catch (NamingException e) {
-			Logger.getLogger(ControladorBase.class.getName()).log(Level.SEVERE, null, e);
+			log.error(methodName + " - Error al obtener la conexion ", e);
 			/*
 			 * Messagebox .show(
 			 * "Ocurrió un error al tratar de obtener la conexión a DB, comúníquese con su administrador."
@@ -345,23 +321,23 @@ public class ControladorBase extends GenericForwardComposer<Component> {
 				break;
 			case 904:
 				ret = "Se realizo una consulta con un indice de columna no valida, consulte a su administrador";
-				Logger.getLogger(ControladorBase.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerMensajeExcepcion() - Error : " + e);
 				break;
 			case 936:
 				ret = "La consulta no tiene una sintaxis valida, consulte a su administrador";
-				Logger.getLogger(ControladorBase.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerMensajeExcepcion() - Error : " + e);
 				break;
 			case 942:
 				ret = "La tabla que se esta intentando consultar no existe, consulte a su administrador";
-				Logger.getLogger(ControladorBase.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerMensajeExcepcion() - Error : " + e);
 				break;
 			case 1017:
 				ret = "Usuario o clave de base de datos invalido, consulte a su administrador";
-				Logger.getLogger(ControladorBase.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerMensajeExcepcion() - Error : " + e);
 				break;
 			case 1034:
 				ret = "La base de datos no ha sido inicializada, consulte a su administrador";
-				Logger.getLogger(ControladorBase.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerMensajeExcepcion() - Error : " + e);
 				break;
 			case 1400:
 				ret = "No se puede insertar un valor nulo en este registro";
@@ -403,7 +379,7 @@ public class ControladorBase extends GenericForwardComposer<Component> {
 					ret = e.getMessage();
 				else {
 					ret = "Ocurrió un error inesperado, comuníquese con su administrador de sistema.";
-					Logger.getLogger(ControladorBase.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerMensajeExcepcion() - Error : " + e);
 				}
 				break;
 			}
@@ -420,13 +396,12 @@ public class ControladorBase extends GenericForwardComposer<Component> {
 				Context contexto = new InitialContext();
 
 				dts = (DataSource) contexto.lookup("java:comp/env/jdbc/modsec");
-				Logger.getLogger(ControladorBase.class.getName()).log(Level.INFO,
-						"dts:" + dts);
+				log.debug("obtenerDtsModsec() - "+"dts:" + dts);
 				desktop.getSession().setAttribute("dtsModsec", dts);
 			} else
 				dts = (DataSource) desktop.getSession().getAttribute("dtsModsec");
 		} catch (NamingException e) {
-			Logger.getLogger(ControladorBase.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerDtsModsec() - Error : " , e);
 		}
 		return dts;
 	}
@@ -458,8 +433,6 @@ public class ControladorBase extends GenericForwardComposer<Component> {
 
 	// SALIR AL PORTAL DE APLICACIONES
 	public void onClick$mniSalir() throws InterruptedException {
-
-		
 
 	}
 
