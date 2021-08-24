@@ -57,6 +57,8 @@ import com.terium.siccam.utils.Tools;
  * @author Juankrlos
  */
 public class CBEstadoCuentasController extends ControladorBase implements SeleccionaCargaCredomaticInfz {
+	
+	
 
 	private static Logger logger = Logger.getLogger(CBEstadoCuentasController.class);
 
