@@ -39,7 +39,7 @@ public class Tools {
 	public static final String REDIRECT_MENU = "menu.zul";
 	public static final String REDIRECT_INICIO = "inicio.zul";
 	public static final String REDIRECT_INDEX = "index.zul";
-	public static final String CONEXION_SV = "jdbc/telcasv0";
+	public static final String CONEXION_SV = "jdbc/corrmas";
 	public static final String CONEXION_GT = "jdbc/sclgtepr";
 	public static final String CONEXION_CR = "jdbc/corrmas";
 	public static final String CONEXION_PA = "jdbc/corrmas";

@@ -396,12 +396,12 @@ public class ControladorBase extends GenericForwardComposer<Component> {
 				Context contexto = new InitialContext();
 
 				dts = (DataSource) contexto.lookup("java:comp/env/jdbc/modsec");
-				log.debug("obtenerDtsModsec() - "+"dts:" + dts);
+				log.debug("obtenerDtsModsec() - " + "dts:" + dts);
 				desktop.getSession().setAttribute("dtsModsec", dts);
 			} else
 				dts = (DataSource) desktop.getSession().getAttribute("dtsModsec");
 		} catch (NamingException e) {
-			log.error("obtenerDtsModsec() - Error : " , e);
+			log.error("obtenerDtsModsec() - Error : ", e);
 		}
 		return dts;
 	}
