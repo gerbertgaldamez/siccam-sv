@@ -6,11 +6,10 @@ package com.terium.siccam.controller;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Sessions;
@@ -46,6 +45,7 @@ import org.zkoss.zul.Button;
  */
 public class CBProcessFileUploadController extends ControladorBase {
 
+	private static Logger logger = Logger.getLogger(CBProcessFileUploadController.class);
 	/**
 	 * 
 	 */
@@ -152,14 +152,14 @@ public class CBProcessFileUploadController extends ControladorBase {
 	// format.toUpperCase().equals("dat".toUpperCase()
 	public void onUpload$btnArchivoEstados(UploadEvent event) {
 		media = event.getMedia();
-		System.out.println("Formato del archivo antes de insertar: " + media.getFormat());
+		String methodName = "onUpload$btnArchivoEstados()";
+		logger.debug(methodName + " - Formato del archivo antes de insertar: " + media.getFormat());
 		String format = media.getName().substring(media.getName().length() - 3, media.getName().length());
-		System.out.println("Formato con substring: " + format);
+		logger.debug(methodName + " - Formato con substring: " + format);
 
-		System.out.println("-----File Information-----");
-		System.out.println("name: " + media.getName());
-		System.out.println("contentType: " + media.getContentType());
-		System.out.println("format: " + media.getFormat());
+		logger.debug(methodName + " - File Information : " + "name: " + media.getName());
+		logger.debug(methodName + " - File Information : " + "contentType: " + media.getContentType());
+		logger.debug(methodName + " - File Information : " + "format: " + media.getFormat());
 
 		if (media.getFormat().toUpperCase().equals("xlsx".toUpperCase())) {
 			lblMensaje.setValue("Archivo seleccionado: " + media.getName());
@@ -215,8 +215,7 @@ public class CBProcessFileUploadController extends ControladorBase {
 						nombreArchivo = media.getName();
 						String format = media.getName().substring(media.getName().length() - 3,
 								media.getName().length());
-						Logger.getLogger(CBProcessFileUploadController.class.getName()).log(Level.INFO,
-								"Formato con substring: " + format);
+						logger.debug("onClick$btnCargaConfrontas()" + " - Formato con substring: " + format);
 						formatoFechaConfronta = bancoDAO.obtenerFormatoFechaConfronta(idConfronta);
 						// Cambia Juankrlos --:> 01/11/2017
 						formatoFechaConfronta = cambiaFormatoFecha(formatoFechaConfronta);
@@ -243,11 +242,12 @@ public class CBProcessFileUploadController extends ControladorBase {
 						} else if (misession.getAttribute("conexion").equals(Tools.SESSION_CR)) {
 							cbprocesCR.mapeoCargaConfrontasCR();
 						} else {
+							logger.debug("onClick$btnCargaConfrontas() - ingresa mapeoCargaConfrontasSV");
 							cbprocesSV.mapeoCargaConfrontasSV();
 						}
 					}
 				} catch (Exception e) {
-					Logger.getLogger(CBProcessFileUploadController.class.getName()).log(Level.SEVERE,null,e);
+					logger.error("onClick$btnCargaConfrontas() - Error : ", e);
 				}
 			else {
 				Messagebox.show("Debe seleccionar un archivo para cargar ", "ATENCION", Messagebox.OK,
@@ -270,10 +270,9 @@ public class CBProcessFileUploadController extends ControladorBase {
 	}
 
 	String formatoFechaConfronta;
-	private static List<CBDataBancoModel> listDataBanco;	
+	private static List<CBDataBancoModel> listDataBanco;
 	private String idCargaMaestra;
-	private String tipo = "0";	
-	
+	private String tipo = "0";
 
 	/**
 	 * @author Juankrlos 01/11/2017
@@ -289,9 +288,10 @@ public class CBProcessFileUploadController extends ControladorBase {
 			formato = formato.replace("am", "a");
 			formato = formato.replace("AM", "a");
 			formato = formato.replace("a.m.", "a");
-			System.out.println("formato seleccionado " + formato);
+			logger.debug("cambiaFormatoFecha() " + " - formato seleccionado " + formato);
 		} catch (Exception e) {
-			System.out.println("Error en cambio formato fecha --:> " + e.getMessage());
+			logger.error("cambiaFormatoFecha() - Error : ", e);
+
 			return "";
 		}
 
@@ -315,13 +315,11 @@ public class CBProcessFileUploadController extends ControladorBase {
 	}
 
 	/**
-	 * @param nombreArchivo
-	 *            the nombreArchivo to set
+	 * @param nombreArchivo the nombreArchivo to set
 	 */
 	public void setNombreArchivo(String nombreArchivo) {
 		CBProcessFileUploadController.nombreArchivo = nombreArchivo;
 	}
-
 
 	public String getIdCargaMaestra() {
 		return idCargaMaestra;

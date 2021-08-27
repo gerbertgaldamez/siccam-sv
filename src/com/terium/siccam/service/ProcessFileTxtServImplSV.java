@@ -26,9 +26,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import org.apache.log4j.Logger;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Messagebox;
 
@@ -37,6 +36,8 @@ import org.zkoss.zul.Messagebox;
  * @author rSianB to terium.com
  */
 public class ProcessFileTxtServImplSV extends ControladorBase implements ProcessFileTxtService {
+
+	private static Logger logger = Logger.getLogger(ProcessFileTxtServImplSV.class);
 	/**
 	 * 
 	 */
@@ -64,6 +65,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 	public List<CBDataBancoModel> leerArchivo(BufferedReader bufferedReader, int idBanco, int idAgencia,
 			int idConfronta, String user, String nombreArchivo, String tipo, BigDecimal comisionConfronta,
 			int idAgeConfro) {
+		String methodName = "leerArchivo()";
 
 		// String nombreBi = nombreArchivo.substring(0, 8).trim();
 		Date fechaCreacion = new Date();
@@ -76,8 +78,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 		CBArchivosInsertadosDAO cvaidao = new CBArchivosInsertadosDAO();
 		idMaestro = cvaidao.idMaestroCarga();
 		if (cvaidao.insertarArchivos(idMaestro, nombreArchivo, idBanco, idAgencia, user)) {
-			Logger.getLogger(ProcessFileTxtServImplSV.class.getName()).log(Level.INFO,
-					"INSERT DE ARCHIVO REALIZADO CON EXITO");
+			logger.debug(methodName + " - INSERT DE ARCHIVO REALIZADO CON EXITO");
 
 			CBDataBancoDAO objeDataBancoDAO = new CBDataBancoDAO();
 			int contLinea = 0;
@@ -88,8 +89,8 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 			 * 
 			 * */
 			try {
-				//conn = obtenerDtsPromo().getConnection();
-				getConfrontaConf( idConfronta);
+				// conn = obtenerDtsPromo().getConnection();
+				getConfrontaConf(idConfronta);
 				// Lee el archivo linea por linea
 				while ((strLine = bufferedReader.readLine()) != null) {
 					if (contLinea >= lineaEmpiezaLeer) {
@@ -104,13 +105,13 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 
 							// *********************************************************************************
 							String delimitador = this.delimitador1;
-							System.out.println("\nLinea: " + strLine1);
-							System.out.println("Longitud: " + strLine1.length());
-							System.out.println("VALOR DE LA VARIABLE 'delimitador' = " + delimitador);
+//							logger.debug(methodName + "\nLinea: " + strLine1);
+//							logger.debug(methodName + " - Longitud: " + strLine1.length());
+//							logger.debug(methodName + " - VALOR DE LA VARIABLE 'delimitador' = " + delimitador);
 							if (delimitador.compareTo("n/a") == 0) {
 								char aChar = strLine1.charAt(0);
 								String cambio = "" + aChar;
-								System.out.println("QUE TIENE EL CHAR: " + cambio);
+								logger.debug(methodName + " - QUE TIENE EL CHAR: " + cambio);
 								// int numero = Integer.parseInt(cambio);
 
 								// ********************************************************************************
@@ -123,11 +124,11 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 									String[] pos = this.posiciones.split(",");
 									String longit = this.tamDeCadena;
 									String[] splitNomCl = this.nomenclatura.split(",");
-									System.out.println("variable longit = " + longit);
-									System.out.println("LONGITUD DE VARIABLE longit = " + strLine1.length() + "\n");
+									logger.debug(methodName + " - variable longit = " + longit);
+									logger.debug(methodName + " - LONGITUD DE VARIABLE longit = " + strLine1.length()
+											+ "\n");
 									if (strLine1.length() == Integer.parseInt(longit)) {
-										Logger.getLogger(ProcessFileTxtServImplSV.class.getName()).log(Level.INFO,
-												"Longitud: " + longit);
+										logger.debug(methodName + " - Longitud: " + longit);
 
 										CBDataBancoModel bancoModel = new CBDataBancoModel();
 										// CBDataBancoDAO cbd = new
@@ -178,25 +179,22 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 												try {
 													int entero = Integer.parseInt(telefono.trim());
 													String telefono1 = ("" + entero).trim();
-													Logger.getLogger(ProcessFileTxtServImplSV.class.getName())
-															.log(Level.INFO, "TAMANO DEL TELEFONO: " + telefono1.length()
-																	+ " Telefono: " + telefono);
-
+													logger.debug(methodName + " - TAMANO DEL TELEFONO: "
+															+ telefono1.length() + " Telefono: " + telefono);
 													if (telefono1.length() == 8) {
 														bancoModel.setTelefono(telefono1.trim());
 													} else {
-														Logger.getLogger(ProcessFileTxtServImplSV.class.getName())
-																.log(Level.INFO, "Codigo Cliente: " + telefono1);
+														logger.debug(methodName + " - Codigo Cliente: " + telefono1);
 														bancoModel.setCodCliente(telefono1.trim());
 													}
-												}catch (Exception e) {
+												} catch (Exception e) {
 													// TODO: handle exception
-													Logger.getLogger(ProcessFileTxtServImplSV.class.getName())
-													.log(Level.INFO,"Formato de telefono/codigo cliente erroneo.");
+													logger.debug(methodName
+															+ " - Formato de telefono/codigo cliente erroneo.");
 													bancoModel.setTelefono("");
 													bancoModel.setCodCliente("");
 												}
-												
+
 											}
 
 											if ("C".equals(nomenCla)) {
@@ -206,17 +204,15 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 
 												int entero = Integer.parseInt(telefono.trim());
 												String telefono1 = ("" + entero).trim();
-												Logger.getLogger(ProcessFileTxtServImplSV.class.getName())
-														.log(Level.INFO, "TAMAï¿½O DEL TELEFONO: " + telefono1.length()
-																+ " Telefono: " + telefono);
+												logger.debug(methodName + " - TAMAÑO DEL TELEFONO: "
+														+ telefono1.length() + " Telefono: " + telefono);
 												if (telefono1.length() == 8) {
 													// System.out.println("Telefono:
 													// "
 													// + telefono1);
 													bancoModel.setTelefono(telefono1.trim());
 												} else {
-													Logger.getLogger(ProcessFileTxtServImplSV.class.getName())
-															.log(Level.INFO, "Codigo Cliente: " + telefono1);
+													logger.debug(methodName + " - Codigo Cliente: " + telefono1);
 													bancoModel.setCodCliente(telefono1.trim());
 												}
 											}
@@ -230,26 +226,27 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 														Integer.parseInt(posicion2));
 												strMonto = strMonto.replace("$", "");
 												strMonto = strMonto.trim();
-												Logger.getLogger(ProcessFileTxtServImplSV.class.getName())
-														.log(Level.INFO, "** Monto antes de parsear: " + strMonto);
-												
-												if(strMonto.substring(0,1).equals(".") || strMonto.substring(0,1).equals(",")) {
+												logger.debug(methodName + " - ** Monto antes de parsear: " + strMonto);
+												if (strMonto.substring(0, 1).equals(".")
+														|| strMonto.substring(0, 1).equals(",")) {
 													strMonto = "0".concat(strMonto);
-													System.out.println("Primer elemento: " + strMonto.substring(0,1)  + " Nueva cadena: " + strMonto);
+													logger.debug(methodName + " - Primer elemento: "
+															+ strMonto.substring(0, 1) + " Nueva cadena: " + strMonto);
 												}
 
 												String cadena = currencyToBigDecimalFormat(strMonto);
 												if (isBigDecimal(cadena)) {
 													BigDecimal monto;
 													if (cadena.indexOf(".") != -1) {
-														System.out.println("viene con punto decimal con delimitador");
+														logger.debug(methodName
+																+ " - viene con punto decimal con delimitador");
 														monto = new BigDecimal(cadena);
 													} else {
-														System.out.println("viene sin punto decimal con delimitador");
+														logger.debug(methodName
+																+ " - viene sin punto decimal con delimitador");
 														monto = new BigDecimal(cadena).divide(new BigDecimal(100));
 													}
-
-													System.out.println("** Monto parseado: " + monto);
+													logger.debug(methodName + " - Monto parseado: " + monto);
 													bancoModel.setMonto(monto);
 												} else {
 													throw new Exception("Monto no valido");
@@ -261,10 +258,10 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 
 												String texto1 = strLine1.substring(Integer.parseInt(posicion1),
 														Integer.parseInt(posicion2));
-												System.out.println("Texto1: " + texto1);
-												
+												logger.debug(methodName + " - Texto1: " + texto1);
+							
 												bancoModel.setTexto1(texto1.trim());
-												
+
 											}
 
 											// Texto2
@@ -272,10 +269,8 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 
 												String texto2 = strLine1.substring(Integer.parseInt(posicion1),
 														Integer.parseInt(posicion2));
-												System.out.println("Texto1: " + texto2);
-												
+												logger.debug(methodName+" - Texto1: " + texto2);
 												bancoModel.setTexto2(texto2.trim());
-												
 
 											}
 											// Transaccion
@@ -284,28 +279,31 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 
 												String transaccion = strLine1.substring(Integer.parseInt(posicion1),
 														Integer.parseInt(posicion2));
-												System.out.println("Transaccion: " + transaccion);
+												logger.debug(methodName+" - Transaccion: " + transaccion);
+
 												bancoModel.setTransaccion(transaccion.trim());
 											}
 											if ("R".equals(nomenCla)) {
 												String agencia = strLine1.substring(Integer.parseInt(posicion1),
 														Integer.parseInt(posicion2));
-												System.out.println("Agencia: " + agencia);
+												logger.debug(methodName+"Agencia: " + agencia);
 												bancoModel.setCbAgenciaVirfisCodigo(agencia.trim());
 											}
 
 											if ("D".equals(nomenCla)) {
 												String fecha = strLine1.substring(Integer.parseInt(posicion1),
 														Integer.parseInt(posicion2));
-												System.out.println("Fecha: " + fecha);
+												logger.debug(methodName+" - Fecha: " + fecha);
 												bancoModel.setFecha(fecha);
 												bancoModel.setDia(fecha);
 											}
 
 										}
 										if (isDate(bancoModel.getFecha(), formatoFechaConfronta)
-												&& ((bancoModel.getTelefono() != null && !bancoModel.getTelefono().equals(""))
-														|| (bancoModel.getCodCliente() != null && !bancoModel.getCodCliente().equals("")))) {
+												&& ((bancoModel.getTelefono() != null
+														&& !bancoModel.getTelefono().equals(""))
+														|| (bancoModel.getCodCliente() != null
+																&& !bancoModel.getCodCliente().equals("")))) {
 											dataBancoModels.add(bancoModel);
 										} else {
 											enviarDataSinProcesar(strLine1, nombreArchivo, user, idMaestro,
@@ -322,7 +320,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 									}
 
 								} else if (Character.isDigit(aChar) == true) {
-									System.out.println("valida si es diguito: " + aChar);
+									logger.debug(methodName+" - valida si es diguito: " + aChar);
 									String cambioFecha = strLine1.toString();
 									CustomDate customDate = new CustomDate();
 									setFormatoFecha(customDate.getFormatFecha(cambioFecha.trim(), this.formatoFecha));
@@ -334,7 +332,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 									// + fechaArchivo);
 									// dataBancoModels.add(bancoModel);
 								} else {
-									System.out.println("====> No agrega la info a la lista: ");
+									logger.debug(methodName+"No agrega la info a la lista");
 								}
 
 							} else {
@@ -347,12 +345,12 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 									// linea = strLine1.substring(0);
 									// System.out.println("Que lleva la linea: "
 									// + linea);
-									System.out.println("Delimitador para lectura1: " + this.delimitador1);
-									System.out.println("Numero de columnas configuradas: " + this.cantidadAgrupacion);
-
+									logger.debug(methodName + " - Delimitador para lectura1: " + this.delimitador1);
+									logger.debug(methodName + " - Numero de columnas configuradas: "
+											+ this.cantidadAgrupacion);
 									String[] splitData = strLine1.split("\\" + this.delimitador1);
 									splitDataLenght = splitData.length;
-									System.out.println("Numero de columnas del archivo: " + splitDataLenght);
+									logger.debug(methodName + " - Numero de columnas del archivo: " + splitDataLenght);
 									// Condicion editada por Carlos Godinez - Qitcorp - 22/05/2017
 									String[] splitDataValidos = new String[this.cantidadAgrupacion];
 									// Examina que el numero de columnas de la linea que se esta leyendo sea
@@ -362,9 +360,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 											splitDataValidos[fila] = splitData[fila];
 										}
 										if (splitDataValidos.length == this.cantidadAgrupacion) {
-											System.out.println(
-													"\n*** Cumple condicion: splitDataValidos.length == this.cantidadAgrupacion ***\n");
-
+											logger.debug(methodName + " - es valido la condicion splitDataValidos");
 											// Si la linea es valida, se pasan los
 											// parametros a getBancoModel()
 											getBancoModel(strLine1, idBanco, idAgencia, idConfronta, user,
@@ -372,14 +368,12 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 													getFormatoFecha(), idAgeConfro, formatoFechaConfronta);
 
 										} else {
-											System.out.println(
-													"\n*** NO Cumple condicion: splitDataValidos.length == this.cantidadAgrupacion ***\n");
+											logger.debug(methodName + " - NO Cumple condicion: splitDataValidos ");
 											enviarDataSinProcesar(strLine1, nombreArchivo, user, idMaestro,
 													"La cantidad de agrupacion de la linea leida es menor a la configurada");
 										}
 									} else {
-										System.out.println(
-												"\n*** NO Cumple condicion: splitDataValidos.length == this.cantidadAgrupacion ***\n");
+										logger.debug(methodName + " -  NO Cumple condicion: splitData ");
 										enviarDataSinProcesar(strLine1, nombreArchivo, user, idMaestro,
 												"Cantidad erronea de campos consulte la configuracion de la confronta");
 									}
@@ -395,14 +389,13 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 						+ "\nNumero de columnas del archivo: " + splitDataLenght
 						+ "\n\nCambie la cantidad de agrupacion de la confronta seleccionada en la pantalla de configuracion de confrontas",
 						"ERROR", Messagebox.OK, Messagebox.EXCLAMATION);
-				Logger.getLogger(ProcessFileTxtServImplSV.class.getName()).log(Level.SEVERE, null, ex);
+				logger.debug(methodName + " - Error * : " + ex);
 			} catch (IOException ex) {
-				Logger.getLogger(ProcessFileTxtServImplSV.class.getName()).log(Level.SEVERE, null, ex);
+				logger.debug(methodName + " - Error **  : " + ex);
 			} catch (Exception e) {
 				Messagebox.show("Ha ocurrido un error al intentar procesar el archivo de confronta", "ATENCION",
 						Messagebox.OK, Messagebox.ERROR);
-				System.out.println("Ha ocurrido un error: " + e.getMessage());
-				Logger.getLogger(ProcessFileTxtServImplSV.class.getName()).log(Level.SEVERE, null, e);
+				logger.error(methodName + " - " + "ha ocurrido un error: " + e.getMessage());
 			}
 		} else {
 			// System.out.println("viendo si sale");
@@ -421,6 +414,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 			String nombreArchivo, String idMaestro, String tipo, BigDecimal comisionConfronta, String formatFecha,
 			int idAgeConfro, String formatoFechaConfronta) {
 		boolean registroValido = false;
+		String methodName = "getBancoModel()";
 		Date fechaCreacion = new Date();
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
@@ -429,12 +423,10 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 		String[] splitData = strLine.split("\\" + delimitador1);
 		String[] splitNomCl = this.nomenclatura.split(",");
 		// System.out.println("SPLITDATA: " + splitData.length);
-		System.out.println("-----------------------------------");
-		System.out.println("Nomenclatura: " + nomenclatura);
-		System.out.println("splitData = " + splitData[0] + ".");
-		System.out.println("splitData.length = " + splitData.length);
-		System.out.println("cantidadAgrupacion = " + this.cantidadAgrupacion);
-		System.out.println("-----------------------------------");
+		logger.debug(methodName + " - Nomenclatura: " + nomenclatura);
+		logger.debug(methodName + " - splitData = " + splitData[0] + ".");
+		logger.debug(methodName + " - splitData.length = " + splitData.length);
+		logger.debug(methodName + " - cantidadAgrupacion = " + this.cantidadAgrupacion);
 		String[] splitDataValidos = new String[this.cantidadAgrupacion];
 		for (int fila = 0; fila < this.cantidadAgrupacion; fila++) {
 			splitDataValidos[fila] = splitData[fila];
@@ -451,8 +443,9 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 			bancoModel.setIdCargaMaestro(idMaestro);
 			bancoModel.setComision(comisionConfronta);
 			bancoModel.setFormatofecha(getFormatoFecha());
-			System.out.println("\nbanco agencia confronta usuario tipo fechaCreacion idMaestro comisionConfronta");
-			System.out.println(idBanco + " " + idAgencia + " " + idConfronta + " " + user + " " + tipo + " "
+			logger.debug(
+					methodName + "\nbanco agencia confronta usuario tipo fechaCreacion idMaestro comisionConfronta");
+			logger.debug(methodName + idBanco + " " + idAgencia + " " + idConfronta + " " + user + " " + tipo + " "
 					+ fechaCreacion + " " + idMaestro + " " + comisionConfronta + "\n");
 			for (int countRec = 0; countRec < splitDataValidos.length; countRec++) {
 				String valueToSave = splitNomCl[countRec];
@@ -462,7 +455,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 
 				// Telefono Tipo 1
 				if ("T".equals(valueToSave)) {
-					System.out.println("\n##Valor que lleva en la nomeclatura T = " + strData.trim());
+					logger.debug(methodName + "\n##Valor que lleva en la nomeclatura T = " + strData.trim());
 					String numeros = strData.trim();
 					String numReplace = numeros.replace(".", ",");
 					Object[] split = numReplace.split(",");
@@ -472,7 +465,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 						telefono = Integer.parseInt((String) split[0]);
 						telstr = "" + telefono;
 					} catch (Exception e) {
-						System.out.println("Numero vacio: " + e.getMessage());
+						logger.error(methodName + " - Numero vacio: " + e.getMessage());
 						telstr = "";
 					}
 
@@ -483,7 +476,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 					} else {
 						// Agrega Carlos Godinez - 12/09/2017
 						if (telstr != null && !telstr.equals("") && !telstr.equals("0") && telstr.length() < 8) {
-							System.out.println("Codigo Cliente asignado: " + telstr);
+							logger.debug(methodName + " - Codigo Cliente asignado: " + telstr);
 							bancoModel.setCodCliente(telstr.trim());
 						}
 						// FIN Carlos Godinez - 12/09/2017
@@ -510,24 +503,24 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 						telstr = String.valueOf(telefono);
 						strtran = String.valueOf(transaccion);
 					} catch (Exception e) {
-						System.out.println("Numero vacio: " + e.getMessage());
+						logger.error(methodName + " - Numero vacio: " + e.getMessage());
 						telstr = "";
 					}
 
 					if (telstr.length() == 8) {
-						System.out.println("Telefono: " + telstr);
+						logger.debug(methodName + " - Telefono: " + telstr);
 						bancoModel.setTelefono(telstr.trim());
 					} else {
-						System.out.println("Codigo Cliente: " + telstr);
+						logger.debug(methodName + " - Codigo Cliente: " + telstr);
 						bancoModel.setCodCliente(telstr.trim());
 					}
-					System.out.println("Transaccion: " + strtran);
+					logger.debug(methodName + " - Transaccion: " + strtran);
 					bancoModel.setTransaccion(strtran);
 
 					// Agrega Carlos Godinez - 12/09/2017
 					if (bancoModel.getCodCliente() == null || bancoModel.getCodCliente().equals("")) {
-						System.out.println("** Codigo de cliente va nulo, vacio o posee un valor de 0");
-						System.out.println("** Se asigna primera cadena string obtenida a codigo de cliente");
+						logger.debug(methodName + " - Codigo de cliente va nulo, vacio o posee un valor de 0");
+						logger.debug(methodName + " - Se asigna primera cadena string obtenida a codigo de cliente");
 						bancoModel.setCodCliente(numeros);
 					}
 					// FIN Carlos Godinez - 12/09/2017
@@ -538,7 +531,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 				}
 
 				if ("C".equals(valueToSave)) {
-					System.out.println("\n## Valor que lleva en la nomeclatura C = " + strData.trim());
+					logger.debug(methodName + " - " + "\n## Valor que lleva en la nomeclatura C = " + strData.trim());
 					String numeros = strData.trim();
 					String numReplace = numeros.replace(".", ",");
 					Object[] split = numReplace.split(",");
@@ -548,7 +541,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 						telefono = Integer.parseInt((String) split[0]);
 						telstr = "" + telefono;
 					} catch (Exception e) {
-						System.out.println("Numero vacio: " + e.getMessage());
+						logger.error(methodName + " - Numero vacio: " + e.getMessage());
 						telstr = "";
 					}
 
@@ -559,7 +552,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 					} else {
 						// Agrega Carlos Godinez - 12/09/2017
 						if (telstr != null && !telstr.equals("") && !telstr.equals("0")) {
-							System.out.println("Codigo Cliente asignado: " + telstr);
+							logger.debug(methodName + " - Codigo Cliente asignado: " + telstr);
 							bancoModel.setCodCliente(telstr.trim());
 						}
 						// FIN Carlos Godinez - 12/09/2017
@@ -571,19 +564,18 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 					// Editado por Carlos Godinez - Qitcorp - 24/08/2017
 					strData = strData.replace("$", "");
 					strData = strData.trim();
-					System.out.println("** Monto antes de parsear = " + strData);
-					
-					
-					if(strData.substring(0,1).equals(".") || strData.substring(0,1).equals(",")) {
+					logger.debug(methodName + " - Monto antes de parsear = " + strData);
+					if (strData.substring(0, 1).equals(".") || strData.substring(0, 1).equals(",")) {
 						strData = "0".concat(strData);
-						System.out.println("Primer elemento: " + strData.substring(0,1)  + " Nueva cadena: " + strData);
+						logger.debug(methodName + " - Primer elemento: " + strData.substring(0, 1) + " Nueva cadena: "
+								+ strData);
 					}
-					
+
 					String cadena = currencyToBigDecimalFormat(strData);
-					System.out.println("** Monto parseado = " + cadena);
+					logger.debug(methodName + " - Monto parseado = " + cadena);
 					if (isBigDecimal(cadena)) {
 						BigDecimal montoF = new BigDecimal(cadena);
-						System.out.println("** Monto antes de guardar = " + montoF);
+						logger.debug(methodName + " -  Monto antes de guardar = " + montoF);
 						bancoModel.setMonto(montoF);
 					}
 				}
@@ -592,12 +584,12 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 					// Editado por Carlos Godinez - Qitcorp - 24/08/2017
 					strData = strData.replace("$", "");
 					strData = strData.trim();
-					System.out.println("** Monto antes de parsear = " + strData);
+					logger.debug(methodName + " -  Monto antes de parsear = " + strData);
 					String cadena = currencyToBigDecimalFormat(strData);
-					System.out.println("** Monto parseado = " + cadena);
+					logger.debug(methodName + " -  Monto parseado = " + cadena);
 					if (isBigDecimal(cadena)) {
 						BigDecimal montoF = new BigDecimal(cadena).divide(new BigDecimal(100));
-						System.out.println("** Monto antes de guardar = " + montoF);
+						logger.debug(methodName + " - Monto antes de guardar = " + montoF);
 						bancoModel.setMonto(montoF);
 					}
 				}
@@ -632,15 +624,15 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 
 				// texto uno
 				if ("N".equals(valueToSave)) {
-				
+
 					bancoModel.setTexto1(strData.trim());
-					
+
 				}
 				// texto dos
 				if ("A".equals(valueToSave)) {
-					
+
 					bancoModel.setTexto2(strData.trim());
-					
+
 				}
 				// Agencia Virtual/Fisica
 				if ("R".equals(valueToSave)) {
@@ -663,7 +655,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 		}
 	}
 
-	private void getConfrontaConf( int idConfronta) {
+	private void getConfrontaConf(int idConfronta) {
 		CBConfiguracionConfrontaDaoB cccb = new CBConfiguracionConfrontaDaoB();
 		// System.out.println("id lista: " + idConfronta);
 		List<CBConfiguracionConfrontaModel> dataList = cccb.obtieneListaConfConfronta(idConfronta);
@@ -673,7 +665,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 			CBConfiguracionConfrontaModel confrontaModel = (CBConfiguracionConfrontaModel) dataList.get(countRec);
 			this.delimitador1 = confrontaModel.getDelimitador1();
 			this.delimitador2 = confrontaModel.getDelimitador2();
-			System.out.println("cantidad agrupacion: " + confrontaModel.getCantidadAgrupacion());
+			logger.debug("getConfrontaConf()" + " - cantidad agrupacion: " + confrontaModel.getCantidadAgrupacion());
 			this.cantidadAgrupacion = confrontaModel.getCantidadAgrupacion();
 			this.nomenclatura = confrontaModel.getNomenclatura();
 			this.formatoFecha = confrontaModel.getFormatoFecha();
@@ -691,8 +683,8 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 
 	public void enviarDataSinProcesar(String strLine, String nombreArchivo, String user, String idMaestro,
 			String causa) {
-		System.out.println("\nENTRA A VALIDACION DE REGISTROS SIN PROCESAR\n");
-		System.out.println("DATO QUE SE AGREGA A SIN PROCESAR = " + strLine);
+		logger.debug("enviarDataSinProcesar()" + " - ENTRA A VALIDACION DE REGISTROS SIN PROCESAR");
+		logger.debug("enviarDataSinProcesar()" + " - DATO QUE SE AGREGA A SIN PROCESAR = " + strLine);
 		CBDataSinProcesarModel dataSinProcesarModel = new CBDataSinProcesarModel();
 		dataSinProcesarModel.setNombreArchivo(nombreArchivo);
 		dataSinProcesarModel.setDataArchivo(strLine);
@@ -707,7 +699,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 	public boolean isBigDecimal(String cadena) {
 		try {
 			BigDecimal number = new BigDecimal(cadena);
-			System.out.println("** Monto parseado = " + number);
+			logger.debug("isBigDecimal()" + " -  Monto parseado = " + number);
 		} catch (Exception nfe) {
 			return false;
 		}
@@ -741,11 +733,11 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 	 * Validamos si el string enviado es fecha
 	 */
 	public boolean isDate(String fecha, String formatoDeseado) {
-		System.out.println("======== ENTRA A PARSEO DE FECHA ENVIADA ========");
+		logger.debug("isDate()" + " - ENTRA A PARSEO DE FECHA ENVIADA");
 		Date fec = null;
 		try {
-			System.out.println("Formato fecha para Oracle = " + formatoDeseado);
-			System.out.println("Fecha enviada = " + fecha);
+			logger.debug("isDate()" + " - Formato fecha para Oracle = " + formatoDeseado);
+			logger.debug("isDate()" + " - Fecha enviada = " + fecha);
 			formatoDeseado = formatoDeseado.replace("hh24", "HH");
 			formatoDeseado = formatoDeseado.replace("HH24", "HH");
 			formatoDeseado = formatoDeseado.replace("mi", "mm");
@@ -755,7 +747,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 			formatoDeseado = formatoDeseado.replace("AM", "a"); // CarlosGodinez -> 30/08/2017
 			formatoDeseado = formatoDeseado.replace("a.m.", "a"); // CarlosGodinez -> 30/08/2017
 
-			System.out.println("Formato fecha para Java = " + formatoDeseado);
+			logger.debug("isDate()" + " - Formato fecha para Java = " + formatoDeseado);
 			SimpleDateFormat format = new SimpleDateFormat(formatoDeseado, Locale.US);
 			format.setTimeZone(TimeZone.getTimeZone("UTC"));
 			format.setLenient(false);
@@ -766,18 +758,15 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 			format.setDateFormatSymbols(symbols);
 
 			fec = format.parse(fecha);
-			System.out.println("Fecha parseada con exito = " + fec);
-			System.out.println("======== FIN DE PARSEO DE FECHA =========");
+			logger.debug("isDate()" + " - Fecha parseada con exito = " + fec);
+			logger.debug("isDate()" + " - Fin de parseo fecha");
 			return true;
 		} catch (ParseException e) {
-			System.out.println(e.getMessage());
-			System.out.println("fecha con error: " + fecha);
-			System.out.println("======== FIN DE PARSEO DE FECHA =========");
+			logger.debug("isDate" + " - fecha con error: " + fecha);
+			logger.error("isDate() - Error : ", e);
 			return false;
 		} catch (NullPointerException e) {
-			System.out.println(e.getMessage());
-			System.out.println("fecha null: " + fecha);
-			System.out.println("======== FIN DE PARSEO DE FECHA =========");
+			logger.error("isDate() - Error : ", e);
 			return false;
 		}
 	}
@@ -786,8 +775,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 	 * FIN Agregado por Carlos Godinez
 	 */
 
-	public String guardarInfArchivo(List<CBDataBancoModel> dataArchivo,  int idBanco, int idAgencia,
-			int idConfronta) {
+	public String guardarInfArchivo(List<CBDataBancoModel> dataArchivo, int idBanco, int idAgencia, int idConfronta) {
 		throw new UnsupportedOperationException("Not supported yet."); // To
 																		// change
 																		// body

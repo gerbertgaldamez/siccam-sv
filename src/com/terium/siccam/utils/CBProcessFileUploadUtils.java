@@ -13,12 +13,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -51,6 +50,7 @@ import com.terium.siccam.service.CBDataSinProcesarMultServImpl;
 import com.terium.siccam.service.ProcessFileTxtServImplSV;
 
 public class CBProcessFileUploadUtils {
+	private static Logger log = Logger.getLogger(CBEstadoCuentaUtils.class);
 
 	HttpSession misession = (HttpSession) Sessions.getCurrent().getNativeSession();
 	HttpSession session = (HttpSession) Sessions.getCurrent().getNativeSession();
@@ -78,6 +78,8 @@ public class CBProcessFileUploadUtils {
 	private ConciliacionMultipleService multipleService;
 
 	public void mapeoCargaConfrontasSV() {
+		String methodName = "mapeoCargaConfrontasSV()";
+		log.debug(methodName + " -  inicia ");
 		nombreArchivo = (String) session.getAttribute("nombreArchivo");
 		usuario = (String) session.getAttribute("usuario");
 		media = (Media) session.getAttribute("media");
@@ -89,6 +91,7 @@ public class CBProcessFileUploadUtils {
 		idAgencia = (Integer) session.getAttribute("agencia");
 		idConfronta = (Integer) session.getAttribute("confronta");
 
+		log.debug(methodName + " -  valida tipo de formato ");
 		if ("txt".equals(media.getFormat()) || format.toUpperCase().equals("log".toUpperCase())
 				|| format.toUpperCase().equals("dat".toUpperCase())) {
 
@@ -96,21 +99,20 @@ public class CBProcessFileUploadUtils {
 
 			int idBAC = bancoDAO.obtieneIdBancoAgeConfro(idBanco, idAgencia, idConfronta);
 			String tipos = bancoDAO.obtieneTipo(idBanco, idAgencia, idConfronta);
-			System.out.println("tipos " + tipos);
-			Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO,
-					"id idBAC configuracion: " + idBAC);
+			log.debug(methodName + " - tipos " + tipos);
+			log.debug(methodName + " - id idBAC configuracion: " + idBAC);
 			BigDecimal comision = bancoDAO.recuperaComision(idBAC);
 			misession.setAttribute("cbBancoAgenciaConfrontaId", idBAC);
 			misession.setAttribute("comisionConfronta", comision);
 
 			// *****************************************************
+			log.debug(methodName + " - inica metodo leerArchioTxt");
 			leerArchivoTxt(idBanco, idAgencia, idConfronta, usuario, media.getName(), tipos, comision, idBAC);
 
 		} else if ("xlsx".equals(media.getFormat())) {
 
 			setNombreArchivo(media.getName());
-			Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO,
-					"nombre de archivo antes de guardar: " + getNombreArchivo());
+			log.debug(methodName + " - nombre de archivo antes de guardar: " + getNombreArchivo());
 
 			// asigna el valor de la entidad para su uso previo
 			misession.setAttribute("entidad", nombreBanco);
@@ -120,9 +122,9 @@ public class CBProcessFileUploadUtils {
 
 			int idBAC = bancoDAO.obtieneIdBancoAgeConfro(idBanco, idAgencia, idConfronta);
 			String tipos = bancoDAO.obtieneTipo(idBanco, idAgencia, idConfronta);
-			System.out.println("tipos " + tipos);
 
-			Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO, "id idBAC: " + idBAC);
+			log.debug(methodName + " - tipos " + tipos);
+			log.debug(methodName + " - id idBAC configuracion: " + idBAC);
 			BigDecimal comision = bancoDAO.recuperaComision(idBAC);
 			misession.setAttribute("comisionConfronta", comision);
 			misession.setAttribute("cbBancoAgenciaConfrontaId", idBAC);
@@ -133,14 +135,14 @@ public class CBProcessFileUploadUtils {
 			// CarlosGodinez -> 31/08/2017
 			// DateFormat df = new SimpleDateFormat(formatoFechaConfronta);
 			SimpleDateFormat df = new SimpleDateFormat(formatoFechaConfronta);
-			//df.setTimeZone(TimeZone.getTimeZone("UTC"));
+			// df.setTimeZone(TimeZone.getTimeZone("UTC"));
 
 			DateFormatSymbols symbols = df.getDateFormatSymbols();
 			symbols = (DateFormatSymbols) symbols.clone();
 			symbols.setAmPmStrings(new String[] { "a.m.", "p.m.", "AM", "PM" });
 			df.setDateFormatSymbols(symbols);
 			// FIN CarlosGodinez -> 31/08/2017
-			System.out.println("Formato de fecha: " + formatoFechaConfronta);
+			log.debug(methodName + " - Formato de fecha: " + formatoFechaConfronta);
 			DataFormatter formatter = new DataFormatter();
 			try {
 				XSSFWorkbook libro = (XSSFWorkbook) WorkbookFactory.create(media.getStreamData());
@@ -149,8 +151,7 @@ public class CBProcessFileUploadUtils {
 				while (rows.hasNext()) {
 					linea = "";
 					XSSFRow row = (XSSFRow) rows.next();
-					Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO,
-							"**** LEE LINEAS DE ARCHIVO EXCEL ****");
+					log.debug(methodName + " - LEE LINEAS DE ARCHIVO EXCEL");
 					/**
 					 * Modify and commented by CarlosGodinez -> 30/08/2017 se lee cantidad de
 					 * agrupacion para la iteracion de filas de archivo Excel
@@ -165,7 +166,8 @@ public class CBProcessFileUploadUtils {
 								 * df.format(row.getCell(celda).getDateCellValue()); } else { registro =
 								 * formatter.formatCellValue(row.getCell(celda)); }
 								 */
-								//registro = formatter.formatCellValue(row.getCell(celda));comentario ovidio Santos
+								// registro = formatter.formatCellValue(row.getCell(celda));comentario ovidio
+								// Santos
 								if (DateUtil.isCellDateFormatted(row.getCell(celda))) {
 									registro = df.format(row.getCell(celda).getDateCellValue());
 								} else {
@@ -183,17 +185,15 @@ public class CBProcessFileUploadUtils {
 						if (registro == null || registro.equals("")) {
 							registro = "0";
 						}
-						Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO,
-								"Valor de celda = " + registro);
+						log.debug(methodName + " - Valor de celda = " + registro);
 						if ("".equals(linea)) {
 							linea = registro;
 						} else {
 							linea = linea + "\t" + registro;
 						}
-						registro = ""; //CarlosGodinez -> 17/08/2018
+						registro = ""; // CarlosGodinez -> 17/08/2018
 					}
-					Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO,
-							"**** FIN LEE LINEAS DE ARCHIVO EXCEL ****");
+					log.debug(methodName + " - FIN LEE LINEAS DE ARCHIVO EXCEL ");
 					linea = linea.replace("\"", "");
 					lineaCompleta = lineaCompleta + linea + "\n";
 				}
@@ -201,42 +201,37 @@ public class CBProcessFileUploadUtils {
 				// lineaCompleta = lineaCompleta + linea + "\n";
 				// }
 				is = new ByteArrayInputStream(lineaCompleta.getBytes());
-				Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO,
-						"Todas las lineas: \n" + lineaCompleta);
+				log.debug(methodName + " - Todas las lineas: \n" + lineaCompleta);
 			} catch (InvalidFormatException e) {
-				Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.SEVERE, null, e);
+				log.error(methodName + " -  Error * : " + e);
 			} catch (IOException e) {
-				Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.SEVERE, null, e);
+				log.error(methodName + " -  Error ** : " + e);
 			} catch (IllegalArgumentException e) {
-				Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.SEVERE, null, e);
+				log.error(methodName + " -  Error *** : " + e);
 				is = media.getStreamData();
 			} catch (Exception e) {
-				System.out.println("Ha ocurrido un error: " + e.getMessage());
+				log.error(methodName + " -  Error **** : " + e);
 				Messagebox.show("Ha ocurrido un error al intentar cargar el archivo de confronta", "ATENCION",
 						Messagebox.OK, Messagebox.ERROR);
-				Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.SEVERE, null, e);
 			}
 			leerArchivoTxt(idBanco, idAgencia, idConfronta, usuario, media.getName(), tipos, comision, idBAC);
 
 		} else if ("xls".equals(media.getFormat())) {
 
-			System.out.println("entra en xls ");
+			log.debug(methodName + " - archivo xls");
 			setNombreArchivo(media.getName());
-			Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO,
-					"nombre de archivo antes de guardar: " + getNombreArchivo());
-
+			log.debug(methodName + " - nombre de archivo antes de guardar: " + getNombreArchivo());
 			// asigna el valor de la entidad para su uso previo
 			misession.setAttribute("entidad", nombreBanco);
 			misession.setAttribute("banco", idBanco);
 			misession.setAttribute("agencia", idAgencia);
 			misession.setAttribute("confronta", idConfronta);
-
+			log.debug(methodName + " - id Confronta : " + idConfronta);
 			// obtiene cbbancoagenciaconfrontaid
 			int idBAC = bancoDAO.obtieneIdBancoAgeConfro(idBanco, idAgencia, idConfronta);
 			String tipos = bancoDAO.obtieneTipo(idBanco, idAgencia, idConfronta);
-			System.out.println("tipos " + tipos);
-
-			Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO, "id idBAC: " + idBAC);
+			log.debug(methodName + "- tipos " + tipos);
+			log.debug(methodName + " - id idBAC: " + idBAC);
 			BigDecimal comision = bancoDAO.recuperaComision(idBAC);
 			misession.setAttribute("comisionConfronta", comision);
 			misession.setAttribute("cbBancoAgenciaConfrontaId", idBAC);
@@ -247,7 +242,7 @@ public class CBProcessFileUploadUtils {
 			// CarlosGodinez -> 31/08/2017
 			// DateFormat df = new SimpleDateFormat(formatoFechaConfronta);
 			SimpleDateFormat df = new SimpleDateFormat(formatoFechaConfronta);
-			//df.setTimeZone(TimeZone.getTimeZone("UTC"));
+			// df.setTimeZone(TimeZone.getTimeZone("UTC"));
 
 			DateFormatSymbols symbols = df.getDateFormatSymbols();
 			symbols = (DateFormatSymbols) symbols.clone();
@@ -256,15 +251,19 @@ public class CBProcessFileUploadUtils {
 			// FIN CarlosGodinez -> 31/08/2017
 			DataFormatter formatter = new DataFormatter();
 			try {
-				HSSFWorkbook libro = (HSSFWorkbook) WorkbookFactory.create(media.getStreamData());
+				log.debug(methodName + " - inicia crear workBook");
+				is = media.getStreamData();
+				log.debug(methodName + " - imputStream : "+is.read());
+				HSSFWorkbook libro = (HSSFWorkbook) WorkbookFactory.create(is);
+				// HSSFWorkbook libro = (HSSFWorkbook)
+				// WorkbookFactory.create(media.getStreamData());
 				HSSFSheet hoja = libro.getSheetAt(0);
 				Iterator<Row> rows = hoja.iterator();
-
+				log.debug(methodName + " - recorre Excel");
 				while (rows.hasNext()) {
 					linea = "";
 					HSSFRow row = (HSSFRow) rows.next();
-					Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO, null,
-							"**** LEE LINEAS DE ARCHIVO EXCEL ****");
+					log.debug(methodName + " - LEE LINEAS DE ARCHIVO EXCEL");
 					/**
 					 * Modify and commented by CarlosGodinez -> 30/08/2017 se lee cantidad de
 					 * agrupacion para la iteracion de filas de archivo Excel
@@ -279,7 +278,7 @@ public class CBProcessFileUploadUtils {
 								 * df.format(row.getCell(celda).getDateCellValue()); } else { registro =
 								 * formatter.formatCellValue(row.getCell(celda)); }
 								 */
-								//registro = formatter.formatCellValue(row.getCell(celda));
+								// registro = formatter.formatCellValue(row.getCell(celda));
 								if (DateUtil.isCellDateFormatted(row.getCell(celda))) {
 									registro = df.format(row.getCell(celda).getDateCellValue());
 								} else {
@@ -297,17 +296,15 @@ public class CBProcessFileUploadUtils {
 						if (registro == null || registro.equals("")) {
 							registro = "0";
 						}
-						Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO, null,
-								"Valor de celda = " + registro);
+						log.debug(methodName + " - Valor de celda = " + registro);
 						if ("".equals(linea)) {
 							linea = registro;
 						} else {
 							linea = linea + "\t" + registro;
 						}
-						registro = ""; //CarlosGodinez -> 17/08/2018
+						registro = ""; // CarlosGodinez -> 17/08/2018
 					}
-					Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO,
-							"**** FIN LEE LINEAS DE ARCHIVO EXCEL ****");
+					log.debug(methodName + " - FIN LEE LINEAS DE ARCHIVO EXCEL");
 					linea = linea.replace("\"", "");
 					lineaCompleta = lineaCompleta + linea + "\n";
 				}
@@ -315,20 +312,18 @@ public class CBProcessFileUploadUtils {
 				// lineaCompleta = lineaCompleta + linea + "\n";
 				// }
 				is = new ByteArrayInputStream(lineaCompleta.getBytes());
-				Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO,
-						"Todas las lineas: \n" + lineaCompleta);
+				log.debug(methodName + " - " + "Todas las lineas: \n" + lineaCompleta);
 			} catch (InvalidFormatException e) {
-				Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.SEVERE, null, e);
+				log.error(methodName + " - ERROR * : " + e);
 			} catch (IOException e) {
-				Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.SEVERE, null, e);
+				log.error(methodName + " - ERROR ** : " + e);
 			} catch (IllegalArgumentException e) {
-				Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.SEVERE, null, e);
+				log.error(methodName + " - ERROR *** : " + e);
 				is = media.getStreamData();
 			} catch (Exception e) {
-				System.out.println("Ha ocurrido un error: " + e.getMessage());
+				log.error(methodName + " - ERROR **** : " + e.getMessage());
 				Messagebox.show("Ha ocurrido un error al intentar cargar el archivo de confronta", "ATENCION",
 						Messagebox.OK, Messagebox.ERROR);
-				Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.SEVERE, null, e);
 			}
 			leerArchivoTxt(idBanco, idAgencia, idConfronta, usuario, media.getName(), tipos, comision, idBAC);
 
@@ -340,13 +335,13 @@ public class CBProcessFileUploadUtils {
 
 	private void leerArchivoTxt(int idBanco, int idAgencia, int idConfronta, String user, String nombreArchivo,
 			String tipo, BigDecimal comision, int idAgeConfro) {
+		String methodName = "leerArchivoTxt()";
 		BufferedReader bufferedReader = null;
 		try {
 			ProcessFileTxtService fileTxtService = new ProcessFileTxtServImplSV();
 
 			String format = media.getName().substring(media.getName().length() - 3, media.getName().length());
-			Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO,
-					"Formato con substring leyendo: " + format);
+			log.debug(methodName + "- Formato con substring leyendo: " + format);
 			if ("txt".equals(media.getFormat())) {
 				bufferedReader = new BufferedReader(media.getReaderData());
 			} else if ("log".toUpperCase().equals(format.toUpperCase())) {
@@ -361,31 +356,22 @@ public class CBProcessFileUploadUtils {
 				bufferedReader = new BufferedReader(new InputStreamReader(is));
 			}
 
-			
-
 			listDataBanco = new ListModelList<CBDataBancoModel>(fileTxtService.leerArchivo(bufferedReader, idBanco,
 					idAgencia, idConfronta, user, nombreArchivo, tipo, comision, idAgeConfro));
-			Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO, null,
-					"\n** datos procesados ==> " + listDataBanco.size());
+			log.debug(methodName + " - " + "\n** datos procesados ==> " + listDataBanco.size());
 			listSinProcesarBanco = new ListModelList<CBDataSinProcesarModel>(fileTxtService.getDataSinProcesar());
-			Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO, null,
-					"** datos sin procesar ==> " + listSinProcesarBanco.size());
-			Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO, null,
-					"\nIMPRESION DE REGISTROS SIN PROCESAR:\n");
+			log.debug(methodName + " - " + "** datos sin procesar ==> " + listSinProcesarBanco.size());
+			log.debug(methodName + " - " + "\nIMPRESION DE REGISTROS SIN PROCESAR:\n");
 			int countFallidos = 0;
 			for (CBDataSinProcesarModel objeSinProc : listSinProcesarBanco) {
 				countFallidos++;
-				System.out.println("Dato sin procesar N° " + countFallidos);
-				// System.out.println("ID = " + objeSinProc.getCBDataSinProcesarId());
-				// System.out.println("NombreArchivo = " + objeSinProc.getNombreArchivo());
-				System.out.println("dataArchivo = " + objeSinProc.getDataArchivo());
-				System.out.println("Causa = " + objeSinProc.getCausa());
-				// System.out.println("Estado = " + objeSinProc.getEstado());
-				System.out.println("idCargaMaestro = " + objeSinProc.getIdCargaMaestro());
-				// System.out.println("Observacion = " + objeSinProc.getObservacion());
-				// System.out.println();
-
 			}
+			log.debug(methodName + " - cantidad de datos sin procesar :" + countFallidos);
+			log.debug(methodName + " - cantidad de datos sin procesar lista :" + listSinProcesarBanco.size());
+//			log.debug(methodName + " - dataArchivo = " + objeSinProc.getDataArchivo());
+//			log.debug(methodName + " - Causa = " + objeSinProc.getCausa());
+//			log.debug(methodName + " - idCargaMaestro = " + objeSinProc.getIdCargaMaestro());
+//			
 			if (listDataBanco.size() == 0 && listSinProcesarBanco.size() == 0) {
 				Messagebox.show("El archivo se encuentra en blanco... ", "ATENCIÓN", Messagebox.OK,
 						Messagebox.EXCLAMATION);
@@ -403,10 +389,10 @@ public class CBProcessFileUploadUtils {
 					try {
 						grabarData();
 					} catch (SQLException e) {
-						Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.SEVERE, null, e);
+						log.error(methodName + " - ERROR * : " + e);
 
 					} catch (NamingException e) {
-						Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.SEVERE, null, e);
+						log.error(methodName + " - ERROR ** : " + e);
 
 					}
 				} else {
@@ -416,15 +402,14 @@ public class CBProcessFileUploadUtils {
 
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.SEVERE, null, e);
+			log.error(methodName + " - ERROR - : " + e);
 		} finally {
 
-			
 			if (bufferedReader != null) {
 				try {
 					bufferedReader.close();
 				} catch (Exception e) {
-					Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.SEVERE, null, e);
+					log.error(methodName + " - ERROR -- : " + e);
 				}
 			}
 		}
@@ -436,20 +421,18 @@ public class CBProcessFileUploadUtils {
 		idBanco = (Integer) misession.getAttribute("banco");
 		idAgencia = (Integer) misession.getAttribute("agencia");
 		idConfronta = (Integer) misession.getAttribute("confronta");
+		String methodName = "grabarData()";
 
-		System.out.println("id idAgencia a validar " + idAgencia);
-		System.out.println("id confronta a validar " + idConfronta);
+		log.debug(methodName + " - id idAgencia a validar " + idAgencia);
+		log.debug(methodName + " - id confronta a validar " + idConfronta);
 		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		CBDataBancoDAO cbdb = new CBDataBancoDAO();
-		Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO,
-				"nombre archivo: " + media.getName());
-		Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO,
-				"id archivo: " + listDataBanco.get(0).getIdCargaMaestro());
+		log.debug(methodName + " - nombre archivo: " + media.getName());
+		log.debug(methodName + " - id archivo: " + listDataBanco.get(0).getIdCargaMaestro());
 		String fechaV = listDataBanco.get(0).getDia();
 
 		if (cbdb.consultaExistenciaArchivo(media.getName(), listDataBanco.get(0).getIdCargaMaestro())) {
-			Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO,
-					"*** ENTRA A CONSULTA EXISTENCIA ARCHIVO ***");
+			log.debug(methodName + " - ENTRA A CONSULTA EXISTENCIA ARCHIVO ");
 			// carga las variables
 			misession.setAttribute("mensaje", mensaje1);
 			misession.setAttribute("tipoMensaje", "1");
@@ -474,8 +457,7 @@ public class CBProcessFileUploadUtils {
 			 */
 		} else if (cbdb.consultaExistenciaArchivoMultiple(getNombreArchivo(),
 				listDataBanco.get(0).getIdCargaMaestro())) {
-			Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO, null,
-					"*** ENTRA A CONSULTA EXISTENCIA ARCHIVO MULTIPLE***");
+			log.debug(methodName + " - ENTRA A CONSULTA EXISTENCIA ARCHIVO MULTIPLE");
 			// carga las variables
 			misession.setAttribute("mensaje", mensaje1);
 			misession.setAttribute("tipoMensaje", "1");
@@ -490,34 +472,33 @@ public class CBProcessFileUploadUtils {
 			Window dialogCarga = (Window) Executions.createComponents("/dialogoCargaArchivo.zul", null, null);
 			dialogCarga.doModal();
 
-	/*	} else if (cbdb.verificaCargaDataBanco(fechaV, misession.getAttribute("banco").toString(),
-				misession.getAttribute("agencia").toString(),
-				misession.getAttribute("cbBancoAgenciaConfrontaId").toString(),
-				listDataBanco.get(0).getFormatofecha())) {
-			System.out.println("*** ENTRA A VERIFICA DATA BANCO ***");
-
-			// carga las variables
-			misession.setAttribute("mensaje", mensaje2);
-			misession.setAttribute("tipoMensaje", "2");
-			misession.setAttribute("archivo", media.getName());
-			misession.setAttribute("idMaestro", listDataBanco.get(0).getIdCargaMaestro());
-			misession.setAttribute("listaBanco", listDataBanco);
-			misession.setAttribute("listaSinProcesar", listSinProcesarBanco);
-			misession.setAttribute("estadoVentana", estadoVentana);
-
-			misession.setAttribute("formatoFechaConfronta", formatoFechaConfronta); // CarlosGodinez -> 25/10/2017
-
-			misession.setAttribute("", listDataBanco.get(0).getDia());
-			// carga la nueva ventana y asigna las nuevas propiedades
-			Window dialogCarga = (Window) Executions.createComponents("/dialogoCargaArchivo.zul", null, null);
-			dialogCarga.doModal();
-			*/
+			/*
+			 * } else if (cbdb.verificaCargaDataBanco(fechaV,
+			 * misession.getAttribute("banco").toString(),
+			 * misession.getAttribute("agencia").toString(),
+			 * misession.getAttribute("cbBancoAgenciaConfrontaId").toString(),
+			 * listDataBanco.get(0).getFormatofecha())) {
+			 * System.out.println("*** ENTRA A VERIFICA DATA BANCO ***");
+			 * 
+			 * // carga las variables misession.setAttribute("mensaje", mensaje2);
+			 * misession.setAttribute("tipoMensaje", "2"); misession.setAttribute("archivo",
+			 * media.getName()); misession.setAttribute("idMaestro",
+			 * listDataBanco.get(0).getIdCargaMaestro());
+			 * misession.setAttribute("listaBanco", listDataBanco);
+			 * misession.setAttribute("listaSinProcesar", listSinProcesarBanco);
+			 * misession.setAttribute("estadoVentana", estadoVentana);
+			 * 
+			 * misession.setAttribute("formatoFechaConfronta", formatoFechaConfronta); //
+			 * CarlosGodinez -> 25/10/2017
+			 * 
+			 * misession.setAttribute("", listDataBanco.get(0).getDia()); // carga la nueva
+			 * ventana y asigna las nuevas propiedades Window dialogCarga = (Window)
+			 * Executions.createComponents("/dialogoCargaArchivo.zul", null, null);
+			 * dialogCarga.doModal();
+			 */
 		} else {
-			Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO,
-					"Asi manda la fecha formato: " + listDataBanco.get(0).getFormatofecha());
+			log.debug(methodName + " - Asi manda la fecha formato: " + listDataBanco.get(0).getFormatofecha());
 			// llama al sp CB_CONCILIACION_SP
-
-			
 
 			multipleService = new CBCargaDataBancoMultServImpl();
 			int countRec = multipleService.insertarMas(listDataBanco, listDataBanco.get(0).getFormatofecha());
@@ -529,64 +510,56 @@ public class CBProcessFileUploadUtils {
 				int dateConfrontas = cbdb.getDateConfronta(listDataBanco.get(0).getIdCargaMaestro());
 				// Obteniendo total de convenios diferentes en la confronta
 				int conveniosConfronta = cbdb.getCantidadConvenios(listDataBanco.get(0).getIdCargaMaestro());
-				
+
 				if (conveniosConfronta > 1) {
-					System.out.println("Llama al proceso para separar confrontas por convenio");
+					log.debug(methodName + " - Llama al proceso para separar confrontas por convenio");
 					if (cbdb.ejecutaProcesoCargaConfrontas(listDataBanco.get(0).getIdCargaMaestro()) > 0) {
-						Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO,
-								"Finaliza el proceso para separar confrontas por convenio");
+						log.debug(methodName + " - Finaliza el proceso para separar confrontas por convenio");
 						cbdb.insertLog(listDataBanco.get(0).getIdCargaMaestro(),
 								"Finaliza el proceso para separar confrontas por convenio", "");
 					} else {
-						Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO,
-								"Ocurrio un error al ejecutar el proceso para separar confrontas por convenio");
+						log.debug(methodName
+								+ " - Ocurrio un error al ejecutar el proceso para separar confrontas por convenio");
 					}
 				} else {
 
 					if (dateConfrontas > 1) {
-						Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO, null,
-								"Llama al proceso para separar las fechas de la confronta");
+						log.debug(methodName + " - Llama al proceso para separar las fechas de la confronta");
 						cbdb.insertLog(listDataBanco.get(0).getIdCargaMaestro(),
 								" Archivo: " + nombreArchivo + "_Inicia el proceso para separar confrontas por fecha.",
 								"");
 
 						if (cbdb.ejecutaProcesoSeparacionFechasConfronta(
 								listDataBanco.get(0).getIdCargaMaestro()) > 0) {
-							Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO, null,
-									"Separacion de fechas de confrontas realizada exitosamente!");
+							log.debug(methodName + " - Separacion de fechas de confrontas realizada exitosamente!");
 							cbdb.insertLog(listDataBanco.get(0).getIdCargaMaestro(), " Archivo: " + nombreArchivo
 									+ "_Separacion de fechas de confrontas realizada exitosamente", "");
 
 						} else {
-							Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO,
-									"Ocurrio un error al ejecutar la separacion de fechas");
+							log.debug(methodName + "- Ocurrio un error al ejecutar la separacion de fechas");
 						}
 					} else {
-						Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO, null,
-								"Llama al proceso para conciliacion");
+						log.debug(methodName + " - Llama al proceso para conciliacion");
 						cbdb.insertLog(listDataBanco.get(0).getIdCargaMaestro(),
 								" Archivo: " + nombreArchivo + "_Inicia el proceso de conciliacion.", "");
 
 						if (cbdb.ejecutaProcesoConciliacion(listDataBanco.get(0).getIdCargaMaestro()) > 0) {
-							Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO,
-									"Finaliza el proceso de conciliacion");
+							log.debug(methodName + " - Finaliza el proceso de conciliacion");
 							cbdb.insertLog(listDataBanco.get(0).getIdCargaMaestro(),
 									" Archivo: " + nombreArchivo + "_Finaliza el proceso de conciliacion.", "");
-							//sp comisiones
-							Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO,
-									"inicia el proceso de comisiones confrontas");
+							// sp comisiones
+							log.debug(methodName + " - inicia el proceso de comisiones confrontas");
 							if (cbdb.ejecutaProcesoComisionesConfrontas(listDataBanco.get(0).getIdCargaMaestro()) > 0) {
-								Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO,
-										"Finaliza el proceso de comisiones confrontas");
+								log.debug(methodName + " - Finaliza el proceso de comisiones confrontas");
 							}
 						} else {
-							Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.INFO,
-									"No se pudo ejecutar el proceso de conciliacion");
+							log.debug(methodName + " - No se pudo ejecutar el proceso de conciliacion");
+
 						}
 					}
 				}
 			} catch (Exception e) {
-				Logger.getLogger(CBProcessFileUploadUtils.class.getName()).log(Level.SEVERE, null, e);
+				log.error(methodName + " - Error :", e);
 			}
 			Messagebox.show("Se a cargado la entidad bancaria " + misession.getAttribute("entidad").toString()
 					+ ".\n\nDetalle de carga:\n " + countRec + " registos grabados\n" + dataSinProcc
@@ -613,8 +586,7 @@ public class CBProcessFileUploadUtils {
 	}
 
 	/**
-	 * @param nombreArchivo
-	 *            the nombreArchivo to set
+	 * @param nombreArchivo the nombreArchivo to set
 	 */
 	public void setNombreArchivo(String nombreArchivo) {
 		CBProcessFileUploadUtils.nombreArchivo = nombreArchivo;

@@ -371,7 +371,7 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 							leerCredomaticDetalle(format);
 						} else if (misession.getAttribute(Constantes.CONEXION).equals(Tools.SESSION_SV)) {
 							leerCredomaticEncabezado(format);
-							logger.debug("ingresaRegistro() - " + "carga para CR " + format);
+							logger.debug("ingresaRegistro() - " + "carga para  " + format);
 						} else {
 							logger.debug("ingresaRegistro() - " + "El nombre del archivo no es correcto: "
 									+ media.getName());

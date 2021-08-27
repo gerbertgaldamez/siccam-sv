@@ -8,16 +8,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 
 import com.terium.siccam.composer.ControladorBase;
+import com.terium.siccam.controller.ConciliacionController;
 import com.terium.siccam.model.CBConciliacionDetallada;
 import com.terium.siccam.utils.Constantes;
 
 public class CBConciliacionDetalleDAO {
 
-	private static Logger logger = Logger.getLogger(CBConciliacionDetalleDAO.class.getName());
+	private static Logger logger = Logger.getLogger(CBConciliacionDetalleDAO.class);
 
 	// revisar sis e ocupa
 	public List<CBConciliacionDetallada> obtenerConciliacionDetalladas(String fecha, String num, int tipo) {
@@ -36,7 +37,7 @@ public class CBConciliacionDetalleDAO {
 					+ "', 'dd/MM/yyyy') " + "AND cbcatalogoagenciaid = '" + num + "' " + "AND tipo_id             = '"
 					+ tipo + "' ";
 
-			System.out.println(query);
+			logger.debug("obtenerConciliacionDetalladas() - Query : " + query);
 			stmt = conn.createStatement();
 
 			rst = stmt.executeQuery(query);
@@ -61,25 +62,25 @@ public class CBConciliacionDetalleDAO {
 			}
 
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, null, e);
+			logger.error(e);
 		} finally {
 			if (rst != null)
 				try {
 					rst.close();
 				} catch (SQLException e) {
-					logger.log(Level.SEVERE, null, e);
+					logger.error(e);
 				}
 			if (stmt != null)
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					logger.log(Level.SEVERE, null, e);
+					logger.error(e);
 				}
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					logger.log(Level.SEVERE, null, e);
+					logger.error(e);
 				}
 		}
 		return lst;
@@ -166,7 +167,7 @@ public class CBConciliacionDetalleDAO {
 				query = query + " and ((ABS(imp_pago) - ABS(monto) - ABS(manual) = 0 and ABS(manual) > 0) "
 						+ "or (ABS(monto) - ABS(imp_pago) + ABS(manual) > 0 and ABS(manual) > 0 )) and (accion = 'AJUSTE DEBITO (TRANS TELEFONICA) AUTO' or accion = 'AJUSTE CREDITO (TRANS BANCO) AUTO') ";
 			}
-			
+
 			if (estado.equals("5")) { // Pendientes de ajustes diferncia entre
 				// fechas
 
@@ -180,8 +181,6 @@ public class CBConciliacionDetalleDAO {
 						+ "', 'dd/MM/yyyy')  AND dia  <= to_date ( '" + fechaHasta + "', 'dd/MM/yyyy') "
 						+ "AND accion = 'DIFERENCIA_FECHAS' ";
 			}
-			
-			
 
 			if (estado.equals("6")) { // Ajuste aplicado diferencia de fechas
 
@@ -208,7 +207,7 @@ public class CBConciliacionDetalleDAO {
 						+ "', 'dd/MM/yyyy')  AND dia  <= to_date ( '" + fechaHasta
 						+ "', 'dd/MM/yyyy') and accion = 'NO_APLICA' ";
 			}
-			
+
 			if (estado.equals("8")) { // Error de concilicaion
 
 				query = "SELECT agencia, " + "dia, " + "tipo, " + "cliente, " + "nombre, " + "des_pago desPago, "
@@ -218,11 +217,9 @@ public class CBConciliacionDetalleDAO {
 						+ "tipo_id, estado_accion, "
 						+ "accion, cbcausasconciliacionid, observacion, cbhistorialaccionid, sistema, REAL_A "
 						+ "FROM cb_conciliacion_detail_p_vw " + "WHERE dia  = to_date('" + fecha
-						+ "', 'dd/MM/yyyy')  AND dia  <= to_date ( '" + fechaHasta
-						+ "', 'dd/MM/yyyy') and estado = "+estado;
+						+ "', 'dd/MM/yyyy')  AND dia  <= to_date ( '" + fechaHasta + "', 'dd/MM/yyyy') and estado = "
+						+ estado;
 			}
-
-			
 
 			if (!Constantes.TODOS.equals(tipo)) {
 				query = query + " AND tipo_id = '" + tipo + "' ";
@@ -244,8 +241,7 @@ public class CBConciliacionDetalleDAO {
 			 * if (estado.equals("0")) { // TODOS los estados query = query +
 			 * " AND  rownum < 3000"; }
 			 */
-
-			logger.log(Level.INFO, "Query detalle conciliacion => : " + query);
+			logger.debug("obtenerConciliacionDetalladasFiltros() " + " - Query detalle conciliacion => : " + query);
 			stmt = conn.prepareStatement(query);
 
 			rst = stmt.executeQuery();
@@ -292,25 +288,25 @@ public class CBConciliacionDetalleDAO {
 			}
 
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, null, e);
+			logger.error( e);
 		} finally {
 			if (rst != null)
 				try {
 					rst.close();
 				} catch (SQLException e) {
-					logger.log(Level.SEVERE, null, e);
+					logger.error( e);
 				}
 			if (stmt != null)
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					logger.log(Level.SEVERE, null, e);
+					logger.error( e);
 				}
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					logger.log(Level.SEVERE, null, e);
+					logger.error( e);
 				}
 		}
 		return lst;
@@ -334,19 +330,19 @@ public class CBConciliacionDetalleDAO {
 
 			}
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, null, e);
+			logger.error( e);
 		} finally {
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e1) {
-					logger.log(Level.SEVERE, null, e1);
+					logger.error(e1);
 				}
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				logger.log(Level.SEVERE, null, e);
+				logger.error( e);
 			}
 		}
 	}

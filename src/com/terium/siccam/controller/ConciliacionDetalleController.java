@@ -17,12 +17,18 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.naming.NamingException;
 
 import org.apache.axis.AxisFault;
+import org.apache.log4j.Logger;
+import org.example.www.Pagos.EjecutarPagoDetalle;
+import org.example.www.Pagos.EjecutarPagoFault;
+import org.example.www.Pagos.EjecutarPagoRequest;
+import org.example.www.Pagos.PagoDetalle;
+import org.example.www.Pagos.PagosPortService;
+import org.example.www.Pagos.PagosPortServiceLocator;
+import org.example.www.Pagos.PagosPortSoap11Stub;
 import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
@@ -53,6 +59,7 @@ import com.icon.gac.ServicioCasosServiceLocator;
 import com.icon.gac.ServicioCasosSoapBindingStub;
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBCatalogoAgenciaDAO;
+import com.terium.siccam.dao.CBConciliacionDAO;
 import com.terium.siccam.dao.CBConciliacionDetalleDAO;
 import com.terium.siccam.dao.CBHistorialAccionDAO;
 import com.terium.siccam.dao.CBParametrosGeneralesDAO;
@@ -80,7 +87,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private Logger logger = Logger.getLogger(ConciliacionDetalleController.class.getName());
+	private Logger log = Logger.getLogger(ConciliacionDetalleController.class.getName());
 
 	// Variables ZUL
 	Listbox lbxConciliacionDetalle;
@@ -160,8 +167,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 				resumenDiario = (Boolean) session.getAttribute("ResumenDiarioConciliacion");
 				conciliacion = (CBResumenDiarioConciliacionModel) session.getAttribute("conciliacion");
 			}
-			Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.INFO,
-					"Entra a pantalla desde resumen diario = " + resumenDiario);
+			log.debug("doAfterCompose() " + "Entra a pantalla desde resumen diario = " + resumenDiario);
 			cargarComboAgencia();
 			cargarComboEstado();
 			llenaComboTipo();
@@ -260,8 +266,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 	public List<CBConciliacionDetallada> listarTodasConciliacionesFiltradas(String estado, String tel,
 			String fechaDesde, String fechaHasta) {
 		List lista = null;
-		Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.INFO,
-				"listarTodasConciliacionesFiltradas()");
+		log.debug("listarTodasConciliacionesFiltradas() - inicio ");
 		CBCatalogoAgenciaModel agencia = null;
 		if (cmbAgencia.getSelectedItem() != null) {
 			agencia = cmbAgencia.getSelectedItem().getValue();
@@ -282,9 +287,9 @@ public class ConciliacionDetalleController extends ControladorBase {
 		}
 
 		try {
-			Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.INFO,
-					"parametros enviados a consultar fecha desde: " + fechaDesde + "fecha hasta: " + fechaHasta
-							+ "agencia " + agenciaId + "estado " + estado + "numero :" + tel + "tipo: " + tipo);
+			log.debug("listarTodasConciliacionesFiltradas()  " + " - " + "parametros enviados a consultar fecha desde: "
+					+ fechaDesde + "fecha hasta: " + fechaHasta + "agencia " + agenciaId + "estado " + estado
+					+ "numero :" + tel + "tipo: " + tipo);
 			lista = conDetalleDao.obtenerConciliacionDetalladasFiltros(fechaDesde, fechaHasta, agenciaId, tipo, estado,
 					tel);
 			if (lista.size() <= 0) {
@@ -295,7 +300,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 
 			// System.out.println("termino la ejecucion del query y listado");
 		} catch (Exception e) {
-			Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
 		}
 		return lista;
 
@@ -512,7 +517,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 						cell = new Listcell();
 						cell.setLabel(adr.getAplicadoReal());
 						cell.setParent(fila);
-						
+
 						// agregado por Gerbert
 						cell = new Listcell();
 						cell.setLabel(adr.getRespuestaAccion());
@@ -563,10 +568,10 @@ public class ConciliacionDetalleController extends ControladorBase {
 					}
 				}
 			} catch (Exception e) {
-				Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.SEVERE, null, e);
+				log.error(e);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
 		}
 
 	}
@@ -689,10 +694,10 @@ public class ConciliacionDetalleController extends ControladorBase {
 					}
 				}
 			} catch (Exception e) {
-				Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.SEVERE, null, e);
+				log.error(e);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
 		}
 
 	}
@@ -885,7 +890,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 					// Pasamos los listitem a objetos detalle y los guardamos en
 					// lista
 					detallesSeleccionados.add(obj);
-					
+
 				}
 				abrirHistorialDeAccionesMasivas();
 			}
@@ -905,7 +910,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 
 		if (lbxConciliacionDetalle.getSelectedItem() != null) {
 			List<CBParametrosGeneralesModel> parametros = CBParametrosGeneralesDAO.obtenerParametrosWS();
-			
+
 			lstSeleccionados = lbxConciliacionDetalle.getSelectedItems();
 			Iterator<Listitem> iSeleccionados = lstSeleccionados.iterator();
 			Listitem item = null;
@@ -919,18 +924,18 @@ public class ConciliacionDetalleController extends ControladorBase {
 				System.out.println("Respuesta accion: " + obj.getRespuestaAccion());
 				System.out.println("CBHistorialAccionId: " + obj.getCbHistorialAccionId());
 				System.out.println("Sistema: " + obj.getSistema());
-				
+
 				CBHistorialAccionModel cbHistorial = new CBHistorialAccionModel();
-				
+
 				// Se obtiene la secuencia y se setea a objeto
 				cbHistorial.setcBHistorialAccionId(obj.getCbHistorialAccionId());
 				cbHistorial.setCbCausasConciliacionId(obj.getCbCausasConciliacionId());
 				cbHistorial.setObservaciones(obj.getObservacion());
-				
+
 				// Request WS Pagos - Reenvio
 				procesaWSPagosCreaCasos(parametros, obj, cbHistorial, true);
 			}
-			
+
 			Messagebox.show("El reenvio de las acciones fue ejecutado de forma correcta!", "ATENCION", Messagebox.OK,
 					Messagebox.INFORMATION);
 
@@ -941,55 +946,48 @@ public class ConciliacionDetalleController extends ControladorBase {
 			return;
 		}
 	}
+
 	public void onClick$btnEliminarAccion() throws SQLException, NamingException {
-        
+
 		if (lbxConciliacionDetalle.getSelectedItem() != null) {
-			//List<CBParametrosGeneralesModel> parametros = CBParametrosGeneralesDAO.obtenerParametrosWS();
-			
+			// List<CBParametrosGeneralesModel> parametros =
+			// CBParametrosGeneralesDAO.obtenerParametrosWS();
+
 			lstSeleccionados = lbxConciliacionDetalle.getSelectedItems();
 			Iterator<Listitem> iSeleccionados = lstSeleccionados.iterator();
 			Listitem item = null;
 			CBConciliacionDetallada obj = null;
-			
 
 			while (iSeleccionados.hasNext()) {
 				item = iSeleccionados.next();
 
 				obj = item.getValue();
-                               
+
 				CBConciliacionDetalleDAO detalle = new CBConciliacionDetalleDAO();
-				
+
 				// Request WS Pagos - Reenvio
 				detalle.eliminarRegistros(obj.getCbHistorialAccionId());
 				System.out.println("Llega anates del metodo llenar lista");
-				
+
 				listarConciliacionesDetalle();
 				onClick$btnBuscar();
-				
-				
-				
-				
-				
-				
+
 				System.out.println("Llega despues del metodo llenar lista");
 			}
 			listarConciliacionesDetalle();
 			Messagebox.show("El Registro fue Eliminado de forma correcta!", "ATENCION", Messagebox.OK,
 					Messagebox.INFORMATION);
-			
-			
+
 		} else {
-			
+
 			Messagebox.show("Debe seleccionar por lo menos un detalle a Eliminar", "ATENCION", Messagebox.OK,
 					Messagebox.EXCLAMATION);
-			
+
 			return;
-			
+
 		}
-		
+
 	}
-	
-	
 
 	public void seleccionarTodosLosRegistros() {
 
@@ -1005,8 +1003,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 			}
 		}
 	}
-	
-	
+
 	public void deseleccionarTodosLosRegistros() {
 		List<Listitem> list = lbxConciliacionDetalle.getItems();
 		if (list.size() > 0) {
@@ -1074,10 +1071,10 @@ public class ConciliacionDetalleController extends ControladorBase {
 					}
 				}
 			} catch (Exception e) {
-				Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.SEVERE, null, e);
+				log.error(e);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
 		}
 
 	}
@@ -1123,7 +1120,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 						CBCausasConciliacion objCausas = cmbAccion2.getSelectedItem().getValue();
 						idPadre = det.getConciliacionId();
 						CBHistorialAccionModel cbHistorial = new CBHistorialAccionModel();
-						
+
 						// Se obtiene la secuencia y se setea a objeto
 						cbHistorial.setcBHistorialAccionId(CBHistorialAccionDAO.obtieneSecuenciaHistorial());
 						cbHistorial.setAccion(cmbAccion2.getText());
@@ -1134,17 +1131,16 @@ public class ConciliacionDetalleController extends ControladorBase {
 
 						// INSERTAR
 						historialDao.insertarReg(cbHistorial, idPadre);
-
 						// Request WS Pagos
 						procesaWSPagosCreaCasos(parametros, det, cbHistorial, false);
 					}
 
 					actualizado = true;
-					//Clients.showBusy("Procesando...");
+					// Clients.showBusy("Procesando...");
 					Events.echoEvent("onClick", btnCerrar2, null);
 
 				} catch (Exception e) {
-					logger.log(Level.SEVERE, "Error click btnGuardarHistorico2", e);
+					log.error("Error click btnGuardarHistorico2", e);
 				}
 			} else {
 				Messagebox.show("Se debe elegir una acción y observación", "ATENCION", Messagebox.OK,
@@ -1157,7 +1153,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 	EventListener evlOnClick_btnTestWS = new EventListener() {
 		public void onEvent(Event event) {
 			List<CBParametrosGeneralesModel> parametros = CBParametrosGeneralesDAO.obtenerParametrosWS();
-			Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.INFO, "Se ejecuta test");
+			log.debug("evlOnClick_btnTestWS " + "Se ejecuta test");
 			try {
 				Iterator<CBConciliacionDetallada> iDetalles = detallesSeleccionados.iterator();
 
@@ -1174,7 +1170,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 				}
 
 			} catch (Exception e) {
-				Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.SEVERE, null, e);
+				log.error(e);
 			}
 
 		}
@@ -1190,16 +1186,20 @@ public class ConciliacionDetalleController extends ControladorBase {
 	public void procesaWSPagosCreaCasos(List<CBParametrosGeneralesModel> parametros, CBConciliacionDetallada detalle,
 			CBHistorialAccionModel historial, boolean reenvio) {
 		CBCausasConciliacion obj = null;
-		if(reenvio) {
+		if (reenvio) {
 			obj = new CBCausasConciliacion();
 			obj.setSistema(detalle.getSistema());
 		} else {
 			obj = cmbAccion2.getSelectedItem().getValue();
 		}
-		logger.log(Level.INFO, "Valor para pendiente Telefonica: "+detalle.getPendienteTelefonica());
+		log.debug("procesaWSPagosCreaCasos()" + " - Valor para pendiente Telefonica: "
+				+ detalle.getPendienteTelefonica());
 		if (obj.getSistema() == 2 && detalle.getPendienteTelefonica().intValue() > 0) {
+			log.debug("procesaWSPagosCreaCasos()" + " - ejecuta pago Sistema = " + obj.getSistema());
 			// ejecuta request Pago
+
 			RespuestaPagoDTO response = requestWsAplicarPago(parametros, detalle);
+		//	PagoDetalle[] response = requestWsEjecutaPago(parametros, detalle);
 
 			if (response != null && response.getRespuesta().getCodigoError() == 0) {
 				historial.setEstado(1);// Estado 1 = pendiente para procesar por GAC
@@ -1209,38 +1209,86 @@ public class ConciliacionDetalleController extends ControladorBase {
 				historial.setEstado(4);// Estado 2 = error por parte de WS Pagos
 				historial.setRespuestascl(response.getRespuesta().getMensajeError());
 			}
-			logger.log(Level.INFO, "Ingresa a ejecutar WS Pagos");
+			log.debug("procesaWSPagosCreaCasos()" + " - Ingresa a ejecutar WS Pagos");
 			// ejecuta request crearCasoCerrado
 			// requestWsCrearCasoCerrado(parametros, detalle);
 		} else if (obj.getSistema() == 2 && detalle.getPendienteBanco().intValue() > 0) {
 
 			// Se ejecuta SP
 			boolean result = CBHistorialAccionDAO.ejecutaApldesRecargaSP(historial.getcBHistorialAccionId());
-			logger.log(Level.INFO, "[CB_HISTORIAL_ACCION] Ejecuta SP para id => "
+			log.debug("procesaWSPagosCreaCasos()" + " - [CB_HISTORIAL_ACCION] Ejecuta SP para id => "
 					+ historial.getcBHistorialAccionId() + " Resultado => " + result);
 			// ejecuta request crearCasoCerrado
 			// requestWsCrearCasoCerrado(parametros, detalle);
-		}else if(obj.getSistema() == 1) {
+		} else if (obj.getSistema() == 1) {
 			// Se ejecuta SP
-						boolean result = CBHistorialAccionDAO.ejecutaApldesRecargaSP(historial.getcBHistorialAccionId());
-						logger.log(Level.INFO, "[CB_HISTORIAL_ACCION] Ejecuta SP para id => "
-								+ historial.getcBHistorialAccionId() + " Resultado => " + result);
-			
-		}else if(obj.getSistema() == 3) {
+			boolean result = CBHistorialAccionDAO.ejecutaApldesRecargaSP(historial.getcBHistorialAccionId());
+			log.debug("procesaWSPagosCreaCasos()" + " - [CB_HISTORIAL_ACCION] Ejecuta SP para id => "
+					+ historial.getcBHistorialAccionId() + " Resultado => " + result);
+
+		} else if (obj.getSistema() == 3) {
 			// Se ejecuta SP
-						boolean result = CBHistorialAccionDAO.ejecutaApldesRecargaSP(historial.getcBHistorialAccionId());
-						logger.log(Level.INFO, "[CB_HISTORIAL_ACCION] Ejecuta SP para id => "
-								+ historial.getcBHistorialAccionId() + " Resultado => " + result);
+			boolean result = CBHistorialAccionDAO.ejecutaApldesRecargaSP(historial.getcBHistorialAccionId());
+			log.debug("procesaWSPagosCreaCasos()" + " - [CB_HISTORIAL_ACCION] Ejecuta SP para id => "
+					+ historial.getcBHistorialAccionId() + " Resultado => " + result);
+
 		}
 
 		historial.setTipologiaGacId(Tools.obtenerParametro(Constantes.TIPOLOGIAGACID, parametros));
 		historial.setUnidadId(Tools.obtenerParametro(Constantes.UNIDADID, parametros));
 		historial.setSolucion(Tools.obtenerParametro(Constantes.SOLUCION, parametros));
 		historial.setTipoCierre(Tools.obtenerParametro(Constantes.TIPO_CIERRE, parametros));
-
+		log.debug("procesaWSPagosCreaCasos()" + " - actualizar Historial Acciones ");
 		boolean resultado = historialDao.actualizaHistorialAcciones(historial);
-		logger.log(Level.INFO, "[CB_HISTORIAL_ACCION] Finaliza update para registro => "
+		log.debug("procesaWSPagosCreaCasos()" + " - [CB_HISTORIAL_ACCION] Finaliza update para registro => "
 				+ historial.getcBHistorialAccionId() + " Resultado => " + resultado);
+
+	}
+
+	private PagoDetalle[] requestWsEjecutaPago(List<CBParametrosGeneralesModel> parametros,
+			CBConciliacionDetallada detalle) {
+		String methodName = "requestWsEjecutaPago()";
+		log.debug(methodName + " - inicia ");
+		// TODO Auto-generated method stub
+		PagosPortService servicio = new PagosPortServiceLocator();
+		PagoDetalle[] response = null;
+		try {
+			PagosPortSoap11Stub ws = new PagosPortSoap11Stub(new URL(servicio.getpagosPortSoap11Address()), servicio);
+			EjecutarPagoRequest request = setParamEjecutaPagoRequest(parametros, detalle);
+			response = ws.ejecutarPago(request);
+
+		} catch (AxisFault e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return response;
+	}
+
+	private EjecutarPagoRequest setParamEjecutaPagoRequest(List<CBParametrosGeneralesModel> parametros,
+			CBConciliacionDetallada detalle) {
+		DateFormat fechaFormato = new SimpleDateFormat("yyyyMMdd");
+		DateFormat horaFormato = new SimpleDateFormat("HHmmss");
+		Date objFecha = new Date();
+		String fecha = fechaFormato.format(objFecha);
+		String hora = horaFormato.format(objFecha);
+		String cliente = detalle.getCliente() != null ? detalle.getCliente() : "0";
+		int telefono = detalle.getTelefono() != null ? Integer.parseInt(detalle.getTelefono()) : 0;
+		EjecutarPagoRequest request = new EjecutarPagoRequest();
+
+		request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
+		request.setBill_ref_no("");
+		request.setFecha_pago(fecha);
+		request.setTelefono(telefono);
+		
+
+
+		return null;
 	}
 
 	/**
@@ -1268,13 +1316,13 @@ public class ConciliacionDetalleController extends ControladorBase {
 					null, null, null, null);
 			System.out.println("Respuesta de WS CrearCasoCerrado: " + response);
 		} catch (AxisFault e) {
-			logger.log(Level.SEVERE, "error Axis: ", e);
+			log.error(" Error Axis : ", e);
 		} catch (MalformedURLException e) {
-			logger.log(Level.SEVERE, "error MalFormed: ", e);
+			log.error(" Error MalFormed : ", e);
 		} catch (RemoteException e) {
-			logger.log(Level.SEVERE, "error Remote:", e);
+			log.error(" Error Remote : ", e);
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, "error General: ", e);
+			log.error(" Error General : ", e);
 		}
 	}
 
@@ -1297,18 +1345,17 @@ public class ConciliacionDetalleController extends ControladorBase {
 			PagoDTO obj = setParamsRequestPagos(parametros, detalle);
 
 			response = ws.aplicarPagoOnLine(obj);
-			logger.log(Level.INFO, "Respuesta WS Pagos: " + response.getNombreCliente());
-			logger.log(Level.INFO, "Respuesta WS Pagos: " + response.getStatus());
-
+			log.debug("requestWsAplicarPago()" + " - Respuesta WS Pagos: " + response.getNombreCliente());
+			log.debug("requestWsAplicarPago()" + " - Respuesta WS Pagos: " + response.getStatus());
 			return response;
 		} catch (AxisFault e) {
-			logger.log(Level.SEVERE, "error Axis: ", e);
+			log.error(" Error Axis : ", e);
 		} catch (MalformedURLException e) {
-			logger.log(Level.SEVERE, "error MalFormed: ", e);
+			log.error(" Error MalFormed : ", e);
 		} catch (RemoteException e) {
-			logger.log(Level.SEVERE, "error Remote:", e);
+			log.error(" Error Remote : ", e);
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, "error General: ", e);
+			log.error(" Error General : ", e);
 		}
 
 		return response;
@@ -1367,13 +1414,11 @@ public class ConciliacionDetalleController extends ControladorBase {
 						cbHistorial = lbxHistorialAcciones.getSelectedItem().getValue();
 						cbHistorial.setAccion(cmbAccion.getText());
 						cbHistorial.setMonto(txtMonto.getText());
-
-						Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.INFO,
-								"montoen el if getselecteitem " + cbHistorial.getMonto());
+						log.debug("evlOnClick_btnGuardarHistorico - " + "monto en el if getselecteitem "
+								+ cbHistorial.getMonto());
 						cbHistorial.setObservaciones(txtObservaciones.getText());
 						cbHistorial.setModificadoPor(obtenerUsuario().getUsuario());
 						historialDao.updateReg(cbHistorial, idPadre);
-						
 
 					} else {
 						// INSERTAR
@@ -1398,11 +1443,11 @@ public class ConciliacionDetalleController extends ControladorBase {
 					listarHistorialDeAcciones(conciliacionDetalle, lbxHistorialAcciones);
 					limpiarCampos();
 					actualizado = true;
-					//Clients.showBusy("Procesando...");
+					// Clients.showBusy("Procesando...");
 					Events.echoEvent("onClick", btnCerrar, null);
 
 				} catch (Exception e) {
-					Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.SEVERE, null, e);
+					log.error(e);
 				}
 			} else {
 				Messagebox.show("Se debe elegir una acción y observación", "ATENCION", Messagebox.OK,
@@ -1439,7 +1484,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 				actualizado = true;
 				Events.echoEvent("onClick", btnCerrar, null);
 			} catch (Exception e) {
-				Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.SEVERE, null, e);
+				log.error(e);
 			}
 		}
 	};
@@ -1476,7 +1521,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 
 				onClick$btnBuscar();
 				Messagebox.show("Se ha conciliado con exito", "ATENCION", Messagebox.OK, Messagebox.INFORMATION);
-				
+
 			} else {
 				wdwHistorial2.setVisible(false);
 			}
@@ -1516,8 +1561,9 @@ public class ConciliacionDetalleController extends ControladorBase {
 			pendiente = cd.getPendienteTelefonica().toString();
 			lb.setValue("Pendiente Telefonica ");
 		}
-		Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.INFO,
-				"\n**Valor que retorna de la variable pendiente = " + pendiente + "\n");
+		log.debug(
+				"obtenerPendienteLabel() - " + "\n**Valor que retorna de la variable pendiente = " + pendiente + "\n");
+
 		return pendiente;
 	}
 
@@ -1537,8 +1583,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 			pendiente = cd.getPendienteTelefonica().toString();
 
 		}
-
-		logger.log(Level.INFO,"**Valor que retorna de la variable pendiente = " + pendiente);
+		log.debug("obtenerPendiente() - " + "**Valor que retorna de la variable pendiente = " + pendiente);
 		return pendiente;
 	}
 
@@ -1564,15 +1609,18 @@ public class ConciliacionDetalleController extends ControladorBase {
 
 	// Obtener tipoId en detalle conciliacion
 	public int obtieneTipoIdConvenio() {
+		log.debug("obtieneTipoIdConvenio() - inicio");
 		try {
 			Iterator<CBConciliacionDetallada> iDetalles = detallesSeleccionados.iterator();
 			if (iDetalles.hasNext()) {
 				CBConciliacionDetallada det = iDetalles.next();
+				log.debug("obtieneTipoIdConvenio() - tipoIdConvenio = " + det.getTipoId());
 				return det.getTipoId();
 			}
 		} catch (Exception e) {
-			Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
 		}
+		log.debug("obtieneTipoIdConvenio() - return = 0");
 		return 0;
 	}
 
@@ -1618,19 +1666,15 @@ public class ConciliacionDetalleController extends ControladorBase {
 	 */
 
 	public void onClick$btnGeneraReporte() {
-
-		Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.INFO,
-				"Comienza a generar el reporte de conciliaciones detalle...");
-
+		log.debug("onClick$btnGeneraReporte() - " + "Comienza a generar el reporte de conciliaciones detalle...");
 		if (lstConciliacion != null)
-			Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.INFO,
-					"lst size: " + lstConciliacion.size());
+			log.debug("onClick$btnGeneraReporte() - " + " lst size: " + lstConciliacion.size());
 
 		// generar reporte detalle conciliacion
 		try {
 			generarReporteConciliacionesDet();
 		} catch (Exception e) {
-			Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
 		}
 
 	}
@@ -1698,7 +1742,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 						Messagebox.OK, Messagebox.INFORMATION);
 
 			} catch (Exception e) {
-				Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.SEVERE, null, e);
+				log.error(e);
 			} finally {
 				if (bw != null)
 					bw.close();
@@ -1715,29 +1759,28 @@ public class ConciliacionDetalleController extends ControladorBase {
 		String op = cmbEstado.getText();
 		String estado = getStatus(op);
 		String valor = txtNumYCuenta.getText();
-		
-		logger.log(Level.INFO, "Combo Estado " + op);
-		
+		log.debug("filtrar() " + " - Combo Estado " + op);
+
 		if (lstConciliacion != null) {
 			lstConciliacion.clear();
-		}		
+		}
 
 		lstConciliacion = listarTodasConciliacionesFiltradas(estado, valor, fechaDesde, fechaHasta);
 		listarConciliacionesDetalle();
 	}
-	
-	//Se separa metodo para uso estricto de retornar estado a filtrar
+
+	// Se separa metodo para uso estricto de retornar estado a filtrar
 	public String getStatus(String op) {
 		String result = "";
-		
-		if (op.equals("Todos")) {		
+
+		if (op.equals("Todos")) {
 			btnAcciones.setDisabled(true);
 			btnReenviarManual.setDisabled(true);
 			btnEliminarAccion.setDisabled(true);
 			return "0";
 		}
 
-		if (op.equals("Conciliado Automaticamente")) {			
+		if (op.equals("Conciliado Automaticamente")) {
 			btnAcciones.setDisabled(true);
 			btnReenviarManual.setDisabled(true);
 			btnEliminarAccion.setDisabled(true);
@@ -1767,14 +1810,14 @@ public class ConciliacionDetalleController extends ControladorBase {
 			btnEliminarAccion.setDisabled(true);
 			return "4";
 		}
-		
-		if (op.equals("Pendiente Dif Fechas")) {		
+
+		if (op.equals("Pendiente Dif Fechas")) {
 			btnAcciones.setDisabled(true);
 			btnReenviarManual.setDisabled(true);
 			btnEliminarAccion.setDisabled(true);
 			return "5";
 		}
-		
+
 		if (op.equals("Ajuste Aplicado Dif Fechas")) {
 			btnAcciones.setDisabled(true);
 			btnReenviarManual.setDisabled(true);
@@ -1782,20 +1825,20 @@ public class ConciliacionDetalleController extends ControladorBase {
 			return "6";
 		}
 
-		if (op.equals("Ajuste No Aplicado Dif Fechas")) {		
+		if (op.equals("Ajuste No Aplicado Dif Fechas")) {
 			btnAcciones.setDisabled(true);
 			btnReenviarManual.setDisabled(true);
 			btnEliminarAccion.setDisabled(true);
 			return "7";
 		}
-		
-		if (op.equals("Error en Conciliacion")) {	
+
+		if (op.equals("Error en Conciliacion")) {
 			btnAcciones.setDisabled(true);
 			btnReenviarManual.setDisabled(false);
 			btnEliminarAccion.setDisabled(false);
 			return "8";
 		}
-		
+
 		return result;
 	}
 
@@ -1817,7 +1860,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 				item.setValue(obj.getValorObjeto1());
 				item.setParent(cmbTipo);
 			}
-			Logger.getLogger(ConciliacionController.class.getName()).log(Level.INFO, "- Llena combo tipo");
+			log.debug("llenaComboTipo() " + "- Llena combo tipo");
 		} else {
 			Messagebox.show("Error al cargar la configuracion de tipos de conciliacion", "ATENCION", Messagebox.OK,
 					Messagebox.EXCLAMATION);

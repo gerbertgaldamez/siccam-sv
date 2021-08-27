@@ -6,6 +6,7 @@
 package com.terium.siccam.service;
 
 import com.terium.siccam.composer.ControladorBase;
+import com.terium.siccam.controller.CBProcessFileUploadController;
 import com.terium.siccam.dao.CBArchivosInsertadosDAO;
 import com.terium.siccam.dao.CBConfiguracionConfrontaDaoB;
 import com.terium.siccam.dao.CBDataBancoDAO;
@@ -27,9 +28,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import org.apache.log4j.Logger;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Messagebox;
 
@@ -38,6 +38,8 @@ import org.zkoss.zul.Messagebox;
  * @author rSianB to terium.com
  */
 public class ProcessFileTxtServImplCR extends ControladorBase implements ProcessFileTxtService {
+
+	private static Logger logger = Logger.getLogger(ProcessFileTxtServImplCR.class);
 	/**
 	 * 
 	 */
@@ -77,6 +79,7 @@ public class ProcessFileTxtServImplCR extends ControladorBase implements Process
 	public List<CBDataBancoModel> leerArchivo(BufferedReader bufferedReader, int idBanco, int idAgencia,
 			int idConfronta, String user, String nombreArchivo, String tipo, BigDecimal comisionConfronta,
 			int idAgeConfro) {
+		String methodName="leerArchivo()";
 		Date fechaCreacion = new Date();
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -87,8 +90,7 @@ public class ProcessFileTxtServImplCR extends ControladorBase implements Process
 		CBArchivosInsertadosDAO cvaidao = new CBArchivosInsertadosDAO();
 		idMaestro = cvaidao.idMaestroCarga();
 		if (cvaidao.insertarArchivos(idMaestro, nombreArchivo, idBanco, idAgencia, user)) {
-			System.out.println("INSERT DE ARCHIVO REALIZADO CON ÉXITO");
-
+			logger.debug(methodName+" - INSERT DE ARCHIVO REALIZADO CON ÉXITO");
 			// variable para las posiciones
 			/**
 			 * Agregado por Carlos Godinez - Configuracion para leer desde la linea N de
@@ -218,10 +220,10 @@ public class ProcessFileTxtServImplCR extends ControladorBase implements Process
 											if ("T".equals(nomenCla)) {
 												String telefono = strLine1.substring(Integer.parseInt(posicion1),
 														Integer.parseInt(posicion2)).trim();
-												
+
 												try {
 													int entero = Integer.parseInt(telefono.trim());
-													
+
 													String telefono1 = ("" + entero).trim();
 													System.out.println("TAMAÑO DEL TELEFONO: " + telefono1.length()
 															+ " Telefono: " + telefono);
@@ -231,14 +233,15 @@ public class ProcessFileTxtServImplCR extends ControladorBase implements Process
 														System.out.println("Codigo Cliente: " + telefono1);
 														bancoModel.setCodCliente(telefono1.trim());
 													}
-												}catch (Exception e) {
+												} catch (Exception e) {
 													// TODO: handle exception
-													Logger.getLogger(ProcessFileTxtServImplCR.class.getName())
-														.log(Level.INFO,"Formato de telefono/codigo cliente erroneo.");
+													logger.error(e);
+													logger.debug("leerArchivo()"
+															+ " - Formato de telefono/codigo cliente erroneo.");
 													bancoModel.setTelefono("");
 													bancoModel.setCodCliente("");
 												}
-												
+
 											}
 											// }
 											if ("C".equals(nomenCla)) {
@@ -281,12 +284,14 @@ public class ProcessFileTxtServImplCR extends ControladorBase implements Process
 												strMonto = strMonto.replace("$", "");
 												strMonto = strMonto.trim();
 												System.out.println("** Monto antes de parsear: " + strMonto);
-												
-												if(strMonto.substring(0,1).equals(".") || strMonto.substring(0,1).equals(",")) {
+
+												if (strMonto.substring(0, 1).equals(".")
+														|| strMonto.substring(0, 1).equals(",")) {
 													strMonto = "0".concat(strMonto);
-													System.out.println("Primer elemento: " + strMonto.substring(0,1)  + " Nueva cadena: " + strMonto);
+													System.out.println("Primer elemento: " + strMonto.substring(0, 1)
+															+ " Nueva cadena: " + strMonto);
 												}
-												
+
 												String cadena = currencyToBigDecimalFormat(strMonto);
 												if (isBigDecimal(cadena)) {
 													BigDecimal monto;
@@ -345,16 +350,17 @@ public class ProcessFileTxtServImplCR extends ControladorBase implements Process
 											}
 
 										}
-										
+
 										if (isDate(bancoModel.getFecha(), formatoFechaConfronta)
-												&& ((bancoModel.getTelefono() != null && !bancoModel.getTelefono().equals(""))
-														|| (bancoModel.getCodCliente() != null && !bancoModel.getCodCliente().equals("")))) {
+												&& ((bancoModel.getTelefono() != null
+														&& !bancoModel.getTelefono().equals(""))
+														|| (bancoModel.getCodCliente() != null
+																&& !bancoModel.getCodCliente().equals("")))) {
 											dataBancoModels.add(bancoModel);
 										} else {
 											enviarDataSinProcesar(strLine1, nombreArchivo, user, idMaestro,
 													"No cumple con los requisitos de fecha valida, numero de cliente o telefono.");
 										}
-							
 
 										/**
 										 * Commented by CarlosGodinez -> 20/09/2018 Se omite esta validacion para que
@@ -437,9 +443,9 @@ public class ProcessFileTxtServImplCR extends ControladorBase implements Process
 						"ERROR", Messagebox.OK, Messagebox.EXCLAMATION);
 				ex.printStackTrace();
 			} catch (IOException ex) {
-				Logger.getLogger(ProcessFileTxtServImplCR.class.getName()).log(Level.SEVERE, null, ex);
+				logger.error("leerArchivo() - error IO :", ex);
 			} catch (Exception e) {
-				Logger.getLogger(ProcessFileTxtServImplCR.class.getName()).log(Level.SEVERE, null, e);
+				logger.error("leerArchivo() - error Exp :", e);
 			}
 		} else {
 			enviarDataSinProcesar(strLine1, nombreArchivo, user, idMaestro,
@@ -606,13 +612,12 @@ public class ProcessFileTxtServImplCR extends ControladorBase implements Process
 					strData = strData.replace("$", "");
 					strData = strData.trim();
 					System.out.println("** Monto antes de parsear = " + strData);
-					
-					if(strData.substring(0,1).equals(".") || strData.substring(0,1).equals(",")) {
+
+					if (strData.substring(0, 1).equals(".") || strData.substring(0, 1).equals(",")) {
 						strData = "0".concat(strData);
-						System.out.println("Primer elemento: " + strData.substring(0,1)  + " Nueva cadena: " + strData);
+						System.out.println("Primer elemento: " + strData.substring(0, 1) + " Nueva cadena: " + strData);
 					}
-					
-					
+
 					String cadena = currencyToBigDecimalFormat(strData);
 					System.out.println("** Monto parseado = " + cadena);
 					if (isBigDecimal(cadena)) {
@@ -655,36 +660,34 @@ public class ProcessFileTxtServImplCR extends ControladorBase implements Process
 				if ("P".equals(valueToSave)) {
 					bancoModel.setFecha(bancoModel.getFecha() + " " + strData);
 				}
-				
-				
+
 				// FECHA TIPO4
 				if ("DC".equals(valueToSave)) {
-					
-					
+
 					String fecha4 = null;
-					
+
 					String string = strData;
 					String[] parts = string.split("/");
-					String part1 = parts[0]; 
-					String part2 = parts[1]; 
-					String part3 = parts[2]; 
-					
+					String part1 = parts[0];
+					String part2 = parts[1];
+					String part3 = parts[2];
+
 					System.out.println("fecha tipo 5:" + part1);
 					System.out.println("fecha tipo 51:" + part2);
 					System.out.println("fecha tipo 52:" + part3);
-					
-					fecha4 = part2+"/"+part1+"/"+part3;
-					
-					//strData = strData.replace("am","");
-					//strData = strData.replace("pm","");
-					
+
+					fecha4 = part2 + "/" + part1 + "/" + part3;
+
+					// strData = strData.replace("am","");
+					// strData = strData.replace("pm","");
+
 					bancoModel.setFecha(fecha4);
 					bancoModel.setDia(fecha4);
 					System.out.println("fecha tipo 4:" + strData);
 					System.out.println("fecha tipo 41:" + bancoModel.getDia());
 					System.out.println("fecha tipo 42:" + bancoModel.getFecha());
 				}
-				
+
 				if ("N".equals(valueToSave)) {
 					bancoModel.setTexto1(strData.trim());
 				}
@@ -737,8 +740,8 @@ public class ProcessFileTxtServImplCR extends ControladorBase implements Process
 
 	public void enviarDataSinProcesar(String strLine, String nombreArchivo, String user, String idMaestro,
 			String causa) {
-		System.out.println("\nENTRA A VALIDACION DE REGISTROS SIN PROCESAR\n");
-		System.out.println("DATO QUE SE AGREGA A SIN PROCESAR = " + strLine);
+		logger.debug("enviarDataSinProcesar()" + " - " + "\nENTRA A VALIDACION DE REGISTROS SIN PROCESAR\n");
+		logger.debug("enviarDataSinProcesar()" + " - " + "DATO QUE SE AGREGA A SIN PROCESAR = " + strLine);
 		CBDataSinProcesarModel dataSinProcesarModel = new CBDataSinProcesarModel();
 		dataSinProcesarModel.setNombreArchivo(nombreArchivo);
 		dataSinProcesarModel.setDataArchivo(strLine);
@@ -832,8 +835,7 @@ public class ProcessFileTxtServImplCR extends ControladorBase implements Process
 	 * FIN Agregado por Carlos Godinez
 	 */
 
-	public String guardarInfArchivo(List<CBDataBancoModel> dataArchivo, int idBanco, int idAgencia,
-			int idConfronta) {
+	public String guardarInfArchivo(List<CBDataBancoModel> dataArchivo, int idBanco, int idAgencia, int idConfronta) {
 		throw new UnsupportedOperationException("Not supported yet."); // To
 																		// change
 																		// body

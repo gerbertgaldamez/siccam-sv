@@ -3,16 +3,16 @@ package com.terium.siccam.dao;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.Iterator;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.log4j.Logger;
 
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.exception.CustomExcepcion;
 import com.terium.siccam.model.CBDataSinProcesarModel;
+import com.terium.siccam.service.ProcessFileTxtServImplSV;
 import com.terium.siccam.utils.Filtro;
 import com.terium.siccam.utils.FiltroQuery;
 import com.terium.siccam.utils.GeneraFiltroQuery;
@@ -24,6 +24,8 @@ import com.terium.siccam.utils.Orden;
  * @author rSianB for terium.com
  */
 public class CBDataSinProcesarDAO {
+
+	private static Logger logger = Logger.getLogger(CBDataSinProcesarDAO.class);
 
 	private int totalRegistros;
 	private String INSERTA_DATOS_NO_PROCESADOS = "INSERT " + "INTO cb_data_sin_procesar " + "  ( "
@@ -56,13 +58,13 @@ public class CBDataSinProcesarDAO {
 			ret = qry.update(conn, queInsert, param);
 
 		} catch (Exception e) {
-			Logger.getLogger(CBDataSinProcesarDAO.class.getName()).log(Level.SEVERE, null, e);
+			logger.error("insertar() - Error : ", e);
 		} finally {
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBDataSinProcesarDAO.class.getName()).log(Level.SEVERE, null, e);
+					logger.error("insertar() - Error : ", e);
 				}
 		}
 
@@ -84,7 +86,7 @@ public class CBDataSinProcesarDAO {
 			queInsert = " Insert into  " + CBDataSinProcesarModel.TABLE + " ("
 					+ ObtieneCampos.obtieneSQL(CBDataSinProcesarModel.class, null, true, null) + ") values " + " ("
 					+ ObtieneCampos.obtieneInsert(CBDataSinProcesarModel.class) + ")";
-			System.out.println("query data sin procesar: " + queInsert);
+			logger.debug("insertarMasivo()" + " - query data sin procesar: " + queInsert);
 			QueryRunner qry = new QueryRunner();
 			Iterator<CBDataSinProcesarModel> itData = registros.iterator();
 			while (itData.hasNext()) {
@@ -96,13 +98,13 @@ public class CBDataSinProcesarDAO {
 				ret += qry.update(conn, INSERTA_DATOS_NO_PROCESADOS, param);
 			}
 		} catch (Exception e) {
-			System.out.println("error al insertar datos no procesados: " + e.getMessage());
+			logger.error("insertarMasivo()" + " - error al insertar datos no procesados: " + e.getMessage());
 		} finally {
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBDataSinProcesarDAO.class.getName()).log(Level.SEVERE, null, e);
+					logger.error("insertarMasivo()" + " - Error : ", e);
 				}
 		}
 		return ret;
@@ -137,13 +139,13 @@ public class CBDataSinProcesarDAO {
 			ret = qry.update(conn, queInsert, param);
 
 		} catch (Exception e) {
-			Logger.getLogger(CBDataSinProcesarDAO.class.getName()).log(Level.SEVERE, null, e);
+			logger.error("actualiza() -  Error : ", e);
 		} finally {
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBDataSinProcesarDAO.class.getName()).log(Level.SEVERE, null, e);
+					logger.error("actualiza() -  Error close conn : ", e);
 				}
 		}
 
@@ -180,15 +182,15 @@ public class CBDataSinProcesarDAO {
 				ret = (List<CBDataSinProcesarModel>) qry.query(conn, query + sqlFiltros + filtroQuery.getSql(), blh);
 			}
 			this.totalRegistros = ret.size();
-			System.out.println("resultado: " + ret.size());
+			logger.debug("Listado() " + "resultado: " + ret.size());
 		} catch (Exception e) {
-			Logger.getLogger(CBDataSinProcesarDAO.class.getName()).log(Level.SEVERE, null, e);
+			logger.error("ERROR ", e);
 		} finally {
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBDataSinProcesarDAO.class.getName()).log(Level.SEVERE, null, e);
+					logger.error("ERROR close conn : ", e);
 				}
 		}
 
@@ -229,30 +231,28 @@ public class CBDataSinProcesarDAO {
 			queInsert = " Insert into  " + CBDataSinProcesarModel.TABLE + " ("
 					+ ObtieneCampos.obtieneSQL(CBDataSinProcesarModel.class, null, true, null) + ") values " + " ("
 					+ ObtieneCampos.obtieneInsert(CBDataSinProcesarModel.class) + ")";
-			Logger.getLogger(CBDataSinProcesarDAO.class.getName()).log(Level.INFO,
-					"Query data sin procesar:" + queInsert);
+			logger.debug("insertarMasivoGT()" + " - Query data sin procesar:" + queInsert);
 			QueryRunner qry = new QueryRunner();
 			Iterator<CBDataSinProcesarModel> itData = registros.iterator();
 
 			while (itData.hasNext()) {
 				CBDataSinProcesarModel registro = (CBDataSinProcesarModel) itData.next();
-				Logger.getLogger(CBDataSinProcesarDAO.class.getName()).log(Level.INFO,
-						"Id maestro:" + registro.getIdCargaMaestro());
+				logger.debug("insertarMasivoGT()" + " - Id maestro:" + registro.getIdCargaMaestro());
 				Object[] param = new Object[] { registro.getNombreArchivo(), registro.getDataArchivo(),
 						registro.getCausa(), registro.getEstado(), registro.getCreadoPor(),
 						registro.getIdCargaMaestro() };
 
 				ret += qry.update(conn, INSERTA_DATOS_NO_PROCESADOSGT, param);
-				Logger.getLogger(CBDataSinProcesarDAO.class.getName()).log(Level.INFO, "Ret:" + ret);
+				logger.debug("insertarMasivoGT()" + " - Ret:" + ret);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBDataSinProcesarDAO.class.getName()).log(Level.SEVERE, null, e);
+			logger.error("insertarMasivoGT() -  Error : ",e);
 		} finally {
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBDataSinProcesarDAO.class.getName()).log(Level.SEVERE, null, e);
+				logger.error("insertarMasivoGT() -  Error close conn : ",e);
 			}
 		}
 

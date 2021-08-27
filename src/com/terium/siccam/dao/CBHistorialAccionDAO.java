@@ -8,14 +8,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.log4j.Logger;
 import org.zkoss.zhtml.Messagebox;
 
 import com.terium.siccam.composer.ControladorBase;
+import com.terium.siccam.controller.ConciliacionController;
 import com.terium.siccam.model.CBCausasConciliacion;
 import com.terium.siccam.model.CBHistorialAccionModel;
 import com.terium.siccam.utils.ConsultasSQ;
@@ -30,6 +30,8 @@ import com.terium.siccam.utils.Orden;
  * @author rSianB for terium.com
  */
 public class CBHistorialAccionDAO {
+
+	private static Logger log = Logger.getLogger(CBHistorialAccionDAO.class);
 
 	private int totalRegistros;
 
@@ -57,13 +59,13 @@ public class CBHistorialAccionDAO {
 			ret = qry.update(conn, queInsert, param);
 
 		} catch (Exception e) {
-			Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
 		} finally {
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error(e);
 			}
 		}
 
@@ -102,13 +104,13 @@ public class CBHistorialAccionDAO {
 			ret = qry.update(conn, queInsert, param);
 
 		} catch (Exception e) {
-			Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
 		} finally {
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error(e);
 			}
 		}
 
@@ -147,16 +149,15 @@ public class CBHistorialAccionDAO {
 				ret = (List<CBHistorialAccionModel>) qry.query(conn, query + sqlFiltros + filtroQuery.getSql(), blh);
 			}
 			this.totalRegistros = ret.size();
-			Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.INFO, "resultado: " + ret.size());
-
+			log.debug("Listado() " + " - resultado: " + ret.size());
 		} catch (Exception e) {
-			Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
 		} finally {
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error(e);
 			}
 		}
 
@@ -199,26 +200,26 @@ public class CBHistorialAccionDAO {
 			}
 
 		} catch (Exception e) {
-			Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
 
 		} finally {
 			if (rst != null)
 				try {
 					rst.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error(e);
 				}
 			if (stmt != null)
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error(e);
 				}
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error(e);
 				}
 		}
 		return lst;
@@ -229,18 +230,22 @@ public class CBHistorialAccionDAO {
 		Statement stmt = null;
 		Connection conn = null;
 		String qry = "INSERT INTO CB_HISTORIAL_ACCION(CBHISTORIALACCIONID,ACCION,MONTO,OBSERVACIONES,CREADO_POR,FECHA_CREACION,CBCONCILIACIONID, CBCAUSASCONCILIACIONID) VALUES"
-				+ "( "+obj.getcBHistorialAccionId()+", '" + obj.getAccion() + "'," + obj.getMonto() + ",'"
-				+ obj.getObservaciones() + "','" + obj.getCreadoPor() + "',sysdate," + idPadre + ", "+obj.getCbCausasConciliacionId()+")";
+				+ "( " + obj.getcBHistorialAccionId() + ", '" + obj.getAccion() + "'," + obj.getMonto() + ",'"
+				+ obj.getObservaciones() + "','" + obj.getCreadoPor() + "',sysdate," + idPadre + ", "
+				+ obj.getCbCausasConciliacionId() + ")";
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.INFO, qry);
+			log.debug("insertarReg()" + " - Query : " + qry);
 			stmt = conn.createStatement();
+
 			if (stmt.executeUpdate(qry) > 0)
 				result = true;
+
 		} catch (Exception ex) {
 			Messagebox.show("Ha ocurrido un error, verifique si los datos ingresados son validos", "ERROR",
 					Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.SEVERE, null, ex);
+			log.error("insertarReg() - Error execute query : " + qry, ex);
+
 		} finally {
 			try {
 				if (stmt != null)
@@ -248,7 +253,7 @@ public class CBHistorialAccionDAO {
 				if (conn != null)
 					conn.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("insertarReg() - Error :", e);
 			}
 		}
 		return result;
@@ -269,15 +274,14 @@ public class CBHistorialAccionDAO {
 					+ " modificado_por = '" + evt.getModificadoPor() + "'," + " fecha_modificacion = sysdate "
 					+ " WHERE CBHISTORIALACCIONID = '" + evt.getcBHistorialAccionId() + "' and CBCONCILIACIONID = "
 					+ idPadre;
-
-			Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.INFO, "Query a la BDD === > " + qry);
+			log.debug("updateReg()" + " - Query a la BDD === > " + qry);
 			if (stmt.executeUpdate(qry) > 0)
 				;
 			result = true;
 			Messagebox.show("Datos Modificados Exitosamente", "ATENCION", Messagebox.OK, Messagebox.INFORMATION);
-			Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.INFO, "Datos Modificados Exitosamente");
+			log.debug("updateReg()" + " - Datos Modificados Exitosamente");
 		} catch (Exception e) {
-			Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
 		} finally {
 			try {
 				if (stmt != null)
@@ -285,7 +289,7 @@ public class CBHistorialAccionDAO {
 				if (conn != null)
 					conn.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error(e);
 			}
 		}
 
@@ -302,13 +306,13 @@ public class CBHistorialAccionDAO {
 			stmt = conn.createStatement();
 			String qry = "delete from CB_HISTORIAL_ACCION  WHERE CBHISTORIALACCIONID = '" + evt.getcBHistorialAccionId()
 					+ "' and CBCONCILIACIONID = " + idPadre;
-			Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.INFO, "Query a la BDD === > " + qry);
+			log.debug("deleteReg()" + " - Query a la BDD === > " + qry);
 			if (stmt.executeUpdate(qry) > 0)
-				;
-			result = true;
-			Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.INFO, "Datos Eliminados Exitosamente");
+				result = true;
+
+			log.debug("deleteReg()" + " - Datos Eliminados Exitosamente");
 		} catch (Exception e) {
-			Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
 		} finally {
 			try {
 				if (stmt != null)
@@ -316,7 +320,7 @@ public class CBHistorialAccionDAO {
 				if (conn != null)
 					conn.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error(e);
 			}
 		}
 		return result;
@@ -324,7 +328,7 @@ public class CBHistorialAccionDAO {
 
 	public List<CBCausasConciliacion> obtieneListadoAcciones(int tipoid) {
 		List<CBCausasConciliacion> listado = new ArrayList<CBCausasConciliacion>();
-System.out.println("Tipo id es:"+tipoid);
+		System.out.println("Tipo id es:" + tipoid);
 		Connection con = null;
 		ResultSet rst = null;
 		PreparedStatement ps = null;
@@ -332,10 +336,11 @@ System.out.println("Tipo id es:"+tipoid);
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			ps = con.prepareStatement(ConsultasSQ.OBTIENE_CAUSAS_CONCILIACION_DETALLADA_SQ);
-			Logger.getLogger(CBCausasConciliacionDAO.class.getName()).log(Level.SEVERE,
-					ConsultasSQ.OBTIENE_CAUSAS_CONCILIACION_DETALLADA_SQ);
+			log.debug("obtieneListadoAcciones() " + " - ConsutalSQ "
+					+ ConsultasSQ.OBTIENE_CAUSAS_CONCILIACION_DETALLADA_SQ);
 			ps.setInt(1, tipoid);
-			
+			log.debug("obtieneListadoAcciones() " + " - tipoid : " + tipoid);
+			log.debug("obtieneListadoAcciones() " + " - obtienen causa detallada ");
 			rst = ps.executeQuery();
 			while (rst.next()) {
 				obj = new CBCausasConciliacion();
@@ -347,34 +352,33 @@ System.out.println("Tipo id es:"+tipoid);
 				obj.setCodigoconciliacion(rst.getString(5));
 				obj.setTipo(rst.getInt(6));
 				obj.setSistema(rst.getInt(7));
-				
+
 				listado.add(obj);
 			}
-
 		} catch (Exception e) {
-			Logger.getLogger(CBCausasConciliacionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
 		} finally {
 			if (rst != null)
 				try {
 					rst.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBCausasConciliacionDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error(e);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBCausasConciliacionDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error(e);
 				}
 			if (con != null)
 				try {
 					if (con != null)
 						con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBCausasConciliacionDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error(e);
 				}
 		}
-
+		log.debug("obtieneListadoAcciones() " + " - listado CBCausasConciliacion : " + listado.size());
 		return listado;
 	}
 
@@ -391,11 +395,12 @@ System.out.println("Tipo id es:"+tipoid);
 
 			cmd = conn.prepareCall(ConsultasSQ.CB_APLDES_RECARGA_SP);
 			cmd.setInt(1, cbhistorialaccionid);
-			
+
 			result = cmd.executeUpdate() > 0;
-			Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.INFO, "Ejecuta => "+ConsultasSQ.CB_APLDES_RECARGA_SP+" => resultado: "+result);
+			log.debug("ejecutaApldesRecargaSP()" + " - Ejecuta => " + ConsultasSQ.CB_APLDES_RECARGA_SP
+					+ " => resultado: " + result);
 		} catch (Exception e) {
-			Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
 		} finally {
 			try {
 				if (cmd != null)
@@ -403,21 +408,21 @@ System.out.println("Tipo id es:"+tipoid);
 				if (conn != null)
 					conn.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error(e);
 			}
 		}
 		return result;
 	}
-	
+
 	public boolean actualizaHistorialAcciones(CBHistorialAccionModel historial) {
-		boolean result = false;	
+		boolean result = false;
 		Connection conn = null;
 		PreparedStatement ps = null;
-		
+
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
 			ps = conn.prepareStatement(ConsultasSQ.ACTUALIZA_HISTORIAL_ACCION);
-			
+
 			ps.setInt(1, historial.getEstado());
 			ps.setString(2, historial.getTipologiaGacId());
 			ps.setString(3, historial.getResponseGac());
@@ -427,14 +432,13 @@ System.out.println("Tipo id es:"+tipoid);
 			ps.setString(7, historial.getNombreCliente());
 			ps.setString(8, historial.getRespuestascl());
 			ps.setInt(9, historial.getcBHistorialAccionId());
-			
 
 			return ps.executeUpdate() > 0;
-			
+
 		} catch (SQLException e) {
-			Logger.getLogger(CBCausasConciliacionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
 		} catch (Exception e) {
-			Logger.getLogger(CBCausasConciliacionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
 		} finally {
 			try {
 				if (ps != null)
@@ -442,16 +446,16 @@ System.out.println("Tipo id es:"+tipoid);
 				if (conn != null)
 					conn.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error(e);
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	public static int obtieneSecuenciaHistorial() {
 		int secuencia = 0;
-		
+
 		String query = "SELECT CB_HISTORIAL_ACCION_SQ.NEXTVAL FROM DUAL";
 		Connection conn = null;
 		Statement stmt = null;
@@ -466,7 +470,7 @@ System.out.println("Tipo id es:"+tipoid);
 			if (rst.next())
 				secuencia = rst.getInt(1);
 		} catch (Exception e) {
-			Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
 		} finally {
 			try {
 				if (stmt != null)
@@ -474,10 +478,10 @@ System.out.println("Tipo id es:"+tipoid);
 				if (conn != null)
 					conn.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBHistorialAccionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error(e);
 			}
 		}
-		
+
 		return secuencia;
 	}
 
