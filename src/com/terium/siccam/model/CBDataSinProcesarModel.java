@@ -28,6 +28,15 @@ public class CBDataSinProcesarModel {
 	private String fechaModificacion;
 	private String idCargaMaestro;
 	private String observacion;
+	private String[] dataSinProcesar;
+
+	public String[] getDataSinProcesar() {
+		return dataSinProcesar;
+	}
+
+	public void setDataSinProcesar(String[] dataSinProcesar) {
+		this.dataSinProcesar = dataSinProcesar;
+	}
 
 	public String getCausa() {
 		return causa;

@@ -13,6 +13,7 @@ import com.terium.siccam.implement.ProcessFileTxtService;
 import com.terium.siccam.model.CBConfiguracionConfrontaModel;
 import com.terium.siccam.model.CBDataBancoModel;
 import com.terium.siccam.model.CBDataSinProcesarModel;
+import com.terium.siccam.utils.Constantes;
 import com.terium.siccam.utils.CustomDate;
 import com.terium.siccam.utils.Orden;
 
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Messagebox;
@@ -66,7 +68,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 			int idConfronta, String user, String nombreArchivo, String tipo, BigDecimal comisionConfronta,
 			int idAgeConfro) {
 		String methodName = "leerArchivo()";
-
+		logger.debug(methodName + " -  Inicia leer Archivo ");
 		// String nombreBi = nombreArchivo.substring(0, 8).trim();
 		Date fechaCreacion = new Date();
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
@@ -97,10 +99,10 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 						// strLine1 = strLine.replaceAll(" ", "").trim();
 
 						strLine1 = strLine.trim();
-
+						logger.debug(methodName + " - strLine1 = " + strLine1);
 						// ************************************************************************************
 						strLine1 = strLine1.replaceAll("\"", ""); // Agrega Carlos Godinez -> 27/06/2017
-
+						logger.debug(methodName + " - strLine1 = " + strLine1);
 						if (strLine1.trim().length() != 0) {
 
 							// *********************************************************************************
@@ -259,7 +261,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 												String texto1 = strLine1.substring(Integer.parseInt(posicion1),
 														Integer.parseInt(posicion2));
 												logger.debug(methodName + " - Texto1: " + texto1);
-							
+
 												bancoModel.setTexto1(texto1.trim());
 
 											}
@@ -269,7 +271,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 
 												String texto2 = strLine1.substring(Integer.parseInt(posicion1),
 														Integer.parseInt(posicion2));
-												logger.debug(methodName+" - Texto1: " + texto2);
+												logger.debug(methodName + " - Texto1: " + texto2);
 												bancoModel.setTexto2(texto2.trim());
 
 											}
@@ -279,21 +281,21 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 
 												String transaccion = strLine1.substring(Integer.parseInt(posicion1),
 														Integer.parseInt(posicion2));
-												logger.debug(methodName+" - Transaccion: " + transaccion);
+												logger.debug(methodName + " - Transaccion: " + transaccion);
 
 												bancoModel.setTransaccion(transaccion.trim());
 											}
 											if ("R".equals(nomenCla)) {
 												String agencia = strLine1.substring(Integer.parseInt(posicion1),
 														Integer.parseInt(posicion2));
-												logger.debug(methodName+"Agencia: " + agencia);
+												logger.debug(methodName + "Agencia: " + agencia);
 												bancoModel.setCbAgenciaVirfisCodigo(agencia.trim());
 											}
 
 											if ("D".equals(nomenCla)) {
 												String fecha = strLine1.substring(Integer.parseInt(posicion1),
 														Integer.parseInt(posicion2));
-												logger.debug(methodName+" - Fecha: " + fecha);
+												logger.debug(methodName + " - Fecha: " + fecha);
 												bancoModel.setFecha(fecha);
 												bancoModel.setDia(fecha);
 											}
@@ -320,7 +322,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 									}
 
 								} else if (Character.isDigit(aChar) == true) {
-									logger.debug(methodName+" - valida si es diguito: " + aChar);
+									logger.debug(methodName + " - valida si es diguito: " + aChar);
 									String cambioFecha = strLine1.toString();
 									CustomDate customDate = new CustomDate();
 									setFormatoFecha(customDate.getFormatFecha(cambioFecha.trim(), this.formatoFecha));
@@ -332,40 +334,49 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 									// + fechaArchivo);
 									// dataBancoModels.add(bancoModel);
 								} else {
-									logger.debug(methodName+"No agrega la info a la lista");
+									logger.debug(methodName + "No agrega la info a la lista");
 								}
 
 							} else {
 								strLine1 = strLine.trim();
-								// char aChar = strLine1.charAt(0);
-								// linea = strLine1.substring(0);
-								if (strLine1.trim().length() != 0) {
-									// strLine1 = strLine.trim();
-									char aChar = strLine1.charAt(0);
-									// linea = strLine1.substring(0);
-									// System.out.println("Que lleva la linea: "
-									// + linea);
+								if (strLine1.length() != 0) {
+									int cantAgrup = 0;
 									logger.debug(methodName + " - Delimitador para lectura1: " + this.delimitador1);
 									logger.debug(methodName + " - Numero de columnas configuradas: "
 											+ this.cantidadAgrupacion);
-									String[] splitData = strLine1.split("\\" + this.delimitador1);
-									splitDataLenght = splitData.length;
-									logger.debug(methodName + " - Numero de columnas del archivo: " + splitDataLenght);
-									// Condicion editada por Carlos Godinez - Qitcorp - 22/05/2017
-									String[] splitDataValidos = new String[this.cantidadAgrupacion];
+
+									String[] splitData = null;
+									String[] splitDataValidos = null;
+									if (nomenclatura.contains(Constantes.COLUMN)) {
+										logger.debug(methodName + " - nomenclatura config columna");
+										splitData = getData(strLine1, this.delimitador1, 5);
+										logger.debug(methodName + " Numero de columnas Archivo = " + splitData.length);
+										cantAgrup = this.cantidadAgrupacion - 2;
+										splitDataValidos = new String[this.cantidadAgrupacion - 2];
+
+									} else {
+										splitData = strLine1.split("\\" + this.delimitador1);
+										splitDataLenght = splitData.length;
+										logger.debug(
+												methodName + " - Numero de columnas del archivo: " + splitDataLenght);
+										cantAgrup = this.cantidadAgrupacion;
+										splitDataValidos = new String[cantAgrup];
+									}
+
 									// Examina que el numero de columnas de la linea que se esta leyendo sea
 									// mayor o igual a la cantidad de agrupacion configurada
-									if (splitData.length >= this.cantidadAgrupacion) {
-										for (int fila = 0; fila < this.cantidadAgrupacion; fila++) {
+									if (splitData.length >= cantAgrup) {
+										for (int fila = 0; fila < cantAgrup; fila++) {
 											splitDataValidos[fila] = splitData[fila];
 										}
-										if (splitDataValidos.length == this.cantidadAgrupacion) {
+										if (splitDataValidos.length == cantAgrup) {
 											logger.debug(methodName + " - es valido la condicion splitDataValidos");
 											// Si la linea es valida, se pasan los
 											// parametros a getBancoModel()
 											getBancoModel(strLine1, idBanco, idAgencia, idConfronta, user,
 													nombreArchivo, idMaestro, tipo, comisionConfronta,
-													getFormatoFecha(), idAgeConfro, formatoFechaConfronta);
+													getFormatoFecha(), idAgeConfro, formatoFechaConfronta, cantAgrup,
+													splitData);
 
 										} else {
 											logger.debug(methodName + " - NO Cumple condicion: splitDataValidos ");
@@ -377,6 +388,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 										enviarDataSinProcesar(strLine1, nombreArchivo, user, idMaestro,
 												"Cantidad erronea de campos consulte la configuracion de la confronta");
 									}
+
 								}
 							}
 						}
@@ -405,33 +417,107 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 		return dataBancoModels;
 	}
 
+	private String[] getData(String cadena, String delimitador, int posicion) {
+		logger.debug("getData() -  inicia obtener Data ");
+		String[] getFistData = cadena.split("\\" + delimitador, posicion);
+		String[] getLastData = null;
+		String[] dataFinal = null;
+		String dataLast = null;
+		if (getFistData.length > 0) {
+			dataLast = getEndData(getFistData[posicion - 1]);
+			getLastData = dataLast.split(",");
+			dataFinal = oderData(
+					ArrayUtils.addAll(ArrayUtils.remove(getFistData, getFistData.length - 1), getLastData));
+		}
+
+		return dataFinal;
+	}
+
+	private String[] oderData(String[] allData) {
+		String fecha = "";
+		fecha = fecha.concat(allData[0]).concat(" ").concat(allData[1]).trim();
+		String[] depurateData = ArrayUtils.removeAll(allData, 0, 1);
+		depurateData = ArrayUtils.addFirst(depurateData, fecha);
+		return depurateData;
+	}
+
+	private String getEndData(String data) {
+		// TODO Auto-generated method stub
+		logger.debug("getEndData() - inicia obtener endData");
+		String datosEnd = "";
+		int beginIndex = 0;
+		beginIndex = searchDigit(data);
+		int endIndex = 0;
+		char[] cadena = data.toCharArray();
+		String str1 = "";
+		String str2 = "";
+		String str3 = "";
+		for (int i = 0; i < cadena.length; i++) {
+			if (Character.isDigit(cadena[i])) {
+				str2 += cadena[i];
+				endIndex = endIndex + 1;
+			}
+		}
+		str1 = data.substring(0, beginIndex - 1).trim();
+		str3 = data.substring(beginIndex + endIndex).trim();
+		datosEnd = str1.concat(",").concat(str2).concat(",").concat(str3);
+		logger.debug("getEndData() - finaliza");
+		return datosEnd;
+	}
+
+	private int searchDigit(String s) {
+		// Function to check if is digit
+		// is found or not
+		for (int i = 0; i < s.length(); i++) {
+			if (Character.isDigit(s.charAt(i)) == true) {
+				// return position of digit
+				return i + 1;
+			}
+		}
+		// return 0 if digit not present
+		return 0;
+	}
+
 	/**
 	 * Editado ultima vez por Carlos Godinez -> 28/08/2017
 	 * 
 	 * Se agrega parametro de formato fecha de la confronta
+	 * 
+	 * @param cantAgrup
+	 * @param data
 	 */
 	private void getBancoModel(String strLine, int idBanco, int idAgencia, int idConfronta, String user,
 			String nombreArchivo, String idMaestro, String tipo, BigDecimal comisionConfronta, String formatFecha,
-			int idAgeConfro, String formatoFechaConfronta) {
+			int idAgeConfro, String formatoFechaConfronta, int cantAgrup, String[] data) {
 		boolean registroValido = false;
 		String methodName = "getBancoModel()";
 		Date fechaCreacion = new Date();
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
 		CustomDate customDate = new CustomDate();
+		String[] splitData = null;
+		String[] splitNomCl = null;
+		if (ArrayUtils.isNotEmpty(data)) {
+			splitData = data;
+			splitNomCl = ArrayUtils.removeAll(this.nomenclatura.split(","), 0, 1);
 
-		String[] splitData = strLine.split("\\" + delimitador1);
-		String[] splitNomCl = this.nomenclatura.split(",");
+		} else {
+			splitData = strLine.split("\\" + delimitador1);
+			splitNomCl = this.nomenclatura.split(",");
+		}
+
 		// System.out.println("SPLITDATA: " + splitData.length);
 		logger.debug(methodName + " - Nomenclatura: " + nomenclatura);
+		logger.debug(methodName + " - Datos : " + splitData[0] + " - " + splitData[1] + " - " + splitData[2] + " - "
+				+ splitData[3] + " - " + splitData[4] + " - " + splitData[5]);
 		logger.debug(methodName + " - splitData = " + splitData[0] + ".");
 		logger.debug(methodName + " - splitData.length = " + splitData.length);
-		logger.debug(methodName + " - cantidadAgrupacion = " + this.cantidadAgrupacion);
-		String[] splitDataValidos = new String[this.cantidadAgrupacion];
-		for (int fila = 0; fila < this.cantidadAgrupacion; fila++) {
+		logger.debug(methodName + " - cantidadAgrupacion = " + cantAgrup);
+		String[] splitDataValidos = new String[cantAgrup];
+		for (int fila = 0; fila < cantAgrup; fila++) {
 			splitDataValidos[fila] = splitData[fila];
 		}
-		if (splitDataValidos.length == this.cantidadAgrupacion) {
+		if (splitDataValidos.length == cantAgrup) {
 			CBDataBancoModel bancoModel = new CBDataBancoModel();
 			CBDataBancoDAO cbd = new CBDataBancoDAO();
 			bancoModel.setcBCatalogoBancoId(Integer.toString(idBanco));

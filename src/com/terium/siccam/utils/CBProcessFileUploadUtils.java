@@ -2,9 +2,11 @@ package com.terium.siccam.utils;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PushbackInputStream;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -18,14 +20,18 @@ import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.POIXMLDocument;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -50,7 +56,7 @@ import com.terium.siccam.service.CBDataSinProcesarMultServImpl;
 import com.terium.siccam.service.ProcessFileTxtServImplSV;
 
 public class CBProcessFileUploadUtils {
-	private static Logger log = Logger.getLogger(CBEstadoCuentaUtils.class);
+	private static Logger log = Logger.getLogger(CBProcessFileUploadUtils.class);
 
 	HttpSession misession = (HttpSession) Sessions.getCurrent().getNativeSession();
 	HttpSession session = (HttpSession) Sessions.getCurrent().getNativeSession();
@@ -63,6 +69,7 @@ public class CBProcessFileUploadUtils {
 	int idConfronta;
 	String nombreBanco;
 	int cantidadAgrupacionConfronta;
+	String nomenclaturaConfrota;
 	String formatoFechaConfronta;
 	String format;
 	private Media media;
@@ -86,6 +93,7 @@ public class CBProcessFileUploadUtils {
 		format = (String) session.getAttribute("format");
 		formatoFechaConfronta = (String) session.getAttribute("formatoFechaConfronta");
 		cantidadAgrupacionConfronta = (Integer) session.getAttribute("cantidadAgrupacionConfronta");
+
 		nombreBanco = (String) session.getAttribute("entidad");
 		idBanco = (Integer) session.getAttribute("banco");
 		idAgencia = (Integer) session.getAttribute("agencia");
@@ -217,7 +225,6 @@ public class CBProcessFileUploadUtils {
 			leerArchivoTxt(idBanco, idAgencia, idConfronta, usuario, media.getName(), tipos, comision, idBAC);
 
 		} else if ("xls".equals(media.getFormat())) {
-
 			log.debug(methodName + " - archivo xls");
 			setNombreArchivo(media.getName());
 			log.debug(methodName + " - nombre de archivo antes de guardar: " + getNombreArchivo());
@@ -226,7 +233,9 @@ public class CBProcessFileUploadUtils {
 			misession.setAttribute("banco", idBanco);
 			misession.setAttribute("agencia", idAgencia);
 			misession.setAttribute("confronta", idConfronta);
-			log.debug(methodName + " - id Confronta : " + idConfronta);
+			nomenclaturaConfrota = bancoDAO.obtenerNomenclaturaConfronta(idConfronta);
+
+			log.debug(methodName + " Se obtiene nomenclatura confronta : " + nomenclaturaConfrota);
 			// obtiene cbbancoagenciaconfrontaid
 			int idBAC = bancoDAO.obtieneIdBancoAgeConfro(idBanco, idAgencia, idConfronta);
 			String tipos = bancoDAO.obtieneTipo(idBanco, idAgencia, idConfronta);
@@ -250,64 +259,75 @@ public class CBProcessFileUploadUtils {
 			df.setDateFormatSymbols(symbols);
 			// FIN CarlosGodinez -> 31/08/2017
 			DataFormatter formatter = new DataFormatter();
+			String[] nomConfronta = nomenclaturaConfrota.split(",");
+			int numColumn = 0;
+			if (getIsColumn(nomConfronta)) {
+				log.debug(methodName + " -  Valida nomenclatura Confronta ");
+				numColumn = getNumColum(nomConfronta[1].toString());
+				log.debug(methodName + " -  numero de columna es : " + numColumn);
+			}
 			try {
 				log.debug(methodName + " - inicia crear workBook");
-				is = media.getStreamData();
-				log.debug(methodName + " - imputStream : "+is.read());
-				HSSFWorkbook libro = (HSSFWorkbook) WorkbookFactory.create(is);
-				// HSSFWorkbook libro = (HSSFWorkbook)
-				// WorkbookFactory.create(media.getStreamData());
-				HSSFSheet hoja = libro.getSheetAt(0);
-				Iterator<Row> rows = hoja.iterator();
-				log.debug(methodName + " - recorre Excel");
-				while (rows.hasNext()) {
-					linea = "";
-					HSSFRow row = (HSSFRow) rows.next();
-					log.debug(methodName + " - LEE LINEAS DE ARCHIVO EXCEL");
-					/**
-					 * Modify and commented by CarlosGodinez -> 30/08/2017 se lee cantidad de
-					 * agrupacion para la iteracion de filas de archivo Excel
-					 */
-					for (int celda = 0; celda < cantidadAgrupacionConfronta; celda++) {
-						if (row.getCell(celda) != null) {
-							switch (row.getCell(celda).getCellType()) {
-							case Cell.CELL_TYPE_NUMERIC:
-								/**
-								 * Ha comentariado Juankrlos --:> 01/11/2017 if
-								 * (DateUtil.isCellDateFormatted(row.getCell(celda))) { registro =
-								 * df.format(row.getCell(celda).getDateCellValue()); } else { registro =
-								 * formatter.formatCellValue(row.getCell(celda)); }
-								 */
-								// registro = formatter.formatCellValue(row.getCell(celda));
-								if (DateUtil.isCellDateFormatted(row.getCell(celda))) {
-									registro = df.format(row.getCell(celda).getDateCellValue());
-								} else {
+				Workbook wb = create(media.getStreamData());
+				log.debug(methodName + " - crea Workbook");
+				if (numColumn > 0) {
+					log.debug(methodName + " - numero columna = " + numColumn);
+					lineaCompleta = getDataColumn(numColumn, wb, registro, linea);
+
+				} else {
+					Sheet hoja = wb.getSheetAt(0);
+					Iterator<Row> rows = hoja.iterator();
+					log.debug(methodName + " - recorre Excel");
+					while (rows.hasNext()) {
+						linea = "";
+						Row row = rows.next();
+						log.debug(methodName + " - LEE LINEAS DE ARCHIVO EXCEL");
+						/**
+						 * Modify and commented by CarlosGodinez -> 30/08/2017 se lee cantidad de
+						 * agrupacion para la iteracion de filas de archivo Excel
+						 */
+						for (int celda = 0; celda < cantidadAgrupacionConfronta; celda++) {
+							if (row.getCell(celda) != null) {
+								switch (row.getCell(celda).getCellType()) {
+								case Cell.CELL_TYPE_NUMERIC:
+									/**
+									 * Ha comentariado Juankrlos --:> 01/11/2017 if
+									 * (DateUtil.isCellDateFormatted(row.getCell(celda))) { registro =
+									 * df.format(row.getCell(celda).getDateCellValue()); } else { registro =
+									 * formatter.formatCellValue(row.getCell(celda)); }
+									 */
+									// registro = formatter.formatCellValue(row.getCell(celda));
+									if (DateUtil.isCellDateFormatted(row.getCell(celda))) {
+										registro = df.format(row.getCell(celda).getDateCellValue());
+									} else {
+										registro = formatter.formatCellValue(row.getCell(celda));
+									}
+									break;
+								case Cell.CELL_TYPE_STRING:
 									registro = formatter.formatCellValue(row.getCell(celda));
+									break;
+								case Cell.CELL_TYPE_BLANK:
+									registro = "0";
+									break;
 								}
-								break;
-							case Cell.CELL_TYPE_STRING:
-								registro = formatter.formatCellValue(row.getCell(celda));
-								break;
-							case Cell.CELL_TYPE_BLANK:
-								registro = "0";
-								break;
 							}
+							if (registro == null || registro.equals("")) {
+								registro = "0";
+							}
+							log.debug(methodName + " - Valor de celda = " + registro);
+							if ("".equals(linea)) {
+								linea = registro;
+							} else {
+								linea = linea + "\t" + registro;
+							}
+							registro = ""; // CarlosGodinez -> 17/08/2018
 						}
-						if (registro == null || registro.equals("")) {
-							registro = "0";
-						}
-						log.debug(methodName + " - Valor de celda = " + registro);
-						if ("".equals(linea)) {
-							linea = registro;
-						} else {
-							linea = linea + "\t" + registro;
-						}
-						registro = ""; // CarlosGodinez -> 17/08/2018
+						log.debug(methodName + " - FIN LEE LINEAS DE ARCHIVO EXCEL");
+						linea = linea.replace("\"", "");
+						lineaCompleta = lineaCompleta + linea + "\n";
 					}
-					log.debug(methodName + " - FIN LEE LINEAS DE ARCHIVO EXCEL");
-					linea = linea.replace("\"", "");
-					lineaCompleta = lineaCompleta + linea + "\n";
 				}
+
 				// fila++;
 				// lineaCompleta = lineaCompleta + linea + "\n";
 				// }
@@ -333,6 +353,117 @@ public class CBProcessFileUploadUtils {
 		}
 	}
 
+	private String getDataColumn(int numColumn, Workbook wb, String registro, String linea) {
+		String methodName = "getDataColumn()";
+		String lineaCompleta = " ";
+		Sheet hoja = wb.getSheetAt(0);
+		Iterator<Row> rows = hoja.iterator();
+		log.debug(methodName + " - recorrer columna # : " + numColumn);
+		while (rows.hasNext()) {
+			linea = "";
+			Row row = rows.next();
+			Iterator<Cell> cellIterator = row.cellIterator();
+			if (row.getRowNum() > 0) {
+				while (cellIterator.hasNext()) {
+					Cell cell = cellIterator.next();
+					if (cell != null) {
+						registro = getCellTypes(cell, wb);
+						if (cell.getColumnIndex() == numColumn - 1) {
+							linea = registro;
+
+							log.debug(methodName + " - Registros = " + registro);
+							registro = "";
+						}
+
+					}
+
+				}
+				linea = linea.replace("\"", "");
+				lineaCompleta = lineaCompleta + linea + "\n";
+			}
+
+		}
+
+		return lineaCompleta;
+	}
+
+	private String getCellTypes(Cell cell, Workbook wb) {
+		FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
+		DataFormatter formatter = new DataFormatter();
+		DateFormat df = new SimpleDateFormat("yyyyMMdd");
+		String registro = null;
+		if (cell == null)
+			return null;
+		switch (cell.getCellType()) {
+		case Cell.CELL_TYPE_BOOLEAN:
+			registro = "" + cell.getBooleanCellValue();
+			break;
+
+		case Cell.CELL_TYPE_NUMERIC:
+			if (DateUtil.isCellDateFormatted(cell))
+				registro = "" + df.format(cell.getDateCellValue());
+
+			else
+				registro = "" + formatter.formatCellValue(cell);
+
+			break;
+		case Cell.CELL_TYPE_STRING:
+			registro = cell.getStringCellValue();
+			break;
+		case Cell.CELL_TYPE_BLANK:
+			registro = "";
+			break;
+		case Cell.CELL_TYPE_FORMULA:
+			registro = "" + formatter.formatCellValue(cell, evaluator);
+			break;
+		}
+		return registro;
+	}
+
+	private static int getNumColum(String nom) {
+		log.debug("getNumColum() " + " - nomenclatura = " + nom);
+		int columNum = 0;
+		String[] numColum = nom.split("_");
+		columNum = Integer.parseInt(numColum[1].toString().trim());
+
+		log.debug("getNumColum() " + " - return numero columna  = " + columNum);
+		return columNum;
+	}
+
+	private static boolean getIsColumn(String[] nomSplit) {
+		for (int i = 0; i < nomSplit.length; i++) {
+			if (nomSplit[i].toString().contains("COLM"))
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Creates the appropriate HSSFWorkbook / XSSFWorkbook from the given
+	 * InputStream. Your input stream MUST either support mark/reset, or be wrapped
+	 * as a {@link PushbackInputStream}!
+	 */
+	public static Workbook create(InputStream inp) throws IOException, InvalidFormatException {
+		// If clearly doesn't do mark/reset, wrap up
+		log.debug("create() - valida tipo archivo excel ");
+		if (!inp.markSupported()) {
+			log.debug("create() - inp.markSupported() " + !inp.markSupported());
+			inp = new PushbackInputStream(inp, 8);
+		}
+
+		if (POIFSFileSystem.hasPOIFSHeader(inp)) {
+			log.debug("create() - return HSSFWorkbook ");
+			return new HSSFWorkbook(inp);
+		}
+		if (POIXMLDocument.hasOOXMLHeader(inp)) {
+			log.debug("create() - return XSSFWorkbook ");
+			return new XSSFWorkbook(OPCPackage.open(inp));
+		}
+
+		log.debug("create() - return IllegalArgumentException ");
+		throw new IllegalArgumentException("Your InputStream was neither an OLE2 stream, nor an OOXML stream");
+	}
+
 	private void leerArchivoTxt(int idBanco, int idAgencia, int idConfronta, String user, String nombreArchivo,
 			String tipo, BigDecimal comision, int idAgeConfro) {
 		String methodName = "leerArchivoTxt()";
@@ -349,6 +480,7 @@ public class CBProcessFileUploadUtils {
 			} else if ("dat".toUpperCase().equals(format.toUpperCase())) { // CarlosGodinez->12/09/2017
 				bufferedReader = new BufferedReader(new InputStreamReader(media.getStreamData()));
 			} else if ("xls".equals(media.getFormat())) {
+				log.debug(methodName + " - Examinar Data xls ");
 				bufferedReader = new BufferedReader(new InputStreamReader(is));
 				// bufferedReader = new BufferedReader(new
 				// InputStreamReader(media.getStreamData()));
@@ -358,20 +490,20 @@ public class CBProcessFileUploadUtils {
 
 			listDataBanco = new ListModelList<CBDataBancoModel>(fileTxtService.leerArchivo(bufferedReader, idBanco,
 					idAgencia, idConfronta, user, nombreArchivo, tipo, comision, idAgeConfro));
-			log.debug(methodName + " - " + "\n** datos procesados ==> " + listDataBanco.size());
+			log.debug(methodName + " - " + "datos procesados ==> " + listDataBanco.size());
 			listSinProcesarBanco = new ListModelList<CBDataSinProcesarModel>(fileTxtService.getDataSinProcesar());
-			log.debug(methodName + " - " + "** datos sin procesar ==> " + listSinProcesarBanco.size());
+			log.debug(methodName + " - " + " datos sin procesar ==> " + listSinProcesarBanco.size());
 			log.debug(methodName + " - " + "\nIMPRESION DE REGISTROS SIN PROCESAR:\n");
 			int countFallidos = 0;
 			for (CBDataSinProcesarModel objeSinProc : listSinProcesarBanco) {
 				countFallidos++;
+				log.debug(methodName + " - cantidad de datos sin procesar :" + countFallidos);
+				log.debug(methodName + " - cantidad de datos sin procesar lista :" + listSinProcesarBanco.size());
+				log.debug(methodName + " - dataArchivo = " + objeSinProc.getDataArchivo());
+				log.debug(methodName + " - Causa = " + objeSinProc.getCausa());
+				log.debug(methodName + " - idCargaMaestro = " + objeSinProc.getIdCargaMaestro());
 			}
-			log.debug(methodName + " - cantidad de datos sin procesar :" + countFallidos);
-			log.debug(methodName + " - cantidad de datos sin procesar lista :" + listSinProcesarBanco.size());
-//			log.debug(methodName + " - dataArchivo = " + objeSinProc.getDataArchivo());
-//			log.debug(methodName + " - Causa = " + objeSinProc.getCausa());
-//			log.debug(methodName + " - idCargaMaestro = " + objeSinProc.getIdCargaMaestro());
-//			
+
 			if (listDataBanco.size() == 0 && listSinProcesarBanco.size() == 0) {
 				Messagebox.show("El archivo se encuentra en blanco... ", "ATENCIÓN", Messagebox.OK,
 						Messagebox.EXCLAMATION);

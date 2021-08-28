@@ -28,6 +28,8 @@ import com.terium.siccam.utils.GeneraFiltroQuery;
 import com.terium.siccam.utils.ObtieneCampos;
 import com.terium.siccam.utils.Orden;
 
+import utils.logToZip;
+
 /**
  * 
  * @author rSianB for terium.com
@@ -88,7 +90,7 @@ public class CBDataBancoDAO extends ControladorBase {
 	 *         modifican a am y pm sin puntos para que sea un formato valido para
 	 *         Oracle
 	 */
-	public int insertarMasivo( List<CBDataBancoModel> registros, String formatFecha) {
+	public int insertarMasivo(List<CBDataBancoModel> registros, String formatFecha) {
 		System.out.println("campo fecha recibido param " + formatFecha);
 
 		String INSERTA_MASIVOS_BANCO = "INSERT " + " INTO CB_DATA_BANCO " + "   ( " + "     cBDataBancoId, "
@@ -101,9 +103,9 @@ public class CBDataBancoDAO extends ControladorBase {
 				+ " to_date(replace(replace(?, 'a.m.', 'am'), 'p.m.', 'pm'), '" + formatFecha + "'), " + "     ?, "
 				+ "     ?, " + "     ?, " + "     ?, " + "     ?, " + "     ?, "
 				+ "     ?, trunc(to_date(replace(replace(?, 'a.m.', 'am'), 'p.m.', 'pm'), '" + formatFecha
-				+ "'), 'dd') ," + "      SUBSTR (TRIM(?), 1, 70), " + "     SUBSTR (TRIM(?), 1, 70), " + "     ?, " + "     ?, " + "     sysdate, "
-				+ " to_date(replace(replace(?, 'a.m.', 'am'), 'p.m.', 'pm'), '" + formatFecha + "'), " + " ?, " + " ?, "
-				+ " ? " + " )";
+				+ "'), 'dd') ," + "      SUBSTR (TRIM(?), 1, 70), " + "     SUBSTR (TRIM(?), 1, 70), " + "     ?, "
+				+ "     ?, " + "     sysdate, " + " to_date(replace(replace(?, 'a.m.', 'am'), 'p.m.', 'pm'), '"
+				+ formatFecha + "'), " + " ?, " + " ?, " + " ? " + " )";
 
 		Connection conn = null;
 		try {
@@ -261,27 +263,27 @@ public class CBDataBancoDAO extends ControladorBase {
 	public int ejecutaProcesoConciliacion(String idMaestroCarga) {
 		PreparedStatement callableStatement = null;
 		Connection con = null;
-		
+
 		System.out.println("Parametro para el proceso: " + idMaestroCarga);
 		System.out.println("llamada de proceso en el java: " + "{call CB_CONCILIACION_SP(" + idMaestroCarga + ")}");
 		int result = 0;
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
-			
+
 			callableStatement = con.prepareStatement(EJECUTA_PROCESO_CB_CONCILIACION_SP);
 			callableStatement.setInt(1, Integer.parseInt(idMaestroCarga));
-			result = callableStatement.executeUpdate();		
+			result = callableStatement.executeUpdate();
 		} catch (Exception e) {
 			Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
-			if(callableStatement != null) {
+			if (callableStatement != null) {
 				try {
 					callableStatement.close();
 				} catch (SQLException e) {
 					Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			}
-			if(con != null) {
+			if (con != null) {
 				try {
 					con.close();
 				} catch (SQLException e) {
@@ -292,107 +294,75 @@ public class CBDataBancoDAO extends ControladorBase {
 
 		return result;
 	}
-/*
-	// Llama a proceso CB_AJUSTES
-	private static String EJECUTA_PROCESO_CB_AJUSTES_SP = "{call CB_AJUSTES(?, ?)}";
+	/*
+	 * // Llama a proceso CB_AJUSTES private static String
+	 * EJECUTA_PROCESO_CB_AJUSTES_SP = "{call CB_AJUSTES(?, ?)}";
+	 * 
+	 * public void ejecutaProcesoAjustes(String fechaArchivo, int agenciaId, String
+	 * formato) { CallableStatement callableStatement = null;
+	 * 
+	 * String lecturafor = formato.replace("mi".toLowerCase(), "mm".toLowerCase());
+	 * lecturafor = lecturafor.replace("hh24", "HH");
+	 * System.out.println("Formato para fecha: " + lecturafor); DateFormat dfInicio
+	 * = new SimpleDateFormat(lecturafor); Date date = null; try { date =
+	 * dfInicio.parse(fechaArchivo); } catch (ParseException e2) {
+	 * Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e2);
+	 * } DateFormat df = new SimpleDateFormat("dd/MM/yy");
+	 * System.out.println("Fecha del archivo: " + fechaArchivo); fechaArchivo =
+	 * df.format(date);
+	 * 
+	 * System.out.println("Fecha Archivo: " + fechaArchivo);
+	 * System.out.println("id: " + agenciaId); Connection con = null; try { con =
+	 * ControladorBase.obtenerDtsPromo().getConnection();
+	 * 
+	 * callableStatement = con.prepareCall(EJECUTA_PROCESO_CB_AJUSTES_SP);
+	 * callableStatement.setString(1, fechaArchivo); callableStatement.setInt(2,
+	 * agenciaId); callableStatement.execute(); } catch (Exception e) {
+	 * Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+	 * } finally { if (callableStatement != null) try { callableStatement.close(); }
+	 * catch (SQLException e1) {
+	 * Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e1);
+	 * } if (con != null) try { con.close(); } catch (SQLException e) {
+	 * Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+	 * } } }
+	 * 
+	 * private static String EJECUTA_PROCESO_CB_AJUSTES_PENDIENTES_SP =
+	 * "{call CB_AJUSTES_PENDIENTES(?, ?)}";
+	 * 
+	 * public void ejecutaProcesoAjustesPendientes(String fechaArchivo, int
+	 * agenciaId, String formato) throws ParseException { CallableStatement
+	 * callableStatement = null;
+	 * 
+	 * String lecturafor = formato.replace("mi".toLowerCase(), "mm".toLowerCase());
+	 * lecturafor = lecturafor.replace("hh24", "HH");
+	 * System.out.println("Formato para fecha: " + lecturafor); DateFormat dfInicio
+	 * = new SimpleDateFormat(lecturafor); Date date = dfInicio.parse(fechaArchivo);
+	 * 
+	 * DateFormat df = new SimpleDateFormat("dd/MM/yy");
+	 * System.out.println("Fecha del archivo: " + fechaArchivo); fechaArchivo =
+	 * df.format(date);
+	 * 
+	 * System.out.println("Fecha Archivo: " + fechaArchivo);
+	 * System.out.println("id: " + agenciaId); Connection con = null; try { con =
+	 * ControladorBase.obtenerDtsPromo().getConnection(); // try {
+	 * 
+	 * callableStatement =
+	 * con.prepareCall(EJECUTA_PROCESO_CB_AJUSTES_PENDIENTES_SP);
+	 * callableStatement.setString(1, fechaArchivo); callableStatement.setInt(2,
+	 * agenciaId); callableStatement.execute(); // } finally { // con.close(); // }
+	 * } catch (Exception e) {
+	 * Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+	 * } finally { if (callableStatement != null) try { callableStatement.close(); }
+	 * catch (SQLException e1) {
+	 * Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e1);
+	 * } if (con != null) try { con.close(); } catch (SQLException e) {
+	 * Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+	 * } }
+	 * 
+	 * }
+	 */
 
-	public void ejecutaProcesoAjustes(String fechaArchivo, int agenciaId, String formato) {
-		CallableStatement callableStatement = null;
-
-		String lecturafor = formato.replace("mi".toLowerCase(), "mm".toLowerCase());
-		lecturafor = lecturafor.replace("hh24", "HH");
-		System.out.println("Formato para fecha: " + lecturafor);
-		DateFormat dfInicio = new SimpleDateFormat(lecturafor);
-		Date date = null;
-		try {
-			date = dfInicio.parse(fechaArchivo);
-		} catch (ParseException e2) {
-			Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e2);
-		}
-		DateFormat df = new SimpleDateFormat("dd/MM/yy");
-		System.out.println("Fecha del archivo: " + fechaArchivo);
-		fechaArchivo = df.format(date);
-
-		System.out.println("Fecha Archivo: " + fechaArchivo);
-		System.out.println("id: " + agenciaId);
-		Connection con = null;
-		try {
-			con = ControladorBase.obtenerDtsPromo().getConnection();
-
-			callableStatement = con.prepareCall(EJECUTA_PROCESO_CB_AJUSTES_SP);
-			callableStatement.setString(1, fechaArchivo);
-			callableStatement.setInt(2, agenciaId);
-			callableStatement.execute();
-		} catch (Exception e) {
-			Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
-		} finally {
-			if (callableStatement != null)
-				try {
-					callableStatement.close();
-				} catch (SQLException e1) {
-					Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e1);
-				}
-			if (con != null)
-				try {
-					con.close();
-				} catch (SQLException e) {
-					Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
-				}
-		}
-	}
-
-	private static String EJECUTA_PROCESO_CB_AJUSTES_PENDIENTES_SP = "{call CB_AJUSTES_PENDIENTES(?, ?)}";
-
-	public void ejecutaProcesoAjustesPendientes(String fechaArchivo, int agenciaId, String formato)
-			throws ParseException {
-		CallableStatement callableStatement = null;
-
-		String lecturafor = formato.replace("mi".toLowerCase(), "mm".toLowerCase());
-		lecturafor = lecturafor.replace("hh24", "HH");
-		System.out.println("Formato para fecha: " + lecturafor);
-		DateFormat dfInicio = new SimpleDateFormat(lecturafor);
-		Date date = dfInicio.parse(fechaArchivo);
-
-		DateFormat df = new SimpleDateFormat("dd/MM/yy");
-		System.out.println("Fecha del archivo: " + fechaArchivo);
-		fechaArchivo = df.format(date);
-
-		System.out.println("Fecha Archivo: " + fechaArchivo);
-		System.out.println("id: " + agenciaId);
-		Connection con = null;
-		try {
-			con = ControladorBase.obtenerDtsPromo().getConnection();
-			// try {
-
-			callableStatement = con.prepareCall(EJECUTA_PROCESO_CB_AJUSTES_PENDIENTES_SP);
-			callableStatement.setString(1, fechaArchivo);
-			callableStatement.setInt(2, agenciaId);
-			callableStatement.execute();
-			// } finally {
-			// con.close();
-			// }
-		} catch (Exception e) {
-			Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
-		} finally {
-			if (callableStatement != null)
-				try {
-					callableStatement.close();
-				} catch (SQLException e1) {
-					Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e1);
-				}
-			if (con != null)
-				try {
-					con.close();
-				} catch (SQLException e) {
-					Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
-				}
-		}
-
-	}
-*/
-	
-	
-	//metodos solo para GT
+	// metodos solo para GT
 	// Llama a proceso CB_AJUSTES
 	private static String EJECUTA_PROCESO_CB_AJUSTES_SP = "{call CB_AJUSTES(?, ?)}";
 
@@ -400,27 +370,26 @@ public class CBDataBancoDAO extends ControladorBase {
 		CallableStatement callableStatement = null;
 
 		System.out.println("Fecha Archivo: " + fechaArchivo);
-		System.out.println("id: " + agenciaId);		
+		System.out.println("id: " + agenciaId);
 		Connection conexion = null;
-		try {	
-			
+		try {
+
 			conexion = ControladorBase.obtenerDtsPromo().getConnection();
-			callableStatement = conexion
-					.prepareCall(EJECUTA_PROCESO_CB_AJUSTES_SP);
+			callableStatement = conexion.prepareCall(EJECUTA_PROCESO_CB_AJUSTES_SP);
 			callableStatement.setString(1, fechaArchivo);
 			callableStatement.setInt(2, agenciaId);
 			callableStatement.execute();
 		} catch (Exception e) {
 			Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
-			if(conexion != null)
+			if (conexion != null)
 				try {
 					conexion.close();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			if(callableStatement != null) {
+			if (callableStatement != null) {
 				try {
 					callableStatement.close();
 				} catch (SQLException e1) {
@@ -432,18 +401,16 @@ public class CBDataBancoDAO extends ControladorBase {
 
 	private static String EJECUTA_PROCESO_CB_AJUSTES_PENDIENTES_SP = "{call CB_AJUSTES_PENDIENTES(?, ?)}";
 
-	public void ejecutaProcesoAjustesPendientes(String fechaArchivo,
-			int agenciaId) {
+	public void ejecutaProcesoAjustesPendientes(String fechaArchivo, int agenciaId) {
 		CallableStatement callableStatement = null;
 		Connection conexion = null;
 		System.out.println("Fecha Archivo: " + fechaArchivo);
 		System.out.println("id: " + agenciaId);
 		try {
-			
+
 			conexion = ControladorBase.obtenerDtsPromo().getConnection();
-			
-			callableStatement = conexion
-					.prepareCall(EJECUTA_PROCESO_CB_AJUSTES_PENDIENTES_SP);
+
+			callableStatement = conexion.prepareCall(EJECUTA_PROCESO_CB_AJUSTES_PENDIENTES_SP);
 			callableStatement.setString(1, fechaArchivo);
 			callableStatement.setInt(2, agenciaId);
 			callableStatement.execute();
@@ -451,26 +418,26 @@ public class CBDataBancoDAO extends ControladorBase {
 		} catch (Exception e) {
 			Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
-			if(conexion != null)
+			if (conexion != null)
 				try {
 					conexion.close();
 				} catch (SQLException e) {
 					Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
-			
-			if(callableStatement != null) {
+
+			if (callableStatement != null) {
 				try {
 					callableStatement.close();
-					
+
 				} catch (SQLException e1) {
 					Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e1);
-				}	
-			}		
+				}
+			}
 		}
 
 	}
 
-	//fin
+	// fin
 
 	// Llama a proceso CB_CONCILIACION_SP
 	private static String EJECUTA_PROCESO_CB_CARCA_COONFRONTAS = "{call cb_carga_confrontas_sp(?)}";
@@ -484,26 +451,26 @@ public class CBDataBancoDAO extends ControladorBase {
 				"llamada de proceso en el java: " + "{call cb_carga_confrontas_sp(" + idMaestroCarga + ")}");
 		Connection conexion = null;
 		try {
-			
+
 			conexion = ControladorBase.obtenerDtsPromo().getConnection();
 			callableStatement = conexion.prepareCall(EJECUTA_PROCESO_CB_CARCA_COONFRONTAS);
 			callableStatement.setInt(1, Integer.parseInt(idMaestroCarga));
 			result = callableStatement.executeUpdate();
 		} catch (Exception e) {
 			Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
-			insertLog(idMaestroCarga,  e.getMessage(), "");
+			insertLog(idMaestroCarga, e.getMessage(), "");
 		} finally {
-			if(conexion != null)
+			if (conexion != null)
 				try {
 					conexion.close();
 				} catch (SQLException e) {
 					Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
-			
+
 			try {
 				if (callableStatement != null)
 					callableStatement.close();
-				
+
 			} catch (SQLException e) {
 				Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
@@ -532,11 +499,10 @@ public class CBDataBancoDAO extends ControladorBase {
 	// Borra los registros que no proceso
 	private static String BORRAR_NO_REGISTRADOS = "Delete cb_data_sin_procesar " + " where id_archivos_insertados = ?";
 
-	//Borra registros de comisiones
+	// Borra registros de comisiones
 	private static String DELETE_COMISIONES_ARCHIVO = "DELETE FROM CB_COMISIONES "
-			+ "WHERE CBDATABANCOID IN (SELECT CBDATABANCOID FROM CB_DATA_BANCO "
-			+ "WHERE ID_ARCHIVOS_INSERTADOS = ?)";
-	
+			+ "WHERE CBDATABANCOID IN (SELECT CBDATABANCOID FROM CB_DATA_BANCO " + "WHERE ID_ARCHIVOS_INSERTADOS = ?)";
+
 	// consulta si el archivo existe
 	public boolean consultaExistenciaArchivo(String archivo, String idArchivoNuevo) {
 		boolean valor = false;
@@ -660,7 +626,7 @@ public class CBDataBancoDAO extends ControladorBase {
 				System.out.println("Consulta previa a eliminacion de archivo multiple: "
 						+ CONSULTA_ARCHIVO_MULTIPLE_DELETE + where);
 			} else {
-				Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.INFO, 
+				Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.INFO,
 						"**** Entra a eliminar archivo simple...");
 				Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.INFO,
 						"Consulta previa a eliminacion de archivo simple: " + CONSULTA_ARCHIVO_DELETE);
@@ -669,17 +635,17 @@ public class CBDataBancoDAO extends ControladorBase {
 				ps.setString(2, idArchivo);
 				rs = ps.executeQuery();
 			}
-			
+
 			while (rs.next()) {
 				String resultado = rs.getString("idArchivosViejos");
-				Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.INFO, 
+				Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.INFO,
 						"ID del archivo a eliminar: " + resultado);
 				int ejecuta = 0;
 
 				/**
 				 * 1- Borra registros de comisiones
 				 */
-				Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.INFO, 
+				Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.INFO,
 						"1 -> Elimina registros de comisiones...");
 				ps = con.prepareStatement(DELETE_COMISIONES_ARCHIVO);
 				ps.setString(1, resultado);
@@ -690,12 +656,11 @@ public class CBDataBancoDAO extends ControladorBase {
 					ps.close();
 				Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.INFO,
 						"Se han eliminado registros de comisiones...  Valor ejecucion: " + ejecuta);
-				
+
 				/**
 				 * 2 - Limpia conciliaciones
 				 */
-				Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.INFO, 
-						"2 -> Elimina conciliaciones...");
+				Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.INFO, "2 -> Elimina conciliaciones...");
 				ps = con.prepareStatement(BORRAR_CONCILACIONES);
 				ps.setString(1, resultado);
 				ejecuta = ps.executeUpdate();
@@ -705,7 +670,7 @@ public class CBDataBancoDAO extends ControladorBase {
 				System.out.println("Delete conciliaciones: " + BORRAR_CONCILACIONES);
 				Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.INFO,
 						"Las conciliaciones fueron borradas... Valor ejecucion: " + ejecuta);
-				
+
 				/**
 				 * 3 - Limpia conciliaciones pendientes
 				 */
@@ -721,12 +686,11 @@ public class CBDataBancoDAO extends ControladorBase {
 				System.out.println("Delete conciliaciones pendientes: " + BORRA_CONCILIACIONES_PENDIENTES);
 				Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.INFO,
 						"Las conciliaciones pendientes fueron borradas...  Valor ejecucion: " + ejecuta);
-				
+
 				/**
 				 * 4 - Limpia cb_data_banco
 				 */
-				Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.INFO, 
-						"4 -> Elimina data banco...");
+				Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.INFO, "4 -> Elimina data banco...");
 				ps = con.prepareStatement(BORRAR_REGISTRO);
 				ps.setString(1, resultado);
 				ejecuta = ps.executeUpdate();
@@ -741,8 +705,7 @@ public class CBDataBancoDAO extends ControladorBase {
 				/**
 				 * 5 - Limpia data no registrada
 				 */
-				Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.INFO, 
-						"5 -> Elimina data sin procesar...");
+				Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.INFO, "5 -> Elimina data sin procesar...");
 				ps = con.prepareStatement(BORRAR_NO_REGISTRADOS);
 				ps.setString(1, resultado);
 				ejecuta = ps.executeUpdate();
@@ -753,11 +716,11 @@ public class CBDataBancoDAO extends ControladorBase {
 				Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.INFO,
 						"Se ha eliminado data sin procesar...  Valor ejecucion: " + ejecuta);
 				// ******************************************************************
-				
+
 				/**
 				 * 6- Borra archivo(s) en cb_archivos_insertados
 				 */
-				Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.INFO, 
+				Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.INFO,
 						"6 -> Elimina los archivos anteriores en CB_ARCHIVOS_INSERTADOS...");
 				ps = con.prepareStatement(BORRAR_ARCHIVO);
 				ps.setString(1, resultado);
@@ -766,9 +729,9 @@ public class CBDataBancoDAO extends ControladorBase {
 				ejecuta = ps.executeUpdate();
 				if (ps != null)
 					ps.close();
-				Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.INFO, 
-						"El archivo fue borrado de tabla CB_ARCHIVOS_INSERTADOS... Valor ejecucion: " + ejecuta);				
-			
+				Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.INFO,
+						"El archivo fue borrado de tabla CB_ARCHIVOS_INSERTADOS... Valor ejecucion: " + ejecuta);
+
 			}
 		} catch (Exception e) {
 			Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
@@ -1238,7 +1201,7 @@ public class CBDataBancoDAO extends ControladorBase {
 	private String QRY_CANTIDAD_AGRUPACION = "SELECT NVL(CANTIDAD_AGRUPACION, 0) CANTIDAD_AGRUPACION "
 			+ "FROM CB_CONFIGURACION_CONFRONTA WHERE CBCONFIGURACIONCONFRONTAID = ?";
 
-	public int obtenerCantidadAgrupacion(int id) {		
+	public int obtenerCantidadAgrupacion(int id) {
 		Connection conn = null;
 		PreparedStatement cmd = null;
 		ResultSet rs = null;
@@ -1275,7 +1238,7 @@ public class CBDataBancoDAO extends ControladorBase {
 				} catch (SQLException e) {
 					Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
-			}			
+			}
 		}
 		return 0;
 	}
@@ -1337,12 +1300,12 @@ public class CBDataBancoDAO extends ControladorBase {
 	}
 
 	/**
-	 * Added by CarlosGodinez -> 20/09/2018
-	 * Verificacion de cantidad de convenios de la confronta cargada
-	 * */
+	 * Added by CarlosGodinez -> 20/09/2018 Verificacion de cantidad de convenios de
+	 * la confronta cargada
+	 */
 	private static String QRY_CANT_CONVENIOS_CONFRONTA = "SELECT COUNT(DISTINCT tipo) as total "
 			+ "FROM cb_data_banco WHERE id_archivos_insertados = ?";
-	
+
 	public int getCantidadConvenios(String idArchivo) {
 		int result = 0;
 		PreparedStatement ps = null;
@@ -1352,7 +1315,7 @@ public class CBDataBancoDAO extends ControladorBase {
 
 		Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.INFO, "Parametro para el proceso: " + idArchivo);
 		Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.INFO,
-				"llamada al query en el java: " + QRY_CANT_CONVENIOS_CONFRONTA );
+				"llamada al query en el java: " + QRY_CANT_CONVENIOS_CONFRONTA);
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 
@@ -1389,8 +1352,7 @@ public class CBDataBancoDAO extends ControladorBase {
 		}
 		return result;
 	}
-	
-	
+
 	/*
 	 * @Author Nicolas Bermudez
 	 * 
@@ -1501,10 +1463,10 @@ public class CBDataBancoDAO extends ControladorBase {
 
 	private String INSERT_LOG = "INSERT INTO CB_PROCESOS_CONTROL VALUES(?,sysdate)";
 
-	public void insertLog(String element_id,  String descripcion, String tipo) {
+	public void insertLog(String element_id, String descripcion, String tipo) {
 		PreparedStatement stm = null;
-		Connection conexion =null;
-		
+		Connection conexion = null;
+
 		try {
 			conexion = ControladorBase.obtenerDtsPromo().getConnection();
 			stm = conexion.prepareStatement(INSERT_LOG);
@@ -1521,7 +1483,7 @@ public class CBDataBancoDAO extends ControladorBase {
 					Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			}
-			if(conexion != null) {
+			if (conexion != null) {
 				try {
 					conexion.close();
 				} catch (SQLException e) {
@@ -1569,7 +1531,7 @@ public class CBDataBancoDAO extends ControladorBase {
 		} catch (Exception e) {
 			Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
-			
+
 			if (callableStatement != null) {
 				try {
 					callableStatement.close();
@@ -1590,7 +1552,7 @@ public class CBDataBancoDAO extends ControladorBase {
 	private static String CONSULTA_ARCHIVO_GT = "Select id_archivos_insertados idArchivosViejos, nombre_archivo nombreArchivo from cb_archivos_insertados "
 			+ " where NOMBRE_ARCHIVO = ? and id_archivos_insertados !=  ?";
 
-	public boolean consultaExistenciaArchivoGT(String archivo, String idArchivoNuevo) {		
+	public boolean consultaExistenciaArchivoGT(String archivo, String idArchivoNuevo) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Connection con = null;
@@ -1694,7 +1656,7 @@ public class CBDataBancoDAO extends ControladorBase {
 				if (ps != null)
 					ps.close();
 				System.out.println("Se han eliminado registros de comisiones...  Valor ejecucion: " + ejecuta);
-				
+
 				System.out.println("Elimina conciliaciones...");
 				PreparedStatement ps2 = null;
 				try {
@@ -1702,7 +1664,7 @@ public class CBDataBancoDAO extends ControladorBase {
 					ps2.setInt(1, cbBancoAgenciaConfrontaId);
 					ps2.setString(2, fechaConciliacion);
 					ejecuta = ps2.executeUpdate();
-				} catch(SQLException e) {
+				} catch (SQLException e) {
 					Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 				} finally {
 					if (ps2 != null) {
@@ -1727,8 +1689,8 @@ public class CBDataBancoDAO extends ControladorBase {
 					ps3.setString(2, fechaConciliacion);
 					ejecuta = ps3.executeUpdate();
 					System.out.println("las conciliaciones pendientes fueron borradas..." + ejecuta);
-				} catch(SQLException e) {
-					
+				} catch (SQLException e) {
+
 				} finally {
 					if (ps3 != null) {
 						try {
@@ -1747,8 +1709,8 @@ public class CBDataBancoDAO extends ControladorBase {
 					ps4.setInt(1, cbBancoAgenciaConfrontaId);
 					ps4.setString(2, fechaConciliacion);
 					ejecuta = ps4.executeUpdate();
-				System.out.println("los registros data banco furon borrados..." + ejecuta);
-				} catch(SQLException e) {
+					System.out.println("los registros data banco furon borrados..." + ejecuta);
+				} catch (SQLException e) {
 					Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 				} finally {
 					if (ps4 != null) {
@@ -1770,7 +1732,7 @@ public class CBDataBancoDAO extends ControladorBase {
 					ejecuta = ps5.executeUpdate();
 					System.out.println("se han elimnado los datos no registrados..." + ejecuta);
 					// ******************************************************************
-				} catch(SQLException e) {
+				} catch (SQLException e) {
 					Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 				} finally {
 					if (ps5 != null) {
@@ -1792,7 +1754,7 @@ public class CBDataBancoDAO extends ControladorBase {
 					ps6.setString(2, nombre);
 					ejecuta = ps6.executeUpdate();
 					System.out.println("el archivo fue borrado..." + ejecuta);
-				} catch(SQLException e) {
+				} catch (SQLException e) {
 					Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 				} finally {
 					if (ps6 != null) {
@@ -1839,9 +1801,9 @@ public class CBDataBancoDAO extends ControladorBase {
 			+ " CODIGO, " + " COMISION " + "  ) " + "     VALUES " + " ( " + " cb_data_banco_sq.nextval, " + "     ?, "
 			+ "     ?, " + "     ?, " + "     to_date(?, 'dd/MM/yyyy HH24:mi:ss'), " + "     ?, " + "     ?, "
 			+ "     ?, " + "     ?, " + "     ?, " + "     ?, "
-			+ "     ?, trunc(to_date(?,'dd/MM/yyyy HH24:mi:ss'), 'dd') ," +"     SUBSTR (TRIM(?), 1, 70), " + "         SUBSTR (TRIM(?), 1, 70),  " + "     ?, "
-			+ "     ?, " + "     sysdate, " + "     to_date(?, 'dd/MM/yyyy HH24:mi:ss'), " + " ?, " + " ?, " + " ? "
-			+ " )";
+			+ "     ?, trunc(to_date(?,'dd/MM/yyyy HH24:mi:ss'), 'dd') ," + "     SUBSTR (TRIM(?), 1, 70), "
+			+ "         SUBSTR (TRIM(?), 1, 70),  " + "     ?, " + "     ?, " + "     sysdate, "
+			+ "     to_date(?, 'dd/MM/yyyy HH24:mi:ss'), " + " ?, " + " ?, " + " ? " + " )";
 
 	/**
 	 * This method should insert a list of records in the DB
@@ -1946,20 +1908,20 @@ public class CBDataBancoDAO extends ControladorBase {
 		}
 		return verifica;
 	}
-	
-	
+
 	/**
 	 * Llama a proceso CB_COMISION_CONFRONTA_SP
 	 */
-	
+
 	private static String CALL_CB_COMISIONES_CONFRONTAS_SP = "{call cb_comision_confronta_sp(?)}";
 
 	public int ejecutaProcesoComisionesConfrontas(String idMaestroCarga) {
 		PreparedStatement callableStatement = null;
 		Connection con = null;
-		
+
 		System.out.println("Parametro para el proceso: " + idMaestroCarga);
-		System.out.println("llamada de proceso en el java: " + "{call cb_comision_confronta_sp(" + idMaestroCarga + ")}");
+		System.out
+				.println("llamada de proceso en el java: " + "{call cb_comision_confronta_sp(" + idMaestroCarga + ")}");
 
 		int result = 0;
 		try {
@@ -1974,8 +1936,7 @@ public class CBDataBancoDAO extends ControladorBase {
 		} catch (Exception e) {
 			System.out.println("error al ejecutar el proceso de conciliacion: " + e.getMessage());
 		} finally {
-			
-		
+
 			if (con != null)
 				try {
 					con.close();
@@ -1990,9 +1951,52 @@ public class CBDataBancoDAO extends ControladorBase {
 				}
 
 		}
-		
+
 		return result;
 	}
 
+	private String QRY_NOMENCLATURA = "SELECT NOMENCLATURA  "
+			+ "FROM CB_CONFIGURACION_CONFRONTA WHERE CBCONFIGURACIONCONFRONTAID = ?";
+
+	public String obtenerNomenclaturaConfronta(int id) {
+		String valor = "";
+		Connection conn = null;
+		PreparedStatement cmd = null;
+		ResultSet rs = null;
+		try {
+			conn = obtenerDtsPromo().getConnection();
+			cmd = conn.prepareStatement(QRY_NOMENCLATURA);
+			cmd.setInt(1, id);
+			rs = cmd.executeQuery();
+			while (rs.next()) {
+				valor = rs.getString(1);
+			}
+		} catch (Exception e) {
+			Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e2) {
+					Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e2);
+				}
+			}
+			if (cmd != null) {
+				try {
+					cmd.close();
+				} catch (SQLException e1) {
+					Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e1);
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					Logger.getLogger(CBDataBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+				}
+			}
+		}
+		return valor;
+	}
 
 }

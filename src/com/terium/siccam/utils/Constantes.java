@@ -108,5 +108,7 @@ public class Constantes {
 	public static final String IMG_DELETE_16X16 = "/img/globales/16x16/delete.png";
 	
 	public static final String EXTRACTO_BANCARIO = "EXTRACTO BANCARIO";
+	public static final CharSequence COLUMN = "COLM";
+	
 
 }
