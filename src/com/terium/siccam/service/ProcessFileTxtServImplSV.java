@@ -338,6 +338,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 								}
 
 							} else {
+								boolean isDataColumn = false;
 								strLine1 = strLine.trim();
 								if (strLine1.length() != 0) {
 									int cantAgrup = 0;
@@ -353,6 +354,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 										logger.debug(methodName + " Numero de columnas Archivo = " + splitData.length);
 										cantAgrup = this.cantidadAgrupacion - 2;
 										splitDataValidos = new String[this.cantidadAgrupacion - 2];
+										isDataColumn=true;
 
 									} else {
 										splitData = strLine1.split("\\" + this.delimitador1);
@@ -376,7 +378,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 											getBancoModel(strLine1, idBanco, idAgencia, idConfronta, user,
 													nombreArchivo, idMaestro, tipo, comisionConfronta,
 													getFormatoFecha(), idAgeConfro, formatoFechaConfronta, cantAgrup,
-													splitData);
+													splitData,isDataColumn);
 
 										} else {
 											logger.debug(methodName + " - NO Cumple condicion: splitDataValidos ");
@@ -485,10 +487,11 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 	 * 
 	 * @param cantAgrup
 	 * @param data
+	 * @param isDataColumn 
 	 */
 	private void getBancoModel(String strLine, int idBanco, int idAgencia, int idConfronta, String user,
 			String nombreArchivo, String idMaestro, String tipo, BigDecimal comisionConfronta, String formatFecha,
-			int idAgeConfro, String formatoFechaConfronta, int cantAgrup, String[] data) {
+			int idAgeConfro, String formatoFechaConfronta, int cantAgrup, String[] data, boolean isDataColumn) {
 		boolean registroValido = false;
 		String methodName = "getBancoModel()";
 		Date fechaCreacion = new Date();
@@ -497,7 +500,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 		CustomDate customDate = new CustomDate();
 		String[] splitData = null;
 		String[] splitNomCl = null;
-		if (ArrayUtils.isNotEmpty(data)) {
+		if (ArrayUtils.isNotEmpty(data) && isDataColumn) {
 			splitData = data;
 			splitNomCl = ArrayUtils.removeAll(this.nomenclatura.split(","), 0, 1);
 
