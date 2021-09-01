@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -11,6 +12,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,6 +55,7 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
+import com.consystec.ms.seguridad.orm.Pais;
 import com.icon.gac.ServicioCasos;
 import com.icon.gac.ServicioCasosService;
 import com.icon.gac.ServicioCasosServiceLocator;
@@ -87,7 +90,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private Logger log = Logger.getLogger(ConciliacionDetalleController.class.getName());
+	private static Logger log = Logger.getLogger(ConciliacionDetalleController.class.getName());
 
 	// Variables ZUL
 	Listbox lbxConciliacionDetalle;
@@ -907,7 +910,8 @@ public class ConciliacionDetalleController extends ControladorBase {
 	 * Metodo para reenviar peticiones a WS
 	 */
 	public void onClick$btnReenviarManual() throws SQLException, NamingException {
-
+		String methodName = "onClick$btnReenviarManual()";
+		log.debug(methodName + " - inicia ");
 		if (lbxConciliacionDetalle.getSelectedItem() != null) {
 			List<CBParametrosGeneralesModel> parametros = CBParametrosGeneralesDAO.obtenerParametrosWS();
 
@@ -920,10 +924,9 @@ public class ConciliacionDetalleController extends ControladorBase {
 				item = iSeleccionados.next();
 
 				obj = item.getValue();
-
-				System.out.println("Respuesta accion: " + obj.getRespuestaAccion());
-				System.out.println("CBHistorialAccionId: " + obj.getCbHistorialAccionId());
-				System.out.println("Sistema: " + obj.getSistema());
+				log.debug(methodName + " - Respuesta accion: " + obj.getRespuestaAccion());
+				log.debug(methodName + " - CBHistorialAccionId: " + obj.getCbHistorialAccionId());
+				log.debug(methodName + " - Sistema: " + obj.getSistema());
 
 				CBHistorialAccionModel cbHistorial = new CBHistorialAccionModel();
 
@@ -1132,6 +1135,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 						// INSERTAR
 						historialDao.insertarReg(cbHistorial, idPadre);
 						// Request WS Pagos
+
 						procesaWSPagosCreaCasos(parametros, det, cbHistorial, false);
 					}
 
@@ -1185,6 +1189,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 	 */
 	public void procesaWSPagosCreaCasos(List<CBParametrosGeneralesModel> parametros, CBConciliacionDetallada detalle,
 			CBHistorialAccionModel historial, boolean reenvio) {
+		String methodName = "procesaWSPagosCreaCasos()";
 		CBCausasConciliacion obj = null;
 		if (reenvio) {
 			obj = new CBCausasConciliacion();
@@ -1194,22 +1199,57 @@ public class ConciliacionDetalleController extends ControladorBase {
 		}
 		log.debug("procesaWSPagosCreaCasos()" + " - Valor para pendiente Telefonica: "
 				+ detalle.getPendienteTelefonica());
+		log.debug("procesaWSPagosCreaCasos()" + " - obj.getSistema() : " + obj.getSistema());
 		if (obj.getSistema() == 2 && detalle.getPendienteTelefonica().intValue() > 0) {
-			log.debug("procesaWSPagosCreaCasos()" + " - ejecuta pago Sistema = " + obj.getSistema());
 			// ejecuta request Pago
+			PagoDetalle[] response = null;
+			EjecutarPagoFault pagoFault = new EjecutarPagoFault();
+			try {
+				response = requestWsEjecutaPago(parametros, detalle);
+			} catch (EjecutarPagoFault e) {
+				log.debug(methodName + " EjecutarPagoFault : ", e);
+				pagoFault.setErrorCode(e.getErrorCode());
+				pagoFault.setErrorMessage(e.getErrorMessage());
+				log.debug(methodName + " errorCode : " + pagoFault.getErrorCode());
+				log.debug(methodName + " errorMsg : " + pagoFault.getErrorMessage());
+			} catch (RemoteException e) {
+				log.debug(methodName + " RemoteException : ", e);
+				pagoFault = setError(e);
+				log.debug(methodName + " RemoteException errorCode : " + pagoFault.getErrorCode());
+				log.debug(methodName + " RemoteException errorMsg : " + pagoFault.getErrorMessage());
+			} catch (MalformedURLException e) {
+				log.debug(methodName + " MalformedURLException : ", e);
+			}
 
-			RespuestaPagoDTO response = requestWsAplicarPago(parametros, detalle);
-		//	PagoDetalle[] response = requestWsEjecutaPago(parametros, detalle);
+			// RespuestaPagoDTO response = requestWsAplicarPago(parametros, detalle);
+			// PagoDetalle[] response = requestWsEjecutaPago(parametros, detalle);
 
-			if (response != null && response.getRespuesta().getCodigoError() == 0) {
-				historial.setEstado(1);// Estado 1 = pendiente para procesar por GAC
-				historial.setNombreCliente(response.getNombreCliente());
-				historial.setRespuestascl("Pago Ejecutado Correctamente");
+//			if (response != null && response.getRespuesta().getCodigoError() == 0) {
+//				historial.setEstado(1);// Estado 1 = pendiente para procesar por GAC
+//				historial.setNombreCliente(response.getNombreCliente());
+//				historial.setRespuestascl("Pago Ejecutado Correctamente");
+//			} else {
+//				historial.setEstado(4);// Estado 2 = error por parte de WS Pagos
+//				historial.setRespuestascl(response.getRespuesta().getMensajeError());
+//			}
+			if (response != null) {
+				log.debug(methodName + " status = " + response[0].getStatus());
+				if (Constantes.STATUS.equalsIgnoreCase(response[0].getStatus())) {
+					historial.setEstado(1);// Estado 1 = pendiente para procesar por GAC
+					historial.setNombreCliente(response[0].getPrimerNombre() + " " + response[0].getSegundoNombre());
+					historial.setRespuestascl("Pago Ejecutado Correctamente");
+					log.debug(methodName + " - Pago Ejecutado Correctamente");
+				} else {
+					historial.setEstado(4);// Estado 2 = error por parte de WS Pagos
+					historial.setRespuestascl(response[0].getMsg_response());
+					log.debug(methodName + " - Pago ha tenido problemas : " + response[0].getMsg_response());
+				}
 			} else {
 				historial.setEstado(4);// Estado 2 = error por parte de WS Pagos
-				historial.setRespuestascl(response.getRespuesta().getMensajeError());
+				historial.setRespuestascl(pagoFault.getErrorMessage());
+				log.debug(methodName + " - ha ocurrido un error : " + pagoFault.getErrorMessage());
 			}
-			log.debug("procesaWSPagosCreaCasos()" + " - Ingresa a ejecutar WS Pagos");
+
 			// ejecuta request crearCasoCerrado
 			// requestWsCrearCasoCerrado(parametros, detalle);
 		} else if (obj.getSistema() == 2 && detalle.getPendienteBanco().intValue() > 0) {
@@ -1245,50 +1285,83 @@ public class ConciliacionDetalleController extends ControladorBase {
 
 	}
 
+	private EjecutarPagoFault setError(RemoteException e) {
+		EjecutarPagoFault epf = new EjecutarPagoFault();
+		if (e instanceof AxisFault) {
+			log.error(((AxisFault) e).getFaultCode());
+			log.error("Axis Fault error: " + ((AxisFault) e).getFaultString());
+			for (int i = 0; i < ((AxisFault) e).getFaultDetails().length; i++) {
+				log.error("Error " + ((AxisFault) e).getFaultDetails()[i].getTagName() + " : "
+						+ ((AxisFault) e).getFaultDetails()[i].getTextContent());
+				if (Constantes.STATUS_CODE.equalsIgnoreCase(((AxisFault) e).getFaultDetails()[i].getTagName())) {
+					epf.setErrorCode(new BigInteger(((AxisFault) e).getFaultDetails()[i].getTextContent()));
+				}
+				if (Constantes.MESSAGE_ERROR.equalsIgnoreCase(((AxisFault) e).getFaultDetails()[i].getTagName())) {
+					epf.setErrorMessage(((AxisFault) e).getFaultDetails()[i].getTextContent());
+				}
+
+			}
+		}
+
+		return epf;
+	}
+
 	private PagoDetalle[] requestWsEjecutaPago(List<CBParametrosGeneralesModel> parametros,
-			CBConciliacionDetallada detalle) {
+			CBConciliacionDetallada detalle) throws EjecutarPagoFault, RemoteException, MalformedURLException {
 		String methodName = "requestWsEjecutaPago()";
 		log.debug(methodName + " - inicia ");
 		// TODO Auto-generated method stub
 		PagosPortService servicio = new PagosPortServiceLocator();
 		PagoDetalle[] response = null;
-		try {
-			PagosPortSoap11Stub ws = new PagosPortSoap11Stub(new URL(servicio.getpagosPortSoap11Address()), servicio);
-			EjecutarPagoRequest request = setParamEjecutaPagoRequest(parametros, detalle);
-			response = ws.ejecutarPago(request);
 
-		} catch (AxisFault e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		PagosPortSoap11Stub ws = new PagosPortSoap11Stub(new URL(servicio.getpagosPortSoap11Address()), servicio);
+		EjecutarPagoRequest request = setParamEjecutaPagoRequest(parametros, detalle);
+		log.debug(methodName + " - Se envia solicitud al WS ");
+		response = ws.ejecutarPago(request);
+
+		log.debug(methodName + " - Se ejecuta Pago, obteniendo Response ");
+		log.debug(MessageFormat.format(methodName
+				+ "\nParams Response : \nStatus = {0}\nResponse_Mesg = {1}\nBalance = {2}\nPrimer Nombre = {3}\nSegundo Nombre= {4}\nTransaccion = {5}\nReferencia = {6}",
+				response[0].getStatus(), response[0].getMsg_response(), response[0].getBalance(),
+				response[0].getPrimerNombre(), response[0].getSegundoNombre(), response[0].getNum_transaccion(),
+				response[0].getNum_referencia()));
+
 		return response;
 	}
 
 	private EjecutarPagoRequest setParamEjecutaPagoRequest(List<CBParametrosGeneralesModel> parametros,
 			CBConciliacionDetallada detalle) {
+		String methodName = "setParamEjecutaPagoRequest()";
 		DateFormat fechaFormato = new SimpleDateFormat("yyyyMMdd");
 		DateFormat horaFormato = new SimpleDateFormat("HHmmss");
 		Date objFecha = new Date();
 		String fecha = fechaFormato.format(objFecha);
-		String hora = horaFormato.format(objFecha);
-		String cliente = detalle.getCliente() != null ? detalle.getCliente() : "0";
+		log.debug(methodName + " -  inicia ");
+//		String hora = horaFormato.format(objFecha);
+//		String cliente = detalle.getCliente() != null ? detalle.getCliente() : "0";
 		int telefono = detalle.getTelefono() != null ? Integer.parseInt(detalle.getTelefono()) : 0;
 		EjecutarPagoRequest request = new EjecutarPagoRequest();
-
+		// request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
 		request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
-		request.setBill_ref_no("");
+		request.setBill_ref_no(Constantes.BILL_REF_NO);
 		request.setFecha_pago(fecha);
 		request.setTelefono(telefono);
-		
-
-
-		return null;
+		EjecutarPagoDetalle pd = new EjecutarPagoDetalle();
+		pd.setTipo(Constantes.EJ_PAGO_WS_TIPO);
+		pd.setMonto(detalle.getMonto().doubleValue());
+		pd.setNum_cheque(Constantes.EJ_PAGO_WS_NUM_CHEQUE);
+		pd.setNum_tarjeta(Constantes.EJ_PAGO_WS_NUM_TARJETA);
+		pd.setAutorizacion(Constantes.EJ_PAGO_WS_AUTORIZACION);
+		pd.setBanco(Tools.obtenerParametro(Constantes.AGENCIA, parametros));
+		EjecutarPagoDetalle[] ejp = new EjecutarPagoDetalle[] { pd };
+		request.setEjecutarPagoDetalle(ejp);
+		log.debug(MessageFormat.format(methodName
+				+ "\nParams request : \nBank_id = {0}\nBill_Ref_no = {1}\nPago_fecha = {2}\nTelefono= {3}\nDetalle ---\nTipo = {4}\nMonto = {5}\nNum_Tarjeta = {6}\nNum_cheque = {7}\nAutorizacion= {8}\nBanco= {9}",
+				request.getBank_id(), request.getBill_ref_no(), request.getFecha_pago(), request.getTelefono(),
+				request.getEjecutarPagoDetalle(0).getTipo(), request.getEjecutarPagoDetalle(0).getMonto(),
+				request.getEjecutarPagoDetalle(0).getNum_tarjeta(), request.getEjecutarPagoDetalle(0).getNum_cheque(),
+				request.getEjecutarPagoDetalle(0).getAutorizacion(), request.getEjecutarPagoDetalle(0).getBanco()));
+		return request;
 	}
 
 	/**

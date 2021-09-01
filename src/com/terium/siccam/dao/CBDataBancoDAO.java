@@ -28,8 +28,6 @@ import com.terium.siccam.utils.GeneraFiltroQuery;
 import com.terium.siccam.utils.ObtieneCampos;
 import com.terium.siccam.utils.Orden;
 
-import utils.logToZip;
-
 /**
  * 
  * @author rSianB for terium.com
