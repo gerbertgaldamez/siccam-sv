@@ -7,6 +7,13 @@
 
 package org.example.www.Pagos;
 
+import java.util.List;
+
+import com.terium.siccam.dao.CBParametrosGeneralesDAO;
+import com.terium.siccam.model.CBParametrosGeneralesModel;
+import com.terium.siccam.utils.Constantes;
+import com.terium.siccam.utils.Tools;
+
 public class PagosPortServiceLocator extends org.apache.axis.client.Service implements org.example.www.Pagos.PagosPortService {
 
     public PagosPortServiceLocator() {
@@ -21,9 +28,17 @@ public class PagosPortServiceLocator extends org.apache.axis.client.Service impl
         super(wsdlLoc, sName);
     }
 
+    //"http://10.231.128.139:7003/wspagos/"  Desarrollo
     // Use to get a proxy class for pagosPortSoap11
-    private java.lang.String pagosPortSoap11_address = "http://10.231.128.139:7003/wspagos/";
+    private java.lang.String pagosPortSoap11_address = getUrlPagos();
 
+    public String getUrlPagos() {
+    	List<CBParametrosGeneralesModel> parametros = CBParametrosGeneralesDAO.obtenerParametrosWS();
+    	
+    	return Tools.obtenerParametro(Constantes.URLWSPAGOS, parametros);
+    }
+    
+    
     public java.lang.String getpagosPortSoap11Address() {
         return pagosPortSoap11_address;
     }
