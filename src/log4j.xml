@@ -14,7 +14,7 @@
 	<appender name="file"
 		class="org.apache.log4j.RollingFileAppender">
 		<param name="File"
-			value="/app/wlcc/logs/SICCAM/sv/siccamCore.log" />
+			value="/app/wlcc/logs/SICCAM/siccamCore.log" />
 		<param name="MaxBackupIndex" value="10" />
 		<param name="MaxFileSize" value="10MB" />
 		<layout class="org.apache.log4j.PatternLayout">

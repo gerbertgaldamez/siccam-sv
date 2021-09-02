@@ -1231,14 +1231,6 @@ public class ConciliacionDetalleController extends ControladorBase {
 			// RespuestaPagoDTO response = requestWsAplicarPago(parametros, detalle);
 			// PagoDetalle[] response = requestWsEjecutaPago(parametros, detalle);
 
-//			if (response != null && response.getRespuesta().getCodigoError() == 0) {
-//				historial.setEstado(1);// Estado 1 = pendiente para procesar por GAC
-//				historial.setNombreCliente(response.getNombreCliente());
-//				historial.setRespuestascl("Pago Ejecutado Correctamente");
-//			} else {
-//				historial.setEstado(4);// Estado 2 = error por parte de WS Pagos
-//				historial.setRespuestascl(response.getRespuesta().getMensajeError());
-//			}
 			if (response != null) {
 				log.debug(methodName + " status = " + response[0].getStatus());
 				if (Constantes.STATUS.equalsIgnoreCase(response[0].getStatus())) {
@@ -1431,6 +1423,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 		int telefono = detalle.getTelefono() != null ? Integer.parseInt(detalle.getTelefono()) : 0;
 		EjecutarPagoRequest request = new EjecutarPagoRequest();
 		// request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
+		log.debug(methodName + " -  Telefono  = " + telefono);
 		request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
 		request.setBill_ref_no(Constantes.BILL_REF_NO);
 		request.setFecha_pago(fecha);
