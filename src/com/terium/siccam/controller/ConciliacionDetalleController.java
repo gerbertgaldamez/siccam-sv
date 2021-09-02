@@ -16,8 +16,10 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.naming.NamingException;
@@ -31,6 +33,9 @@ import org.example.www.Pagos.PagoDetalle;
 import org.example.www.Pagos.PagosPortService;
 import org.example.www.Pagos.PagosPortServiceLocator;
 import org.example.www.Pagos.PagosPortSoap11Stub;
+import org.example.www.Pagos.ReversaPagoDetalle;
+import org.example.www.Pagos.ReversaPagoFault;
+import org.example.www.Pagos.ReversaPagoRequest;
 import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
@@ -1214,7 +1219,9 @@ public class ConciliacionDetalleController extends ControladorBase {
 				log.debug(methodName + " errorMsg : " + pagoFault.getErrorMessage());
 			} catch (RemoteException e) {
 				log.debug(methodName + " RemoteException : ", e);
-				pagoFault = setError(e);
+				Map<String, String> map = getError(e);
+				pagoFault.setErrorCode(new BigInteger(map.get(Constantes.STATUS_CODE)));
+				pagoFault.setErrorMessage(map.get(Constantes.MESSAGE_ERROR));
 				log.debug(methodName + " RemoteException errorCode : " + pagoFault.getErrorCode());
 				log.debug(methodName + " RemoteException errorMsg : " + pagoFault.getErrorMessage());
 			} catch (MalformedURLException e) {
@@ -1253,23 +1260,64 @@ public class ConciliacionDetalleController extends ControladorBase {
 			// ejecuta request crearCasoCerrado
 			// requestWsCrearCasoCerrado(parametros, detalle);
 		} else if (obj.getSistema() == 2 && detalle.getPendienteBanco().intValue() > 0) {
+			log.debug(methodName + " - Pendiente banco = " + detalle.getPendienteBanco().intValue());
+			// implementa la reversa llamada a ws reversa
+			ReversaPagoFault reversaPagoFault = new ReversaPagoFault();
+			ReversaPagoDetalle[] responseReversa = null;
+			try {
+				log.debug(methodName + " - ejecuta Reversa Pago ");
+				responseReversa = requestWsReversaPago(parametros, detalle);
+				log.debug(methodName + " - Reversa Ejecutada");
+			} catch (ReversaPagoFault e) {
+				reversaPagoFault.setErrorCode(e.getErrorCode());
+				reversaPagoFault.setErrorMessage(e.getErrorMessage());
+				log.error(methodName + " - ReversaPagoFault Exception error code = " + reversaPagoFault.getErrorCode()
+						+ " Error Message : " + reversaPagoFault.getErrorMessage());
+				e.printStackTrace();
+			} catch (RemoteException e) {
+				Map<String, String> map = getError(e);
+				reversaPagoFault.setErrorCode(new BigInteger(map.get(Constantes.STATUS_CODE)));
+				reversaPagoFault.setErrorMessage(Constantes.MESSAGE_ERROR);
+				log.error(methodName + " - RemoteException Exception error code = " + reversaPagoFault.getErrorCode()
+						+ " Error Message : " + reversaPagoFault.getErrorMessage());
+			} catch (MalformedURLException e) {
+				log.error(methodName + " - MalformedURLException ", e);
+			}
+
+			if (responseReversa != null) {
+				log.debug(methodName + " status = " + responseReversa[0].getStatus());
+				if (Constantes.STATUS.equalsIgnoreCase(responseReversa[0].getStatus())) {
+					historial.setEstado(1);
+					historial.setRespuestascl("Reversa Ejecutada Correctamente");
+					log.debug(methodName + " - Reversa Ejecutada Correctamente");
+				} else {
+					historial.setEstado(4);
+					historial.setRespuestascl(responseReversa[0].getMsg_response());
+					log.debug(methodName + " - reversa ha tenido problemas : " + responseReversa[0].getMsg_response());
+				}
+			} else {
+				historial.setEstado(4);
+				historial.setRespuestascl(reversaPagoFault.getErrorMessage());
+				log.debug(methodName + " - ha ocurrido un error al realizar la reversa : "
+						+ reversaPagoFault.getErrorMessage());
+			}
 
 			// Se ejecuta SP
 			boolean result = CBHistorialAccionDAO.ejecutaApldesRecargaSP(historial.getcBHistorialAccionId());
-			log.debug("procesaWSPagosCreaCasos()" + " - [CB_HISTORIAL_ACCION] Ejecuta SP para id => "
+			log.debug(methodName + " - [CB_HISTORIAL_ACCION] Ejecuta SP para id => "
 					+ historial.getcBHistorialAccionId() + " Resultado => " + result);
 			// ejecuta request crearCasoCerrado
 			// requestWsCrearCasoCerrado(parametros, detalle);
 		} else if (obj.getSistema() == 1) {
 			// Se ejecuta SP
 			boolean result = CBHistorialAccionDAO.ejecutaApldesRecargaSP(historial.getcBHistorialAccionId());
-			log.debug("procesaWSPagosCreaCasos()" + " - [CB_HISTORIAL_ACCION] Ejecuta SP para id => "
+			log.debug(methodName + " - [CB_HISTORIAL_ACCION] Ejecuta SP para id => "
 					+ historial.getcBHistorialAccionId() + " Resultado => " + result);
 
 		} else if (obj.getSistema() == 3) {
 			// Se ejecuta SP
 			boolean result = CBHistorialAccionDAO.ejecutaApldesRecargaSP(historial.getcBHistorialAccionId());
-			log.debug("procesaWSPagosCreaCasos()" + " - [CB_HISTORIAL_ACCION] Ejecuta SP para id => "
+			log.debug(methodName + " - [CB_HISTORIAL_ACCION] Ejecuta SP para id => "
 					+ historial.getcBHistorialAccionId() + " Resultado => " + result);
 
 		}
@@ -1285,8 +1333,49 @@ public class ConciliacionDetalleController extends ControladorBase {
 
 	}
 
-	private EjecutarPagoFault setError(RemoteException e) {
-		EjecutarPagoFault epf = new EjecutarPagoFault();
+	private ReversaPagoDetalle[] requestWsReversaPago(List<CBParametrosGeneralesModel> parametros,
+			CBConciliacionDetallada detalle) throws ReversaPagoFault, RemoteException, MalformedURLException {
+		String methodName = "requestWsReversaPago()";
+		log.debug(methodName + " - inicia ");
+		// TODO Auto-generated method stub
+		PagosPortService servicio = new PagosPortServiceLocator();
+		ReversaPagoDetalle[] response = null;
+		PagosPortSoap11Stub ws = new PagosPortSoap11Stub(new URL(servicio.getpagosPortSoap11Address()), servicio);
+		ReversaPagoRequest requestReversaPago = setParamsReversaPago(parametros, detalle);
+		log.debug(methodName + " - Se envia solicitud al WS ");
+		response = ws.reversaPago(requestReversaPago);
+		log.debug(methodName + " - Se ejecuta Pago, obteniendo Response ");
+		log.debug(MessageFormat.format(methodName
+				+ "\nParams Response : \nCod_Transaccion = {0}\nNum_referencia = {1}\nStatus = {2}\nMsg_response = {3}",
+				response[0].getCod_transaccion(), response[0].getNum_referencia(), response[0].getStatus(),
+				response[0].getMsg_response()));
+		return response;
+	}
+
+	private ReversaPagoRequest setParamsReversaPago(List<CBParametrosGeneralesModel> parametros,
+			CBConciliacionDetallada detalle) {
+		String methodName = "setParamsReversaPago()";
+		Date objFecha = new Date();
+		String fecha = fechaFormato.format(objFecha);
+		log.debug(methodName + " -  inicia ");
+		int telefono = detalle.getTelefono() != null ? Integer.parseInt(detalle.getTelefono()) : 0;
+
+		ReversaPagoRequest request = new ReversaPagoRequest();
+		request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
+		request.setFecha_pago(fecha);
+		request.setMonto(detalle.getMonto().doubleValue());
+		request.setReferencia(Constantes.REVERSA_PAGO_WS_REFERENCIA);
+		request.setTelefono(telefono);
+		log.debug(MessageFormat.format(methodName
+				+ "\nRequest Reversa Pago : \nBank_id= {0}\nFecha_Pago = {1}\nMonto = {2}\nRefererencia = {3}\nTelefono = {4}",
+				request.getBank_id(), request.getFecha_pago(), request.getMonto(), request.getReferencia(),
+				request.getTelefono()));
+
+		return request;
+	}
+
+	private Map<String, String> getError(RemoteException e) {
+		Map<String, String> map = new HashMap<String, String>();
 		if (e instanceof AxisFault) {
 			log.error(((AxisFault) e).getFaultCode());
 			log.error("Axis Fault error: " + ((AxisFault) e).getFaultString());
@@ -1294,16 +1383,18 @@ public class ConciliacionDetalleController extends ControladorBase {
 				log.error("Error " + ((AxisFault) e).getFaultDetails()[i].getTagName() + " : "
 						+ ((AxisFault) e).getFaultDetails()[i].getTextContent());
 				if (Constantes.STATUS_CODE.equalsIgnoreCase(((AxisFault) e).getFaultDetails()[i].getTagName())) {
-					epf.setErrorCode(new BigInteger(((AxisFault) e).getFaultDetails()[i].getTextContent()));
+					map.put(((AxisFault) e).getFaultDetails()[i].getTagName(),
+							((AxisFault) e).getFaultDetails()[i].getTextContent());
 				}
 				if (Constantes.MESSAGE_ERROR.equalsIgnoreCase(((AxisFault) e).getFaultDetails()[i].getTagName())) {
-					epf.setErrorMessage(((AxisFault) e).getFaultDetails()[i].getTextContent());
+					map.put(((AxisFault) e).getFaultDetails()[i].getTagName(),
+							((AxisFault) e).getFaultDetails()[i].getTextContent());
 				}
 
 			}
 		}
 
-		return epf;
+		return map;
 	}
 
 	private PagoDetalle[] requestWsEjecutaPago(List<CBParametrosGeneralesModel> parametros,
@@ -1332,8 +1423,6 @@ public class ConciliacionDetalleController extends ControladorBase {
 	private EjecutarPagoRequest setParamEjecutaPagoRequest(List<CBParametrosGeneralesModel> parametros,
 			CBConciliacionDetallada detalle) {
 		String methodName = "setParamEjecutaPagoRequest()";
-		DateFormat fechaFormato = new SimpleDateFormat("yyyyMMdd");
-		DateFormat horaFormato = new SimpleDateFormat("HHmmss");
 		Date objFecha = new Date();
 		String fecha = fechaFormato.format(objFecha);
 		log.debug(methodName + " -  inicia ");
