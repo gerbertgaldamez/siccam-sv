@@ -114,5 +114,6 @@ public class Constantes {
 	public static final String MESSAGE_ERROR = "message";
 	public static final String STATUS = "00";
 	public static final String REVERSA_PAGO_WS_REFERENCIA ="0000";
+	public static final String NOM_FECHA_TIPO5 = "0";
 
 }

@@ -29,6 +29,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Messagebox;
@@ -345,6 +346,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 									logger.debug(methodName + " - Delimitador para lectura1: " + this.delimitador1);
 									logger.debug(methodName + " - Numero de columnas configuradas: "
 											+ this.cantidadAgrupacion);
+									logger.debug(methodName + " - nomenclatura = " + nomenclatura);
 
 									String[] splitData = null;
 									String[] splitDataValidos = null;
@@ -354,7 +356,14 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 										logger.debug(methodName + " Numero de columnas Archivo = " + splitData.length);
 										cantAgrup = this.cantidadAgrupacion - 2;
 										splitDataValidos = new String[this.cantidadAgrupacion - 2];
-										isDataColumn=true;
+										isDataColumn = true;
+
+									} else if (nomenclatura.contains(Constantes.NOM_FECHA_TIPO5)) {
+										logger.debug(methodName + " - nomenclatura es fecha tipo5");
+										splitData = getDataFechaTipo5(strLine1, this.delimitador1);
+										logger.debug(methodName + " - Se ha realizado depuracion de la cadena");
+										cantAgrup = this.cantidadAgrupacion;
+										splitDataValidos = new String[cantAgrup];
 
 									} else {
 										splitData = strLine1.split("\\" + this.delimitador1);
@@ -378,7 +387,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 											getBancoModel(strLine1, idBanco, idAgencia, idConfronta, user,
 													nombreArchivo, idMaestro, tipo, comisionConfronta,
 													getFormatoFecha(), idAgeConfro, formatoFechaConfronta, cantAgrup,
-													splitData,isDataColumn);
+													splitData, isDataColumn);
 
 										} else {
 											logger.debug(methodName + " - NO Cumple condicion: splitDataValidos ");
@@ -403,9 +412,9 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 						+ "\nNumero de columnas del archivo: " + splitDataLenght
 						+ "\n\nCambie la cantidad de agrupacion de la confronta seleccionada en la pantalla de configuracion de confrontas",
 						"ERROR", Messagebox.OK, Messagebox.EXCLAMATION);
-				logger.debug(methodName + " - Error * : " + ex);
+				logger.debug(methodName + " - Error * : ", ex);
 			} catch (IOException ex) {
-				logger.debug(methodName + " - Error **  : " + ex);
+				logger.debug(methodName + " - Error **  : ", ex);
 			} catch (Exception e) {
 				Messagebox.show("Ha ocurrido un error al intentar procesar el archivo de confronta", "ATENCION",
 						Messagebox.OK, Messagebox.ERROR);
@@ -417,6 +426,48 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 					"Error al intentar cargar archivo de confronta");
 		}
 		return dataBancoModels;
+	}
+
+	private String[] getDataFechaTipo5(String cadena, String delimitador) {
+		String methodName = "getDataFechaTipo5()";
+		logger.debug(methodName + " - Inicia obtener Data para nomenclatura fecha tipo5");
+		String[] firstData = cadena.split("\\" + delimitador);
+		String[] lastData = new String[firstData.length];
+		if (firstData.length > 0) {
+			int posicion = 0;
+			for (String s : firstData) {
+				if (StringUtils.isNumeric(s)) {
+					logger.debug(methodName + " - Depuracion data : " + s);
+					if ((posicion == 1 || posicion == 2)) {
+						s = s.replaceAll("^0+", "");
+						if (s.isEmpty())
+							continue;
+					}
+					if (posicion == firstData.length - 3) {
+						if (Integer.parseInt(s.substring(s.length() - 1)) == 0)
+							s = s.substring(0, s.length() - 1);
+
+						logger.debug(methodName + " - Depuracion data fecha : " + s);
+					}
+				}
+				lastData[posicion] = s;
+				posicion = posicion + 1;
+			}
+
+			lastData = ArrayUtils.remove(lastData, lastData.length - 1);
+
+		}
+
+		return lastData;
+	}
+
+	private static boolean isDecimal(String s) {
+		try {
+			Double.parseDouble(s);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
 	}
 
 	private String[] getData(String cadena, String delimitador, int posicion) {
@@ -487,17 +538,17 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 	 * 
 	 * @param cantAgrup
 	 * @param data
-	 * @param isDataColumn 
+	 * @param isDataColumn
 	 */
 	private void getBancoModel(String strLine, int idBanco, int idAgencia, int idConfronta, String user,
 			String nombreArchivo, String idMaestro, String tipo, BigDecimal comisionConfronta, String formatFecha,
 			int idAgeConfro, String formatoFechaConfronta, int cantAgrup, String[] data, boolean isDataColumn) {
-		boolean registroValido = false;
+		// boolean registroValido = false;
 		String methodName = "getBancoModel()";
 		Date fechaCreacion = new Date();
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-		CustomDate customDate = new CustomDate();
+//		CustomDate customDate = new CustomDate();
 		String[] splitData = null;
 		String[] splitNomCl = null;
 		if (ArrayUtils.isNotEmpty(data) && isDataColumn) {
@@ -505,14 +556,16 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 			splitNomCl = ArrayUtils.removeAll(this.nomenclatura.split(","), 0, 1);
 
 		} else {
-			splitData = strLine.split("\\" + delimitador1);
+			if (this.nomenclatura.contains(Constantes.NOM_FECHA_TIPO5))
+				splitData = data;
+			else
+				splitData = strLine.split("\\" + delimitador1);
+
 			splitNomCl = this.nomenclatura.split(",");
 		}
 
 		// System.out.println("SPLITDATA: " + splitData.length);
 		logger.debug(methodName + " - Nomenclatura: " + nomenclatura);
-		logger.debug(methodName + " - Datos : " + splitData[0] + " - " + splitData[1] + " - " + splitData[2] + " - "
-				+ splitData[3] + " - " + splitData[4] + " - " + splitData[5]);
 		logger.debug(methodName + " - splitData = " + splitData[0] + ".");
 		logger.debug(methodName + " - splitData.length = " + splitData.length);
 		logger.debug(methodName + " - cantidadAgrupacion = " + cantAgrup);
@@ -726,6 +779,10 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 				// Agencia Virtual/Fisica
 				if ("R".equals(valueToSave)) {
 					bancoModel.setCbAgenciaVirfisCodigo(strData.trim());
+				}
+				if (Constantes.NOM_FECHA_TIPO5.equals(valueToSave)) {
+					bancoModel.setFecha(strData);
+					bancoModel.setDia(strData);
 				}
 
 			}

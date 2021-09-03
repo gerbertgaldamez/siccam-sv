@@ -432,7 +432,7 @@ public class CBProcessFileUploadUtils {
 
 	private static boolean getIsColumn(String[] nomSplit) {
 		for (int i = 0; i < nomSplit.length; i++) {
-			if (nomSplit[i].toString().contains("COLM"))
+			if (nomSplit[i].toString().contains(Constantes.COLUMN))
 				return true;
 		}
 		return false;

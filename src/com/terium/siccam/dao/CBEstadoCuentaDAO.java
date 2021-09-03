@@ -804,7 +804,7 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 			+ " RETENCION, COMISION ,MONTO ,  TRS,LIQUIDACION ,CODIGO_AFILIADO , FECHA , SERIE_DCL ,DCL,NOMBRE_AFILIADO,COMP_COM,COMP_IVA,MONTO_NETO,"
 			+ " MONTO_RET,COM_IVA,VALIDACION_TOTAL,DIF_AJUSTE,DCL_CONCAT,AJUSTE,COMISION_AJUSTE,IVA_COM_AJUESTE,SWCREATEBY, SWDATECREATED)"
 			+ " VALUES"
-			+ " (SQ_CB_ESTADO_CUENTA_N.NEXTVAL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,to_date(?,'YYYY/MM/DD'),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,sysdate)";
+			+ " (CB_ESTADO_CUENTA_N_SQ.NEXTVAL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,to_date(?,'YYYY/MM/DD'),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,sysdate)";
 
 	/**
 	 * Inserta los registros para credomatic encabezado metodo solo para Costa Rica
