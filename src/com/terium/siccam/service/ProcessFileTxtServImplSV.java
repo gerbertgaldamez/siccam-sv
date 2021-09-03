@@ -472,15 +472,17 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 
 	private String[] getData(String cadena, String delimitador, int posicion) {
 		logger.debug("getData() -  inicia obtener Data ");
-		String[] getFistData = cadena.split("\\" + delimitador, posicion);
-		String[] getLastData = null;
+		String[] fistData = cadena.split("\\" + delimitador + "{1,}", posicion);
+		String[] lastData = null;
 		String[] dataFinal = null;
 		String dataLast = null;
-		if (getFistData.length > 0) {
-			dataLast = getEndData(getFistData[posicion - 1]);
-			getLastData = dataLast.split(",");
-			dataFinal = oderData(
-					ArrayUtils.addAll(ArrayUtils.remove(getFistData, getFistData.length - 1), getLastData));
+		if (fistData.length > 0) {
+			dataLast = getEndData(fistData[posicion - 1]);
+			lastData = dataLast.split("-");
+			dataFinal = oderData(ArrayUtils.addAll(ArrayUtils.remove(fistData, fistData.length - 1), lastData));
+		}
+		for (int i = 0; i < dataFinal.length; i++) {
+			logger.debug("getData() - Datos ------>> " + dataFinal[i]);
 		}
 
 		return dataFinal;
@@ -491,6 +493,9 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 		fecha = fecha.concat(allData[0]).concat(" ").concat(allData[1]).trim();
 		String[] depurateData = ArrayUtils.removeAll(allData, 0, 1);
 		depurateData = ArrayUtils.addFirst(depurateData, fecha);
+		for (int i = 0; i < depurateData.length; i++) {
+			logger.debug("getData() - Datos ORDENADOS ------>> " + depurateData[i]);
+		}
 		return depurateData;
 	}
 
@@ -513,21 +518,19 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 		}
 		str1 = data.substring(0, beginIndex - 1).trim();
 		str3 = data.substring(beginIndex + endIndex).trim();
-		datosEnd = str1.concat(",").concat(str2).concat(",").concat(str3);
+		datosEnd = str1.concat("-").concat(str2).concat("-").concat(str3);
+		logger.debug("getEndData() - Nombre : " + str1 + " - codigo colector : " + str2 + " -  Colector : " + str3);
+		logger.debug("getEndData() - Datos enviados : " + datosEnd);
 		logger.debug("getEndData() - finaliza");
 		return datosEnd;
 	}
 
 	private int searchDigit(String s) {
-		// Function to check if is digit
-		// is found or not
 		for (int i = 0; i < s.length(); i++) {
-			if (Character.isDigit(s.charAt(i)) == true) {
-				// return position of digit
+			if (Character.isDigit(s.trim().charAt(i)) == true) {
 				return i + 1;
 			}
 		}
-		// return 0 if digit not present
 		return 0;
 	}
 
