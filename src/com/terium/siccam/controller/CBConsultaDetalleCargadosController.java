@@ -191,7 +191,7 @@ public class CBConsultaDetalleCargadosController extends ControladorBase {
 						bw.write( UtilidadesReportes.changeNull(c.getCodCliente()) + "|"
 								+ UtilidadesReportes.changeNull(c.getTelefono()) + "|"
 								+ UtilidadesReportes.changeNull(c.getTipo()) + "|"
-								+ format.format(c.getFecha()) + "|"
+								+ UtilidadesReportes.changeNull(c.getFecha()) + "|"
 								+ UtilidadesReportes.changeNull(c.getcBCatalogoBancoId()) + "|"
 								+ UtilidadesReportes.changeNull(c.getcBCatalogoAgenciaId()) + "|"
 								+ UtilidadesReportes.changeNull(String.valueOf(c.getMonto())) + "|"
