@@ -61,15 +61,14 @@
 					<h:tr>
 						<h:td colspan="2">
 							<botoncancelar id ="btnCerrarDetalleCargados" />
+							
 						</h:td>
-					</h:tr>
-					
-					<h:tr>
 						<h:td colspan="3">
 							<button id="btnGeneraReporte" label="Generar Reporte" image="/img/globales/16x16/xlsx.png"
 							disabled="self" />
 						</h:td>
 					</h:tr>
+					
 					
 				</h:table>
 				

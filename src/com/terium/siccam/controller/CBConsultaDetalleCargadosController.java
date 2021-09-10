@@ -3,6 +3,7 @@ package com.terium.siccam.controller;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -40,6 +41,7 @@ public class CBConsultaDetalleCargadosController extends ControladorBase {
 	List<CBDataBancoModel> listDetalleAsignado;
 	String idArchivosCargados;
 	String usuario;
+	DateFormat fechaFormato = new SimpleDateFormat("dd/MM/yyyy");
 	HttpSession misession = (HttpSession) Sessions.getCurrent().getNativeSession();
 
 	public void doAfterCompose(Component comp) throws Exception {
@@ -149,7 +151,7 @@ public class CBConsultaDetalleCargadosController extends ControladorBase {
 		try {
 			generarReporteDetalleAsignacion();
 		} catch (Exception e) {
-			log.error(e);
+			log.error("onClick$btnGeneraReporte() - Error : ", e);
 		}
 	}
 	
@@ -192,13 +194,14 @@ public class CBConsultaDetalleCargadosController extends ControladorBase {
 								+ format.format(c.getFecha()) + "|"
 								+ UtilidadesReportes.changeNull(c.getcBCatalogoBancoId()) + "|"
 								+ UtilidadesReportes.changeNull(c.getcBCatalogoAgenciaId()) + "|"
-								+ UtilidadesReportes.changeNull(String.valueOf(c.getMonto()) + "|"
-								+ UtilidadesReportes.changeNull(String.valueOf(c.getTransaccion())) + "|"
+								+ UtilidadesReportes.changeNull(String.valueOf(c.getMonto())) + "|"
+								+ UtilidadesReportes.changeNull(c.getTransaccion()) + "|"
 								+ UtilidadesReportes.changeNull(String.valueOf(c.getEstado())) + "|"
 								+ UtilidadesReportes.changeNull(String.valueOf(c.getMes())) + "|"
-								+ UtilidadesReportes.changeNull(String.valueOf(c.getTexto1())) + "|"
-								+ UtilidadesReportes.changeNull(String.valueOf(c.getTexto2())) + "|"
-								+ UtilidadesReportes.changeNumber(String.valueOf(c.getCreadoPor()))) + "\n");
+								//+ format.format(c.getMes())+ "|"
+								+ UtilidadesReportes.changeNull(c.getTexto1()) + "|"
+								+ UtilidadesReportes.changeNull(c.getTexto2()) + "|"
+								+ UtilidadesReportes.changeNull(c.getCreadoPor()) + "\n");
 					} 
 
 					Filedownload.save(file, null);
