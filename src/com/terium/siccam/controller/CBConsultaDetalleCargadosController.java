@@ -189,7 +189,6 @@ public class CBConsultaDetalleCargadosController extends ControladorBase {
 						bw.write( UtilidadesReportes.changeNull(c.getCodCliente()) + "|"
 								+ UtilidadesReportes.changeNull(c.getTelefono()) + "|"
 								+ UtilidadesReportes.changeNull(c.getTipo()) + "|"
-								+ UtilidadesReportes.changeNull(c.getNombre()) + "|"
 								+ format.format(c.getFecha()) + "|"
 								+ UtilidadesReportes.changeNull(c.getcBCatalogoBancoId()) + "|"
 								+ UtilidadesReportes.changeNull(c.getcBCatalogoAgenciaId()) + "|"
@@ -209,7 +208,9 @@ public class CBConsultaDetalleCargadosController extends ControladorBase {
 
 				} catch (Exception e) {
 					
-					log.error(e);
+					
+					log.error("generarReporteDetalleAsignacion() - Error : ", e);
+					
 				} finally {
 					if (bw != null)
 						bw.close();
