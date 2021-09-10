@@ -1,12 +1,20 @@
 package com.terium.siccam.controller;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
+
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
-
+import org.apache.log4j.Logger;
+import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -14,9 +22,13 @@ import org.zkoss.zul.Window;
 
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBArchivosInsertadosDAO;
+
 import com.terium.siccam.model.CBDataSinProcesarModel;
+import com.terium.siccam.utils.UtilidadesReportes;
 
 public class CBConsultaDetalleNoCargadosController extends ControladorBase {
+	
+	private static Logger log = Logger.getLogger(CBConsultaDetalleNoCargadosController.class.getName());
 
 	/**
 	 * 
@@ -25,7 +37,7 @@ public class CBConsultaDetalleNoCargadosController extends ControladorBase {
 
 	Window detalleNoCargados;
 	Listbox lbxDetalleNoCargados;
-
+	List<CBDataSinProcesarModel> listDetalleAsignado;
 	String idArchivosCargados;
 	String usuario;
 	HttpSession misession = (HttpSession) Sessions.getCurrent().getNativeSession();
@@ -43,11 +55,12 @@ public class CBConsultaDetalleNoCargadosController extends ControladorBase {
 	public void llenalistboxDetalleCargas(String paramIdArchivosCargados) {
 
 		CBArchivosInsertadosDAO cbaidao = new CBArchivosInsertadosDAO();
-		List<CBDataSinProcesarModel> list = cbaidao.obtieneListadoDatosNoProcesados(paramIdArchivosCargados);
+		//List<CBDataSinProcesarModel> list = cbaidao.obtieneListadoDatosNoProcesados(paramIdArchivosCargados);
+		listDetalleAsignado = cbaidao.obtieneListadoDatosNoProcesados(paramIdArchivosCargados);
 		System.out.println("Este es el Id para consultar detalle gravados" +" "+ paramIdArchivosCargados);
-		if (list != null && list.size() > 0) {
-			System.out.println("Entra a llenar listbox: "+list.size());
-			Iterator<CBDataSinProcesarModel> it = list.iterator();
+		if (listDetalleAsignado != null && listDetalleAsignado.size() > 0) {
+			System.out.println("Entra a llenar listbox: "+listDetalleAsignado.size());
+			Iterator<CBDataSinProcesarModel> it = listDetalleAsignado.iterator();
 			CBDataSinProcesarModel cbainsertados = null;
 			Listitem item = null;
 			Listcell cell = null;
@@ -92,6 +105,73 @@ public class CBConsultaDetalleNoCargadosController extends ControladorBase {
 	public void onClick$btnDetalleNoCargdos() {
 
 		detalleNoCargados.detach();
+	}
+public void onClick$btnGeneraReporte() throws Exception {
+		
+		log.debug("onClick$btnGeneraReporte() - " + "Comienza a generar el reporte de detalle no grabado...");
+		if (listDetalleAsignado != null)
+			
+		try {
+			generarReporteDetalleNoCargado();
+		} catch (Exception e) {
+			log.error(e);
+		}
+	}
+public void generarReporteDetalleNoCargado() throws Exception {
+	
+	
+	if (listDetalleAsignado != null && listDetalleAsignado.size() > 0) {
+		
+		Date fecha = new Date();
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HH_mm_ss");
+		
+		Iterator<CBDataSinProcesarModel> iterator = listDetalleAsignado.iterator();
+		
+		// Encabezado del archivo
+String encabezado = "NOMBRE ARCHIVO|DATA ARCHIVO|CAUSA|ESTADO|CREADO POR\n";
+
+// Creando archivo
+			File file = new File("reporte_detalle_no_grabados" + sdf.format(fecha) + ".csv");
+			
+			BufferedWriter bw = null;
+			
+			
+			try {
+				
+				bw = new BufferedWriter(new FileWriter(file));
+				
+				bw.write(encabezado);
+		
+				CBDataSinProcesarModel c = null;
+				
+
+				while (iterator.hasNext()) {
+					c = iterator.next();
+					
+					bw.write( UtilidadesReportes.changeNull(c.getNombreArchivo()) + "|"
+							+ UtilidadesReportes.changeNull(c.getDataArchivo()) + "|"
+							+ UtilidadesReportes.changeNull(c.getCausa()) + "|"
+							+ UtilidadesReportes.changeNumber(String.valueOf(c.getEstado()) + "|"
+							+ UtilidadesReportes.changeNumber(String.valueOf(c.getCreadoPor()))) + "\n");
+				} 
+
+				Filedownload.save(file, null);
+
+				Messagebox.show("Reporte generado de manera exitosa, el archivo ha sido descargado", "ATENCION",
+						Messagebox.OK, Messagebox.INFORMATION);
+
+			} catch (Exception e) {
+				
+				log.error(e);
+			} finally {
+				if (bw != null)
+					bw.close();
+			}
+
+		} else
+			Messagebox.show("No hay resultados en la búsqueda para generar reportes", "ATENCIÓN", Messagebox.OK,
+					Messagebox.EXCLAMATION);
 	}
 
 }
