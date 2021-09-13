@@ -1235,9 +1235,10 @@ public class ConciliacionDetalleController extends ControladorBase {
 				log.debug(methodName + " status = " + response[0].getStatus());
 				if (Constantes.STATUS.equalsIgnoreCase(response[0].getStatus())) {
 					historial.setEstado(1);// Estado 1 = pendiente para procesar por GAC
-					historial.setNombreCliente(response[0].getPrimerNombre().trim() + " " + response[0].getSegundoNombre().trim());
+					historial.setNombreCliente(
+							response[0].getPrimerNombre().trim() + " " + response[0].getSegundoNombre().trim());
 					historial.setRespuestascl("Pago Ejecutado Correctamente");
-					log.debug(methodName+" -  Cliente : "+historial.getNombreCliente());
+					log.debug(methodName + " -  Cliente : " + historial.getNombreCliente());
 					log.debug(methodName + " - Pago Ejecutado Correctamente");
 				} else {
 					historial.setEstado(4);// Estado 2 = error por parte de WS Pagos
@@ -1295,10 +1296,11 @@ public class ConciliacionDetalleController extends ControladorBase {
 						+ reversaPagoFault.getErrorMessage());
 			}
 
-			// Se ejecuta SP
-			boolean result = CBHistorialAccionDAO.ejecutaApldesRecargaSP(historial.getcBHistorialAccionId());
-			log.debug(methodName + " - [CB_HISTORIAL_ACCION] Ejecuta SP para id => "
-					+ historial.getcBHistorialAccionId() + " Resultado => " + result);
+			// Se ejecuta SP para SV no debe llamar SP.
+			// boolean result =
+			// CBHistorialAccionDAO.ejecutaApldesRecargaSP(historial.getcBHistorialAccionId());
+//			log.debug(methodName + " - [CB_HISTORIAL_ACCION] Ejecuta SP para id => "
+//					+ historial.getcBHistorialAccionId() + " Resultado => " + result);
 			// ejecuta request crearCasoCerrado
 			// requestWsCrearCasoCerrado(parametros, detalle);
 		} else if (obj.getSistema() == 1) {

@@ -1352,28 +1352,28 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 								float floatValue = Float.parseFloat(registro.toString());
 								objCredo.setMontoNeto(roundDecimals(floatValue));
 								break;
-							case 20:
+							case 19:
 								objCredo.setMontoRet(Double.parseDouble(registro.trim()));
 								break;
-							case 21:
+							case 20:
 								objCredo.setComIva(Double.parseDouble(registro.trim()));
 								break;
-							case 22:
+							case 21:
 								objCredo.setValidacionTotal(Double.parseDouble(registro.trim()));
 								break;
-							case 23:
+							case 22:
 								objCredo.setDifAjuste(Double.parseDouble(registro.trim()));
 								break;
-							case 24:
+							case 23:
 								objCredo.setDclConcat(registro);
 								break;
-							case 25:
+							case 24:
 								objCredo.setAjuste(Double.parseDouble(registro.trim()));
 								break;
-							case 26:
+							case 25:
 								objCredo.setComisionAjuste(Double.parseDouble(registro.trim()));
 								break;
-							case 27:
+							case 26:
 								objCredo.setIvaComAjuste(Double.parseDouble(registro.trim()));
 								break;
 
