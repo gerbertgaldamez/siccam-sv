@@ -1286,7 +1286,8 @@ public class ConciliacionDetalleController extends ControladorBase {
 					log.debug(methodName + " - Reversa Ejecutada Correctamente");
 				} else {
 					historial.setEstado(4);
-					historial.setRespuestascl(responseReversa[0].getMsg_response());
+					historial.setRespuestascl("reversa ha tenido problemas");
+					log.debug(methodName + " error " + reversaPagoFault.getErrorMessage());
 					log.debug(methodName + " - reversa ha tenido problemas : " + responseReversa[0].getMsg_response());
 				}
 			} else {
@@ -1339,11 +1340,15 @@ public class ConciliacionDetalleController extends ControladorBase {
 		ReversaPagoRequest requestReversaPago = setParamsReversaPago(parametros, detalle);
 		log.debug(methodName + " - Se envia solicitud al WS ");
 		response = ws.reversaPago(requestReversaPago);
+		log.debug(methodName + " - RequestXML : "
+				+ ws._getCall().getMessageContext().getRequestMessage().getSOAPPartAsString());
 		log.debug(methodName + " - Se ejecuta Pago, obteniendo Response ");
 		log.debug(MessageFormat.format(methodName
 				+ "\nParams Response : \nCod_Transaccion = {0}\nNum_referencia = {1}\nStatus = {2}\nMsg_response = {3}",
 				response[0].getCod_transaccion(), response[0].getNum_referencia(), response[0].getStatus(),
 				response[0].getMsg_response()));
+		log.debug(methodName + " - ResponseXML : "
+				+ ws._getCall().getMessageContext().getResponseMessage().getSOAPPartAsString());
 		return response;
 	}
 
@@ -1351,6 +1356,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 			CBConciliacionDetallada detalle) {
 		String methodName = "setParamsReversaPago()";
 		Date objFecha = new Date();
+		DateFormat fechaFormato = new SimpleDateFormat("ddMMyyyy");
 		String fecha = fechaFormato.format(objFecha);
 		log.debug(methodName + " -  inicia ");
 		int telefono = detalle.getTelefono() != null ? Integer.parseInt(detalle.getTelefono()) : 0;
@@ -1405,13 +1411,17 @@ public class ConciliacionDetalleController extends ControladorBase {
 		log.debug(methodName + " - Se envia solicitud al WS ");
 		response = ws.ejecutarPago(request);
 
+		log.debug(methodName + " - RequestXML : "
+				+ ws._getCall().getMessageContext().getRequestMessage().getSOAPPartAsString());
+
 		log.debug(methodName + " - Se ejecuta Pago, obteniendo Response ");
 		log.debug(MessageFormat.format(methodName
 				+ "\nParams Response : \nStatus = {0}\nResponse_Mesg = {1}\nBalance = {2}\nPrimer Nombre = {3}\nSegundo Nombre= {4}\nTransaccion = {5}\nReferencia = {6}",
 				response[0].getStatus(), response[0].getMsg_response(), response[0].getBalance(),
 				response[0].getPrimerNombre(), response[0].getSegundoNombre(), response[0].getNum_transaccion(),
 				response[0].getNum_referencia()));
-
+		log.debug(methodName + " - ResponseXML : "
+				+ ws._getCall().getMessageContext().getResponseMessage().getSOAPPartAsString());
 		return response;
 	}
 
@@ -1419,6 +1429,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 			CBConciliacionDetallada detalle) {
 		String methodName = "setParamEjecutaPagoRequest()";
 		Date objFecha = new Date();
+		DateFormat fechaFormato = new SimpleDateFormat("ddMMyyyy");
 		String fecha = fechaFormato.format(objFecha);
 		log.debug(methodName + " -  inicia ");
 //		String hora = horaFormato.format(objFecha);
