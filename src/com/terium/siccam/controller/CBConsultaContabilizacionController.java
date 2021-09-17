@@ -25,9 +25,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
-
+import org.apache.log4j.Logger;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.net.ftp.FTP;
@@ -74,6 +74,8 @@ import com.terium.siccam.utils.Tools;
  * 
  */
 public class CBConsultaContabilizacionController extends ControladorBase {
+	private static Logger log = Logger.getLogger(CBConsultaContabilizacionController.class.getName());
+
 
 	/**
 	 * 
@@ -149,8 +151,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 	Combobox cmbBanco;
 	Combobox cmbAgenciaIngreso;
 	
-	File archivoGZ; //CarlosGodinez -> 03/11/2017
-	File archivoTxt; //CarlosGodinez -> 28/12/2017
+	File archivoGZ ; //CarlosGodinez -> 03/11/2017
+	File archivoTxt ; //CarlosGodinez -> 28/12/2017
 	
 	File archivoTxt2 = null;
 	File archivoGZ2 = null;
@@ -181,7 +183,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 			System.out.println("RUTA ARCHIVO = " + this.rutaArchivoSAP);
 		} catch (Exception e) {
 			System.out.println("Ha ocurrido un error: " + e.getMessage());
-			Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
+	//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
 		}
 		
 		
@@ -671,7 +674,7 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 		} catch (Exception e) {
 			Messagebox.show("Se ha producido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 			System.out.println("Ha ocurrido un error al generar archivo SAP: " + e.getMessage());
-			Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
 		}
 	}
 	
@@ -815,6 +818,7 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 					archivoTxt = new File(nombreArchivo + sdf.format(fecha) + ".txt");
 					String encabezado = encabezado1 + "  " + sdf2.format(fecha) + encabezado2 + sdf.format(fecha)
 							+ encabezado3;
+					log.debug("generaArchivoSAP" + " - Archivo el archivo creado: " + archivoTxt);
 					
 					System.out.println("archivo1" );
 					
@@ -822,7 +826,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 
 					if (!archivoTxt.exists()) {
 						if(archivoTxt.createNewFile())
-							Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"Archivo temporal creado");
+							log.debug("generaArchivoSAP" + " - Archivo temporal creado");
+							//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"Archivo temporal creado");
 					}
 
 					//bw = new BufferedWriter(new FileWriter(archivoTxt));
@@ -844,7 +849,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 					String promedioStr = StringUtils.leftPad(String.valueOf(promedioRounded), 20, " ");
 
 					String detalleSAP = "T" + totalItemsStr + totalMontoStr + promedioStr;
-					Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO," **** Longitud de linea de detalle = ", detalleSAP.length());
+					log.debug("generaArchivoSAP" + " - **** Longitud de linea de detalle = " +detalleSAP.length());
+					//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO," **** Longitud de linea de detalle = ", detalleSAP.length());
 					bw.write(detalleSAP);
 					
 					System.out.println("ARCHIVO TIPO1 .txt GENERADO CON EXITO");
@@ -885,7 +891,9 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 
 					if (!archivoTxt2.exists()) {
 						if(archivoTxt2.createNewFile())
-							Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"Archivo temporal creado");
+
+							log.debug("generaArchivoSAP" + " - Archivo temporal creado " );
+							//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"Archivo temporal creado");
 					}
 
 					//bw = new BufferedWriter(new FileWriter(archivoTxt2));
@@ -908,7 +916,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 					String promedioStr = StringUtils.leftPad(String.valueOf(promedioRounded), 20, " ");
 
 					String detalleSAP = "T" + totalItemsStr + totalMontoStr + promedioStr;
-					Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO," **** Longitud de linea de detalle = ", detalleSAP.length());
+					log.debug("generaArchivoSAP" + " - **** Longitud de linea de detalle = " +detalleSAP.length());
+					//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO," **** Longitud de linea de detalle = ", detalleSAP.length());
 					//bw.write(detalleSAP);
 					
 					System.out.println("ARCHIVO TIPO 2 .txt GENERADO CON EXITO");
@@ -943,7 +952,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 				 * 
 				 * Separacion de funciones para descargar archivo SAP o enviar por ruta FTP
 				 * */
-				Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"\n** Archivo SAP generado con exito\n");
+				log.debug("generaArchivoSAP" + " - \n** Archivo SAP generado con exito\n ");
+				//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"\n** Archivo SAP generado con exito\n");
 				
 				if(tipo == 1) {
 					Messagebox.show("Archivo SAP generado con exito\n\nAhora puede:\n- Descargar archivo\n- Subir SAP por FTP", 
@@ -955,22 +965,25 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 						Messagebox.EXCLAMATION);
 			}
 
-		} catch (Exception e) {		
-			Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+		} catch (Exception e) {	
+			log.error(e);
+			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			
 			if(bw != null) {
 				try {
 					bw.close();
 				}catch (Exception e) {
-					Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+					log.error(e);
+					//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
 				}
 			}
 			if(fis != null) {
 				try {
 					fis.close();
 				}catch (Exception e) {
-					Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+					log.error(e);
+					//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
 				}
 			}
 			if(gzos != null){
@@ -978,12 +991,14 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 					gzos.finish();
 					gzos.close();
 				}catch (Exception e) {
-					Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+					log.error(e);
+					//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
 				}
 			}			
-		} 
-		Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,
-				"\n==== FIN GENERACION DE ARCHIVO SAP ====\n");
+		}
+		log.debug("generaArchivoSAP" + " - \n==== FIN GENERACION DE ARCHIVO SAP ====\n ");
+		//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,
+				//"\n==== FIN GENERACION DE ARCHIVO SAP ====\n");
 	}
 	
 	/**
@@ -993,25 +1008,32 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 	 **/
 	public void onClick$btnDescargarSAP() {
 		try {
+			log.debug("onClick$btnDescargarSAP()" + " - el archivo es:" + archivoTxt );
 			Filedownload.save(archivoTxt, null); //CarlosGodinez -> 28/12/2017
 			Messagebox.show("Archivo SAP descargado con exito", "ATENCION", Messagebox.OK,
 					Messagebox.INFORMATION);
+			log.debug("onClick$btnDescargarSAP()" + " - el archivo es:" + archivoTxt );
+			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,
+			//		"el archivo es:" + archivoTxt);
 		} catch (Exception e) {			
 			Messagebox.show("Ha ocurrido un error al intentar subir archivo SAP por FTP", "ATENCION", 
 					Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("Error onClick$btnDescargarSAP()", e);
+			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	
 	public void onClick$btnDescargarSAP2() {
 		try {
+			log.debug("onClick$btnDescargarSAP2()" + " - el archivo es:" + archivoTxt2 );
 			Filedownload.save(archivoTxt2, null); //CarlosGodinez -> 28/12/2017
 			Messagebox.show("Archivo SAP descargado con exito", "ATENCION", Messagebox.OK,
 					Messagebox.INFORMATION);
 		} catch (Exception e) {			
 			Messagebox.show("Ha ocurrido un error al intentar subir archivo SAP por FTP", "ATENCION", 
 					Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
+			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	
@@ -1030,19 +1052,24 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 			ftpClient.login(user, pass);
 
 			int reply = ftpClient.getReplyCode();
+			log.debug("onClick$btnFTPSAP()" + " - Respuesta recibida de conexión FTP: "
+					+ reply);
 
-			Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"Respuesta recibida de conexión FTP:", reply);
+			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"Respuesta recibida de conexión FTP:", reply);
 
 			if (FTPReply.isPositiveCompletion(reply)) {
-				Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"Conectado Satisfactoriamente");
+				log.debug("onClick$btnFTPSAP()" + " - Conectado Satisfactoriamente ");
+				//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"Conectado Satisfactoriamente");
 			} else {
-				Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"Imposible conectarse al servidor");
+				log.debug("onClick$btnFTPSAP()" + " - Imposible conectarse al servidor ");
+			//	Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"Imposible conectarse al servidor");
 			}
 
 			// Verificar si se cambia de directorio de trabajo
 
 			boolean change = ftpClient.changeWorkingDirectory(rutaArchivoSAP);// Cambiar directorio de trabajo
-			Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"Se cambió satisfactoriamente el directorio " + change);
+			log.debug("onClick$btnFTPSAP()" + " - Se cambió satisfactoriamente el directorio ");
+			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"Se cambió satisfactoriamente el directorio " + change);
 
 			// Activar que se envie cualquier tipo de archivo
 
@@ -1062,13 +1089,15 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 			System.out.println("Error: " + e.getMessage());
 			Messagebox.show("Ha ocurrido un error al intentar subir archivo SAP por FTP", "ATENCION", 
 					Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("Error onClick$btnFTPSAP()", e);
+			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(input != null) {
 				try {
 					input.close();
 				} catch (IOException e) {
-					Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE,null,e);
+					log.error("Error onClick$btnFTPSAP()", e);
+					//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE,null,e);
 				} // Cerrar envio de arcivos al FTP
 			}
 		}
@@ -1168,8 +1197,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 		try {
 			generarReporte(list);
 		} catch (IOException e) {
-			
-			Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("Error onClick$btnExcel()", e);
+			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -1218,7 +1247,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 			Clients.clearBusy();
 
 		} catch (IOException e) {
-			Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("Error generarReporte()", e);
+		//	Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(bw != null)
 				bw.close();
@@ -1327,9 +1357,9 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 
 			System.out.println("Iniciando proceso");			
 			dias = Tools.diferenciasDeFechas(fecha1, fecha2);
-			
-			Logger.getLogger(CBConsultaContabilizacionController.class.getName())
-			.log(Level.INFO,"Cantidad de dias a consultar: " + (dias + 1));
+			log.debug("GenerarInfo() " + "Cantidad de dias a consultar: " + (dias + 1));
+			//Logger.getLogger(CBConsultaContabilizacionController.class.getName())
+			//.log(Level.INFO,"Cantidad de dias a consultar: " + (dias + 1));
 		
 			Tools.setCookie("diasCarga", String.valueOf((dias + 1)));
 
@@ -1365,7 +1395,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 
 		}catch (Exception e) {
 			// TODO: handle exception
-			Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("Error click GenerarInfo()", e);
+			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
 		}
 		
 		/* ************************ FINALIZA HILOS ******************************* */
@@ -1423,7 +1454,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 			
 			
 		}catch (Exception e) {
-			Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("Error click GenerarInfo()", e);
+			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
 		}
 
 	}
@@ -1521,7 +1553,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 		fecha = objDao.validafecha();
 		System.out.println("fecha obtenida al entrar " + fecha);
 		}catch (Exception e) {
-			Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("Error  obtienefechaactual()", e);
+			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
 		}
 		
 	}
