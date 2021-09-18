@@ -76,7 +76,6 @@ import com.terium.siccam.utils.Tools;
 public class CBConsultaContabilizacionController extends ControladorBase {
 	private static Logger log = Logger.getLogger(CBConsultaContabilizacionController.class.getName());
 
-
 	/**
 	 * 
 	 */
@@ -103,9 +102,9 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 	Button btnModificar;
 	Button btnSAP;
 	Button btnGenerarInfo;
-	Button btnDescargarSAP; //CarlosGodinez -> 03/11/2017
-	Button btnFTPSAP; //CarlosGodinez -> 03/11/2017
-	
+	Button btnDescargarSAP; // CarlosGodinez -> 03/11/2017
+	Button btnFTPSAP; // CarlosGodinez -> 03/11/2017
+
 	Button btnDescargarSAP2;
 
 	HttpSession misession = (HttpSession) Sessions.getCurrent().getNativeSession();
@@ -124,7 +123,7 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 	String fechaini;
 	String fechafin;
 
-	//String fechainfo;
+	// String fechainfo;
 
 	Media media;
 	boolean isReloadFile = false;
@@ -150,13 +149,13 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 	Combobox cmbAgencia;
 	Combobox cmbBanco;
 	Combobox cmbAgenciaIngreso;
-	
-	File archivoGZ ; //CarlosGodinez -> 03/11/2017
-	File archivoTxt ; //CarlosGodinez -> 28/12/2017
-	
+
+	File archivoGZ; // CarlosGodinez -> 03/11/2017
+	File archivoTxt; // CarlosGodinez -> 28/12/2017
+
 	File archivoTxt2 = null;
 	File archivoGZ2 = null;
-	
+
 	String token = "";
 
 	public void doAfterCompose(Component param) throws Exception {
@@ -166,15 +165,15 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 		llenaComboBanco();
 		llenacmbAgenciaIngreso();
 		this.btnSAP.setDisabled(true);
-		btnDescargarSAP.setDisabled(true); //CarlosGodinez -> 03/11/2017
-		btnFTPSAP.setDisabled(true); //CarlosGodinez -> 03/11/2017
-		
+		btnDescargarSAP.setDisabled(true); // CarlosGodinez -> 03/11/2017
+		btnFTPSAP.setDisabled(true); // CarlosGodinez -> 03/11/2017
+
 		btnDescargarSAP2.setDisabled(true);
-		
+
 		try {
 			CBConsultaContabilizacionDAO paramConfSAP = new CBConsultaContabilizacionDAO();
 			CBParametrosSAPModel objConfSAP = paramConfSAP.obtenerValoresConfSAP();
-			
+
 			llenarVariableSAP(objConfSAP);
 			System.out.println("Valores obtenidos");
 			System.out.println("NOMBRE ARCHIVO = " + this.nombreArchivo);
@@ -184,12 +183,12 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 		} catch (Exception e) {
 			System.out.println("Ha ocurrido un error: " + e.getMessage());
 			log.error(e);
-	//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+			// Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE,
+			// null, e);
 		}
-		
-		
+
 	}
-	
+
 	public void llenarVariableSAP(CBParametrosSAPModel objConfSAP) {
 		this.nombreArchivo = objConfSAP.getNombreArchivo();
 		this.nombreArchivo2 = objConfSAP.getNombreArchivo2();
@@ -220,8 +219,7 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 		cmbBanco.setSelectedIndex(-1);
 		cmbAgenciaIngreso.setSelectedIndex(-1);
 		limpiaCombobox(cmbAgenciaIngreso);
-		
-		
+
 		// dtbDesde.setText("");
 		// dtbHasta.setText("");
 
@@ -242,7 +240,7 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 		CBConsultaContabilizacionDAO cbaDao = new CBConsultaContabilizacionDAO();
 		CBConsultaContabilizacionModel objModel = new CBConsultaContabilizacionModel();
 		DateFormat fechaFormato = new SimpleDateFormat("dd/MM/yyyy");
-		
+
 		if (cmbAgencia.getSelectedItem() != null) {
 			idAgencia = Integer.parseInt(cmbAgencia.getSelectedItem().getValue().toString());
 		}
@@ -251,32 +249,25 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 		}
 
 		System.out.println("Consulta estados contabilizacion");
-		if (tbxCentroCosto.getText().trim() != null 
-				&&  !"".equals(tbxCentroCosto.getText().trim())) {
+		if (tbxCentroCosto.getText().trim() != null && !"".equals(tbxCentroCosto.getText().trim())) {
 			objModel.setCentroCosto(tbxCentroCosto.getText().trim());
 		}
-		if (tbxClave.getText() != null 
-				&& !"".equals(tbxClave.getText().trim())) {
+		if (tbxClave.getText() != null && !"".equals(tbxClave.getText().trim())) {
 			objModel.setClaveContabilizacion(tbxClave.getText().trim());
 		}
-		if (tbxCuenta.getText().trim() != null 
-				&& !"".equals(tbxCuenta.getText().trim())) {
+		if (tbxCuenta.getText().trim() != null && !"".equals(tbxCuenta.getText().trim())) {
 			objModel.setCuenta(tbxCuenta.getText().trim());
 		}
-		if (tbxReferencia.getText().trim() != null 
-				&& !"".equals(tbxReferencia.getText().trim())) {
+		if (tbxReferencia.getText().trim() != null && !"".equals(tbxReferencia.getText().trim())) {
 			objModel.setReferencia(tbxReferencia.getText().trim());
 		}
-		if (tbxTexto.getText().trim() != null 
-				&& !"".equals(tbxTexto.getText().trim())) {
+		if (tbxTexto.getText().trim() != null && !"".equals(tbxTexto.getText().trim())) {
 			objModel.setTexto(tbxTexto.getText().trim());
 		}
-		if (tbxTexto2.getText().trim() != null 
-				&& !"".equals(tbxTexto2.getText().trim())) {
+		if (tbxTexto2.getText().trim() != null && !"".equals(tbxTexto2.getText().trim())) {
 			objModel.setTexto2(tbxTexto2.getText().trim());
 		}
-		if (tbxObservaciones.getText().trim() != null 
-				&& !"".equals(tbxObservaciones.getText().trim())) {
+		if (tbxObservaciones.getText().trim() != null && !"".equals(tbxObservaciones.getText().trim())) {
 			objModel.setObservaciones(tbxObservaciones.getText().trim());
 		}
 
@@ -325,9 +316,9 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 			this.btnExcel.setDisabled(true);
 			this.btnSAP.setDisabled(true);
 		}
-		btnDescargarSAP.setDisabled(true); //CarlosGodinez -> 03/11/2017
-		btnFTPSAP.setDisabled(true); //CarlosGodinez -> 03/11/2017
-		
+		btnDescargarSAP.setDisabled(true); // CarlosGodinez -> 03/11/2017
+		btnFTPSAP.setDisabled(true); // CarlosGodinez -> 03/11/2017
+
 		btnDescargarSAP2.setDisabled(true);
 	}
 
@@ -431,7 +422,7 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 				// item para btn modificar
 				item.setAttribute("objmodificar", objModel);
 				item.setAttribute("fechaini", fechaini);
-				
+
 				item.setAttribute("fechafin", fechafin);
 				// item.setAttribute("idseleccionado",
 				// objModel.getCbcontabilizacionid());
@@ -456,7 +447,7 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 			Messagebox.show("No se encontraron resultados!", "ATENCION", Messagebox.OK, Messagebox.EXCLAMATION);
 		}
 	}
-	
+
 	public void llenaListbox(List<CBConsultaContabilizacionModel> list, Listbox lbxConsulta) {
 		limpiarListbox(lbxConsulta);
 
@@ -556,7 +547,7 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 				// item para btn modificar
 				item.setAttribute("objmodificar", objModel);
 				item.setAttribute("fechaini", fechaini);
-				
+
 				item.setAttribute("fechafin", fechafin);
 				// item.setAttribute("idseleccionado",
 				// objModel.getCbcontabilizacionid());
@@ -584,16 +575,16 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 
 	public void onClick$btnSAP() {
 		try {
-			if (nombreArchivo == null ||  "".equals(nombreArchivo)) {
+			if (nombreArchivo == null || "".equals(nombreArchivo)) {
 				Messagebox.show("No se ha especificado el nombre del archivo SAP a generar.\n "
 						+ "Contacte a su administrador.", "ATENCION", Messagebox.OK, Messagebox.EXCLAMATION);
-			} else if (nombreArchivo2 == null ||  "".equals(nombreArchivo2)) {
+			} else if (nombreArchivo2 == null || "".equals(nombreArchivo2)) {
 				Messagebox.show("No se ha especificado el nombre del archivo SAP 2 a generar.\n "
 						+ "Contacte a su administrador.", "ATENCION", Messagebox.OK, Messagebox.EXCLAMATION);
 			} else if (valorIP == null || "".equals(valorIP)) {
 				Messagebox.show("No se ha especificado la IP del servidor.\n" + "Contacte a su administrador.",
 						"ATENCION", Messagebox.OK, Messagebox.EXCLAMATION);
-			} else if (user == null || "" .equals(user)) {
+			} else if (user == null || "".equals(user)) {
 				Messagebox.show("No se ha especificado el usuario FTP del servidor.\n" + "Contacte a su administrador.",
 						"ATENCION", Messagebox.OK, Messagebox.EXCLAMATION);
 			} else if (pass == null || "".equals(pass)) {
@@ -620,7 +611,6 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 					objModel.setFechaini(fechaFormato.format(dtbDesde.getValue()));
 					objModel.setFechafin(fechaFormato.format(dtbHasta.getValue()));
 
-					
 					int idAgencia = 0;
 					if (cmbAgencia.getSelectedItem() != null) {
 						idAgencia = Integer.parseInt(cmbAgencia.getSelectedItem().getValue().toString());
@@ -629,7 +619,7 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 					if (cmbAgenciaIngreso.getSelectedItem() != null) {
 						idAgenciaIngreso = Integer.parseInt(cmbAgenciaIngreso.getSelectedItem().getValue().toString());
 					}
-					
+
 					System.out.println("Consulta estados contabilizacion");
 					if (tbxCentroCosto.getText().trim() != null && !tbxCentroCosto.getText().trim().equals("")) {
 						objModel.setCentroCosto(tbxCentroCosto.getText().trim());
@@ -657,15 +647,17 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 
 					/// fin filtros nuevos
 					CBConsultaContabilizacionDAO objdao = new CBConsultaContabilizacionDAO();
-				//	List<CBParametrosSAPModel> listaSapModel = objdao.obtieneDatosSAP(objModel, idAgencia, idAgenciaIngreso,1);
-					List<CBParametrosSAPModel> listaSapModel = objdao.obtieneDatosSAP(objModel, idAgencia, idAgenciaIngreso,2);
-					
-					/*Generar archivo formato 1*/
-					//obtenerListadoSAP(listaSapModel, 1);
-					
-					/*Generar archivo formato 2*/
+					// List<CBParametrosSAPModel> listaSapModel = objdao.obtieneDatosSAP(objModel,
+					// idAgencia, idAgenciaIngreso,1);
+					List<CBParametrosSAPModel> listaSapModel = objdao.obtieneDatosSAP(objModel, idAgencia,
+							idAgenciaIngreso, 2);
+
+					/* Generar archivo formato 1 */
+					obtenerListadoSAP(listaSapModel, 1);
+
+					/* Generar archivo formato 2 */
 					obtenerListadoSAP(listaSapModel, 2);
-					
+
 				} else {
 					Messagebox.show("Primero debe consultar informacion para generar el archivo", "ATENCION",
 							Messagebox.OK, Messagebox.EXCLAMATION);
@@ -677,17 +669,19 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 			log.error(e);
 		}
 	}
-	
+
 	/*
 	 * @author Nicolas Bermudez
 	 * 
-	 * Obtener listado SAP para generar archivo 
+	 * Obtener listado SAP para generar archivo
 	 * 
 	 * @param
+	 * 
 	 * @listaSapModel: Listado obtenido de la consulta
-	 * @tipo:			Tipo de archivo a generar
-	 * */
-	
+	 * 
+	 * @tipo: Tipo de archivo a generar
+	 */
+
 	public void obtenerListadoSAP(List<CBParametrosSAPModel> listaSapModel, int tipo) {
 		List<String> listaSapArchivo = new ArrayList<String>();
 		if (listaSapModel != null && listaSapModel.size() > 0) {
@@ -698,87 +692,88 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 				if (item.isSelected()) {
 					contCheck++;
 					int idSeleccionado = objListboxModel.getCbcontabilizacionid();
-					for(CBParametrosSAPModel objSAP : listaSapModel) {
-						if(idSeleccionado == objSAP.getIdSAP()){
+					for (CBParametrosSAPModel objSAP : listaSapModel) {
+						if (idSeleccionado == objSAP.getIdSAP()) {
 							listaSapArchivo.add(objSAP.getLineaSAP());
 						}
 					}
 					// Calculo de monto para total y promedio items chequeados
-					String montoStr = (objListboxModel.getHaber() == null
-							|| objListboxModel.getHaber().equals("")) ? "0" : objListboxModel.getHaber();
+					String montoStr = (objListboxModel.getHaber() == null || objListboxModel.getHaber().equals(""))
+							? "0"
+							: objListboxModel.getHaber();
 					totalMontoSAP = totalMontoSAP.add(new BigDecimal(montoStr));
 				}
 			}
 			if (contCheck == 0) {
 				// Calculo de monto para total y promedio todos los items
 				for (Listitem item : lbxConsulta.getItems()) {
-					CBConsultaContabilizacionModel objListboxModel = (CBConsultaContabilizacionModel)item.getValue();  
-					String montoStr = (objListboxModel.getHaber() == null
-							|| objListboxModel.getHaber().equals("")) ? "0" : objListboxModel.getHaber();
+					CBConsultaContabilizacionModel objListboxModel = (CBConsultaContabilizacionModel) item.getValue();
+					String montoStr = (objListboxModel.getHaber() == null || objListboxModel.getHaber().equals(""))
+							? "0"
+							: objListboxModel.getHaber();
 					totalMontoSAP = totalMontoSAP.add(new BigDecimal(montoStr));
 				}
-				
+
 				int v_secuencia = 0;
 				int v_asiento = 1;
 				int v_estadocuentaid = 0;
-				
-				for(CBParametrosSAPModel objSAP : listaSapModel) { 
-					/*Formato de archivo 1*/
-					if(tipo == 1) {
-						if(v_estadocuentaid != objSAP.getIdEstadocuenta()) {
+
+				for (CBParametrosSAPModel objSAP : listaSapModel) {
+					/* Formato de archivo 1 */
+					if (tipo == 1) {
+						if (v_estadocuentaid != objSAP.getIdEstadocuenta()) {
 							v_estadocuentaid = objSAP.getIdEstadocuenta();
 							v_asiento = 1;
 							v_secuencia++;
-						}else {
+						} else {
 							v_asiento++;
 						}
-						
+
 						String secuencia = String.format("%06d", v_secuencia);
 						String asiento = String.format("%03d", v_asiento);
-						
+
 						String lineaSAP = objSAP.getLineaSAP();
-						
+
 						String inicioSAP = lineaSAP.substring(0, 4);
 						String finalSAP = lineaSAP.substring(13);
-						
+
 						String nuevaLineaSAP = inicioSAP + secuencia + asiento + finalSAP;
-						
+
 						listaSapArchivo.add(nuevaLineaSAP);
 					}
-					/*Formato de archivo 2*/
-					if(tipo == 2) {
+					/* Formato de archivo 2 */
+					if (tipo == 2) {
 						String asiento = "";
 						String secuencia = "";
-						
-						if(v_estadocuentaid != objSAP.getIdEstadocuenta()) {
+
+						if (v_estadocuentaid != objSAP.getIdEstadocuenta()) {
 							v_estadocuentaid = objSAP.getIdEstadocuenta();
 							v_asiento = 1;
 							v_secuencia++;
-							
-							//secuencia = String.format("%06d", v_secuencia);
+
+							// secuencia = String.format("%06d", v_secuencia);
 							secuencia = Integer.toString(v_secuencia);
-							
+
 							String lineaEncabezado = objSAP.getLineaEncabezadoPartida();
 							lineaEncabezado = lineaEncabezado.replace("secuencia", secuencia);
-							
+
 							String lineaEncabezadoPartida = "1	" + lineaEncabezado;
 							listaSapArchivo.add(lineaEncabezadoPartida);
-							
-						}else {
+
+						} else {
 							v_asiento++;
 						}
-						
-						 //secuencia = String.format("%06d", v_secuencia);
+
+						// secuencia = String.format("%06d", v_secuencia);
 						asiento = String.format("%03d", v_asiento);
-						
+
 						String lineaSAP = objSAP.getLineaSAP();
-						
+
 						String nuevaLineaSAP = "2	" + lineaSAP + asiento;
-						
-							
+
 						listaSapArchivo.add(nuevaLineaSAP);
 					}
-					
+
 				}
 			}
 			generaArchivoSAP(listaSapArchivo, totalMontoSAP, tipo);
@@ -786,15 +781,14 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 			System.out.println("Lista SAP esta vacia.");
 		}
 	}
-	
 
 	/**
 	 * @author Juankrlos
 	 * 
-	 * Se suben los archivos generados con los datos de la consulta por ftp
+	 *         Se suben los archivos generados con los datos de la consulta por ftp
 	 * 
-	 * Modificado ultima vez por Carlos Godinez - 14/09/2017
-	 * @throws IOException 
+	 *         Modificado ultima vez por Carlos Godinez - 14/09/2017
+	 * @throws IOException
 	 * 
 	 */
 	public void generaArchivoSAP(List<String> list, BigDecimal bdTotal, int tipo) {
@@ -809,9 +803,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
 				SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMdd");
 
-				
 				/************************** Si es tipo 1 *****************************/
-				if(tipo == 1) {
+				if (tipo == 1) {
 					/**
 					 * Generacion de archivo .txt
 					 */
@@ -819,42 +812,38 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 					String encabezado = encabezado1 + "  " + sdf2.format(fecha) + encabezado2 + sdf.format(fecha)
 							+ encabezado3;
 					log.debug("generaArchivoSAP" + " - Archivo el archivo creado: " + archivoTxt);
-					
-					System.out.println("archivo1" );
-					
-					System.out.println(nombreArchivo + sdf.format(fecha) + ".txt");
 
 					if (!archivoTxt.exists()) {
-						if(archivoTxt.createNewFile())
+						if (archivoTxt.createNewFile())
 							log.debug("generaArchivoSAP" + " - Archivo temporal creado");
-							//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"Archivo temporal creado");
 					}
 
-					//bw = new BufferedWriter(new FileWriter(archivoTxt));
-					bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(archivoTxt,true),StandardCharsets.ISO_8859_1));
+					log.debug("generaArchivoSAP() - " + " Leyendo archivo SAP ");
+					// bw = new BufferedWriter(new FileWriter(archivoTxt));
+					bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(archivoTxt, true),
+							StandardCharsets.ISO_8859_1));
 					bw.write(encabezado + "\n");
 
-					while (it.hasNext(  )) {
+					while (it.hasNext()) {
 						String bean = it.next() + "\n";
 						bw.write(bean);
 					}
-					BigDecimal bdPromedio = bdTotal.divide(new BigDecimal(list.size()), 2, BigDecimal.ROUND_HALF_UP);  
-					
-					//Se redondea cada dato para que no queden decimales
+					BigDecimal bdPromedio = bdTotal.divide(new BigDecimal(list.size()), 2, BigDecimal.ROUND_HALF_UP);
+
+					// Se redondea cada dato para que no queden decimales
 					BigDecimal totalRounded = bdTotal.setScale(0, BigDecimal.ROUND_HALF_EVEN);
 					BigDecimal promedioRounded = bdPromedio.setScale(0, BigDecimal.ROUND_HALF_EVEN);
-					
+
 					String totalItemsStr = StringUtils.leftPad(String.valueOf(list.size()), 10, " ");
 					String totalMontoStr = StringUtils.leftPad(String.valueOf(totalRounded), 20, " ");
 					String promedioStr = StringUtils.leftPad(String.valueOf(promedioRounded), 20, " ");
 
 					String detalleSAP = "T" + totalItemsStr + totalMontoStr + promedioStr;
-					log.debug("generaArchivoSAP" + " - **** Longitud de linea de detalle = " +detalleSAP.length());
-					//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO," **** Longitud de linea de detalle = ", detalleSAP.length());
+					log.debug("generaArchivoSAP" + " - **** Longitud de linea de detalle = " + detalleSAP.length());
 					bw.write(detalleSAP);
-					
-					System.out.println("ARCHIVO TIPO1 .txt GENERADO CON EXITO");
-									
+
+					log.debug("generaArchivoSAP() - " + "ARCHIVO TIPO1 .txt GENERADO CON EXITO");
+
 					/**
 					 * Generacion de archivo .gz
 					 * 
@@ -868,60 +857,62 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 					while ((lineaGZ = fis.read(buffer)) > 0) {
 						gzos.write(buffer, 0, lineaGZ);
 					}
-		
+
 					/**
 					 * Se genera con exito archivo SAP
-					 * */
+					 */
 				}
-				
+
 				/************************ Si es tipo 2 **********************************/
-				if(tipo == 2) {
+				if (tipo == 2) {
 					/**
 					 * Generacion de archivo .txt
 					 */
 					archivoTxt2 = new File(nombreArchivo2 + sdf.format(fecha) + ".txt");
-					//String encabezado = "0 " + encabezado1 + "  " + sdf2.format(fecha) + encabezado2 + sdf.format(fecha)
-					//		+ encabezado3;
+					// String encabezado = "0 " + encabezado1 + " " + sdf2.format(fecha) +
+					// encabezado2 + sdf.format(fecha)
+					// + encabezado3;
 					String encabezado = "0	500	" + Tools.getCookie("userName") + "	1";
-					
+
 					System.out.println(nombreArchivo2 + sdf.format(fecha) + ".txt");
-					
-					
-					System.out.println("archivo2" );
+
+					System.out.println("archivo2");
 
 					if (!archivoTxt2.exists()) {
-						if(archivoTxt2.createNewFile())
+						if (archivoTxt2.createNewFile())
 
-							log.debug("generaArchivoSAP" + " - Archivo temporal creado " );
-							//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"Archivo temporal creado");
+							log.debug("generaArchivoSAP" + " - Archivo temporal creado ");
+						// Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"Archivo
+						// temporal creado");
 					}
 
-					//bw = new BufferedWriter(new FileWriter(archivoTxt2));
-					bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(archivoTxt2,true),StandardCharsets.ISO_8859_1));
+					// bw = new BufferedWriter(new FileWriter(archivoTxt2));
+					bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(archivoTxt2, true),
+							StandardCharsets.ISO_8859_1));
 					bw.write(encabezado + "\n");
 
 					while (it.hasNext()) {
 						String bean = it.next() + "\n";
 						bw.write(bean);
 					}
-					BigDecimal bdPromedio = bdTotal.divide(new BigDecimal(list.size()), 2, BigDecimal.ROUND_HALF_UP);  
-					
-					//Se redondea cada dato para que no queden decimales
+					BigDecimal bdPromedio = bdTotal.divide(new BigDecimal(list.size()), 2, BigDecimal.ROUND_HALF_UP);
+
+					// Se redondea cada dato para que no queden decimales
 					BigDecimal totalRounded = bdTotal.setScale(0, BigDecimal.ROUND_HALF_EVEN);
 					BigDecimal promedioRounded = bdPromedio.setScale(0, BigDecimal.ROUND_HALF_EVEN);
-					
-					
+
 					String totalItemsStr = StringUtils.leftPad(String.valueOf(list.size()), 10, " ");
 					String totalMontoStr = StringUtils.leftPad(String.valueOf(totalRounded), 20, " ");
 					String promedioStr = StringUtils.leftPad(String.valueOf(promedioRounded), 20, " ");
 
 					String detalleSAP = "T" + totalItemsStr + totalMontoStr + promedioStr;
-					log.debug("generaArchivoSAP" + " - **** Longitud de linea de detalle = " +detalleSAP.length());
-					//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO," **** Longitud de linea de detalle = ", detalleSAP.length());
-					//bw.write(detalleSAP);
-					
+					log.debug("generaArchivoSAP" + " - **** Longitud de linea de detalle = " + detalleSAP.length());
+					// Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"
+					// **** Longitud de linea de detalle = ", detalleSAP.length());
+					// bw.write(detalleSAP);
+
 					System.out.println("ARCHIVO TIPO 2 .txt GENERADO CON EXITO");
-									
+
 					/**
 					 * Generacion de archivo .gz
 					 * 
@@ -935,72 +926,77 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 					while ((lineaGZ = fis.read(buffer)) > 0) {
 						gzos.write(buffer, 0, lineaGZ);
 					}
-		
+
 					/**
 					 * Se genera con exito archivo SAP
-					 * */
+					 */
 				}
-				
-				
-				btnDescargarSAP.setDisabled(false); //CarlosGodinez -> 03/11/2017
-				btnFTPSAP.setDisabled(false); //CarlosGodinez -> 03/11/2017
-				
+
+				btnDescargarSAP.setDisabled(false); // CarlosGodinez -> 03/11/2017
+				btnFTPSAP.setDisabled(false); // CarlosGodinez -> 03/11/2017
+
 				btnDescargarSAP2.setDisabled(false);
-				
+
 				/**
 				 * CarlosGodinez -> 03/11/2017
 				 * 
 				 * Separacion de funciones para descargar archivo SAP o enviar por ruta FTP
-				 * */
+				 */
 				log.debug("generaArchivoSAP" + " - \n** Archivo SAP generado con exito\n ");
-				//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"\n** Archivo SAP generado con exito\n");
-				
-				if(tipo == 1) {
-					Messagebox.show("Archivo SAP generado con exito\n\nAhora puede:\n- Descargar archivo\n- Subir SAP por FTP", 
-							Constantes.ATENCION, Messagebox.OK,Messagebox.INFORMATION);
+				// Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"\n**
+				// Archivo SAP generado con exito\n");
+
+				if (tipo == 1) {
+					Messagebox.show(
+							"Archivo SAP generado con exito\n\nAhora puede:\n- Descargar archivo\n- Subir SAP por FTP",
+							Constantes.ATENCION, Messagebox.OK, Messagebox.INFORMATION);
 				}
-				
+
 			} else {
-				Messagebox.show("Debe consultar informacion antes de subir un archivo a SAP", Constantes.ATENCION, Messagebox.OK,
-						Messagebox.EXCLAMATION);
+				Messagebox.show("Debe consultar informacion antes de subir un archivo a SAP", Constantes.ATENCION,
+						Messagebox.OK, Messagebox.EXCLAMATION);
 			}
 
-		} catch (Exception e) {	
+		} catch (Exception e) {
 			log.error(e);
-			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+			// Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE,
+			// null, e);
 		} finally {
-			
-			if(bw != null) {
+
+			if (bw != null) {
 				try {
 					bw.close();
-				}catch (Exception e) {
+				} catch (Exception e) {
 					log.error(e);
-					//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+					// Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE,
+					// null, e);
 				}
 			}
-			if(fis != null) {
+			if (fis != null) {
 				try {
 					fis.close();
-				}catch (Exception e) {
+				} catch (Exception e) {
 					log.error(e);
-					//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+					// Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE,
+					// null, e);
 				}
 			}
-			if(gzos != null){
+			if (gzos != null) {
 				try {
 					gzos.finish();
 					gzos.close();
-				}catch (Exception e) {
+				} catch (Exception e) {
 					log.error(e);
-					//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+					// Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE,
+					// null, e);
 				}
-			}			
+			}
 		}
 		log.debug("generaArchivoSAP" + " - \n==== FIN GENERACION DE ARCHIVO SAP ====\n ");
-		//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,
-				//"\n==== FIN GENERACION DE ARCHIVO SAP ====\n");
+		// Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,
+		// "\n==== FIN GENERACION DE ARCHIVO SAP ====\n");
 	}
-	
+
 	/**
 	 * Descarga de archivo SAP
 	 * 
@@ -1008,41 +1004,37 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 	 **/
 	public void onClick$btnDescargarSAP() {
 		try {
-			log.debug("onClick$btnDescargarSAP()" + " - el archivo es:" + archivoTxt );
-			Filedownload.save(archivoTxt, null); //CarlosGodinez -> 28/12/2017
-			Messagebox.show("Archivo SAP descargado con exito", "ATENCION", Messagebox.OK,
-					Messagebox.INFORMATION);
-			log.debug("onClick$btnDescargarSAP()" + " - el archivo es:" + archivoTxt );
-			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,
-			//		"el archivo es:" + archivoTxt);
-		} catch (Exception e) {			
-			Messagebox.show("Ha ocurrido un error al intentar subir archivo SAP por FTP", "ATENCION", 
-					Messagebox.OK, Messagebox.ERROR);
+			log.debug("onClick$btnDescargarSAP()" + " - el archivo es:" + archivoTxt);
+			Filedownload.save(archivoTxt, null); // CarlosGodinez -> 28/12/2017
+			Messagebox.show("Archivo SAP descargado con exito", "ATENCION", Messagebox.OK, Messagebox.INFORMATION);
+			log.debug("onClick$btnDescargarSAP()" + " - el archivo es:" + archivoTxt);
+		} catch (Exception e) {
+			Messagebox.show("Ha ocurrido un error al intentar subir archivo SAP por FTP", "ATENCION", Messagebox.OK,
+					Messagebox.ERROR);
 			log.error("Error onClick$btnDescargarSAP()", e);
-			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
-	
+
 	public void onClick$btnDescargarSAP2() {
 		try {
-			log.debug("onClick$btnDescargarSAP2()" + " - el archivo es:" + archivoTxt2 );
-			Filedownload.save(archivoTxt2, null); //CarlosGodinez -> 28/12/2017
-			Messagebox.show("Archivo SAP descargado con exito", "ATENCION", Messagebox.OK,
-					Messagebox.INFORMATION);
-		} catch (Exception e) {			
-			Messagebox.show("Ha ocurrido un error al intentar subir archivo SAP por FTP", "ATENCION", 
-					Messagebox.OK, Messagebox.ERROR);
+			log.debug("onClick$btnDescargarSAP2()" + " - el archivo es:" + archivoTxt2);
+			Filedownload.save(archivoTxt2, null); // CarlosGodinez -> 28/12/2017
+			Messagebox.show("Archivo SAP descargado con exito", "ATENCION", Messagebox.OK, Messagebox.INFORMATION);
+		} catch (Exception e) {
+			Messagebox.show("Ha ocurrido un error al intentar subir archivo SAP por FTP", "ATENCION", Messagebox.OK,
+					Messagebox.ERROR);
 			log.error(e);
-			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+			// Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE,
+			// null, e);
 		}
 	}
-	
+
 	/**
-	 * CarlosGodinez -> 03/11/2017 
+	 * CarlosGodinez -> 03/11/2017
 	 * 
-	 * Se agrega metodo para separacion de funciones
-	 * Subir archivo a servidor FTP
-	 * @throws IOException 
+	 * Se agrega metodo para separacion de funciones Subir archivo a servidor FTP
+	 * 
+	 * @throws IOException
 	 **/
 	public void onClick$btnFTPSAP() {
 		FileInputStream input = null;
@@ -1052,24 +1044,27 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 			ftpClient.login(user, pass);
 
 			int reply = ftpClient.getReplyCode();
-			log.debug("onClick$btnFTPSAP()" + " - Respuesta recibida de conexión FTP: "
-					+ reply);
+			log.debug("onClick$btnFTPSAP()" + " - Respuesta recibida de conexión FTP: " + reply);
 
-			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"Respuesta recibida de conexión FTP:", reply);
+			// Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"Respuesta
+			// recibida de conexión FTP:", reply);
 
 			if (FTPReply.isPositiveCompletion(reply)) {
 				log.debug("onClick$btnFTPSAP()" + " - Conectado Satisfactoriamente ");
-				//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"Conectado Satisfactoriamente");
+				// Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"Conectado
+				// Satisfactoriamente");
 			} else {
 				log.debug("onClick$btnFTPSAP()" + " - Imposible conectarse al servidor ");
-			//	Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"Imposible conectarse al servidor");
+				// Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"Imposible
+				// conectarse al servidor");
 			}
 
 			// Verificar si se cambia de directorio de trabajo
 
 			boolean change = ftpClient.changeWorkingDirectory(rutaArchivoSAP);// Cambiar directorio de trabajo
 			log.debug("onClick$btnFTPSAP()" + " - Se cambió satisfactoriamente el directorio ");
-			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"Se cambió satisfactoriamente el directorio " + change);
+			// Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"Se
+			// cambió satisfactoriamente el directorio " + change);
 
 			// Activar que se envie cualquier tipo de archivo
 
@@ -1079,25 +1074,25 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 			ftpClient.enterLocalPassiveMode();
 			ftpClient.storeFile(archivoGZ.getName(), input);// Ruta completa de alojamiento en el FTP
 			System.out.println("ARCHIVO .gz SUBIDO A SERVIDOR FTP CON EXITO");
-			
+
 			ftpClient.logout(); // Cerrar sesión
 			ftpClient.disconnect();// Desconectarse del servidor
-			
-			Messagebox.show("Archivo SAP subido a FTP con exito.", "ATENCION", Messagebox.OK,
-					Messagebox.INFORMATION);
+
+			Messagebox.show("Archivo SAP subido a FTP con exito.", "ATENCION", Messagebox.OK, Messagebox.INFORMATION);
 		} catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
-			Messagebox.show("Ha ocurrido un error al intentar subir archivo SAP por FTP", "ATENCION", 
-					Messagebox.OK, Messagebox.ERROR);
+			Messagebox.show("Ha ocurrido un error al intentar subir archivo SAP por FTP", "ATENCION", Messagebox.OK,
+					Messagebox.ERROR);
 			log.error("Error onClick$btnFTPSAP()", e);
-			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
-		}finally {
-			if(input != null) {
+			// Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE,
+			// null, e);
+		} finally {
+			if (input != null) {
 				try {
 					input.close();
 				} catch (IOException e) {
 					log.error("Error onClick$btnFTPSAP()", e);
-					//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE,null,e);
+					// Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE,null,e);
 				} // Cerrar envio de arcivos al FTP
 			}
 		}
@@ -1108,7 +1103,6 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 
 		public void onEvent(Event arg0) throws Exception {
 
-
 			// se crea una variable personalizada
 			CBConsultaContabilizacionModel objmodificar = (CBConsultaContabilizacionModel) arg0.getTarget()
 					.getAttribute("objmodificar");
@@ -1117,7 +1111,7 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 			fechafin = (String) arg0.getTarget().getAttribute("fechafin");
 
 			System.out.println("obj a modificar: " + objmodificar);
-			
+
 			misession1.setAttribute("sesionfecha1", fechaini);
 			misession2.setAttribute("sesionfecha2", fechafin);
 			System.out.println("fecha ini " + fechaini);
@@ -1198,12 +1192,13 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 			generarReporte(list);
 		} catch (IOException e) {
 			log.error("Error onClick$btnExcel()", e);
-			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+			// Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE,
+			// null, e);
 		}
 	}
 
 	public void generarReporte(List<CBConsultaContabilizacionModel> list) throws IOException {
-		BufferedWriter bw = null; 
+		BufferedWriter bw = null;
 		System.out.println("Generando reporte ...");
 
 		try {
@@ -1215,7 +1210,7 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 					+ "Observaciones|Clave_contabilizacion|Terminacion|Centro_costo|Nombre|"
 					+ "Cuenta|Tipo|Monto|Fecha_contabilizacion|" + "Estado|Modificado_por\n";
 			File archivo = new File("reporte_contabilizacion_" + sdf.format(fecha) + ".csv");
-			
+
 			bw = new BufferedWriter(new FileWriter(archivo));
 			bw.write(encabezado);
 
@@ -1248,9 +1243,10 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 
 		} catch (IOException e) {
 			log.error("Error generarReporte()", e);
-		//	Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
-		}finally {
-			if(bw != null)
+			// Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE,
+			// null, e);
+		} finally {
+			if (bw != null)
 				bw.close();
 		}
 	}
@@ -1261,7 +1257,6 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 		int idAgenciaIngreso = 0;
 		CBConsultaContabilizacionModel objModel = new CBConsultaContabilizacionModel();
 		CBConsultaContabilizacionDAO objDao = new CBConsultaContabilizacionDAO();
-		
 
 		objModel.setFechaini(fechaini);
 		objModel.setFechafin(fechafin);
@@ -1275,28 +1270,28 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 		CBConsultaContabilizacionDAO objDao = new CBConsultaContabilizacionDAO();
 		int idAgencia = 0;
 		int idAgenciaIngreso = 0;
-				String fechaDesde = null;
-				String fechaHasta = null;
-				
-				if (dtbDesde.getValue() == null) {
-					Messagebox.show("Debe ingresar la fecha de inicio antes de consultar datos.", "ATENCION", Messagebox.OK,
-							Messagebox.EXCLAMATION);
-					return;
-				} else if (dtbHasta.getValue() == null) {
-					Messagebox.show("Debe ingresar la fecha fin antes de consultar datos.", "ATENCION", Messagebox.OK,
-							Messagebox.EXCLAMATION);
-					return;
-				} else if (dtbDesde.getValue().after(dtbHasta.getValue())) {
-					Messagebox.show("La fecha desde debe ser menor a la fecha hasta.", "ATENCION", Messagebox.OK,
-							Messagebox.EXCLAMATION);
-					return;
-				} else {
-				
-					fechaDesde = (dtbDesde.getText());
-					fechaHasta = (dtbHasta.getText());
-				
-					objModel.setFechaini(fechaDesde);
-					objModel.setFechafin(fechaHasta);
+		String fechaDesde = null;
+		String fechaHasta = null;
+
+		if (dtbDesde.getValue() == null) {
+			Messagebox.show("Debe ingresar la fecha de inicio antes de consultar datos.", "ATENCION", Messagebox.OK,
+					Messagebox.EXCLAMATION);
+			return;
+		} else if (dtbHasta.getValue() == null) {
+			Messagebox.show("Debe ingresar la fecha fin antes de consultar datos.", "ATENCION", Messagebox.OK,
+					Messagebox.EXCLAMATION);
+			return;
+		} else if (dtbDesde.getValue().after(dtbHasta.getValue())) {
+			Messagebox.show("La fecha desde debe ser menor a la fecha hasta.", "ATENCION", Messagebox.OK,
+					Messagebox.EXCLAMATION);
+			return;
+		} else {
+
+			fechaDesde = (dtbDesde.getText());
+			fechaHasta = (dtbHasta.getText());
+
+			objModel.setFechaini(fechaDesde);
+			objModel.setFechafin(fechaHasta);
 //
 		}
 		if (cmbAgencia.getSelectedItem() != null) {
@@ -1306,177 +1301,175 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 			idAgenciaIngreso = Integer.parseInt(cmbAgenciaIngreso.getSelectedItem().getValue().toString());
 		}
 		System.out.println("Consulta estados contabilizacion");
-		if (tbxCentroCosto.getText().trim() != null 
-				&& !"".equals(tbxCentroCosto.getText().trim())) {
+		if (tbxCentroCosto.getText().trim() != null && !"".equals(tbxCentroCosto.getText().trim())) {
 			objModel.setCentroCosto(tbxCentroCosto.getText().trim());
 		}
-		if (tbxClave.getText() != null 
-				&& !"".equals(tbxClave.getText().trim())) {
+		if (tbxClave.getText() != null && !"".equals(tbxClave.getText().trim())) {
 			objModel.setClaveContabilizacion(tbxClave.getText().trim());
 		}
-		if (tbxCuenta.getText().trim() != null 
-				&& !"".equals(tbxCuenta.getText().trim())) {
+		if (tbxCuenta.getText().trim() != null && !"".equals(tbxCuenta.getText().trim())) {
 			objModel.setCuenta(tbxCuenta.getText().trim());
 			System.out.println("campo cuenta en el dao " + objModel.getCuenta().trim());
 		}
-		if (tbxReferencia.getText().trim() != null 
-				&& !"".equals(tbxReferencia.getText().trim())) {
+		if (tbxReferencia.getText().trim() != null && !"".equals(tbxReferencia.getText().trim())) {
 			objModel.setReferencia(tbxReferencia.getText().trim());
 		}
-		if (tbxTexto.getText().trim() != null 
-				&& !"".equals(tbxTexto.getText().trim())) {
+		if (tbxTexto.getText().trim() != null && !"".equals(tbxTexto.getText().trim())) {
 			objModel.setTexto(tbxTexto.getText().trim());
 			System.out.println("texto controlador " + objModel.getTexto().trim());
 		}
-		if (tbxTexto2.getText().trim() != null 
-				&& !"".equals(tbxTexto2.getText().trim())) {
+		if (tbxTexto2.getText().trim() != null && !"".equals(tbxTexto2.getText().trim())) {
 			objModel.setTexto2(tbxTexto2.getText().trim());
 		}
-		if (tbxObservaciones.getText().trim() != null 
-				&& !"".equals(tbxObservaciones.getText().trim())) {
+		if (tbxObservaciones.getText().trim() != null && !"".equals(tbxObservaciones.getText().trim())) {
 			objModel.setObservaciones(tbxObservaciones.getText().trim());
 		}
 		System.out.println("fecha antes del insert" + fechaDesde);
 		System.out.println("fecha antes del insert" + fechaHasta);
-		
+
 		/* ********************* INICIA HILOS ************************* */
 		int dias = 0;
 		Tools.setCookie("diasCarga", String.valueOf(dias));
-		
+
 		token = UUID.randomUUID().toString();
 		token = token.replace("-", "");
-		
+
 		final String pais = "CR";
-		
+
 		CBBitacoraLogDAO dao = new CBBitacoraLogDAO();
-		
+
 		try {
 			SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
 			Date fecha1 = formatoFecha.parse(fechaDesde);
 			Date fecha2 = formatoFecha.parse(fechaHasta);
 
-			System.out.println("Iniciando proceso");			
+			System.out.println("Iniciando proceso");
 			dias = Tools.diferenciasDeFechas(fecha1, fecha2);
 			log.debug("GenerarInfo() " + "Cantidad de dias a consultar: " + (dias + 1));
-			//Logger.getLogger(CBConsultaContabilizacionController.class.getName())
-			//.log(Level.INFO,"Cantidad de dias a consultar: " + (dias + 1));
-		
+			// Logger.getLogger(CBConsultaContabilizacionController.class.getName())
+			// .log(Level.INFO,"Cantidad de dias a consultar: " + (dias + 1));
+
 			Tools.setCookie("diasCarga", String.valueOf((dias + 1)));
 
 			System.out.println("ya seteo una cookie");
-		
+
 			dao.deleteBitacoraThread("CARGA_CONTABILIZACION");
 
 			System.out.println("se ejecuto el delete");
-			
-			for(int i = 0; i <= dias; i++) {
+
+			for (int i = 0; i <= dias; i++) {
 				Date fechaActual = Tools.sumarDias(fecha1, i);
 				long tokenItem = System.currentTimeMillis();
-				System.out.println("Fecha actual: " + i +"  "+ fechaActual);
+				System.out.println("Fecha actual: " + i + "  " + fechaActual);
 				System.out.println("Fecha actual: " + tokenItem);
-				//CBConsultaContabilizacionThread hilo = new CBConsultaContabilizacionThread(formatoFecha.format(fechaActual));
-				Thread hilo = new Thread(new CBConsultaContabilizacionThread(formatoFecha.format(fechaActual), pais, String.valueOf(tokenItem)));
+				// CBConsultaContabilizacionThread hilo = new
+				// CBConsultaContabilizacionThread(formatoFecha.format(fechaActual));
+				Thread hilo = new Thread(new CBConsultaContabilizacionThread(formatoFecha.format(fechaActual), pais,
+						String.valueOf(tokenItem)));
 				System.out.println("se lanza el hilo");
 				hilo.start();
-				System.out.println("hilo lanzado");				
+				System.out.println("hilo lanzado");
 				CBBitacoraLogModel log = new CBBitacoraLogModel();
 				log.setTipoCarga("0");
 				log.setNombreArchivo(String.valueOf(tokenItem));
 				log.setModulo(token);
-				log.setAccion( formatoFecha.format(fechaActual));
+				log.setAccion(formatoFecha.format(fechaActual));
 				log.setUsuario("CARGA_CONTABILIZACION");
-				System.out.println("llama a la bitacora");				
+				System.out.println("llama a la bitacora");
 				dao.insertBitacoraLog(log);
-				System.out.println("finaliza llamada a la bitacora");	
-				
-				
+				System.out.println("finaliza llamada a la bitacora");
+
 				Thread.sleep(500);
 			}
 
-		}catch (Exception e) {
+		} catch (Exception e) {
 			// TODO: handle exception
 			log.error("Error click GenerarInfo()", e);
-			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+			// Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE,
+			// null, e);
 		}
-		
-		/* ************************ FINALIZA HILOS ******************************* */
-		
-		/* Levantando modal */
-		//Executions.createComponents("/cbdetallecargacontabilizacionmodal.zul", null, null);
-		
-		int diasItem = (dias + 1);
-		CBDetalleContabilizacionController daoDetalle = (CBDetalleContabilizacionController) misession2.getAttribute("instanciaModalDetalle");
 
-		//daoDetalle.llenaListboxTipificacion(token, pais, false);
-		
-		/* Verificando cada 30s si ya terminaron de ejecutarse todos los hilos con un retraso inicial de 3m*/
+		/* ************************ FINALIZA HILOS ******************************* */
+
+		/* Levantando modal */
+		// Executions.createComponents("/cbdetallecargacontabilizacionmodal.zul", null,
+		// null);
+
+		int diasItem = (dias + 1);
+		CBDetalleContabilizacionController daoDetalle = (CBDetalleContabilizacionController) misession2
+				.getAttribute("instanciaModalDetalle");
+
+		// daoDetalle.llenaListboxTipificacion(token, pais, false);
+
+		/*
+		 * Verificando cada 30s si ya terminaron de ejecutarse todos los hilos con un
+		 * retraso inicial de 3m
+		 */
 		try {
-			
+
 			Boolean verifica = true;
 			Boolean retraso = true;
-			
-			while(verifica) {
-				
-				if(retraso) {
+
+			while (verifica) {
+
+				if (retraso) {
 					System.out.println("Retraso de 3 min");
-					Thread.sleep(3*60*1000);
+					Thread.sleep(3 * 60 * 1000);
 					retraso = false;
 				}
-				
-				Boolean result =  verificaCargaSP(pais, token, diasItem);
-				
-				if(result) {
+
+				Boolean result = verificaCargaSP(pais, token, diasItem);
+
+				if (result) {
 					verifica = false;
-					
+
 					daoDetalle.llenaListboxTipificacion(token, pais, false);
-					 
-					 limpiarListbox(lbxConsulta);
-						
-						disabledSAPAll();
-						
-						List<CBConsultaContabilizacionModel> list = objDao.obtenerContabilizacion(objModel, idAgencia, idAgenciaIngreso, pais);
-						System.out.println("refrescar lista!" + list.size());
-						if (list.size() > 0) {
-							llenaListbox(list);
-							
-							btnExcel.setDisabled(false);
-							btnSAP.setDisabled(false);
-							btnDescargarSAP.setDisabled(true);
-							btnDescargarSAP2.setDisabled(true);
-							btnFTPSAP.setDisabled(true);
-						}
-					
-				}else {
-					//daoDetalle.llenaListboxTipificacion(token, pais, false);
+
+					limpiarListbox(lbxConsulta);
+
+					disabledSAPAll();
+
+					List<CBConsultaContabilizacionModel> list = objDao.obtenerContabilizacion(objModel, idAgencia,
+							idAgenciaIngreso, pais);
+					System.out.println("refrescar lista!" + list.size());
+					if (list.size() > 0) {
+						llenaListbox(list);
+
+						btnExcel.setDisabled(false);
+						btnSAP.setDisabled(false);
+						btnDescargarSAP.setDisabled(true);
+						btnDescargarSAP2.setDisabled(true);
+						btnFTPSAP.setDisabled(true);
+					}
+
+				} else {
+					// daoDetalle.llenaListboxTipificacion(token, pais, false);
 				}
 				Thread.sleep(30000);
 			}
-			
-			
-		}catch (Exception e) {
+
+		} catch (Exception e) {
 			log.error("Error click GenerarInfo()", e);
-			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+			// Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE,
+			// null, e);
 		}
 
 	}
-	
-	
-	
+
 	public boolean verificaCargaSP(String pais, String token, int dias) {
 		CBBitacoraLogDAO dao = new CBBitacoraLogDAO();
 
 		Boolean result = false;
-		
+
 		System.out.println("Dias recibidos: " + dias);
-		if(dao.countBitacoraThread(token, pais) == dias) {
+		if (dao.countBitacoraThread(token, pais) == dias) {
 			System.out.println("Proceso terminado!");
 			result = true;
 
-
-		}else {
+		} else {
 			System.out.println("Todavia no!!");
 		}
-		
+
 		return result;
 	}
 
@@ -1484,7 +1477,7 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void onClick$btnGenerarInfo() {
-		//cambia fechas 
+		// cambia fechas
 		String fechaDesde = null;
 		String fechaHasta = null;
 		if (dtbDesde.getValue() == null) {
@@ -1500,49 +1493,40 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 					Messagebox.EXCLAMATION);
 			return;
 		} else {
-		
+
 			fechaDesde = (dtbDesde.getText());
 			fechaHasta = (dtbHasta.getText());
-	
-		btnGenerarInfo.setTooltip("popAgregar");
-		
 
-			//objModelDelete = objDaoDelete.validaCarga(fechaDesde, fechaHasta);
+			btnGenerarInfo.setTooltip("popAgregar");
+
+			// objModelDelete = objDaoDelete.validaCarga(fechaDesde, fechaHasta);
 		}
-		
+
 		token = "";
-		
+
 		misession2.setAttribute("fechaDesdeConta", fechaDesde);
 		misession2.setAttribute("fechaHastaConta", fechaHasta);
 		misession2.setAttribute("paisActual", Tools.getCookie("conexion"));
 		misession2.setAttribute("sesiontoken", token);
 		misession2.setAttribute("instanciaConta", CBConsultaContabilizacionController.this);
-		
+
 		Executions.createComponents("/cbdetallecargacontabilizacionmodal.zul", null, null);
-		
-		
-		
-		/*if (objModelDelete != null) {
-			Messagebox.show("Ya hay registros para " + fechaDesde +" y " + fechaHasta + " (Desea reemplazar dicha carga?)", "ATENCION",
-					Messagebox.YES | Messagebox.NO, Messagebox.QUESTION, new EventListener() {
-						public void onEvent(Event event) throws Exception {
-							if (((Integer) event.getData()).intValue() != Messagebox.YES) {
-								Messagebox.show("Accion Cancelada", "CANCELADO", Messagebox.OK, Messagebox.EXCLAMATION);
 
-								// GenerarInfo();
-							} else {
-								// eliminaRegistros(fecha);
-								System.out.println("Elimina info y vuelve a  cargar informacion");
-
-								GenerarInfo();
-							}
-						}
-					});
-		} else {
-			// isReloadFile = true;
-			System.out.println("cargar informacion nueva ");
-			GenerarInfo();
-		}*/
+		/*
+		 * if (objModelDelete != null) { Messagebox.show("Ya hay registros para " +
+		 * fechaDesde +" y " + fechaHasta + " (Desea reemplazar dicha carga?)",
+		 * "ATENCION", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION, new
+		 * EventListener() { public void onEvent(Event event) throws Exception { if
+		 * (((Integer) event.getData()).intValue() != Messagebox.YES) {
+		 * Messagebox.show("Accion Cancelada", "CANCELADO", Messagebox.OK,
+		 * Messagebox.EXCLAMATION);
+		 * 
+		 * // GenerarInfo(); } else { // eliminaRegistros(fecha);
+		 * System.out.println("Elimina info y vuelve a  cargar informacion");
+		 * 
+		 * GenerarInfo(); } } }); } else { // isReloadFile = true;
+		 * System.out.println("cargar informacion nueva "); GenerarInfo(); }
+		 */
 
 	}
 
@@ -1550,14 +1534,16 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 		String fecha = null;
 		CBConsultaContabilizacionDAO objDao = new CBConsultaContabilizacionDAO();
 		try {
-		fecha = objDao.validafecha();
-		System.out.println("fecha obtenida al entrar " + fecha);
-		}catch (Exception e) {
+			fecha = objDao.validafecha();
+			System.out.println("fecha obtenida al entrar " + fecha);
+		} catch (Exception e) {
 			log.error("Error  obtienefechaactual()", e);
-			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+			// Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE,
+			// null, e);
 		}
-		
+
 	}
+
 	// bancos
 	public void llenaComboBanco() {
 		limpiaCombobox(cmbBanco);
@@ -1580,7 +1566,7 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 		limpiaCombobox(cmbAgencia);
 		CBConsultaContabilizacionDAO objDao = new CBConsultaContabilizacionDAO();
 		List<CBCatalogoAgenciaModel> list = objDao.generaConsultaAgenciaIngreso();
-	System.out.println("tama;o de la lista:" + list.size());
+		System.out.println("tama;o de la lista:" + list.size());
 		Iterator<CBCatalogoAgenciaModel> it = list.iterator();
 		CBCatalogoAgenciaModel obj = null;
 		while (it.hasNext()) {
@@ -1600,12 +1586,14 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 		}
 
 	}
+
 	// se obtiene el listado del agencia ingreso
 	public void onSelect$cmbBanco() {
 		limpiaCombobox(cmbAgenciaIngreso);
 		cmbAgenciaIngreso.setSelectedIndex(-1);
 		CBConsultaContabilizacionDAO objDao = new CBConsultaContabilizacionDAO();
-		//int idBanco = Integer.parseInt(cmbBanco.getSelectedItem().getValue().toString());
+		// int idBanco =
+		// Integer.parseInt(cmbBanco.getSelectedItem().getValue().toString());
 		int idBanco = Integer.parseInt(cmbBanco.getSelectedItem().getValue().toString());
 		List<CBCatalogoAgenciaModel> list = objDao.generaConsultaAgencia(idBanco);
 		Iterator<CBCatalogoAgenciaModel> it = list.iterator();
@@ -1627,5 +1615,5 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 		btnDescargarSAP2.setDisabled(true);
 		btnFTPSAP.setDisabled(true);
 	}
-	
+
 }

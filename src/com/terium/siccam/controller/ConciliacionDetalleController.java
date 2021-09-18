@@ -1360,16 +1360,17 @@ public class ConciliacionDetalleController extends ControladorBase {
 		DateFormat fechaFormato = new SimpleDateFormat("ddMMyyyy");
 		String fecha = fechaFormato.format(objFecha);
 		log.debug(methodName + " -  inicia ");
-		int telefono = detalle.getTelefono() != null ? Integer.parseInt(detalle.getTelefono()) : 0;
+		int cliente = detalle.getCliente() != null ? Integer.parseInt(detalle.getCliente()) : 0;
 
 		ReversaPagoRequest request = new ReversaPagoRequest();
 		request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
 		request.setFecha_pago(fecha);
-		request.setMonto(detalle.getMonto().doubleValue());
+		// request.setMonto(detalle.getMonto().doubleValue());
+		request.setMonto(detalle.getPendienteBanco().doubleValue());
 		request.setReferencia(Constantes.REVERSA_PAGO_WS_REFERENCIA);
-		request.setTelefono(telefono);
+		request.setTelefono(cliente);
 		log.debug(MessageFormat.format(methodName
-				+ "\nRequest Reversa Pago : \nBank_id= {0}\nFecha_Pago = {1}\nMonto = {2}\nRefererencia = {3}\nTelefono = {4}",
+				+ "\nRequest Reversa Pago : \nBank_id= {0}\nFecha_Pago = {1}\nMonto = {2}\nRefererencia = {3}\nCliente = {4}",
 				request.getBank_id(), request.getFecha_pago(), request.getMonto(), request.getReferencia(),
 				request.getTelefono()));
 
@@ -1433,19 +1434,18 @@ public class ConciliacionDetalleController extends ControladorBase {
 		DateFormat fechaFormato = new SimpleDateFormat("ddMMyyyy");
 		String fecha = fechaFormato.format(objFecha);
 		log.debug(methodName + " -  inicia ");
-//		String hora = horaFormato.format(objFecha);
-//		String cliente = detalle.getCliente() != null ? detalle.getCliente() : "0";
-		int telefono = detalle.getTelefono() != null ? Integer.parseInt(detalle.getTelefono()) : 0;
+		int cliente = detalle.getCliente() != null ? Integer.parseInt(detalle.getCliente()) : 0;
 		EjecutarPagoRequest request = new EjecutarPagoRequest();
 		// request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
-		log.debug(methodName + " -  Telefono  = " + telefono);
+		log.debug(methodName + " -  Codigo Cliente  = " + cliente);
 		request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
 		request.setBill_ref_no(Constantes.BILL_REF_NO);
 		request.setFecha_pago(fecha);
-		request.setTelefono(telefono);
+		request.setTelefono(cliente);
 		EjecutarPagoDetalle pd = new EjecutarPagoDetalle();
 		pd.setTipo(Constantes.EJ_PAGO_WS_TIPO);
-		pd.setMonto(detalle.getMonto().doubleValue());
+		// pd.setMonto(detalle.getMonto().doubleValue());
+		pd.setMonto(detalle.getPendienteTelefonica().doubleValue());
 		pd.setNum_cheque(Constantes.EJ_PAGO_WS_NUM_CHEQUE);
 		pd.setNum_tarjeta(Constantes.EJ_PAGO_WS_NUM_TARJETA);
 		pd.setAutorizacion(Constantes.EJ_PAGO_WS_AUTORIZACION);
@@ -1453,7 +1453,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 		EjecutarPagoDetalle[] ejp = new EjecutarPagoDetalle[] { pd };
 		request.setEjecutarPagoDetalle(ejp);
 		log.debug(MessageFormat.format(methodName
-				+ "\nParams request : \nBank_id = {0}\nBill_Ref_no = {1}\nPago_fecha = {2}\nTelefono= {3}\nDetalle ---\nTipo = {4}\nMonto = {5}\nNum_Tarjeta = {6}\nNum_cheque = {7}\nAutorizacion= {8}\nBanco= {9}",
+				+ "\nParams request : \nBank_id = {0}\nBill_Ref_no = {1}\nPago_fecha = {2}\nCliente= {3}\nDetalle ---\nTipo = {4}\nMonto = {5}\nNum_Tarjeta = {6}\nNum_cheque = {7}\nAutorizacion= {8}\nBanco= {9}",
 				request.getBank_id(), request.getBill_ref_no(), request.getFecha_pago(), request.getTelefono(),
 				request.getEjecutarPagoDetalle(0).getTipo(), request.getEjecutarPagoDetalle(0).getMonto(),
 				request.getEjecutarPagoDetalle(0).getNum_tarjeta(), request.getEjecutarPagoDetalle(0).getNum_cheque(),
