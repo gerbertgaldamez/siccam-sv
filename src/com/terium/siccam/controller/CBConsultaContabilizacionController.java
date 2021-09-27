@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
 import java.net.InetAddress;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.text.DateFormat;
@@ -27,7 +28,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 //import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
+
 import org.apache.log4j.Logger;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.net.ftp.FTP;
@@ -822,10 +825,15 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 					// bw = new BufferedWriter(new FileWriter(archivoTxt));
 					bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(archivoTxt, true),
 							StandardCharsets.ISO_8859_1));
-					bw.write(encabezado + "\n");
+							//StandardCharsets.US_ASCII));
+						
+					
+					bw.write(encabezado + "\n"); 
+					
 
 					while (it.hasNext()) {
 						String bean = it.next() + "\n";
+						
 						bw.write(bean);
 					}
 					BigDecimal bdPromedio = bdTotal.divide(new BigDecimal(list.size()), 2, BigDecimal.ROUND_HALF_UP);
@@ -837,7 +845,7 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 					String totalItemsStr = StringUtils.leftPad(String.valueOf(list.size()), 10, " ");
 					String totalMontoStr = StringUtils.leftPad(String.valueOf(totalRounded), 20, " ");
 					String promedioStr = StringUtils.leftPad(String.valueOf(promedioRounded), 20, " ");
-
+					
 					String detalleSAP = "T" + totalItemsStr + totalMontoStr + promedioStr;
 					log.debug("generaArchivoSAP" + " - **** Longitud de linea de detalle = " + detalleSAP.length());
 					bw.write(detalleSAP);
@@ -850,6 +858,7 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 					 * variable archivoGZ pasa a ser variable publica
 					 **/
 					byte[] buffer = new byte[1024];
+					
 					archivoGZ = new File(nombreArchivo + sdf.format(fecha) + extensionArchivo);
 					gzos = new GZIPOutputStream(new FileOutputStream(archivoGZ));
 					fis = new FileInputStream(archivoTxt);
@@ -890,9 +899,12 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 					bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(archivoTxt2, true),
 							StandardCharsets.ISO_8859_1));
 					bw.write(encabezado + "\n");
+					
+					
 
 					while (it.hasNext()) {
 						String bean = it.next() + "\n";
+						
 						bw.write(bean);
 					}
 					BigDecimal bdPromedio = bdTotal.divide(new BigDecimal(list.size()), 2, BigDecimal.ROUND_HALF_UP);
