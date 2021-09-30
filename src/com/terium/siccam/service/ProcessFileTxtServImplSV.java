@@ -654,7 +654,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 				if ("TA".equals(valueToSave)) {
 					String telefonoAlfaNum = strData.trim();
 					if (telefonoAlfaNum.length() <= 10) {
-						System.out.println("Telefono alfanumerico: " + telefonoAlfaNum);
+						logger.debug(methodName + " - Telefono alfanumerico: " + telefonoAlfaNum);
 						bancoModel.setTelefono(telefonoAlfaNum);
 					}
 				}
