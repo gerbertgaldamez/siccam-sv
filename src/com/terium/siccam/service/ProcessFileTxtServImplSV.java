@@ -590,6 +590,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 			splitDataValidos[fila] = splitData[fila];
 		}
 		if (splitDataValidos.length == cantAgrup) {
+			logger.debug(methodName+" - validacion data validos y cantidad columnas valida");
 			CBDataBancoModel bancoModel = new CBDataBancoModel();
 			CBDataBancoDAO cbd = new CBDataBancoDAO();
 			bancoModel.setcBCatalogoBancoId(Integer.toString(idBanco));
@@ -602,8 +603,8 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 			bancoModel.setComision(comisionConfronta);
 			bancoModel.setFormatofecha(getFormatoFecha());
 			logger.debug(
-					methodName + "\nbanco agencia confronta usuario tipo fechaCreacion idMaestro comisionConfronta");
-			logger.debug(methodName + idBanco + " " + idAgencia + " " + idConfronta + " " + user + " " + tipo + " "
+					methodName + "banco agencia confronta usuario tipo fechaCreacion idMaestro comisionConfronta");
+			logger.debug(methodName + " - " + idBanco + " " + idAgencia + " " + idConfronta + " " + user + " " + tipo + " "
 					+ fechaCreacion + " " + idMaestro + " " + comisionConfronta + "\n");
 			for (int countRec = 0; countRec < splitDataValidos.length; countRec++) {
 				String valueToSave = splitNomCl[countRec];
@@ -820,11 +821,14 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 					&& ((bancoModel.getTelefono() != null && !bancoModel.getTelefono().equals(""))
 							|| (bancoModel.getCodCliente() != null && !bancoModel.getCodCliente().equals("")))) {
 				dataBancoModels.add(bancoModel);
+				logger.debug(methodName+" - se agrega data a DAO bancoModel");
 			} else {
+				logger.debug(methodName+" - telefono es vacio o null, codigo clientes es nulo o vacio");
 				enviarDataSinProcesar(strLine, nombreArchivo, user, idMaestro,
 						"Cantidad erronea de campos consulte la configuracion de la confronta");
 			}
 		} else {
+			logger.debug(methodName+" - NO es valida cantidad de columna config con las leidas");
 			enviarDataSinProcesar(strLine, nombreArchivo, user, idMaestro,
 					"Cantidad erronea de campos consulte la configuracion de la confronta");
 		}
