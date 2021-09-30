@@ -611,7 +611,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 				String strData = splitDataValidos[countRec];
 
 				strData = strData.replaceAll("\"", ""); // Agrega Carlos Godinez -> 27/06/2017
-
+				logger.debug(methodName+" - validando nomenclatura : "+valueToSave);
 				// Telefono Tipo 1
 				if ("T".equals(valueToSave)) {
 					logger.debug(methodName + "\n##Valor que lleva en la nomeclatura T = " + strData.trim());
