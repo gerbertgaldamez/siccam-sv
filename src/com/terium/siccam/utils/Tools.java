@@ -1,16 +1,19 @@
 package com.terium.siccam.utils;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import javax.lang.model.type.*;
 
 import org.apache.log4j.Logger;
@@ -18,9 +21,11 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.Combobox;
 
 import com.terium.siccam.controller.ConciliacionDetalleController;
+import com.terium.siccam.dao.CBAgenciaComercialDAO;
 import com.terium.siccam.dao.DetalleLogDAO;
 import com.terium.siccam.model.CBParametrosGeneralesModel;
 import com.terium.siccam.model.DetalleLogModel;
+import com.terium.siccam.composer.ControladorBase;
 
 import de.mhus.lib.core.logging.Log;
 
@@ -212,6 +217,35 @@ public class Tools {
 		}
 
 		return "";
+	}
+	
+	public static String obtenerCodAgencia(int cod_agencia){
+		
+		PreparedStatement ptmt = null;
+		ResultSet rst = null;
+		Connection con = null;
+		//CBParametrosGeneralesModel parametros = null;
+		
+		try{
+			con = ControladorBase.obtenerDtsPromo().getConnection();
+			ptmt = con.prepareStatement(Constantes.OBTENER_COD_AGENCIA);
+			ptmt.setInt(1, cod_agencia);
+			
+			if(rst.next()){
+				return rst.getString(Constantes.COD_AGENCIA);
+			}
+			
+		}catch(Exception e){
+			
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				
+			}
+		}
+		return null;
 	}
 
 }

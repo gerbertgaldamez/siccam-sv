@@ -31,6 +31,7 @@ public class Constantes {
 	public static final String SOLUCION = "SOLUCION";
 	public static final String TIPO_CIERRE = "TIPO_CIERRE";
 	public static final String URLWSPAGOS = "URLWSPAGOS";
+	public static final String COD_AGENCIA = "COD_AGENCIA";
 
 	/**
 	 * Formato de fecha
@@ -88,6 +89,8 @@ public class Constantes {
 
 	public static final String ENCABEZADO_ESTADO_CUENTA_TARJETA = "TIPO TARJETA|FECHA TRANSACCION|AFILIACION|TIPO|REFERENCIA|LIQUIDO|"
 			+ "COMISION|IVA COMISION|RETENCION|CONSUMO|ENTIDAD\n";
+	
+	public static final String OBTENER_COD_AGENCIA ="select cod_agencia from cb_agencias_confronta where cbbancoagenciaconfrontaid = ?";
 
 	/**
 	 * Iconos
