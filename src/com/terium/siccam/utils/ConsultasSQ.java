@@ -277,8 +277,8 @@ public class ConsultasSQ {
 			+ "       || RPAD (NVL (bundle, ' '), 2, ' ')   " + "       || RPAD (NVL (producto, ' '), 4, ' ')    "
 			+ "       || RPAD (NVL (empresa_grupo, ' '), 4, ' ')sap " + "  FROM cb_poliza_contable_vw "
 			+ " WHERE 1 = 1 ";
-	
-	public static final String OBTIENE_DATOS_SAP2 = "SELECT CBCONTABILIZACIONID, \r\n" + 
+	//para prueba
+	/*public static final String OBTIENE_DATOS_SAP2 = "SELECT CBCONTABILIZACIONID, \r\n" + 
 			"		cbestadocuentaid,\r\n" + 
 			"		nvl(clave_contabilizacion, '/') || chr(9)\r\n" + 
 			"		|| nvl(indicador_cme,'/') || chr(9)\r\n" + 
@@ -358,7 +358,37 @@ public class ConsultasSQ {
 			"	        || nvl(calc_auto_iva,'/') || chr(9)\r\n" + 
 			"		) lineaEncabezado, CBCATALOGOAGENCIAID\r\n" + 
 			"		FROM cb_poliza_contable_vw \r\n" + 
-			" 		WHERE 1 = 1 ";
+			" 		WHERE 1 = 1 ";*/
+	public static final String OBTIENE_DATOS_SAP2 = "SELECT CBCONTABILIZACIONID, cbestadocuentaid, (SELECT valor_objeto1 "
+			+ "             FROM cb_modulo_conciliacion_conf "
+			+ "            WHERE modulo = 'CONSULTA_CONTABILIZACION' "
+			+ "              AND cbmoduloconciliacionconfid = 38) "
+			+ "       || RPAD (NVL (secuencia, ' '), 6, ' ')    " + "       || '000' "
+			+ "       || RPAD (NVL (TO_CHAR (fecha, 'YYYYMMDD'), ' '), 8, ' ') "
+			+ "       || RPAD (NVL (TO_CHAR (fecha_ingresos, 'YYYYMMDD'), ' '), 8, ' ') "
+			+ "       || RPAD (NVL (texto, ' '), 25, ' ') " + "       || RPAD (NVL (referencia, ' '), 16, ' ') "
+			+ "       || RPAD (nvl(clave_contabilizacion, ' '), 2, ' ') " + "       || RPAD (nvl(cuenta,' '), 10, ' ') "
+			+ "       || RPAD (nvl(centro_costo,' '), 10, ' ') "
+			+ "       || RPAD (NVL (CENTRO_DE_BENEFICIO, ' '), 10, ' ')    "
+			+ "       || RPAD (NVL (division, ' '), 4, ' ') "
+			+ "       || RPAD (NVL (orden_de_proyecto, ' '), 12, ' ') "
+			+ "       || (SELECT RPAD (NVL(moneda,' '),5,' ') FROM CB_CATALOGO_AGENCIA "
+			+ "            WHERE CBCATALOGOAGENCIAID =cb_poliza_contable_vw.CBCATALOGOAGENCIAID ) "
+			+ "       || RPAD (NVL (tipo_de_cambio, ' '), 9, ' ')    "
+			+ "       || RPAD (NVL (fecha_de_conversion, ' '), 8, ' ') "
+			+ " 	|| RPAD (NVL (TO_CHAR (haber), ' '), 12, ' ') " + "       || RPAD (NVL (texto2, ' '), 50, ' ') "
+			+ "       || RPAD (nvl(indicador_iva, ' '), 2, ' ') "
+			+ "       || RPAD (NVL (indicador_cme, ' '), 2, ' ')   "
+			+ "       || RPAD (NVL (car_pa_segmento, ' '), 2, ' ')   "
+			+ "       || RPAD (NVL (car_pa_servicio, ' '), 3, ' ')    "
+			+ "       || RPAD (NVL (car_pa_tipo_trafico, ' '), 2, ' ')    "
+			+ "       || RPAD (NVL (car_pa_ambito, ' '), 2, ' ')   "
+			+ "       || RPAD (NVL (car_pa_licencia, ' '), 2, ' ')  "
+			+ "       || RPAD (NVL (car_pa_region, ' '), 2, ' ')   " + "       || RPAD (NVL (TIPO_DOCUMENTO, ' '), 2, ' ') " + "       || (RPAD (nvl(actividad, ' '), 10, ' ')) "
+			+ "       || RPAD (NVL (subtipo_linea, ' '), 2, ' ')    " + "       || RPAD (NVL (canal, ' '), 2, ' ')    "
+			+ "       || RPAD (NVL (bundle, ' '), 2, ' ')   " + "       || RPAD (NVL (producto, ' '), 4, ' ')    "
+			+ "       || RPAD (NVL (empresa_grupo, ' '), 4, ' ')sap, CBCATALOGOAGENCIAID " + "   FROM cb_poliza_contable_vw "
+			+ " WHERE 1 = 1 ";
 
 	public static final String OBTIENE_DATOS_SAP3 = "SELECT CBCONCILIACIONID, (SELECT RPAD (valor_objeto1, 21, '0') FROM cb_modulo_conciliacion_conf\r\n"
 			+ "WHERE modulo = 'APLICA_DESAPLICA_PAGOS' AND TIPO_OBJETO = 'PARAMETRO_APLICA') "
