@@ -645,6 +645,19 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 					// bancoModel.setTelefono(strData.trim());
 				}
 
+				
+				/*
+				 * TA para telefonos ALFANUMERICOS 29/09/2021
+				 */
+				
+				if ("TA".equals(valueToSave)) {
+					String telefonoAlfaNum = strData.trim();
+					if (telefonoAlfaNum.length() <= 10) {
+						System.out.println("Telefono alfanumerico: " + telefonoAlfaNum);
+						bancoModel.setTelefono(telefonoAlfaNum);
+					}
+				}
+				
 				// Codigo - Transaccion
 				if ("CT".equals(valueToSave)) {
 					String numeros = strData.trim();
