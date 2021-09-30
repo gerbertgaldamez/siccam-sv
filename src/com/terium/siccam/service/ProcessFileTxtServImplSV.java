@@ -199,11 +199,11 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 												}
 
 											}
-											
+
 											/*
 											 * TA para telefonos ALFANUMERICOS 29/09/2021
 											 */
-											
+
 											if ("TA".equals(nomenCla)) {
 												String telefonoAlfaNum = strLine1.substring(Integer.parseInt(posicion1),
 														Integer.parseInt(posicion2)).trim();
@@ -590,7 +590,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 			splitDataValidos[fila] = splitData[fila];
 		}
 		if (splitDataValidos.length == cantAgrup) {
-			logger.debug(methodName+" - validacion data validos y cantidad columnas valida");
+			logger.debug(methodName + " - validacion data validos y cantidad columnas valida");
 			CBDataBancoModel bancoModel = new CBDataBancoModel();
 			CBDataBancoDAO cbd = new CBDataBancoDAO();
 			bancoModel.setcBCatalogoBancoId(Integer.toString(idBanco));
@@ -602,16 +602,15 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 			bancoModel.setIdCargaMaestro(idMaestro);
 			bancoModel.setComision(comisionConfronta);
 			bancoModel.setFormatofecha(getFormatoFecha());
-			logger.debug(
-					methodName + "banco agencia confronta usuario tipo fechaCreacion idMaestro comisionConfronta");
-			logger.debug(methodName + " - " + idBanco + " " + idAgencia + " " + idConfronta + " " + user + " " + tipo + " "
-					+ fechaCreacion + " " + idMaestro + " " + comisionConfronta + "\n");
+			logger.debug(methodName + "banco agencia confronta usuario tipo fechaCreacion idMaestro comisionConfronta");
+			logger.debug(methodName + " - " + idBanco + " " + idAgencia + " " + idConfronta + " " + user + " " + tipo
+					+ " " + fechaCreacion + " " + idMaestro + " " + comisionConfronta + "\n");
 			for (int countRec = 0; countRec < splitDataValidos.length; countRec++) {
 				String valueToSave = splitNomCl[countRec];
 				String strData = splitDataValidos[countRec];
 
 				strData = strData.replaceAll("\"", ""); // Agrega Carlos Godinez -> 27/06/2017
-				logger.debug(methodName+" - validando nomenclatura : "+valueToSave);
+				logger.debug(methodName + " - validando nomenclatura : " + valueToSave);
 				// Telefono Tipo 1
 				if ("T".equals(valueToSave)) {
 					logger.debug(methodName + "\n##Valor que lleva en la nomeclatura T = " + strData.trim());
@@ -646,19 +645,20 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 					// bancoModel.setTelefono(strData.trim());
 				}
 
-				
 				/*
 				 * TA para telefonos ALFANUMERICOS 29/09/2021
 				 */
-				
+
 				if ("TA".equals(valueToSave)) {
+					logger.debug(methodName + " -  Valindando nomenclatura " + valueToSave);
 					String telefonoAlfaNum = strData.trim();
-					if (telefonoAlfaNum.length() <= 10) {
+					// if (telefonoAlfaNum.length() <= 10) { // se realiza cambio > 8
+					if (telefonoAlfaNum.length() > 8) {
 						logger.debug(methodName + " - Telefono alfanumerico: " + telefonoAlfaNum);
 						bancoModel.setTelefono(telefonoAlfaNum);
 					}
 				}
-				
+
 				// Codigo - Transaccion
 				if ("CT".equals(valueToSave)) {
 					String numeros = strData.trim();
@@ -821,14 +821,14 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 					&& ((bancoModel.getTelefono() != null && !bancoModel.getTelefono().equals(""))
 							|| (bancoModel.getCodCliente() != null && !bancoModel.getCodCliente().equals("")))) {
 				dataBancoModels.add(bancoModel);
-				logger.debug(methodName+" - se agrega data a DAO bancoModel");
+				logger.debug(methodName + " - se agrega data a DAO bancoModel");
 			} else {
-				logger.debug(methodName+" - telefono es vacio o null, codigo clientes es nulo o vacio");
+				logger.debug(methodName + " - telefono es vacio o null, codigo clientes es nulo o vacio");
 				enviarDataSinProcesar(strLine, nombreArchivo, user, idMaestro,
 						"Cantidad erronea de campos consulte la configuracion de la confronta");
 			}
 		} else {
-			logger.debug(methodName+" - NO es valida cantidad de columna config con las leidas");
+			logger.debug(methodName + " - NO es valida cantidad de columna config con las leidas");
 			enviarDataSinProcesar(strLine, nombreArchivo, user, idMaestro,
 					"Cantidad erronea de campos consulte la configuracion de la confronta");
 		}
