@@ -90,7 +90,9 @@ public class Constantes {
 	public static final String ENCABEZADO_ESTADO_CUENTA_TARJETA = "TIPO TARJETA|FECHA TRANSACCION|AFILIACION|TIPO|REFERENCIA|LIQUIDO|"
 			+ "COMISION|IVA COMISION|RETENCION|CONSUMO|ENTIDAD\n";
 	
-	public static final String OBTENER_COD_AGENCIA ="select cod_agencia from cb_agencias_confronta where cbbancoagenciaconfrontaid = ?";
+	public static final String OBTENER_COD_AGENCIA ="select cod_agencia from cb_agencias_confronta where cbbancoagenciaconfrontaid = ? ";
+	
+	public static final String OBTENER_COD_AGENCIA_REVERSA ="select cod_agencia from cb_pagos where cbpagosid = ? ";
 
 	/**
 	 * Iconos

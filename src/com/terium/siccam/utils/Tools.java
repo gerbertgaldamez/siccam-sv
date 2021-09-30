@@ -219,7 +219,7 @@ public class Tools {
 		return "";
 	}
 	
-	public static String obtenerCodAgencia(int cod_agencia){
+	public static String obtenerCodAgencia(String cod_agencia){
 		
 		PreparedStatement ptmt = null;
 		ResultSet rst = null;
@@ -229,7 +229,36 @@ public class Tools {
 		try{
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			ptmt = con.prepareStatement(Constantes.OBTENER_COD_AGENCIA);
-			ptmt.setInt(1, cod_agencia);
+			ptmt.setString(1, cod_agencia);
+			
+			if(rst.next()){
+				return rst.getString(Constantes.COD_AGENCIA);
+			}
+			
+		}catch(Exception e){
+			
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				
+			}
+		}
+		return null;
+	}
+	
+public static String obtenerCodAgenciaReversa(String cod_agencia){
+		
+		PreparedStatement ptmt = null;
+		ResultSet rst = null;
+		Connection con = null;
+		//CBParametrosGeneralesModel parametros = null;
+		
+		try{
+			con = ControladorBase.obtenerDtsPromo().getConnection();
+			ptmt = con.prepareStatement(Constantes.OBTENER_COD_AGENCIA_REVERSA);
+			ptmt.setString(1, cod_agencia);
 			
 			if(rst.next()){
 				return rst.getString(Constantes.COD_AGENCIA);

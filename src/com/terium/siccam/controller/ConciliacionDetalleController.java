@@ -1363,7 +1363,10 @@ public class ConciliacionDetalleController extends ControladorBase {
 		int cliente = detalle.getCliente() != null ? Integer.parseInt(detalle.getCliente()) : 0;
 
 		ReversaPagoRequest request = new ReversaPagoRequest();
-		request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
+		//request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
+		request.setBank_id(Tools.obtenerCodAgenciaReversa(Constantes.OBTENER_COD_AGENCIA_REVERSA));
+		request.setBank_id(Tools.obtenerCodAgencia(Constantes.OBTENER_COD_AGENCIA));
+		log.debug(methodName + " -  Codigo Agencia desaplicacion " );
 		request.setFecha_pago(fecha);
 		// request.setMonto(detalle.getMonto().doubleValue());
 		request.setMonto(detalle.getPendienteBanco().doubleValue());
@@ -1438,7 +1441,9 @@ public class ConciliacionDetalleController extends ControladorBase {
 		EjecutarPagoRequest request = new EjecutarPagoRequest();
 		// request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
 		log.debug(methodName + " -  Codigo Cliente  = " + cliente);
-		request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
+		//request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
+		request.setBank_id(Tools.obtenerCodAgencia(Constantes.OBTENER_COD_AGENCIA));
+		log.debug(methodName + " -  Codigo Agencia Aplicacion " );
 		request.setBill_ref_no(Constantes.BILL_REF_NO);
 		request.setFecha_pago(fecha);
 		request.setTelefono(cliente);
@@ -1547,7 +1552,9 @@ public class ConciliacionDetalleController extends ControladorBase {
 		obj.setAgencia(Tools.obtenerParametro(Constantes.AGENCIA, parametros));
 		obj.setBancoTarjetaDebito("");
 		obj.setCajero(Tools.obtenerParametro(Constantes.CAJERO, parametros));
-		obj.setCodBanco(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
+		//obj.setCodBanco(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
+		obj.setCodBanco(Tools.obtenerCodAgencia(Constantes.OBTENER_COD_AGENCIA));
+		obj.setCodBanco(Tools.obtenerCodAgenciaReversa(Constantes.OBTENER_COD_AGENCIA_REVERSA));
 		obj.setFecha(fecha);
 		obj.setHora(hora);
 		obj.setMontoChequeBanco(0);
