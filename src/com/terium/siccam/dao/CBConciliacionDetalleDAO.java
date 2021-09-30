@@ -346,5 +346,63 @@ public class CBConciliacionDetalleDAO {
 			}
 		}
 	}
+	
+public static String obtenerCodAgencia(String cod_agencia){
+		
+		PreparedStatement ptmt = null;
+		ResultSet rst = null;
+		Connection con = null;
+		//CBParametrosGeneralesModel parametros = null;
+		
+		try{
+			con = ControladorBase.obtenerDtsPromo().getConnection();
+			ptmt = con.prepareStatement(Constantes.OBTENER_COD_AGENCIA);
+			ptmt.setString(1, cod_agencia);
+			
+			if(rst.next()){
+				return rst.getString(Constantes.CB_BANCO_AGENCIA_CONFRONTA_ID);
+			}
+			
+		}catch(Exception e){
+			
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				
+			}
+		}
+		return null;
+	}
+	
+public static String obtenerCodAgenciaReversa(String cod_agencia){
+		
+		PreparedStatement ptmt = null;
+		ResultSet rst = null;
+		Connection con = null;
+		//CBParametrosGeneralesModel parametros = null;
+		
+		try{
+			con = ControladorBase.obtenerDtsPromo().getConnection();
+			ptmt = con.prepareStatement(Constantes.OBTENER_COD_AGENCIA_REVERSA);
+			ptmt.setString(1, cod_agencia);
+			
+			if(rst.next()){
+				return rst.getString(Constantes.CB_PAGOS_ID);
+			}
+			
+		}catch(Exception e){
+			
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				
+			}
+		}
+		return null;
+	}
 
 }

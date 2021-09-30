@@ -31,7 +31,8 @@ public class Constantes {
 	public static final String SOLUCION = "SOLUCION";
 	public static final String TIPO_CIERRE = "TIPO_CIERRE";
 	public static final String URLWSPAGOS = "URLWSPAGOS";
-	public static final String COD_AGENCIA = "COD_AGENCIA";
+	public static final String CB_BANCO_AGENCIA_CONFRONTA_ID = "CBBANCOAGENCIACONFRONTAID";
+	public static final String CB_PAGOS_ID = "CBPAGOSID";
 
 	/**
 	 * Formato de fecha
