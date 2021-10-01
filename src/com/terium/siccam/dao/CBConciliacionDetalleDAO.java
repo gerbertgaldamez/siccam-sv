@@ -15,6 +15,7 @@ import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.controller.ConciliacionController;
 import com.terium.siccam.model.CBConciliacionDetallada;
 import com.terium.siccam.model.CBParametrosGeneralesModel;
+import com.terium.siccam.model.CBResumenDiarioConciliacionModel;
 import com.terium.siccam.utils.Constantes;
 
 public class CBConciliacionDetalleDAO {
@@ -353,8 +354,8 @@ public static String obtenerCodAgencia(String cbBancoAgenciaConfrontaID){
 		PreparedStatement ptmt = null;
 		ResultSet rst = null;
 		Connection con = null;
-		CBParametrosGeneralesModel parametros = null;
-		
+		//CBParametrosGeneralesModel parametros = null;
+		CBResumenDiarioConciliacionModel resumen = null;
 		try{
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			ptmt = con.prepareStatement(Constantes.OBTENER_COD_AGENCIA);
@@ -363,18 +364,19 @@ public static String obtenerCodAgencia(String cbBancoAgenciaConfrontaID){
 			logger.debug("obtenerCodAgencia() " + " - Query obtener cod agencia en la dao => : " + Constantes.OBTENER_COD_AGENCIA);
 			rst = ptmt.executeQuery();
 			if(rst.next()){
-				return rst.getString(parametros.getcodAgencia());
+				//return rst.getString(1);
+				return rst.getString(resumen.getIdAgencia());
 				
 			}
 			
 		}catch(Exception e){
-			
+			logger.error( e);
 		} finally {
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				
+				logger.error( e);
 			}
 		}
 		return null;
@@ -385,26 +387,30 @@ public static String obtenerCodAgenciaReversa(String cbBancoAgenciaConfrontaID){
 		PreparedStatement ptmt = null;
 		ResultSet rst = null;
 		Connection con = null;
-		CBParametrosGeneralesModel parametros = null;
+		//CBParametrosGeneralesModel parametros = null;
+		CBResumenDiarioConciliacionModel resumen = null;
+		
+		
 		
 		try{
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			ptmt = con.prepareStatement(Constantes.OBTENER_COD_AGENCIA_REVERSA);
 			ptmt.setString(1, cbBancoAgenciaConfrontaID);
-			logger.debug("obtenerCodAgenciaReversa() " + " - Query obtener cod agencia en la dao => : " + Constantes.OBTENER_COD_AGENCIA);
+			
 			rst = ptmt.executeQuery();
 			if(rst.next()){
-				return rst.getString(parametros.getcodAgencia());
+				//return rst.getString(1);
+				return rst.getString(resumen.getIdAgencia());
 			}
 			
 		}catch(Exception e){
-			
+			logger.error( e);
 		} finally {
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				
+				logger.error( e);
 			}
 		}
 		return null;

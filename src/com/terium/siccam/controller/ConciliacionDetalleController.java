@@ -201,6 +201,8 @@ public class ConciliacionDetalleController extends ControladorBase {
 				cmbAgencia.setText("Todas");
 				cmbTipo.setText("TODOS");
 				conciliacion = null;
+				
+				
 
 			}
 
@@ -1364,9 +1366,10 @@ public class ConciliacionDetalleController extends ControladorBase {
     
 		ReversaPagoRequest request = new ReversaPagoRequest();
 		//request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
-		request.setBank_id(CBConciliacionDetalleDAO.obtenerCodAgenciaReversa(Constantes.OBTENER_COD_AGENCIA_REVERSA));
+		String codagencia = conciliacion.getIdAgencia();
+		request.setBank_id(CBConciliacionDetalleDAO.obtenerCodAgenciaReversa(codagencia));
 		//request.setBank_id(CBConciliacionDetalleDAO.obtenerCodAgencia(Constantes.OBTENER_COD_AGENCIA));
-		log.debug(methodName + " -  Codigo Agencia desaplicacion " + CBConciliacionDetalleDAO.obtenerCodAgenciaReversa(Constantes.OBTENER_COD_AGENCIA_REVERSA) );
+		//log.debug(methodName + " -  Codigo Agencia desaplicacion " + CBConciliacionDetalleDAO.obtenerCodAgenciaReversa(Constantes.OBTENER_COD_AGENCIA_REVERSA) );
 		request.setFecha_pago(fecha);
 		// request.setMonto(detalle.getMonto().doubleValue());
 		request.setMonto(detalle.getPendienteBanco().doubleValue());
@@ -1553,8 +1556,8 @@ public class ConciliacionDetalleController extends ControladorBase {
 		obj.setBancoTarjetaDebito("");
 		obj.setCajero(Tools.obtenerParametro(Constantes.CAJERO, parametros));
 		//obj.setCodBanco(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
-		obj.setCodBanco(CBConciliacionDetalleDAO.obtenerCodAgencia(Constantes.OBTENER_COD_AGENCIA));
-		obj.setCodBanco(CBConciliacionDetalleDAO.obtenerCodAgenciaReversa(Constantes.OBTENER_COD_AGENCIA_REVERSA));
+		obj.setCodBanco(CBConciliacionDetalleDAO.obtenerCodAgencia(Constantes.CBBANCOAGENCIACONFRONTAID));
+		obj.setCodBanco(CBConciliacionDetalleDAO.obtenerCodAgenciaReversa(Constantes.CBBANCOAGENCIACONFRONTAID));
 		obj.setFecha(fecha);
 		obj.setHora(hora);
 		obj.setMontoChequeBanco(0);
