@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.controller.ConciliacionController;
 import com.terium.siccam.model.CBConciliacionDetallada;
+import com.terium.siccam.model.CBParametrosGeneralesModel;
 import com.terium.siccam.utils.Constantes;
 
 public class CBConciliacionDetalleDAO {
@@ -347,20 +348,23 @@ public class CBConciliacionDetalleDAO {
 		}
 	}
 	
-public static String obtenerCodAgencia(String cod_agencia){
+public static String obtenerCodAgencia(String cbBancoAgenciaConfrontaID){
 		
 		PreparedStatement ptmt = null;
 		ResultSet rst = null;
 		Connection con = null;
-		//CBParametrosGeneralesModel parametros = null;
+		CBParametrosGeneralesModel parametros = null;
 		
 		try{
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			ptmt = con.prepareStatement(Constantes.OBTENER_COD_AGENCIA);
-			ptmt.setString(1, cod_agencia);
+			ptmt.setString(1, cbBancoAgenciaConfrontaID);
+			
+			logger.debug("obtenerCodAgencia() " + " - Query obtener cod agencia en la dao => : " + Constantes.OBTENER_COD_AGENCIA);
 			
 			if(rst.next()){
-				return rst.getString(Constantes.CB_BANCO_AGENCIA_CONFRONTA_ID);
+				return rst.getString(parametros.getcodAgencia());
+				
 			}
 			
 		}catch(Exception e){
@@ -376,20 +380,21 @@ public static String obtenerCodAgencia(String cod_agencia){
 		return null;
 	}
 	
-public static String obtenerCodAgenciaReversa(String cod_agencia){
+public static String obtenerCodAgenciaReversa(String cbBancoAgenciaConfrontaID){
 		
 		PreparedStatement ptmt = null;
 		ResultSet rst = null;
 		Connection con = null;
-		//CBParametrosGeneralesModel parametros = null;
+		CBParametrosGeneralesModel parametros = null;
 		
 		try{
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			ptmt = con.prepareStatement(Constantes.OBTENER_COD_AGENCIA_REVERSA);
-			ptmt.setString(1, cod_agencia);
+			ptmt.setString(1, cbBancoAgenciaConfrontaID);
+			logger.debug("obtenerCodAgenciaReversa() " + " - Query obtener cod agencia en la dao => : " + Constantes.OBTENER_COD_AGENCIA);
 			
 			if(rst.next()){
-				return rst.getString(Constantes.CB_PAGOS_ID);
+				return rst.getString(parametros.getcodAgencia());
 			}
 			
 		}catch(Exception e){

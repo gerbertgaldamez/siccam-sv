@@ -15,8 +15,18 @@ public class CBParametrosGeneralesModel {
 	private int idCausaConciliacion;
 	private String convenio;
 	
+	private String codAgencia;
 	
 	
+	
+	public String getcodAgencia() {
+		return codAgencia;
+	}
+
+	public void setcodAgencia(String codAgencia) {
+		this.codAgencia = codAgencia;
+	}
+
 	public CBParametrosGeneralesModel(){
 	}
 

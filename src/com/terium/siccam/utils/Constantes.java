@@ -93,7 +93,8 @@ public class Constantes {
 	
 	public static final String OBTENER_COD_AGENCIA ="select cod_agencia from cb_agencias_confronta where cbbancoagenciaconfrontaid = ? ";
 	
-	public static final String OBTENER_COD_AGENCIA_REVERSA ="select cod_agencia from cb_pagos where cbpagosid = ? ";
+	//public static final String OBTENER_COD_AGENCIA_REVERSA ="select cod_agencia from cb_pagos where cbpagosid = ? ";
+	public static final String OBTENER_COD_AGENCIA_REVERSA ="select cod_agencia from cb_agencias_confronta where cbbancoagenciaconfrontaid = ? ";
 
 	/**
 	 * Iconos
