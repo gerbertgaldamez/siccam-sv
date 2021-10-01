@@ -361,7 +361,7 @@ public static String obtenerCodAgencia(String cbBancoAgenciaConfrontaID){
 			ptmt.setString(1, cbBancoAgenciaConfrontaID);
 			
 			logger.debug("obtenerCodAgencia() " + " - Query obtener cod agencia en la dao => : " + Constantes.OBTENER_COD_AGENCIA);
-			
+			rst = ptmt.executeQuery();
 			if(rst.next()){
 				return rst.getString(parametros.getcodAgencia());
 				
@@ -392,7 +392,7 @@ public static String obtenerCodAgenciaReversa(String cbBancoAgenciaConfrontaID){
 			ptmt = con.prepareStatement(Constantes.OBTENER_COD_AGENCIA_REVERSA);
 			ptmt.setString(1, cbBancoAgenciaConfrontaID);
 			logger.debug("obtenerCodAgenciaReversa() " + " - Query obtener cod agencia en la dao => : " + Constantes.OBTENER_COD_AGENCIA);
-			
+			rst = ptmt.executeQuery();
 			if(rst.next()){
 				return rst.getString(parametros.getcodAgencia());
 			}

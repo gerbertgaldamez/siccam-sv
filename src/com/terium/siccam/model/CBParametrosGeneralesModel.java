@@ -16,9 +16,17 @@ public class CBParametrosGeneralesModel {
 	private String convenio;
 	
 	private String codAgencia;
+	private String cbbancoagenciaconfrontaid;
 	
 	
-	
+	public String getCbbancoagenciaconfrontaid() {
+		return cbbancoagenciaconfrontaid;
+	}
+
+	public void setCbbancoagenciaconfrontaid(String cbbancoagenciaconfrontaid) {
+		this.cbbancoagenciaconfrontaid = cbbancoagenciaconfrontaid;
+	}
+
 	public String getcodAgencia() {
 		return codAgencia;
 	}

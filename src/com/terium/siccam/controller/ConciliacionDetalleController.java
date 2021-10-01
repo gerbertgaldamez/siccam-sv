@@ -1361,7 +1361,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 		String fecha = fechaFormato.format(objFecha);
 		log.debug(methodName + " -  inicia ");
 		int cliente = detalle.getCliente() != null ? Integer.parseInt(detalle.getCliente()) : 0;
-
+    
 		ReversaPagoRequest request = new ReversaPagoRequest();
 		//request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
 		request.setBank_id(CBConciliacionDetalleDAO.obtenerCodAgenciaReversa(Constantes.OBTENER_COD_AGENCIA_REVERSA));
