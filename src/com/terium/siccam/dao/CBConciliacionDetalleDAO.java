@@ -398,9 +398,12 @@ public static String obtenerCodAgenciaReversa(String cbBancoAgenciaConfrontaID){
 			ptmt.setString(1, cbBancoAgenciaConfrontaID);
 			
 			rst = ptmt.executeQuery();
+			
 			if(rst.next()){
 				//return rst.getString(1);
+				//logger.debug("obtenerCodAgenciaReversa ->" + "se obtiene el cod agencia " + resumen.getIdAgencia());
 				return rst.getString(resumen.getIdAgencia());
+				
 			}
 			
 		}catch(Exception e){
@@ -413,7 +416,9 @@ public static String obtenerCodAgenciaReversa(String cbBancoAgenciaConfrontaID){
 				logger.error( e);
 			}
 		}
+		logger.debug("obtenerCodAgenciaReversa ->" + " el cod agencia es null " );
 		return null;
+		
 	}
 
 }

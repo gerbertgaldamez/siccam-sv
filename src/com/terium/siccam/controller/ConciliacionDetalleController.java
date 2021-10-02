@@ -1367,7 +1367,10 @@ public class ConciliacionDetalleController extends ControladorBase {
 		ReversaPagoRequest request = new ReversaPagoRequest();
 		//request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
 		String codagencia = conciliacion.getIdAgencia();
+		
+		log.debug(methodName + " -  el cogigo agencia = " + codagencia);
 		request.setBank_id(CBConciliacionDetalleDAO.obtenerCodAgenciaReversa(codagencia));
+		
 		//request.setBank_id(CBConciliacionDetalleDAO.obtenerCodAgencia(Constantes.OBTENER_COD_AGENCIA));
 		//log.debug(methodName + " -  Codigo Agencia desaplicacion " + CBConciliacionDetalleDAO.obtenerCodAgenciaReversa(Constantes.OBTENER_COD_AGENCIA_REVERSA) );
 		request.setFecha_pago(fecha);
