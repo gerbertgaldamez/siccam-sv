@@ -1368,7 +1368,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 		ReversaPagoRequest request = new ReversaPagoRequest();
 		//request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
 		//String idpago = CBParametrosGeneralesModel.FIELD_CBPAGOSID;
-		String conciliacionid = conciliacionDetalle.getConciliacionId();
+		String conciliacionid = detalle.getConciliacionId();
 		
 		log.debug(methodName + " -  el concilacionid = " + conciliacionid);
 		request.setBank_id(CBConciliacionDetalleDAO.obtenerCodAgenciaReversa(conciliacionid));
@@ -1566,7 +1566,14 @@ public class ConciliacionDetalleController extends ControladorBase {
 		obj.setCajero(Tools.obtenerParametro(Constantes.CAJERO, parametros));
 		//obj.setCodBanco(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
 		String codagencia = conciliacion.getIdAgencia();
-		obj.setCodBanco(codagencia);
+		String conciliacionid = conciliacionDetalle.getConciliacionId();
+		//obj.setCodBanco(conciliacionid);
+		//obj.setCodBanco(codagencia);
+		if(conciliacionid !=null){
+			obj.setCodBanco(conciliacionid);
+		}else if(codagencia !=null){
+			obj.setCodBanco(codagencia);
+		}
 		//obj.setCodBanco(CBConciliacionDetalleDAO.obtenerCodAgenciaReversa(Constantes.CBBANCOAGENCIACONFRONTAID));
 		obj.setFecha(fecha);
 		obj.setHora(hora);
