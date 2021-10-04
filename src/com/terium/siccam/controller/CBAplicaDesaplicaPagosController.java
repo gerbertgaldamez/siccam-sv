@@ -13,9 +13,9 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.zkoss.zk.ui.Component;
 
 import org.zkoss.zk.ui.util.Clients;
@@ -34,6 +34,7 @@ import org.zkoss.zul.Messagebox;
 
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBAplicaDesaplicaPagosDAO;
+import com.terium.siccam.dao.CBDataSinProcesarDAO;
 import com.terium.siccam.dao.CBParametrosGeneralesDAO;
 import com.terium.siccam.model.CBAplicaDesaplicaModel;
 import com.terium.siccam.model.CBCatalogoAgenciaModel;
@@ -49,6 +50,9 @@ public class CBAplicaDesaplicaPagosController extends ControladorBase {
 	 * creador Ovidio Santos
 	 */
 	private static final long serialVersionUID = 1L;
+
+	private static Logger logger = Logger.getLogger(CBAplicaDesaplicaPagosController.class);
+
 	Combobox cmbAgencia;
 	Combobox cmbBanco;
 	Checkbox ckbDeleteAll;
@@ -98,8 +102,8 @@ public class CBAplicaDesaplicaPagosController extends ControladorBase {
 			tipo = cmbTipo.getSelectedItem().getValue();
 		}
 		if (dtbDia.getValue() == null) {
-			Messagebox.show("Debe ingresar la fecha de inicio antes de consultar datos.", Constantes.ATENCION, Messagebox.OK,
-					Messagebox.EXCLAMATION);
+			Messagebox.show("Debe ingresar la fecha de inicio antes de consultar datos.", Constantes.ATENCION,
+					Messagebox.OK, Messagebox.EXCLAMATION);
 			return;
 		} else if (dtbDia2.getValue() == null) {
 			Messagebox.show("Debe ingresar la fecha fin antes de consultar datos.", Constantes.ATENCION, Messagebox.OK,
@@ -124,8 +128,7 @@ public class CBAplicaDesaplicaPagosController extends ControladorBase {
 		DateFormat fechaHora = new SimpleDateFormat(Constantes.FORMATO_FECHA1);
 
 		if (list.isEmpty()) {
-			Logger.getLogger(CBAplicaDesaplicaPagosController.class.getName()).log(Level.INFO,
-					"La lista se enuentra vacia para cargar detalle");
+			logger.debug("llenaDestalle() - " + "La lista se enuentra vacia para cargar detalle");
 		} else {
 			Iterator<CBAplicaDesaplicaModel> it = list.iterator();
 
@@ -293,7 +296,7 @@ public class CBAplicaDesaplicaPagosController extends ControladorBase {
 					cell.setTooltip("popAsociacion");
 				}
 
-				cell = new Listcell();				
+				cell = new Listcell();
 				ckbDeleteAll.setTooltiptext("MarcarTodos");
 				ckbDeleteAll.setParent(cell);
 
@@ -314,8 +317,7 @@ public class CBAplicaDesaplicaPagosController extends ControladorBase {
 		if (ckbDeleteAll.isChecked()) {
 
 			List<Listitem> list = lbxlistado.getItems();
-			Logger.getLogger(CBAplicaDesaplicaPagosController.class.getName()).log(Level.INFO,
-					"listado tama;o ", list.size());
+			logger.debug("onCheck$ckbDeleteAll() - " + "listado tamaño : " + list.size());
 			if (!list.isEmpty()) {
 				detallesSeleccionados = new ArrayList<CBAplicaDesaplicaModel>();
 				for (Listitem lista : list) {
@@ -344,8 +346,7 @@ public class CBAplicaDesaplicaPagosController extends ControladorBase {
 	}
 
 	public void onClick$btnExcel() {
-		Logger.getLogger(CBAplicaDesaplicaPagosController.class.getName()).log(Level.INFO,
-				"Generando reporte Aplica desaplica pagos...");
+		logger.debug("onClick$btnExcel() - " + "Generando reporte Aplica desaplica pagos...");
 		int contador = 0;
 		List<CBAplicaDesaplicaModel> list = new ArrayList<CBAplicaDesaplicaModel>();
 
@@ -363,9 +364,9 @@ public class CBAplicaDesaplicaPagosController extends ControladorBase {
 				list.add(objModel);
 			}
 		}
-		
+
 		generarReporte(list);
-		
+
 	}
 
 	public void generarReporte(List<CBAplicaDesaplicaModel> list) {
@@ -373,13 +374,13 @@ public class CBAplicaDesaplicaPagosController extends ControladorBase {
 		try {
 			Date fecha = new Date();
 			SimpleDateFormat sdf = new SimpleDateFormat(Constantes.FORMATO_FECHA2);
-			
 
 			File archivo = new File(Constantes.REPORTE_APLICADESAPLICA + sdf.format(fecha) + Constantes.CSV);
-			
+
 			if (!archivo.exists()) {
-				if(archivo.createNewFile())
-					Logger.getLogger(CBAplicaDesaplicaPagosController.class.getName()).log(Level.INFO, "Archivo creado de forma correcta");
+				if (archivo.createNewFile())
+					logger.debug("onClick$btnExcel() - " + "Archivo creado de forma correcta");
+
 			}
 			bw = new BufferedWriter(new FileWriter(archivo));
 			bw.write(Constantes.ENCABEZADO_APLICADESAPLICA);
@@ -404,28 +405,29 @@ public class CBAplicaDesaplicaPagosController extends ControladorBase {
 						+ "|" + (objModelReporte.getMonto_comision()) + "|" + (objModelReporte.getEstado()) + "\n");
 
 			}
-			Logger.getLogger(CBAplicaDesaplicaPagosController.class.getName()).log(Level.INFO, "Descarga exitosa del archivo generado...");
-		
+
+			logger.debug("generarReporte() - " + "Archivo creado de forma correcta");
+
 			Filedownload.save(archivo, null);
 			Messagebox.show("Reporte generado de manera exitosa, el archivo ha sido descargado", Constantes.ATENCION,
 					Messagebox.OK, Messagebox.INFORMATION);
 			Clients.clearBusy();
 
 		} catch (Exception e) {
-			Logger.getLogger(CBAplicaDesaplicaPagosController.class.getName()).log(Level.SEVERE, null, e);
+			logger.error("generarReporte() - Error ", e);
 		} finally {
 			if (bw != null) {
 				try {
 					bw.close();
 				} catch (IOException e) {
-					Logger.getLogger(CBAplicaDesaplicaPagosController.class.getName()).log(Level.SEVERE, null, e);
+					logger.error("generarReporte() - Error ** ", e);
 				}
 			}
 		}
 	}
 
 	////////////////////////////////
-	private CBAplicaDesaplicaModel calcularPendienteConciliarTelefonica(CBAplicaDesaplicaModel obj) {		
+	private CBAplicaDesaplicaModel calcularPendienteConciliarTelefonica(CBAplicaDesaplicaModel obj) {
 		BigDecimal conciliarTelefonica;
 		BigDecimal impPago = obj.getImpPago();
 		BigDecimal monto = obj.getMonto();
@@ -434,7 +436,7 @@ public class CBAplicaDesaplicaPagosController extends ControladorBase {
 		conciliarTelefonica = monto.subtract(impPago);
 		conciliarTelefonica = conciliarTelefonica.subtract(manual);
 
-		obj.setPendienteTelefonica(conciliarTelefonica);		
+		obj.setPendienteTelefonica(conciliarTelefonica);
 
 		return obj;
 	}
@@ -515,20 +517,19 @@ public class CBAplicaDesaplicaPagosController extends ControladorBase {
 				item.setValue(obj.getValorObjeto1());
 				item.setParent(cmbTipo);
 			}
-			Logger.getLogger(ConciliacionController.class.getName()).log(Level.INFO, 
-					"- Llena combo tipo");
+			logger.debug("llenaComboTipo()  " + "- Llena combo tipo");
 		} else {
 			Messagebox.show("Error al cargar la configuracion de tipos de conciliacion", "ATENCION", Messagebox.OK,
 					Messagebox.EXCLAMATION);
 		}
 	}
-	
 
 	public void llenaComboTipoEstado() {
-		Logger.getLogger(CBAplicaDesaplicaPagosController.class.getName()).log(Level.INFO, "Llena combo tipo estado");
+		logger.debug("llenaComboTipoEstado()  " + "Llena combo tipo estado");
+
 		limpiaCombobox(cmbEstado);
 
-		CBAplicaDesaplicaPagosDAO objeDAO = new CBAplicaDesaplicaPagosDAO();		
+		CBAplicaDesaplicaPagosDAO objeDAO = new CBAplicaDesaplicaPagosDAO();
 		lstAplicaDesaplica = objeDAO.obtenerEstadoCmb("ESTADO");
 		cmbEstado.getText();
 		for (CBParametrosGeneralesModel d : lstAplicaDesaplica) {
@@ -595,9 +596,9 @@ public class CBAplicaDesaplicaPagosController extends ControladorBase {
 			List<CBAplicaDesaplicaModel> listaSapModel = cbaidao.obtienDatosSAP2(tipo, idAgencia, estado,
 					formato.format(dtbDia.getValue()), formato.format(dtbDia2.getValue()));
 			List<String> listaSapArchivo = new ArrayList<String>();
-			
-			Logger.getLogger(CBAplicaDesaplicaPagosController.class.getName()).log(Level.INFO,
-					"tama;o de lista sap ", listaSapModel.size() + listaSapArchivo.size());
+
+			logger.debug("onClick$btnAplicaDesaplica() - " + " tamaño de lista sap " + listaSapModel.size()
+					+ listaSapArchivo.size());
 			if (listaSapModel != null && listaSapModel.size() > 0) {
 
 				int contCheck = 0;
@@ -606,12 +607,12 @@ public class CBAplicaDesaplicaPagosController extends ControladorBase {
 					if (item1.isSelected()) {
 						contCheck++;
 						int idSeleccionado = Integer.parseInt(objListboxModel.getConciliacionId());
-						Logger.getLogger(CBAplicaDesaplicaPagosController.class.getName()).log(Level.INFO,
-								"entra al contcheck = 0");
+						logger.debug("onClick$btnAplicaDesaplica() - " + "entra al contcheck = 0");
+
 						for (CBAplicaDesaplicaModel objSAP : listaSapModel) {
 							if (idSeleccionado == objSAP.getIdSAP()) {
-								Logger.getLogger(CBAplicaDesaplicaPagosController.class.getName()).log(Level.INFO,
-										"idseleccionado + objsap.getidsap ", idSeleccionado + objSAP.getIdSAP());
+								logger.debug("onClick$btnAplicaDesaplica() - " + "idseleccionado - objsap.getidsap "
+										+ idSeleccionado + objSAP.getIdSAP());
 								listaSapArchivo.add(objSAP.getLineaSAP());
 							}
 						}
@@ -619,20 +620,19 @@ public class CBAplicaDesaplicaPagosController extends ControladorBase {
 					}
 				}
 				if (contCheck == 0) {
-
-					Logger.getLogger(CBAplicaDesaplicaPagosController.class.getName()).log(Level.INFO,
-							"entra al contcheck == 0");
+					logger.debug("onClick$btnAplicaDesaplica() " + " - entra al contcheck == 0");
 					for (CBAplicaDesaplicaModel objSAP : listaSapModel) {
 						listaSapArchivo.add(objSAP.getLineaSAP());
 					}
 				}
 				generaArchivoSAP(listaSapArchivo);
 			} else {
-				Logger.getLogger(CBAplicaDesaplicaPagosController.class.getName()).log(Level.INFO,"Lista SAP esta vacia.");
+				logger.debug("onClick$btnAplicaDesaplica() - " + "Lista SAP esta vacia.");
+
 			}
 		} else {
-			Messagebox.show("Primero debe consultar informacion para generar el archivo", Constantes.ATENCION, Messagebox.OK,
-					Messagebox.EXCLAMATION);
+			Messagebox.show("Primero debe consultar informacion para generar el archivo", Constantes.ATENCION,
+					Messagebox.OK, Messagebox.EXCLAMATION);
 		}
 
 	}
@@ -644,8 +644,7 @@ public class CBAplicaDesaplicaPagosController extends ControladorBase {
 			if (list != null && list.size() > 0) {
 
 				Iterator<String> it = list.iterator();
-				Logger.getLogger(CBAplicaDesaplicaPagosController.class.getName()).log(Level.INFO,
-						StringUtils.rightPad("change", 20, " "));
+				logger.debug("generaArchivoSAP() - " + StringUtils.rightPad("change", 20, " "));
 				Date fecha = new Date();
 
 				SimpleDateFormat sdf2 = new SimpleDateFormat(Constantes.FORMATO_FECHA3);
@@ -662,9 +661,8 @@ public class CBAplicaDesaplicaPagosController extends ControladorBase {
 					String bean = it.next() + "\n";
 					bw.write(bean);
 				}
-				
-				Logger.getLogger(CBAplicaDesaplicaPagosController.class.getName()).log(Level.INFO,
-						"ARCHIVO .txt GENERADO CON EXITO");
+				logger.debug("ARCHIVO .txt GENERADO CON EXITO");
+
 				/**
 				 * Descarga de archivo SAP
 				 */
@@ -677,19 +675,18 @@ public class CBAplicaDesaplicaPagosController extends ControladorBase {
 						Messagebox.EXCLAMATION);
 			}
 
-		} catch (IOException e) {			
-			Logger.getLogger(CBAplicaDesaplicaPagosController.class.getName()).log(Level.SEVERE, null, e);
+		} catch (IOException e) {
+			logger.error("ERROR : ", e);
 
-		}finally {
-			if(bw != null)
+		} finally {
+			if (bw != null)
 				try {
 					bw.close();
 				} catch (IOException e) {
-					Logger.getLogger(CBAplicaDesaplicaPagosController.class.getName()).log(Level.SEVERE, null, e);
+					logger.error("ERROR * : ", e);
 				}
 		}
-		Logger.getLogger(CBAplicaDesaplicaPagosController.class.getName()).log(Level.INFO,
-				"\n==== FIN GENERACION DE ARCHIVO SAP ====\n");
+		logger.debug("\n==== FIN GENERACION DE ARCHIVO SAP ====\n");
 	}
 
 }
