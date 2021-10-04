@@ -361,11 +361,11 @@ public static String obtenerCodAgencia(String cbBancoAgenciaConfrontaID){
 			ptmt = con.prepareStatement(Constantes.OBTENER_COD_AGENCIA);
 			ptmt.setString(1, cbBancoAgenciaConfrontaID);
 			
-			logger.debug("obtenerCodAgencia() " + " - Query obtener cod agencia en la dao => : " + Constantes.OBTENER_COD_AGENCIA);
+			//logger.debug("obtenerCodAgencia() " + " - Query obtener cod agencia en la dao => : " + Constantes.OBTENER_COD_AGENCIA);
 			rst = ptmt.executeQuery();
 			if(rst.next()){
 				//return rst.getString(1);
-				return rst.getString(resumen.getIdAgencia());
+				return rst.getString(Constantes.FIELD_COD_AGENCIA );
 				
 			}
 			
@@ -382,7 +382,7 @@ public static String obtenerCodAgencia(String cbBancoAgenciaConfrontaID){
 		return null;
 	}
 	
-public static String obtenerCodAgenciaReversa(String cbBancoAgenciaConfrontaID){
+public static String obtenerCodAgenciaReversa(String conciliacionid){
 		
 		PreparedStatement ptmt = null;
 		ResultSet rst = null;
@@ -395,14 +395,14 @@ public static String obtenerCodAgenciaReversa(String cbBancoAgenciaConfrontaID){
 		try{
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			ptmt = con.prepareStatement(Constantes.OBTENER_COD_AGENCIA_REVERSA);
-			ptmt.setString(1, cbBancoAgenciaConfrontaID);
+			ptmt.setString(1, conciliacionid);
 			
 			rst = ptmt.executeQuery();
 			
 			if(rst.next()){
 				//return rst.getString(1);
 				//logger.debug("obtenerCodAgenciaReversa ->" + "se obtiene el cod agencia " + resumen.getIdAgencia());
-				return rst.getString(resumen.getIdAgencia());
+				return rst.getString(Constantes.FIELD_COD_AGENCIA);
 				
 			}
 			

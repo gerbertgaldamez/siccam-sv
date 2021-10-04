@@ -15,25 +15,8 @@ public class CBParametrosGeneralesModel {
 	private int idCausaConciliacion;
 	private String convenio;
 	
-	private String codAgencia;
-	private String cbbancoagenciaconfrontaid;
-	
-	
-	public String getCbbancoagenciaconfrontaid() {
-		return cbbancoagenciaconfrontaid;
-	}
-
-	public void setCbbancoagenciaconfrontaid(String cbbancoagenciaconfrontaid) {
-		this.cbbancoagenciaconfrontaid = cbbancoagenciaconfrontaid;
-	}
-
-	public String getcodAgencia() {
-		return codAgencia;
-	}
-
-	public void setcodAgencia(String codAgencia) {
-		this.codAgencia = codAgencia;
-	}
+	public final static String TABLE = "cb_pagos"; 
+    public final static String FIELD_CBPAGOSID = "CBPAGOSID"; 
 
 	public CBParametrosGeneralesModel(){
 	}
