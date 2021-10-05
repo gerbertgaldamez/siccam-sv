@@ -91,10 +91,9 @@ public class Constantes {
 	public static final String ENCABEZADO_ESTADO_CUENTA_TARJETA = "TIPO TARJETA|FECHA TRANSACCION|AFILIACION|TIPO|REFERENCIA|LIQUIDO|"
 			+ "COMISION|IVA COMISION|RETENCION|CONSUMO|ENTIDAD\n";
 	
-	public static final String OBTENER_COD_AGENCIA ="SELECT c.cod_agencia FROM cb_banco_agencia_confronta a, cb_catalogo_agencia b, cb_agencias_confronta c WHERE rownum <= 1 and a.cbcatalogoagenciaid = ? ";
+	public static final String OBTENER_COD_AGENCIA ="SELECT c.cod_agencia FROM cb_banco_agencia_confronta a, cb_catalogo_agencia b, cb_agencias_confronta c WHERE a.cbcatalogoagenciaid = ? and rownum <= 1 ";
 	
-	//public static final String OBTENER_COD_AGENCIA_REVERSA ="select cod_agencia from cb_pagos where cbpagosid = ? ";
-	public static final String OBTENER_COD_AGENCIA_REVERSA ="select a.COD_AGENCIA from cb_conciliacion c, cb_agencias_confronta a where   c.CBCONCILIACIONID = ?";
+	public static final String OBTENER_COD_AGENCIA_REVERSA ="select a.COD_AGENCIA from cb_conciliacion c, cb_agencias_confronta a where c.CBBANCOAGENCIACONFRONTAID = a.CBBANCOAGENCIACONFRONTAID and   c.CBCONCILIACIONID = ? and rownum <= 1";
 
 	public final static String TABLE = "cb_agencias_confronta"; 
      public final static String FIELD_COD_AGENCIA = "COD_AGENCIA"; 

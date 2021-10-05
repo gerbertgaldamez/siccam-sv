@@ -14,9 +14,6 @@ public class CBParametrosGeneralesModel {
 	private String creador;
 	private int idCausaConciliacion;
 	private String convenio;
-	
-	public final static String TABLE = "cb_pagos"; 
-    public final static String FIELD_CBPAGOSID = "CBPAGOSID"; 
 
 	public CBParametrosGeneralesModel(){
 	}

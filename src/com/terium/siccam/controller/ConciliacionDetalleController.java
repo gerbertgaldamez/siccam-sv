@@ -1566,7 +1566,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 		obj.setCajero(Tools.obtenerParametro(Constantes.CAJERO, parametros));
 		//obj.setCodBanco(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
 		String codagencia = conciliacion.getIdAgencia();
-		String conciliacionid = conciliacionDetalle.getConciliacionId();
+		String conciliacionid = detalle.getConciliacionId();
 		//obj.setCodBanco(conciliacionid);
 		//obj.setCodBanco(codagencia);
 		if(conciliacionid !=null){
