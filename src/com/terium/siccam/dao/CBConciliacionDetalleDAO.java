@@ -14,6 +14,8 @@ import org.apache.log4j.Logger;
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.controller.ConciliacionController;
 import com.terium.siccam.model.CBConciliacionDetallada;
+import com.terium.siccam.model.CBParametrosGeneralesModel;
+import com.terium.siccam.model.CBResumenDiarioConciliacionModel;
 import com.terium.siccam.utils.Constantes;
 
 public class CBConciliacionDetalleDAO {
@@ -345,6 +347,78 @@ public class CBConciliacionDetalleDAO {
 				logger.error( e);
 			}
 		}
+	}
+	
+public static String obtenerCodAgencia(String cbBancoAgenciaConfrontaID){
+		
+		PreparedStatement ptmt = null;
+		ResultSet rst = null;
+		Connection con = null;
+		//CBParametrosGeneralesModel parametros = null;
+		CBResumenDiarioConciliacionModel resumen = null;
+		try{
+			con = ControladorBase.obtenerDtsPromo().getConnection();
+			ptmt = con.prepareStatement(Constantes.OBTENER_COD_AGENCIA);
+			ptmt.setString(1, cbBancoAgenciaConfrontaID);
+			
+			//logger.debug("obtenerCodAgencia() " + " - Query obtener cod agencia en la dao => : " + Constantes.OBTENER_COD_AGENCIA);
+			rst = ptmt.executeQuery();
+			if(rst.next()){
+				//return rst.getString(1);
+				return rst.getString(Constantes.FIELD_COD_AGENCIA );
+				
+			}
+			
+		}catch(Exception e){
+			logger.error( e);
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				logger.error( e);
+			}
+		}
+		return null;
+	}
+	
+public static String obtenerCodAgenciaReversa(String conciliacionid){
+		
+		PreparedStatement ptmt = null;
+		ResultSet rst = null;
+		Connection con = null;
+		//CBParametrosGeneralesModel parametros = null;
+		CBResumenDiarioConciliacionModel resumen = null;
+		
+		
+		
+		try{
+			con = ControladorBase.obtenerDtsPromo().getConnection();
+			ptmt = con.prepareStatement(Constantes.OBTENER_COD_AGENCIA_REVERSA);
+			ptmt.setString(1, conciliacionid);
+			
+			rst = ptmt.executeQuery();
+			
+			if(rst.next()){
+				//return rst.getString(1);
+				//logger.debug("obtenerCodAgenciaReversa ->" + "se obtiene el cod agencia " + resumen.getIdAgencia());
+				return rst.getString(Constantes.FIELD_COD_AGENCIA);
+				
+			}
+			
+		}catch(Exception e){
+			logger.error( e);
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				logger.error( e);
+			}
+		}
+		logger.debug("obtenerCodAgenciaReversa ->" + " el cod agencia es null " );
+		return null;
+		
 	}
 
 }

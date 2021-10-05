@@ -14,9 +14,6 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/developer/eclipse-workspace/siccam/WebContent/WEB-INF/lib/mail.jar"/>
-	<classpathentry kind="lib" path="C:/Users/developer/eclipse-workspace/siccam/WebContent/WEB-INF/lib/javax.mail.jar"/>
-	<classpathentry kind="lib" path="C:/Users/developer/eclipse-workspace/siccam/WebContent/WEB-INF/lib/axis.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/axis-ant.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-discovery-1.0.5.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jaxrpc.jar"/>

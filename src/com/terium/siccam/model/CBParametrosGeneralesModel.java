@@ -14,9 +14,7 @@ public class CBParametrosGeneralesModel {
 	private String creador;
 	private int idCausaConciliacion;
 	private String convenio;
-	
-	
-	
+
 	public CBParametrosGeneralesModel(){
 	}
 

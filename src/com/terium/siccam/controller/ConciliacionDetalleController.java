@@ -194,6 +194,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 				dtbDia.setText(fechaFormato.format(conciliacion.getDia()));
 				dtbHasta.setText(fechaFormato.format(conciliacion.getDia()));
 				onClick$btnBuscar();
+				
 
 			} else {
 				conciliacion = null;
@@ -201,6 +202,8 @@ public class ConciliacionDetalleController extends ControladorBase {
 				cmbAgencia.setText("Todas");
 				cmbTipo.setText("TODOS");
 				conciliacion = null;
+				
+				
 
 			}
 
@@ -1361,9 +1364,17 @@ public class ConciliacionDetalleController extends ControladorBase {
 		String fecha = fechaFormato.format(objFecha);
 		log.debug(methodName + " -  inicia ");
 		int cliente = detalle.getCliente() != null ? Integer.parseInt(detalle.getCliente()) : 0;
-
+    
 		ReversaPagoRequest request = new ReversaPagoRequest();
-		request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
+		//request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
+		//String idpago = CBParametrosGeneralesModel.FIELD_CBPAGOSID;
+		String conciliacionid = detalle.getConciliacionId();
+		
+		log.debug(methodName + " -  el concilacionid = " + conciliacionid);
+		request.setBank_id(CBConciliacionDetalleDAO.obtenerCodAgenciaReversa(conciliacionid));
+		
+		//request.setBank_id(CBConciliacionDetalleDAO.obtenerCodAgencia(Constantes.OBTENER_COD_AGENCIA));
+		//log.debug(methodName + " -  Codigo Agencia desaplicacion " + CBConciliacionDetalleDAO.obtenerCodAgenciaReversa(Constantes.OBTENER_COD_AGENCIA_REVERSA) );
 		request.setFecha_pago(fecha);
 		// request.setMonto(detalle.getMonto().doubleValue());
 		request.setMonto(detalle.getPendienteBanco().doubleValue());
@@ -1438,7 +1449,13 @@ public class ConciliacionDetalleController extends ControladorBase {
 		EjecutarPagoRequest request = new EjecutarPagoRequest();
 		// request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
 		log.debug(methodName + " -  Codigo Cliente  = " + cliente);
-		request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
+		//request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
+         String codagencia = conciliacion.getIdAgencia();
+		
+		log.debug(methodName + " -  el cogigo agencia1 = " + codagencia);
+		request.setBank_id(CBConciliacionDetalleDAO.obtenerCodAgencia(codagencia));
+		
+		log.debug(methodName + " -  Codigo Agencia Aplicacion " );
 		request.setBill_ref_no(Constantes.BILL_REF_NO);
 		request.setFecha_pago(fecha);
 		request.setTelefono(cliente);
@@ -1547,7 +1564,17 @@ public class ConciliacionDetalleController extends ControladorBase {
 		obj.setAgencia(Tools.obtenerParametro(Constantes.AGENCIA, parametros));
 		obj.setBancoTarjetaDebito("");
 		obj.setCajero(Tools.obtenerParametro(Constantes.CAJERO, parametros));
-		obj.setCodBanco(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
+		//obj.setCodBanco(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
+		String codagencia = conciliacion.getIdAgencia();
+		String conciliacionid = detalle.getConciliacionId();
+		//obj.setCodBanco(conciliacionid);
+		//obj.setCodBanco(codagencia);
+		if(conciliacionid !=null){
+			obj.setCodBanco(conciliacionid);
+		}else if(codagencia !=null){
+			obj.setCodBanco(codagencia);
+		}
+		//obj.setCodBanco(CBConciliacionDetalleDAO.obtenerCodAgenciaReversa(Constantes.CBBANCOAGENCIACONFRONTAID));
 		obj.setFecha(fecha);
 		obj.setHora(hora);
 		obj.setMontoChequeBanco(0);
