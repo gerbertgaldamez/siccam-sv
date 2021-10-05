@@ -355,7 +355,6 @@ public static String obtenerCodAgencia(String cbBancoAgenciaConfrontaID){
 		ResultSet rst = null;
 		Connection con = null;
 		//CBParametrosGeneralesModel parametros = null;
-		CBResumenDiarioConciliacionModel resumen = null;
 		try{
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			ptmt = con.prepareStatement(Constantes.OBTENER_COD_AGENCIA);
