@@ -367,7 +367,7 @@ public class ConsultasSQ {
 			+ "       || RPAD (NVL (TO_CHAR (fecha, 'YYYYMMDD'), ' '), 8, ' ') "
 			+ "       || RPAD (NVL (TO_CHAR (fecha_ingresos, 'YYYYMMDD'), ' '), 8, ' ') "
 			+ "       || RPAD (NVL (texto, ' '), 25, ' ') " + "       || RPAD (NVL (referencia, ' '), 16, ' ') "
-			+ "       || RPAD (nvl(clave_contabilizacion, ' '), 2, ' ') " + "       || RPAD (nvl(cuenta,' '), 10, ' ') "
+			+ "       || RPAD (nvl(clave_contabilizacion, ' '), 2, ' ') " + "       || RPAD (nvl(cuenta,' '), 20, ' ') "
 			+ "       || RPAD (nvl(centro_costo,' '), 10, ' ') "
 			+ "       || RPAD (NVL (CENTRO_DE_BENEFICIO, ' '), 10, ' ')    "
 			+ "       || RPAD (NVL (division, ' '), 4, ' ') "
@@ -375,7 +375,7 @@ public class ConsultasSQ {
 			+ "       || (SELECT RPAD (NVL(moneda,' '),5,' ') FROM CB_CATALOGO_AGENCIA "
 			+ "            WHERE CBCATALOGOAGENCIAID =cb_poliza_contable_vw.CBCATALOGOAGENCIAID ) "
 			+ "       || RPAD (NVL (tipo_de_cambio, ' '), 9, ' ')    "
-			+ "       || RPAD (NVL (fecha_de_conversion, ' '), 8, ' ') "
+			+ "       || RPAD (NVL (TO_CHAR(fecha_de_conversion,'DD/MM/YYYY'), ' '), 8, ' ') "
 			+ " 	|| RPAD (NVL (TO_CHAR (haber), ' '), 12, ' ') " + "       || RPAD (NVL (texto2, ' '), 50, ' ') "
 			+ "       || RPAD (nvl(indicador_iva, ' '), 2, ' ') "
 			+ "       || RPAD (NVL (indicador_cme, ' '), 2, ' ')   "
@@ -691,4 +691,8 @@ public class ConsultasSQ {
 			+ "    FECHA_MODIFICACION = SYSDATE,"
 			+"     RESPUESTA_SCL = ?"
 			+ "	WHERE CBHISTORIALACCIONID = ?";
+	
+	public static final String OBTENER_TRACKING_ID_SQ = "SELECT MAX(TRACKING_ID) FROM BMF WHERE ACCOUNT_NO = ? ORDER BY TRACKING_ID, TRACKING_ID_SERV ";
+	
+	public static final String ACTUALIZA_TRACKING_ID_SQ = "UPDATE BMF SET POST_DATE = to_date(?) WHERE TRACKING_ID = ? AND TRACKING_ID_SERV = 3 ";
 }

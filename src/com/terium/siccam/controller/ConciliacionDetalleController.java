@@ -1,7 +1,6 @@
 package com.terium.siccam.controller;
 
 import java.io.BufferedWriter;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.math.BigDecimal;
@@ -13,6 +12,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.Format;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1195,8 +1195,10 @@ public class ConciliacionDetalleController extends ControladorBase {
 	 */
 	public void procesaWSPagosCreaCasos(List<CBParametrosGeneralesModel> parametros, CBConciliacionDetallada detalle,
 			CBHistorialAccionModel historial, boolean reenvio) {
+		CBConciliacionDetalleDAO objDao = new CBConciliacionDetalleDAO();
 		String methodName = "procesaWSPagosCreaCasos()";
 		CBCausasConciliacion obj = null;
+		
 		if (reenvio) {
 			obj = new CBCausasConciliacion();
 			obj.setSistema(detalle.getSistema());
@@ -1212,6 +1214,17 @@ public class ConciliacionDetalleController extends ControladorBase {
 			EjecutarPagoFault pagoFault = new EjecutarPagoFault();
 			try {
 				response = requestWsEjecutaPago(parametros, detalle);
+				
+				String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(detalle.getCliente());
+				log.debug(methodName + " el tracking id : " + trackingid);
+				//Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				Format formatter = new SimpleDateFormat("dd-MM-yyyy");
+				String fecha = formatter.format(detalle.getDia());
+				log.debug(methodName + " la fecha es : " + fecha);
+				boolean resul = objDao.actualizarTrackingId(fecha,Integer.parseInt(trackingid));
+				
+				log.debug(methodName + " Actualizar Fecha  : " + resul);
+				
 			} catch (EjecutarPagoFault e) {
 				log.debug(methodName + " EjecutarPagoFault : ", e);
 				pagoFault.setErrorCode(e.getErrorCode());
@@ -1241,6 +1254,10 @@ public class ConciliacionDetalleController extends ControladorBase {
 					historial.setRespuestascl("Pago Ejecutado Correctamente");
 					log.debug(methodName + " -  Cliente : " + historial.getNombreCliente());
 					log.debug(methodName + " - Pago Ejecutado Correctamente");
+					
+					
+					
+
 				} else {
 					historial.setEstado(4);// Estado 2 = error por parte de WS Pagos
 					historial.setRespuestascl(response[0].getMsg_response());
@@ -1327,6 +1344,8 @@ public class ConciliacionDetalleController extends ControladorBase {
 		boolean resultado = historialDao.actualizaHistorialAcciones(historial);
 		log.debug("procesaWSPagosCreaCasos()" + " - [CB_HISTORIAL_ACCION] Finaliza update para registro => "
 				+ historial.getcBHistorialAccionId() + " Resultado => " + resultado);
+		
+		
 
 	}
 
@@ -1412,6 +1431,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 
 	private PagoDetalle[] requestWsEjecutaPago(List<CBParametrosGeneralesModel> parametros,
 			CBConciliacionDetallada detalle) throws EjecutarPagoFault, RemoteException, MalformedURLException {
+		//CBConciliacionDetalleDAO objDao = null;
 		String methodName = "requestWsEjecutaPago()";
 		log.debug(methodName + " - inicia ");
 		// TODO Auto-generated method stub
@@ -1434,6 +1454,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 				response[0].getNum_referencia()));
 		log.debug(methodName + " - ResponseXML : "
 				+ ws._getCall().getMessageContext().getResponseMessage().getSOAPPartAsString());
+		
 		return response;
 	}
 
@@ -1579,7 +1600,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 		obj.setAgencia(Tools.obtenerParametro(Constantes.AGENCIA, parametros));
 		obj.setBancoTarjetaDebito("");
 		obj.setCajero(Tools.obtenerParametro(Constantes.CAJERO, parametros));
-		// obj.setCodBanco(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
+		 //obj.setCodBanco(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
 		String codagencia = conciliacion.getIdAgencia();
 		String conciliacionid = detalle.getConciliacionId();
 		// obj.setCodBanco(conciliacionid);

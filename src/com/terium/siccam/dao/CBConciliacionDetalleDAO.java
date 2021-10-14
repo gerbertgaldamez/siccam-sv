@@ -2,6 +2,7 @@ package com.terium.siccam.dao;
 
 import java.math.RoundingMode;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,10 +14,12 @@ import org.apache.log4j.Logger;
 
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.controller.ConciliacionController;
+import com.terium.siccam.model.CBBmfModel;
 import com.terium.siccam.model.CBConciliacionDetallada;
 import com.terium.siccam.model.CBParametrosGeneralesModel;
 import com.terium.siccam.model.CBResumenDiarioConciliacionModel;
 import com.terium.siccam.utils.Constantes;
+import com.terium.siccam.utils.ConsultasSQ;
 
 public class CBConciliacionDetalleDAO {
 
@@ -419,5 +422,66 @@ public static String obtenerCodAgenciaReversa(String conciliacionid){
 		return null;
 		
 	}
+public static String obtenerTrackingId ( String acount_no){
+	CBConciliacionDetallada detalle = new CBConciliacionDetallada();
+	PreparedStatement ptmt = null;
+	ResultSet rst = null;
+	Connection con = null;
+	try{
+		con = ControladorBase.obtenerDtsPromo().getConnection();
+		ptmt = con.prepareStatement(ConsultasSQ.OBTENER_TRACKING_ID_SQ);
+		ptmt.setString(1, acount_no);
+		rst = ptmt.executeQuery();
+		
+		if(rst.next()){
+			return rst.getString(1);
+		}
+		
+	}catch(Exception e){
+		logger.error( e);
+	}
+	finally {
+		try {
+			if (con != null)
+				con.close();
+		} catch (SQLException e) {
+			logger.error( e);
+		}
+	}
+	//logger.debug("obtenerCodAgenciaReversa ->" + " el cod agencia es null " );
+	return null;
+	
+}
+public boolean actualizarTrackingId( String fecha, int trackingId){
+	boolean result = false;
+	Connection con = null;
+	PreparedStatement ptmt = null;
+	
+	try{
+		con = ControladorBase.obtenerDtsPromo().getConnection();
+		ptmt = con.prepareStatement(ConsultasSQ.ACTUALIZA_TRACKING_ID_SQ);
+		
+		ptmt.setString(1, fecha);
+		ptmt.setInt(2, trackingId);
+		
+		return ptmt.executeUpdate() > 0;
+		
+	}catch(SQLException e){
+		logger.error( e);
+	}catch (Exception e) {
+		logger.error( e);
+	} finally {
+		try {
+			if (ptmt != null)
+				ptmt.close();
+			if (con != null)
+				con.close();
+		} catch (Exception e) {
+			logger.error( e);
+		}
+	}
+
+	return result;
+}
 
 }

@@ -6,6 +6,7 @@
 package com.terium.siccam.service;
 
 import com.terium.siccam.composer.ControladorBase;
+
 import com.terium.siccam.dao.CBArchivosInsertadosDAO;
 import com.terium.siccam.dao.CBConfiguracionConfrontaDaoB;
 import com.terium.siccam.dao.CBDataBancoDAO;
@@ -653,7 +654,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements Process
 					logger.debug(methodName + " -  Valindando nomenclatura " + valueToSave);
 					String telefonoAlfaNum = strData.trim();
 					// if (telefonoAlfaNum.length() <= 10) { // se realiza cambio > 8
-					if (telefonoAlfaNum.length() > 8) {
+					if (telefonoAlfaNum.length() >= 8) {
 						logger.debug(methodName + " - Telefono alfanumerico: " + telefonoAlfaNum);
 						bancoModel.setTelefono(telefonoAlfaNum);
 					}

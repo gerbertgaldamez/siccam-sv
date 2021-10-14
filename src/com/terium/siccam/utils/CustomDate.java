@@ -43,7 +43,8 @@ public class CustomDate {
 	 * @return
 	 */
 	public String getFormatDate(String dateWithoutFormat, String confFormat) {
-		SimpleDateFormat sdfG = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		//SimpleDateFormat sdfG = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		SimpleDateFormat sdfG = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 		return tryCasesV2(dateWithoutFormat, sdfG, confFormat);
 	}
 	
