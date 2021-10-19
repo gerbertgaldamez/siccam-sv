@@ -218,5 +218,14 @@ public class Tools {
 
 		return "";
 	}
+	public static String eliminaLetras(String cadena){
+        String result = cadena.replaceAll("[a-z|A-Z]", "");
+		// String result = cadena.replaceAll("[a-zA-Z_0-9]", "");
+        System.out.println("Cadena: " + result);
+        return result;
+    }
+	/* public static boolean validarTelefono(String telefono) {
+	        return telefono.matches("[a-zA-Z0-9_]");
+	    }*/
 	
 }

@@ -13,9 +13,11 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import com.terium.siccam.composer.ControladorBase;
+import com.terium.siccam.model.CBConciliacionDetallada;
 import com.terium.siccam.model.CBConfiguracionConfrontaModel;
 import com.terium.siccam.model.CBConsultaEstadoCuentasModel;
 import com.terium.siccam.model.CBParametrosGeneralesModel;
+import com.terium.siccam.utils.ConsultasSQ;
 
 @SuppressWarnings("serial")
 public class CBConfiguracionConfrontaDaoB extends ControladorBase{
@@ -950,5 +952,35 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 			}
 		}
 		return result;
+	}
+	public static String obtenerETH ( ){
+		//CBConciliacionDetallada detalle = new CBConciliacionDetallada();
+		PreparedStatement ptmt = null;
+		ResultSet rst = null;
+		Connection con = null;
+		try{
+			con = ControladorBase.obtenerDtsPromo().getConnection();
+			ptmt = con.prepareStatement(ConsultasSQ.OBTENER_ETH);
+			
+			rst = ptmt.executeQuery();
+			
+			if(rst.next()){
+				return rst.getString(1);
+			}
+			
+		}catch(Exception e){
+			//logger.error( e);
+		}
+		finally {
+			try {
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				//logger.error( e);
+			}
+		}
+		//logger.debug("obtenerCodAgenciaReversa ->" + " el cod agencia es null " );
+		return null;
+		
 	}
 }

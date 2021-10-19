@@ -695,4 +695,6 @@ public class ConsultasSQ {
 	public static final String OBTENER_TRACKING_ID_SQ = "SELECT MAX(TRACKING_ID) FROM BMF WHERE ACCOUNT_NO = ? ORDER BY TRACKING_ID, TRACKING_ID_SERV ";
 	
 	public static final String ACTUALIZA_TRACKING_ID_SQ = "UPDATE BMF SET POST_DATE = to_date(?) WHERE TRACKING_ID = ? AND TRACKING_ID_SERV = 3 ";
+	
+	public static final String OBTENER_ETH = " select VALOR_OBJETO1 FROM CB_MODULO_CONCILIACION_CONF where valor_objeto1 = 'ETH' ";
 }
