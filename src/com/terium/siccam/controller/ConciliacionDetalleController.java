@@ -1215,7 +1215,8 @@ public class ConciliacionDetalleController extends ControladorBase {
 			try {
 				response = requestWsEjecutaPago(parametros, detalle);
 				
-				String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(detalle.getCliente());
+				//String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(detalle.getCliente());
+				String trackingid = String.valueOf(getClienteTelefono(detalle));
 				log.debug(methodName + " el tracking id : " + trackingid);
 				//Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Format formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -1509,6 +1510,13 @@ public class ConciliacionDetalleController extends ControladorBase {
 		if (detalle.getTelefono() != null && detalle.getCliente() == null) {
 			codCliente = Integer.parseInt(detalle.getTelefono());
 			log.debug("getClienteTelefono() - obteniendo numero de telefono : " +codCliente);
+		}
+		if (detalle.getCliente() != null && detalle.getTelefono() != null){
+			codCliente = Integer.parseInt(detalle.getCliente());
+		}
+		if (detalle.getCliente() == null){
+			codCliente  = Integer.parseInt(CBConciliacionDetalleDAO.obtenerTelefono(detalle.getTelefono()));
+			log.debug("getClienteTelefono() - obteniendo codigo cliente 2 : " +codCliente);
 		}
 
 		return codCliente;

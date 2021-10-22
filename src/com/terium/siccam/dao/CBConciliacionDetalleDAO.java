@@ -422,7 +422,7 @@ public static String obtenerCodAgenciaReversa(String conciliacionid){
 		return null;
 		
 	}
-public static String obtenerTrackingId ( String acount_no){
+public static String obtenerTrackingId ( String cod_num){
 	CBConciliacionDetallada detalle = new CBConciliacionDetallada();
 	PreparedStatement ptmt = null;
 	ResultSet rst = null;
@@ -430,6 +430,36 @@ public static String obtenerTrackingId ( String acount_no){
 	try{
 		con = ControladorBase.obtenerDtsPromo().getConnection();
 		ptmt = con.prepareStatement(ConsultasSQ.OBTENER_TRACKING_ID_SQ);
+		ptmt.setString(1, cod_num);
+		rst = ptmt.executeQuery();
+		
+		if(rst.next()){
+			return rst.getString(1);
+		}
+		
+	}catch(Exception e){
+		logger.error( e);
+	}
+	finally {
+		try {
+			if (con != null)
+				con.close();
+		} catch (SQLException e) {
+			logger.error( e);
+		}
+	}
+	//logger.debug("obtenerCodAgenciaReversa ->" + " el cod agencia es null " );
+	return null;
+	
+}
+public static String obtenerTelefono ( String acount_no){
+	CBConciliacionDetallada detalle = new CBConciliacionDetallada();
+	PreparedStatement ptmt = null;
+	ResultSet rst = null;
+	Connection con = null;
+	try{
+		con = ControladorBase.obtenerDtsPromo().getConnection();
+		ptmt = con.prepareStatement(ConsultasSQ.OBTENER_TELEFONO_SQ);
 		ptmt.setString(1, acount_no);
 		rst = ptmt.executeQuery();
 		

@@ -983,4 +983,95 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 		return null;
 		
 	}
+	
+	public static String obtenerII ( ){
+		//CBConciliacionDetallada detalle = new CBConciliacionDetallada();
+		PreparedStatement ptmt = null;
+		ResultSet rst = null;
+		Connection con = null;
+		try{
+			con = ControladorBase.obtenerDtsPromo().getConnection();
+			ptmt = con.prepareStatement(ConsultasSQ.OBTENER_II);
+			
+			rst = ptmt.executeQuery();
+			
+			if(rst.next()){
+				return rst.getString(1);
+			}
+			
+		}catch(Exception e){
+			//logger.error( e);
+		}
+		finally {
+			try {
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				//logger.error( e);
+			}
+		}
+		//logger.debug("obtenerCodAgenciaReversa ->" + " el cod agencia es null " );
+		return null;
+		
+	}
+	public static String obtenerTAPFI ( ){
+		//CBConciliacionDetallada detalle = new CBConciliacionDetallada();
+		PreparedStatement ptmt = null;
+		ResultSet rst = null;
+		Connection con = null;
+		try{
+			con = ControladorBase.obtenerDtsPromo().getConnection();
+			ptmt = con.prepareStatement(ConsultasSQ.OBTENER_TAPFI );
+			
+			rst = ptmt.executeQuery();
+			
+			if(rst.next()){
+				return rst.getString(1);
+			}
+			
+		}catch(Exception e){
+			//logger.error( e);
+		}
+		finally {
+			try {
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				//logger.error( e);
+			}
+		}
+		//logger.debug("obtenerCodAgenciaReversa ->" + " el cod agencia es null " );
+		return null;
+		
+	}
+	public static String obtenerWG ( ){
+		//CBConciliacionDetallada detalle = new CBConciliacionDetallada();
+		PreparedStatement ptmt = null;
+		ResultSet rst = null;
+		Connection con = null;
+		try{
+			con = ControladorBase.obtenerDtsPromo().getConnection();
+			ptmt = con.prepareStatement(ConsultasSQ.OBTENER_WG );
+			
+			rst = ptmt.executeQuery();
+			
+			if(rst.next()){
+				return rst.getString(1);
+			}
+			
+		}catch(Exception e){
+			//logger.error( e);
+		}
+		finally {
+			try {
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				//logger.error( e);
+			}
+		}
+		//logger.debug("obtenerCodAgenciaReversa ->" + " el cod agencia es null " );
+		return null;
+		
+	}
 }

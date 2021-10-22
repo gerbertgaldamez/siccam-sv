@@ -64,7 +64,7 @@
 						<frozen columns="3" ></frozen>
 						<auxhead>
 							<auxheader colspan="3" class="topic"></auxheader>
-				            <auxheader colspan="8" align="center" class="topic">Caja</auxheader>
+				          <!-- <auxheader colspan="8" align="center" class="topic">Caja</auxheader> -->
 				            <auxheader colspan="7" align="center" class="topic">Sistema Comercial</auxheader>
 				            <auxheader colspan="9" align="center" class="topic">Estado de Cuenta</auxheader>
 				        </auxhead>
@@ -74,16 +74,7 @@
 							<listheader label="Entidad" sort="auto" />
 							<listheader label="Fecha" sort="auto" />
 							
-							<!-- Columnas de agrupacion CAJA -->
-							<listheader label="Efectivo" sort="auto" />
-							<listheader label="Cheque" sort="auto" />
-							<listheader label="Extension" sort="auto" />
-							<listheader label="Cuotas Credomatic" sort="auto" />
-							<listheader label="Cuotas Otras" sort="auto"  /><!-- Este campo se utiliza para cuotas visa  -->
-							<listheader label="Tarjeta Credomatic" sort="auto" />
-							<listheader label="Tarjeta Otras" sort="auto" />
-							 <listheader label="Tarjeta Visa" sort="auto"  />  <!-- falta ver que nombre se le pondra para version unificada -->
-							
+							<!-- aqui iba la parte de caja -->
 							<!-- Columnas de agrupacion SISTEMA COMERCIAL -->
 							<listheader label="Pagos Dia" sort="auto" />
 							<listheader label="Pagos OD" sort="auto" />

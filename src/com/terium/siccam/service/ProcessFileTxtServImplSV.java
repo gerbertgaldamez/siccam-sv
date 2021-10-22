@@ -869,76 +869,187 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements
 					String telefonoE = "";
 
 					String telefonoEspecial = strData.trim();
-					if (telefonoEspecial.length() == 8 || telefonoEspecial.length() == 16 || telefonoEspecial.length() == 20) {
+					if (telefonoEspecial.length() == 8
+							|| telefonoEspecial.length() == 16
+							|| telefonoEspecial.length() == 20) {
 						logger.debug(methodName
-								+ " - cantidad del Telefono Especial antes del subString: "+ telefonoEspecial.length());
-						
+								+ " - cantidad del Telefono Especial antes del subString: "
+								+ telefonoEspecial.length());
+						if (telefonoEspecial.length() == 20) {
+							
+							int inicioTelefono = Integer.parseInt(telefonoEspecial.substring(0, 4));
+							
+							if(inicioTelefono > 0){
+								telefonoE = telefonoEspecial.substring(3, 10);
+							} else {
+								telefonoE = telefonoEspecial.substring(4, 10);
+							}
+							
+							try {
+								bancoModel.setTelefono(telefonoE);
+
+								logger.debug(methodName
+										+ " - el Telefono Especial con el subString: "
+										+ telefonoEspecial);
+							} catch (Exception e) {
+								logger.error(methodName + " - Numero vacio: "
+										+ e.getMessage());
+							}
+
+							
+						} else {
+							try {
+								telefonoE = telefonoEspecial.substring(
+										telefonoEspecial.length() - 6,
+										telefonoEspecial.length());
+								// telefonoE =
+								// (telefonoEspecial.substring(4,10));
+
+								telefonoEspecial = telefonoE;
+								bancoModel.setTelefono(telefonoEspecial);
+
+								logger.debug(methodName
+										+ " - el Telefono Especial con el subString: "
+										+ telefonoEspecial);
+							} catch (Exception e) {
+								logger.error(methodName + " - Numero vacio: "
+										+ e.getMessage());
+							}
+						}
+
+					} else if (telefonoEspecial.length() == 13
+							|| telefonoEspecial.length() == 18) {
+
+						String telefonoAlf = CBConfiguracionConfrontaDaoB.obtenerETH();
+
+						logger.debug(methodName
+								+ " - cantidad del Telefono Especial antes del subString: "
+								+ telefonoEspecial.length());
+
+						if (telefonoEspecial.contains("ETH")) {
+							try {
+
+								telefonoE = telefonoEspecial.substring(
+										telefonoEspecial.length() - 13,
+										telefonoEspecial.length());
+								telefonoEspecial = telefonoE;
+								// telefonoEspecial = telefonoE;
+								bancoModel.setTelefono(telefonoEspecial);
+
+								logger.debug(methodName
+										+ " - el Telefono Especial con el subString: "
+										+ telefonoEspecial);
+							} catch (Exception e) {
+								logger.error(methodName + " - Numero vacio: "
+										+ e.getMessage());
+							}
+							/*
+							 * }else if (telefonoEspecial.length() == 20){
+							 * logger.debug(methodName +
+							 * " - cantidad del Telefono Especial antes del subString: "
+							 * + telefonoEspecial.length());
+							 * 
+							 * try { telefonoE = (telefonoEspecial.substring(
+							 * telefonoEspecial.length() - 3, + 10));
+							 * telefonoEspecial = telefonoE;
+							 * bancoModel.setTelefono(telefonoEspecial);
+							 * 
+							 * logger.debug(methodName +
+							 * " - el Telefono Especial con el subString: " +
+							 * telefonoEspecial); } catch (Exception e) {
+							 * logger.error(methodName + " - Numero vacio: " +
+							 * e.getMessage()); }
+							 */
+
+						} else if (telefonoEspecial.contains("II")
+								|| telefonoEspecial.contains("EQ")
+								|| telefonoEspecial.contains("IP")) {
+							try {
+
+								telefonoE = (telefonoEspecial.substring(
+										telefonoEspecial.length() - 11,
+										telefonoEspecial.length()));
+								telefonoEspecial = telefonoE;
+								bancoModel.setTelefono(telefonoEspecial);
+
+								logger.debug(methodName
+										+ " - el Telefono Especial con el subString: "
+										+ telefonoEspecial);
+							} catch (Exception e) {
+								logger.error(methodName + " - Numero vacio: "
+										+ e.getMessage());
+							}
+						} else if (telefonoEspecial.contains("WG")) {
+							try {
+
+								telefonoE = (telefonoEspecial.substring(
+										telefonoEspecial.length() - 12,
+										telefonoEspecial.length()));
+								telefonoEspecial = telefonoE;
+								bancoModel.setTelefono(telefonoEspecial);
+
+								logger.debug(methodName
+										+ " - el Telefono Especial con el subString: "
+										+ telefonoEspecial);
+							} catch (Exception e) {
+								logger.error(methodName + " - Numero vacio: "
+										+ e.getMessage());
+							}
+						} else if (telefonoEspecial.contains("TAPFI")) {
+							try {
+
+								telefonoE = (telefonoEspecial.substring(
+										telefonoEspecial.length() - 9,
+										telefonoEspecial.length()));
+								telefonoEspecial = telefonoE;
+								bancoModel.setTelefono(telefonoEspecial);
+
+								logger.debug(methodName
+										+ " - el Telefono Especial con el subString: "
+										+ telefonoEspecial);
+							} catch (Exception e) {
+								logger.error(methodName + " - Numero vacio: "
+										+ e.getMessage());
+							}
+						} else {
+
+							try {
+								telefonoE = (telefonoEspecial.substring(
+										telefonoEspecial.length() - 8,
+										telefonoEspecial.length()));
+								telefonoEspecial = telefonoE;
+								bancoModel.setTelefono(telefonoEspecial);
+
+								logger.debug(methodName
+										+ " - el Telefono Especial con el subString: "
+										+ telefonoEspecial);
+							} catch (Exception e) {
+								logger.error(methodName + " - Numero vacio: "
+										+ e.getMessage());
+							}
+						}
+
+					} else if (telefonoEspecial.length() > 20) {
+						logger.debug(methodName
+								+ " - cantidad del Telefono Especial antes del subString: "
+								+ telefonoEspecial.length());
+
 						try {
-							telefonoE = (telefonoEspecial.substring(telefonoEspecial.length() - 8, telefonoEspecial.length()));
+							telefonoE = (telefonoEspecial.substring(
+									telefonoEspecial.length() - 6,
+									telefonoEspecial.length()));
 							telefonoEspecial = telefonoE;
 							bancoModel.setTelefono(telefonoEspecial);
 
 							logger.debug(methodName
-									+ " - el Telefono Especial con el subString: " + telefonoEspecial);
+									+ " - el Telefono Especial con el subString: "
+									+ telefonoEspecial);
 						} catch (Exception e) {
-							logger.error(methodName + " - Numero vacio: " + e.getMessage());
-						}
-
-					} else if ("TE".equals(valueToSave)) {
-						
-						if (telefonoEspecial.length() == 13 || telefonoEspecial.length() == 18) {
-
-							String telefonoAlf = CBConfiguracionConfrontaDaoB.obtenerETH();
-
-							logger.debug(methodName
-									+ " - cantidad del Telefono Especial antes del subString: " + telefonoEspecial.length());
-
-							if (telefonoEspecial.contains("ETH")) {
-								try {
-									
-									telefonoE = (telefonoEspecial.substring(telefonoEspecial.length() - 5, telefonoEspecial.length()));
-									telefonoEspecial = telefonoAlf + telefonoE;
-									bancoModel.setTelefono(telefonoEspecial);
-
-									logger.debug(methodName
-											+ " - el Telefono Especial con el subString: " + telefonoEspecial);
-								} catch (Exception e) {
-									logger.error(methodName + " - Numero vacio: " + e.getMessage());
-								}
-
-							} else {
-
-								try {
-									telefonoE = (telefonoEspecial.substring(telefonoEspecial.length() - 8, telefonoEspecial.length()));
-									telefonoEspecial = telefonoE;
-									bancoModel.setTelefono(telefonoEspecial);
-
-									logger.debug(methodName
-											+ " - el Telefono Especial con el subString: " + telefonoEspecial);
-								} catch (Exception e) {
-									logger.error(methodName + " - Numero vacio: " + e.getMessage());
-								}
-							}
-
-						} else if ("TE".equals(valueToSave)) {
-							
-							if (telefonoEspecial.length() > 20) {
-								logger.debug(methodName
-										+ " - cantidad del Telefono Especial antes del subString: " + telefonoEspecial.length());
-
-								try {
-									telefonoE = (telefonoEspecial.substring(telefonoEspecial.length() - 6, telefonoEspecial.length()));
-									telefonoEspecial = telefonoE;
-									bancoModel.setTelefono(telefonoEspecial);
-
-									logger.debug(methodName
-											+ " - el Telefono Especial con el subString: " + telefonoEspecial);
-								} catch (Exception e) {
-									logger.error(methodName + " - Numero vacio: " + e.getMessage());
-								}
-							}
+							logger.error(methodName + " - Numero vacio: "
+									+ e.getMessage());
 						}
 					}
+
 				}
 
 				// Codigo - Transaccion
