@@ -909,13 +909,15 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements
 						} else {
 							try {
 								telefonoE = telefonoEspecial.substring(
-										telefonoEspecial.length() - 6,
+										telefonoEspecial.length() - 8,
 										telefonoEspecial.length());
 								// telefonoE =
 								// (telefonoEspecial.substring(4,10));
 
 								telefonoEspecial = telefonoE;
-								bancoModel.setTelefono(telefonoEspecial);
+								
+								int telefonoSinCero = Integer.parseInt(telefonoEspecial);
+								bancoModel.setTelefono(String.valueOf(telefonoSinCero));
 
 								logger.debug(methodName
 										+ " - el Telefono Especial con el subString: "

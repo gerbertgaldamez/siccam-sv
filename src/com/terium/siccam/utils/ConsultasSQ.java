@@ -278,7 +278,7 @@ public class ConsultasSQ {
 			+ "       || RPAD (NVL (empresa_grupo, ' '), 4, ' ')sap " + "  FROM cb_poliza_contable_vw "
 			+ " WHERE 1 = 1 ";
 	//para prueba
-	/*public static final String OBTIENE_DATOS_SAP2 = "SELECT CBCONTABILIZACIONID, \r\n" + 
+	public static final String OBTIENE_DATOS_SAP2 = "SELECT CBCONTABILIZACIONID, \r\n" + 
 			"		cbestadocuentaid,\r\n" + 
 			"		nvl(clave_contabilizacion, '/') || chr(9)\r\n" + 
 			"		|| nvl(indicador_cme,'/') || chr(9)\r\n" + 
@@ -358,8 +358,8 @@ public class ConsultasSQ {
 			"	        || nvl(calc_auto_iva,'/') || chr(9)\r\n" + 
 			"		) lineaEncabezado, CBCATALOGOAGENCIAID\r\n" + 
 			"		FROM cb_poliza_contable_vw \r\n" + 
-			" 		WHERE 1 = 1 ";*/
-	public static final String OBTIENE_DATOS_SAP2 = "SELECT CBCONTABILIZACIONID, cbestadocuentaid, (SELECT valor_objeto1 "
+			" 		WHERE 1 = 1 ";
+	/*public static final String OBTIENE_DATOS_SAP2 = "SELECT CBCONTABILIZACIONID, cbestadocuentaid, (SELECT valor_objeto1 "
 			+ "             FROM cb_modulo_conciliacion_conf "
 			+ "            WHERE modulo = 'CONSULTA_CONTABILIZACION' "
 			+ "              AND cbmoduloconciliacionconfid = 38) "
@@ -388,7 +388,7 @@ public class ConsultasSQ {
 			+ "       || RPAD (NVL (subtipo_linea, ' '), 2, ' ')    " + "       || RPAD (NVL (canal, ' '), 2, ' ')    "
 			+ "       || RPAD (NVL (bundle, ' '), 2, ' ')   " + "       || RPAD (NVL (producto, ' '), 4, ' ')    "
 			+ "       || RPAD (NVL (empresa_grupo, ' '), 4, ' ')sap, CBCATALOGOAGENCIAID " + "   FROM cb_poliza_contable_vw "
-			+ " WHERE 1 = 1 ";
+			+ " WHERE 1 = 1 ";*/
 
 	public static final String OBTIENE_DATOS_SAP3 = "SELECT CBCONCILIACIONID, (SELECT RPAD (valor_objeto1, 21, '0') FROM cb_modulo_conciliacion_conf\r\n"
 			+ "WHERE modulo = 'APLICA_DESAPLICA_PAGOS' AND TIPO_OBJETO = 'PARAMETRO_APLICA') "
