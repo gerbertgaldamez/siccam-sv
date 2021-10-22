@@ -876,15 +876,25 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements
 								+ " - cantidad del Telefono Especial antes del subString: "
 								+ telefonoEspecial.length());
 						if (telefonoEspecial.length() == 20) {
-							
-							int inicioTelefono = Integer.parseInt(telefonoEspecial.substring(0, 4));
-							
-							if(inicioTelefono > 0){
+
+							int inicioTelefono = Integer
+									.parseInt(telefonoEspecial.substring(0, 4));
+
+							if (inicioTelefono > 0) {
+								 
 								telefonoE = telefonoEspecial.substring(3, 10);
 							} else {
-								telefonoE = telefonoEspecial.substring(4, 10);
+								inicioTelefono = Integer
+										.parseInt(telefonoEspecial.substring(0, 5));
+								if (inicioTelefono > 0) {
+									telefonoE = telefonoEspecial.substring(4, 10);
+
+								} else {
+									telefonoE = telefonoEspecial.substring(5, 11);
+
+								}
 							}
-							
+
 							try {
 								bancoModel.setTelefono(telefonoE);
 
@@ -896,7 +906,6 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements
 										+ e.getMessage());
 							}
 
-							
 						} else {
 							try {
 								telefonoE = telefonoEspecial.substring(
@@ -920,7 +929,8 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements
 					} else if (telefonoEspecial.length() == 13
 							|| telefonoEspecial.length() == 18) {
 
-						String telefonoAlf = CBConfiguracionConfrontaDaoB.obtenerETH();
+						String telefonoAlf = CBConfiguracionConfrontaDaoB
+								.obtenerETH();
 
 						logger.debug(methodName
 								+ " - cantidad del Telefono Especial antes del subString: "
