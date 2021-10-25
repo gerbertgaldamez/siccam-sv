@@ -198,7 +198,7 @@ public class CBConciliacionCajasController extends MenuController {
 				cell.setParent(item);
 
 				// Datos para la agrupacion de cajas
-				cell = new Listcell();
+				/*cell = new Listcell();
 				cell.setLabel(String.valueOf(obj.getCajaefectivo()));
 				cell.setParent(item);
 
@@ -228,7 +228,7 @@ public class CBConciliacionCajasController extends MenuController {
 				
 				cell = new Listcell();
 				cell.setLabel(String.valueOf(obj.getCajatarjetavisa()));
-				cell.setParent(item);
+				cell.setParent(item);*/
 				
 				//Datos para la agrupación de sistema comercial
 				cell = new Listcell();
