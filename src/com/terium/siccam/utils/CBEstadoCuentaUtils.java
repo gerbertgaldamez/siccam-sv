@@ -1267,7 +1267,9 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 		String methodName = "leerCredomaticEncabezadoNew()";
 		DateFormat df = new SimpleDateFormat("yyyyMMdd");
 		DataFormatter formatter = new DataFormatter();
+		String trs = String.valueOf((Tools.getValor()));
 		String registro = " ";
+		registro = trs;
 		try {
 			// leer el archivo xlsx
 			XSSFWorkbook libro = new XSSFWorkbook(OPCPackage.open(media.getStreamData()));
