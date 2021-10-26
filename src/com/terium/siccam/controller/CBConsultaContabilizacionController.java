@@ -1,6 +1,7 @@
 package com.terium.siccam.controller;
 
 import java.io.BufferedWriter;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -88,6 +89,7 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 	Textbox tbxObservaciones;
 	Textbox tbxTexto2;
 	Textbox tbxCentroCosto;
+	Textbox tbxTipo;
 	Textbox tbxCuenta;
 	Textbox tbxClave;
 	Textbox tbxReferencia;
@@ -622,6 +624,7 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 					if (cmbAgenciaIngreso.getSelectedItem() != null) {
 						idAgenciaIngreso = Integer.parseInt(cmbAgenciaIngreso.getSelectedItem().getValue().toString());
 					}
+					
 
 					System.out.println("Consulta estados contabilizacion");
 					if (tbxCentroCosto.getText().trim() != null && !tbxCentroCosto.getText().trim().equals("")) {
@@ -650,16 +653,16 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 
 					/// fin filtros nuevos
 					CBConsultaContabilizacionDAO objdao = new CBConsultaContabilizacionDAO();
-					// List<CBParametrosSAPModel> listaSapModel = objdao.obtieneDatosSAP(objModel,
-					// idAgencia, idAgenciaIngreso,1);
-					List<CBParametrosSAPModel> listaSapModel = objdao.obtieneDatosSAP(objModel, idAgencia,
+					 List<CBParametrosSAPModel> listaSapModel = objdao.obtieneDatosSAP(objModel,
+					 idAgencia, idAgenciaIngreso,1);
+					List<CBParametrosSAPModel> listaSapModel2 = objdao.obtieneDatosSAP(objModel, idAgencia,
 							idAgenciaIngreso, 2);
 
 					/* Generar archivo formato 1 */
 					obtenerListadoSAP(listaSapModel, 1);
 
 					/* Generar archivo formato 2 */
-					obtenerListadoSAP(listaSapModel, 2);
+					obtenerListadoSAP(listaSapModel2, 2);
 
 				} else {
 					Messagebox.show("Primero debe consultar informacion para generar el archivo", "ATENCION",
@@ -1267,6 +1270,7 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 		System.out.println("Entra a recargar consulta...");
 		int idAgencia = 0;
 		int idAgenciaIngreso = 0;
+		
 		CBConsultaContabilizacionModel objModel = new CBConsultaContabilizacionModel();
 		CBConsultaContabilizacionDAO objDao = new CBConsultaContabilizacionDAO();
 
