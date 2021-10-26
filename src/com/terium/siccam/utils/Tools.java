@@ -235,4 +235,14 @@ public class Tools {
 	    return Double.parseDouble(texto.trim());
 	}
 	
+	public static int limpiaValorNumer(String num_param){
+		try{
+			return Integer.parseInt(num_param);
+		} catch(NumberFormatException e){
+			return 0;
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	
 }

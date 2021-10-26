@@ -1267,9 +1267,9 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 		String methodName = "leerCredomaticEncabezadoNew()";
 		DateFormat df = new SimpleDateFormat("yyyyMMdd");
 		DataFormatter formatter = new DataFormatter();
-		String trs = String.valueOf((Tools.getValor()));
+		
 		String registro = " ";
-		//registro = trs;
+		
 		try {
 			// leer el archivo xlsx
 			XSSFWorkbook libro = new XSSFWorkbook(OPCPackage.open(media.getStreamData()));
@@ -1290,7 +1290,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 						Cell cell = cellIterator.next();
 
 						if (cell != null) {
-							registro = trs;
+							
 							registro = getCellType(cell, evaluator);
 
 							objCredo.setCbestadocuentaconfid(idBAC);
@@ -1325,7 +1325,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 								objCredo.setMonto(Double.parseDouble(registro.trim()));
 								break;
 							case 9:
-								objCredo.setTrs(Integer.parseInt(registro.trim()));
+								objCredo.setTrs(Tools.limpiaValorNumer(registro));
 								break;
 							case 10:
 								objCredo.setLiquidacion(Long.parseLong(registro.trim()));
