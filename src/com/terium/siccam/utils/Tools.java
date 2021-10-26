@@ -227,13 +227,13 @@ public class Tools {
 	/* public static boolean validarTelefono(String telefono) {
 	        return telefono.matches("[a-zA-Z0-9_]");
 	    }*/
-	public static double getValor(){
+	/*public static double getValor(){
 		String texto = "";
 	    if(texto.contains(" ")){
 	        return Double.parseDouble(texto.replace(" ", "0").trim());
 	    }
 	    return Double.parseDouble(texto.trim());
-	}
+	}*/
 	
 	public static int limpiaValorNumer(String num_param){
 		try{
