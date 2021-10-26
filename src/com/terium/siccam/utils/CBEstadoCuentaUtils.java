@@ -1269,7 +1269,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 		DataFormatter formatter = new DataFormatter();
 		String trs = String.valueOf((Tools.getValor()));
 		String registro = " ";
-		registro = trs;
+		//registro = trs;
 		try {
 			// leer el archivo xlsx
 			XSSFWorkbook libro = new XSSFWorkbook(OPCPackage.open(media.getStreamData()));
@@ -1290,6 +1290,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 						Cell cell = cellIterator.next();
 
 						if (cell != null) {
+							registro = trs;
 							registro = getCellType(cell, evaluator);
 
 							objCredo.setCbestadocuentaconfid(idBAC);
