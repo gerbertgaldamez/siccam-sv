@@ -1034,7 +1034,7 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 		try {
 			log.debug("onClick$btnDescargarSAP2()" + " - el archivo es:" + archivoTxt2);
 			Filedownload.save(archivoTxt2, null); // CarlosGodinez -> 28/12/2017
-			Messagebox.show("Archivo SAP descargado con exito", "ATENCION", Messagebox.OK, Messagebox.INFORMATION);
+			Messagebox.show("Archivo SAP2 descargado con exito", "ATENCION", Messagebox.OK, Messagebox.INFORMATION);
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error al intentar subir archivo SAP por FTP", "ATENCION", Messagebox.OK,
 					Messagebox.ERROR);

@@ -485,9 +485,11 @@ public class CBConsultaContabilizacionDAO extends ControladorBase{
 			
 			if(tipo == 1) {
 				query = ConsultasSQ.OBTIENE_DATOS_SAP;
+				Logger.getLogger("Sap ");
 			}
 			if(tipo == 2) {
 				query = ConsultasSQ.OBTIENE_DATOS_SAP2;
+				Logger.getLogger("Sap2 "+ ConsultasSQ.OBTIENE_DATOS_SAP2);
 			}
 
 			System.out.println(query);
@@ -500,6 +502,7 @@ public class CBConsultaContabilizacionDAO extends ControladorBase{
 			System.out.println("fecha inicio " + objModel.getFechaini());
 			System.out.println("fecha inicio " + objModel.getFechafin());
 			System.out.println("Query generacion SAP = " + query + where + "ORDER BY cbestadocuentaid asc");
+			
 			
 			CBParametrosSAPModel obj = null;
 			while (rs.next()) {

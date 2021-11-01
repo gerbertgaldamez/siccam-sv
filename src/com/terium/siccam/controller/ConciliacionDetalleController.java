@@ -1386,6 +1386,8 @@ public class ConciliacionDetalleController extends ControladorBase {
 		// request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
 		// String idpago = CBParametrosGeneralesModel.FIELD_CBPAGOSID;
 		String conciliacionid = detalle.getConciliacionId();
+		//String codigoColector = conciliacion.getCodigoColector();
+		
 
 		log.debug(methodName + " -  el concilacionid = " + conciliacionid);
 		request.setBank_id(CBConciliacionDetalleDAO.obtenerCodAgenciaReversa(conciliacionid));
@@ -1472,10 +1474,11 @@ public class ConciliacionDetalleController extends ControladorBase {
 		// request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
 		log.debug(methodName + " -  Codigo Cliente  = " + cliente);
 		// request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
-		String codagencia = conciliacion.getIdAgencia();
+		String conciliacionid = detalle.getConciliacionId();
+		//String codagencia = conciliacion.getCodigoColector();
 
-		log.debug(methodName + " -  el cogigo agencia1 = " + codagencia);
-		request.setBank_id(CBConciliacionDetalleDAO.obtenerCodAgencia(codagencia));
+		log.debug(methodName + " -  el cogigo de conciliacion es = " + conciliacionid);
+		request.setBank_id(CBConciliacionDetalleDAO.obtenerCodAgencia(conciliacionid));
 
 		log.debug(methodName + " -  Codigo Agencia Aplicacion ");
 		request.setBill_ref_no(Constantes.BILL_REF_NO);

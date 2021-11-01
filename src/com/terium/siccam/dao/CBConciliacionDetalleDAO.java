@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.controller.ConciliacionController;
 import com.terium.siccam.model.CBBmfModel;
@@ -465,7 +466,9 @@ public static String obtenerTelefono ( String acount_no){
 		
 		if(rst.next()){
 			return rst.getString(1);
+			
 		}
+		
 		
 	}catch(Exception e){
 		logger.error( e);
@@ -483,13 +486,14 @@ public static String obtenerTelefono ( String acount_no){
 	
 }
 public boolean actualizarTrackingId( String fecha, int trackingId){
+
 	boolean result = false;
 	Connection con = null;
 	PreparedStatement ptmt = null;
 	
 	try{
 		con = ControladorBase.obtenerDtsPromo().getConnection();
-		ptmt = con.prepareStatement(ConsultasSQ.ACTUALIZA_TRACKING_ID_SQ);
+		ptmt = con.prepareStatement(ConsultasSQ.ACTUALIZA_TRANS_DATE_SQ);
 		
 		ptmt.setString(1, fecha);
 		ptmt.setInt(2, trackingId);
@@ -497,9 +501,9 @@ public boolean actualizarTrackingId( String fecha, int trackingId){
 		return ptmt.executeUpdate() > 0;
 		
 	}catch(SQLException e){
-		logger.error( e);
+		logger.error("error1", e);
 	}catch (Exception e) {
-		logger.error( e);
+		logger.error("error2", e);
 	} finally {
 		try {
 			if (ptmt != null)
@@ -507,7 +511,7 @@ public boolean actualizarTrackingId( String fecha, int trackingId){
 			if (con != null)
 				con.close();
 		} catch (Exception e) {
-			logger.error( e);
+			logger.error("error3", e);
 		}
 	}
 
