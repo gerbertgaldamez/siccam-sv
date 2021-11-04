@@ -13,6 +13,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 
+
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.controller.ConciliacionController;
 import com.terium.siccam.model.CBBmfModel;
@@ -21,6 +22,7 @@ import com.terium.siccam.model.CBParametrosGeneralesModel;
 import com.terium.siccam.model.CBResumenDiarioConciliacionModel;
 import com.terium.siccam.utils.Constantes;
 import com.terium.siccam.utils.ConsultasSQ;
+import com.terium.siccam.utils.Tools;
 
 public class CBConciliacionDetalleDAO {
 
@@ -516,6 +518,67 @@ public boolean actualizarTrackingId( String fecha, int trackingId){
 	}
 
 	return result;
+}
+public static String obtenerCbPagosid ( String conciliacionid){
+	CBConciliacionDetallada detalle = new CBConciliacionDetallada();
+	PreparedStatement ptmt = null;
+	ResultSet rst = null;
+	Connection con = null;
+	try{
+		con = ControladorBase.obtenerDtsPromo().getConnection();
+		ptmt = con.prepareStatement(Tools.OBTENER_CBPAGOSID);
+		ptmt.setString(1, conciliacionid);
+		rst = ptmt.executeQuery();
+		
+		if(rst.next()){
+			//return rst.getString(1);
+			return rst.getString(Constantes.CB_PAGOS_ID);
+			
+		}
+		
+		
+	}catch(Exception e){
+		logger.error( e);
+	}
+	finally {
+		try {
+			if (con != null)
+				con.close();
+		} catch (SQLException e) {
+			logger.error( e);
+		}
+	}
+	return null;
+}
+public static String obtenerNum_Secuenci ( String cbpagosid){
+	CBConciliacionDetallada detalle = new CBConciliacionDetallada();
+	PreparedStatement ptmt = null;
+	ResultSet rst = null;
+	Connection con = null;
+	try{
+		con = ControladorBase.obtenerDtsPromo().getConnection();
+		ptmt = con.prepareStatement(Tools.OBTENER_NUM_SECUENCI);
+		ptmt.setString(1, cbpagosid);
+		rst = ptmt.executeQuery();
+		
+		if(rst.next()){
+			return rst.getString(1);
+			
+		}
+		
+		
+	}catch(Exception e){
+		logger.error( e);
+	}
+	finally {
+		try {
+			if (con != null)
+				con.close();
+		} catch (SQLException e) {
+			logger.error( e);
+		}
+	}
+	return null;
 }
 
 }

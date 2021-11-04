@@ -245,4 +245,8 @@ public class Tools {
 		}
 	}
 	
+	public static String OBTENER_CBPAGOSID ="select CBPAGOSID  from cb_conciliacion where CBCONCILIACIONID = ?";
+	
+	public static String OBTENER_NUM_SECUENCI ="select NUM_SECUENCI from cb_pagos where CBPAGOSID = ?";
+	
 }
