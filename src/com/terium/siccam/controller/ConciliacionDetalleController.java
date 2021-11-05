@@ -1224,9 +1224,13 @@ public class ConciliacionDetalleController extends ControladorBase {
 				String fecha = formatter.format(detalle.getDia());
 				log.debug(methodName + " la fecha es : " + fecha);
 				//para actualizar fecha trans_date
+				if(Constantes.STATUS.equalsIgnoreCase(response[0].getStatus())){
 				boolean resul = objDao.actualizarTransDate(fecha,Integer.parseInt(trackingid));
 				
 				log.debug(methodName + " Actualizar Fecha  : " + resul);
+				}else{
+					log.debug(methodName + " Fecha trans no fue Actualizada  : ");
+				}
 				
 			} catch (EjecutarPagoFault e) {
 				log.debug(methodName + " EjecutarPagoFault : ", e);
@@ -1292,9 +1296,15 @@ public class ConciliacionDetalleController extends ControladorBase {
 				String fecha = formatter.format(detalle.getDia());
 				log.debug(methodName + " la fecha es : " + fecha);
 				//para actualizar fecha trans_date
+				//if(Constantes.STATUS.equalsIgnoreCase(responseReversa[0].getStatus())){
+				if(Constantes.STATUS.equalsIgnoreCase(responseReversa[0].getStatus())){
 				boolean resul = objDao.actualizarTransDate(fecha,Integer.parseInt(trackingid));
 				
+				
 				log.debug(methodName + " Actualizar Fecha  : " + resul);
+				}else{
+					log.debug(methodName + " Fecha trans no fue Actualizada  : ");
+				}
 			} catch (ReversaPagoFault e) {
 				reversaPagoFault.setErrorCode(e.getErrorCode());
 				reversaPagoFault.setErrorMessage(e.getErrorMessage());
