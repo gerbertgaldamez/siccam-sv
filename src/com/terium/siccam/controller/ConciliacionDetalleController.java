@@ -1215,14 +1215,16 @@ public class ConciliacionDetalleController extends ControladorBase {
 			try {
 				response = requestWsEjecutaPago(parametros, detalle);
 				
-				//String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(detalle.getCliente());
-				String trackingid = String.valueOf(getClienteTelefono(detalle));
+				String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
+				//se obtiene el trackingid que se le mandara al metodo actualizarTransDate
+				//String trackingid = String.valueOf(getClienteTelefono(detalle));
 				log.debug(methodName + " el tracking id : " + trackingid);
 				//Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Format formatter = new SimpleDateFormat("dd-MM-yyyy");
 				String fecha = formatter.format(detalle.getDia());
 				log.debug(methodName + " la fecha es : " + fecha);
-				boolean resul = objDao.actualizarTrackingId(fecha,Integer.parseInt(trackingid));
+				//para actualizar fecha trans_date
+				boolean resul = objDao.actualizarTransDate(fecha,Integer.parseInt(trackingid));
 				
 				log.debug(methodName + " Actualizar Fecha  : " + resul);
 				

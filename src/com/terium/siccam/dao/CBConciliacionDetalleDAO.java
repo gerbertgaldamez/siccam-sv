@@ -487,7 +487,7 @@ public static String obtenerTelefono ( String acount_no){
 	return null;
 	
 }
-public boolean actualizarTrackingId( String fecha, int trackingId){
+public boolean actualizarTransDate( String fecha, int trackingId){
 
 	boolean result = false;
 	Connection con = null;
@@ -496,6 +496,9 @@ public boolean actualizarTrackingId( String fecha, int trackingId){
 	try{
 		con = ControladorBase.obtenerDtsPromo().getConnection();
 		ptmt = con.prepareStatement(ConsultasSQ.ACTUALIZA_TRANS_DATE_SQ);
+		
+		//logger.debug("actualizarTrackingId ->" + " la fecha " + fecha);
+		//logger.debug("actualizarTrackingId ->" + " el trackingId " + trackingId);
 		
 		ptmt.setString(1, fecha);
 		ptmt.setInt(2, trackingId);
