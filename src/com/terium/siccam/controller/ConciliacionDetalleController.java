@@ -1215,7 +1215,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 			try {
 				response = requestWsEjecutaPago(parametros, detalle);
 				
-			/*	String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
+				String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
 				//se obtiene el trackingid que se le mandara al metodo actualizarTransDate
 				//String trackingid = String.valueOf(getClienteTelefono(detalle));
 				log.debug(methodName + " el tracking id : " + trackingid);
@@ -1226,7 +1226,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 				//para actualizar fecha trans_date
 				boolean resul = objDao.actualizarTransDate(fecha,Integer.parseInt(trackingid));
 				
-				log.debug(methodName + " Actualizar Fecha  : " + resul);*/
+				log.debug(methodName + " Actualizar Fecha  : " + resul);
 				
 			} catch (EjecutarPagoFault e) {
 				log.debug(methodName + " EjecutarPagoFault : ", e);
@@ -1283,6 +1283,18 @@ public class ConciliacionDetalleController extends ControladorBase {
 				log.debug(methodName + " - ejecuta Reversa Pago ");
 				responseReversa = requestWsReversaPago(parametros, detalle);
 				log.debug(methodName + " - Reversa Ejecutada");
+				String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
+				//se obtiene el trackingid que se le mandara al metodo actualizarTransDate
+				//String trackingid = String.valueOf(getClienteTelefono(detalle));
+				log.debug(methodName + " el tracking id : " + trackingid);
+				//Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				Format formatter = new SimpleDateFormat("dd-MM-yyyy");
+				String fecha = formatter.format(detalle.getDia());
+				log.debug(methodName + " la fecha es : " + fecha);
+				//para actualizar fecha trans_date
+				boolean resul = objDao.actualizarTransDate(fecha,Integer.parseInt(trackingid));
+				
+				log.debug(methodName + " Actualizar Fecha  : " + resul);
 			} catch (ReversaPagoFault e) {
 				reversaPagoFault.setErrorCode(e.getErrorCode());
 				reversaPagoFault.setErrorMessage(e.getErrorMessage());
@@ -1358,18 +1370,6 @@ public class ConciliacionDetalleController extends ControladorBase {
 		String methodName = "requestWsReversaPago()";
 		log.debug(methodName + " - inicia ");
 		// TODO Auto-generated method stub
-		String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
-		//se obtiene el trackingid que se le mandara al metodo actualizarTransDate
-		//String trackingid = String.valueOf(getClienteTelefono(detalle));
-		log.debug(methodName + " el tracking id : " + trackingid);
-		//Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Format formatter = new SimpleDateFormat("dd-MM-yyyy");
-		String fecha1 = formatter.format(detalle.getDia());
-		log.debug(methodName + " la fecha es : " + fecha1);
-		//para actualizar fecha trans_date
-		boolean resul = objDao.actualizarTransDate(fecha1,Integer.parseInt(trackingid));
-		
-		log.debug(methodName + " Actualizar Fecha  : " + resul);
 		PagosPortService servicio = new PagosPortServiceLocator();
 		ReversaPagoDetalle[] response = null;
 		PagosPortSoap11Stub ws = new PagosPortSoap11Stub(new URL(servicio.getpagosPortSoap11Address()), servicio);
@@ -1385,6 +1385,17 @@ public class ConciliacionDetalleController extends ControladorBase {
 				response[0].getMsg_response()));
 		log.debug(methodName + " - ResponseXML : "
 				+ ws._getCall().getMessageContext().getResponseMessage().getSOAPPartAsString());
+		
+		/*String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
+		
+		log.debug(methodName + " el tracking id : " + trackingid);
+		
+		Format formatter = new SimpleDateFormat("dd-MM-yyyy");
+		String fecha1 = formatter.format(detalle.getDia());
+		log.debug(methodName + " la fecha es : " + fecha1);
+		boolean resul = objDao.actualizarTransDate(fecha1,Integer.parseInt(trackingid));
+		log.debug(methodName + " Actualizar Fecha  : " + resul);*/
+		
 		return response;
 	}
 
@@ -1433,7 +1444,6 @@ public class ConciliacionDetalleController extends ControladorBase {
 		
 
 		return request;
-		
 	}
 
 	private Map<String, String> getError(RemoteException e) {
@@ -1486,7 +1496,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 		log.debug(methodName + " - ResponseXML : "
 				+ ws._getCall().getMessageContext().getResponseMessage().getSOAPPartAsString());
 		
-		String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
+		/*String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
 		//se obtiene el trackingid que se le mandara al metodo actualizarTransDate
 		//String trackingid = String.valueOf(getClienteTelefono(detalle));
 		log.debug(methodName + " el tracking id : " + trackingid);
@@ -1497,7 +1507,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 		//para actualizar fecha trans_date
 		boolean resul = objDao.actualizarTransDate(fecha1,Integer.parseInt(trackingid));
 		
-		log.debug(methodName + " Actualizar Fecha  : " + resul);
+		log.debug(methodName + " Actualizar Fecha  : " + resul);*/
 		
 		return response;
 	}
