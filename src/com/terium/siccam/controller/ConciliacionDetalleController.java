@@ -1215,7 +1215,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 			try {
 				response = requestWsEjecutaPago(parametros, detalle);
 				
-				String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
+			/*	String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
 				//se obtiene el trackingid que se le mandara al metodo actualizarTransDate
 				//String trackingid = String.valueOf(getClienteTelefono(detalle));
 				log.debug(methodName + " el tracking id : " + trackingid);
@@ -1226,7 +1226,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 				//para actualizar fecha trans_date
 				boolean resul = objDao.actualizarTransDate(fecha,Integer.parseInt(trackingid));
 				
-				log.debug(methodName + " Actualizar Fecha  : " + resul);
+				log.debug(methodName + " Actualizar Fecha  : " + resul);*/
 				
 			} catch (EjecutarPagoFault e) {
 				log.debug(methodName + " EjecutarPagoFault : ", e);
@@ -1377,6 +1377,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 
 	private ReversaPagoRequest setParamsReversaPago(List<CBParametrosGeneralesModel> parametros,
 			CBConciliacionDetallada detalle) {
+		CBConciliacionDetalleDAO objDao = new CBConciliacionDetalleDAO();
 		String methodName = "setParamsReversaPago()";
 		Date objFecha = new Date();
 		DateFormat fechaFormato = new SimpleDateFormat("ddMMyyyy");
@@ -1415,6 +1416,19 @@ public class ConciliacionDetalleController extends ControladorBase {
 				+ "\nRequest Reversa Pago : \nBank_id= {0}\nFecha_Pago = {1}\nMonto = {2}\nRefererencia = {3}\nCliente = {4}",
 				request.getBank_id(), request.getFecha_pago(), request.getMonto(), request.getReferencia(),
 				request.getTelefono()));
+		
+		String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
+		//se obtiene el trackingid que se le mandara al metodo actualizarTransDate
+		//String trackingid = String.valueOf(getClienteTelefono(detalle));
+		log.debug(methodName + " el tracking id : " + trackingid);
+		//Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Format formatter = new SimpleDateFormat("dd-MM-yyyy");
+		String fecha1 = formatter.format(detalle.getDia());
+		log.debug(methodName + " la fecha es : " + fecha1);
+		//para actualizar fecha trans_date
+		boolean resul = objDao.actualizarTransDate(fecha1,Integer.parseInt(trackingid));
+		
+		log.debug(methodName + " Actualizar Fecha  : " + resul);
 
 		return request;
 	}
@@ -1445,6 +1459,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 	private PagoDetalle[] requestWsEjecutaPago(List<CBParametrosGeneralesModel> parametros,
 			CBConciliacionDetallada detalle) throws EjecutarPagoFault, RemoteException, MalformedURLException {
 		//CBConciliacionDetalleDAO objDao = null;
+		CBConciliacionDetalleDAO objDao = new CBConciliacionDetalleDAO();
 		String methodName = "requestWsEjecutaPago()";
 		log.debug(methodName + " - inicia ");
 		// TODO Auto-generated method stub
@@ -1467,6 +1482,19 @@ public class ConciliacionDetalleController extends ControladorBase {
 				response[0].getNum_referencia()));
 		log.debug(methodName + " - ResponseXML : "
 				+ ws._getCall().getMessageContext().getResponseMessage().getSOAPPartAsString());
+		
+		String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
+		//se obtiene el trackingid que se le mandara al metodo actualizarTransDate
+		//String trackingid = String.valueOf(getClienteTelefono(detalle));
+		log.debug(methodName + " el tracking id : " + trackingid);
+		//Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Format formatter = new SimpleDateFormat("dd-MM-yyyy");
+		String fecha1 = formatter.format(detalle.getDia());
+		log.debug(methodName + " la fecha es : " + fecha1);
+		//para actualizar fecha trans_date
+		boolean resul = objDao.actualizarTransDate(fecha1,Integer.parseInt(trackingid));
+		
+		log.debug(methodName + " Actualizar Fecha  : " + resul);
 		
 		return response;
 	}
