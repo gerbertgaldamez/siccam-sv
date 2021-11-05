@@ -1354,9 +1354,22 @@ public class ConciliacionDetalleController extends ControladorBase {
 
 	private ReversaPagoDetalle[] requestWsReversaPago(List<CBParametrosGeneralesModel> parametros,
 			CBConciliacionDetallada detalle) throws ReversaPagoFault, RemoteException, MalformedURLException {
+		CBConciliacionDetalleDAO objDao = new CBConciliacionDetalleDAO();
 		String methodName = "requestWsReversaPago()";
 		log.debug(methodName + " - inicia ");
 		// TODO Auto-generated method stub
+		String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
+		//se obtiene el trackingid que se le mandara al metodo actualizarTransDate
+		//String trackingid = String.valueOf(getClienteTelefono(detalle));
+		log.debug(methodName + " el tracking id : " + trackingid);
+		//Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Format formatter = new SimpleDateFormat("dd-MM-yyyy");
+		String fecha1 = formatter.format(detalle.getDia());
+		log.debug(methodName + " la fecha es : " + fecha1);
+		//para actualizar fecha trans_date
+		boolean resul = objDao.actualizarTransDate(fecha1,Integer.parseInt(trackingid));
+		
+		log.debug(methodName + " Actualizar Fecha  : " + resul);
 		PagosPortService servicio = new PagosPortServiceLocator();
 		ReversaPagoDetalle[] response = null;
 		PagosPortSoap11Stub ws = new PagosPortSoap11Stub(new URL(servicio.getpagosPortSoap11Address()), servicio);
@@ -1417,20 +1430,10 @@ public class ConciliacionDetalleController extends ControladorBase {
 				request.getBank_id(), request.getFecha_pago(), request.getMonto(), request.getReferencia(),
 				request.getTelefono()));
 		
-		String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
-		//se obtiene el trackingid que se le mandara al metodo actualizarTransDate
-		//String trackingid = String.valueOf(getClienteTelefono(detalle));
-		log.debug(methodName + " el tracking id : " + trackingid);
-		//Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Format formatter = new SimpleDateFormat("dd-MM-yyyy");
-		String fecha1 = formatter.format(detalle.getDia());
-		log.debug(methodName + " la fecha es : " + fecha1);
-		//para actualizar fecha trans_date
-		boolean resul = objDao.actualizarTransDate(fecha1,Integer.parseInt(trackingid));
 		
-		log.debug(methodName + " Actualizar Fecha  : " + resul);
 
 		return request;
+		
 	}
 
 	private Map<String, String> getError(RemoteException e) {
