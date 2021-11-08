@@ -316,7 +316,7 @@ public class ConsultasSQ {
 			"		|| '/' || chr(9)\r\n" + 
 			"		|| SUBSTR(nvl(actividad,'/'),0,16) || chr(9)\r\n" + 
 			"		|| '/' || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(to_char(fecha_valor,'DDMMYYYY'),''),0,8) || chr(9)\r\n" + 
+			"		|| SUBSTR(nvl(to_char(fecha_valor,'DDMMYYYY'),'/'),0,8) || chr(9)\r\n" + //cambio
 			"		|| '/' || chr(9)\r\n" + 
 			"		|| '/' || chr(9)\r\n" + 
 			"		|| '/' || chr(9)\r\n" + 
@@ -344,8 +344,8 @@ public class ConsultasSQ {
 			"	        || nvl((SELECT SUBSTR(moneda,0,3) FROM CB_CATALOGO_AGENCIA \r\n" + 
 			"	            WHERE CBCATALOGOAGENCIAID =cb_poliza_contable_vw.CBCATALOGOAGENCIAID ),'/') || chr(9)\r\n" + 
 			"	        || SUBSTR(nvl(tipo_de_cambio,'/'),0,9) || chr(9)\r\n" + 
-			"	        || SUBSTR(nvl(to_char(fecha_ingresos,'DDMMYYYY'),''),0,8) || chr(9)\r\n" + 
-			"	        || SUBSTR(nvl(to_char(fecha,'DDMMYYYY'),''),0,8) || chr(9)\r\n" + 
+			"	        || SUBSTR(nvl(to_char(fecha_ingresos,'DDMMYYYY'),''),0,8) || chr(9)\r\n" + //cambio
+			"	        || SUBSTR(nvl(to_char(fecha,'DDMMYYYY'),''),0,8) || chr(9)\r\n" + //cambio
 			"	        || '/' || chr(9)\r\n" + 
 			"	        || SUBSTR(nvl(texto,'/'),0,25) || chr(9)\r\n" + 
 			"	        || '/' || chr(9)\r\n" + 
