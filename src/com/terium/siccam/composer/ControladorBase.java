@@ -1,10 +1,11 @@
 package com.terium.siccam.composer;
 
 import java.math.BigDecimal;
-
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,7 +32,6 @@ import com.consystec.ms.seguridad.orm.Aplicacion;
 import com.consystec.ms.seguridad.orm.Elemento;
 import com.consystec.ms.seguridad.orm.PermisosGenerales;
 import com.consystec.ms.seguridad.orm.Usuario;
-
 import com.terium.siccam.utils.Constantes;
 import com.terium.siccam.utils.Tools;
 
@@ -63,6 +63,8 @@ public class ControladorBase extends GenericForwardComposer<Component> {
 			conn = obtenerDtsModsec().getConnection();
 			SeguridadWeb segWeb = new SeguridadWeb();
 			Usuario usuario = null;
+			
+			
 
 			SeguridadZK segZK = new SeguridadZK();
 			List<PermisosGenerales> permisos;
@@ -75,9 +77,11 @@ public class ControladorBase extends GenericForwardComposer<Component> {
 				Tools.eraseCookie("userId");
 				Tools.eraseCookie("conexion");
 				Tools.eraseCookie("pais");
+				
 
 				/** Obtener el valor del parametro de url autoriza. */
 				String param = (String) Executions.getCurrent().getParameter("autoriza");
+				log.debug(methodName + " - datos de conexion:" + param);
 
 				/** Obtener valor del parametro de url pais */
 				if (Executions.getCurrent().getParameter("pais") == null) { // cambios para pruebas
@@ -99,6 +103,8 @@ public class ControladorBase extends GenericForwardComposer<Component> {
 				 * Usuario.
 				 */
 				usuario = segWeb.validaAutorizacion(conn, param, nombreAplicacion, hsr);
+				
+				log.debug(methodName + " - datos de conexion:" + usuario);
 
 				/** Almacenar en sesión los datos de usuario. */
 				desktop.getSession().setAttribute("usuarioFirmado", usuario);
@@ -202,6 +208,8 @@ public class ControladorBase extends GenericForwardComposer<Component> {
 //			return ret;
 			try {
 				String url = new SeguridadWeb().obtenerUrlPortal(conn, nombreAplicacion);
+				
+				log.debug( " - Url de conexion" + url);
 
 				Tools.eraseCookie("userName");
 				Tools.eraseCookie("conexion");
@@ -231,12 +239,28 @@ public class ControladorBase extends GenericForwardComposer<Component> {
 			} else if (Tools.getCookie("conexion").equals(Constantes.CONEXION)) {// Tools.SESSION_SV
 				dts = (DataSource) contexto.lookup(Constantes.STR_CONEX + Tools.CONEXION_SV);// CONEXION_CR
 				log.debug(methodName + " JNDI conexion : " + Constantes.STR_CONEX + Tools.CONEXION_SV);
+				
+				log.debug(methodName + " JNDI conexion : " + Constantes.STR_CONEX + Tools.CONEXION_SV);
+				log.debug(methodName + "  : " + Constantes.STR_CONEX + Tools.CONEXION_SV);
+				
+			
 			} // CONEXION_CR
 			else {
 				dts = (DataSource) contexto.lookup(Constantes.STR_CONEX + Tools.CONEXION_SV);// CONEXION_CR
 				log.debug(methodName + " JNDI contexto : " + Constantes.STR_CONEX + Tools.CONEXION_SV);
+				//log.debug(methodName + " obtener  conexion : " + dts.getConnection().getClientInfo() );
+				
+				
 			}
-
+			Properties objProperties = dts.getConnection().getClientInfo();
+			Enumeration<Object> lstEnum = objProperties.elements();
+			while(lstEnum.hasMoreElements()){
+				Object obj = lstEnum.nextElement();
+				log.debug("Con tostring: "+obj.toString());
+				log.debug("Sin tostring: "+obj.toString());
+			}
+			log.debug(methodName + " obtener  conexion1 : " + objProperties.getProperty("host"));
+			log.debug("Objeto properties: "+objProperties.elements());
 		} catch (NamingException e) {
 			log.error(methodName + " - No se ha podido obtener la conexion ", e);
 			/*
@@ -244,6 +268,9 @@ public class ControladorBase extends GenericForwardComposer<Component> {
 			 * "Ocurrió un error al tratar de obtener la conexión a DB, comúníquese con su administrador."
 			 * , "Error", Messagebox.OK, Messagebox.ERROR);
 			 */
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return dts;
 	}
@@ -291,6 +318,7 @@ public class ControladorBase extends GenericForwardComposer<Component> {
 			if (pais == null || pais == "") {
 				log.debug(methodName + " - la conexion es nula: " + misession.getAttribute(Constantes.CONEXION));
 				dts = (DataSource) contexto.lookup(Constantes.STR_CONEX + Tools.CONEXION_SV);// CONEXION_CR
+				log.debug(methodName + " obtener  conexion2 : " + dts.getConnection().getClientInfo());
 			}
 
 		} catch (NamingException e) {
@@ -300,6 +328,9 @@ public class ControladorBase extends GenericForwardComposer<Component> {
 			 * "Ocurrió un error al tratar de obtener la conexión a DB, comúníquese con su administrador."
 			 * , "Error", Messagebox.OK, Messagebox.ERROR);
 			 */
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return dts;
 	}
@@ -400,8 +431,12 @@ public class ControladorBase extends GenericForwardComposer<Component> {
 				desktop.getSession().setAttribute("dtsModsec", dts);
 			} else
 				dts = (DataSource) desktop.getSession().getAttribute("dtsModsec");
+			log.debug( " obtener  conexion3 : " + dts.getConnection().getClientInfo());
 		} catch (NamingException e) {
 			log.error("obtenerDtsModsec() - Error : ", e);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return dts;
 	}

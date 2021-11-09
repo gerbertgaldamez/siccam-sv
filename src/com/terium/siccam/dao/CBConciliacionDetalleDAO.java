@@ -433,6 +433,8 @@ public static String obtenerTrackingId ( String cod_num){
 	try{
 		con = ControladorBase.obtenerDtsPromo().getConnection();
 		ptmt = con.prepareStatement(ConsultasSQ.OBTENER_TRACKING_ID_SQ);
+		
+		logger.debug("query para obtener el tracking id ->" + ConsultasSQ.OBTENER_TRACKING_ID_SQ );
 		ptmt.setString(1, cod_num);
 		rst = ptmt.executeQuery();
 		
@@ -463,6 +465,7 @@ public static String obtenerTelefono ( String acount_no){
 	try{
 		con = ControladorBase.obtenerDtsPromo().getConnection();
 		ptmt = con.prepareStatement(ConsultasSQ.OBTENER_TELEFONO_SQ);
+		logger.debug("query para obtener el telefono ->" + ConsultasSQ.OBTENER_TELEFONO_SQ );
 		ptmt.setString(1, acount_no);
 		rst = ptmt.executeQuery();
 		
@@ -496,7 +499,7 @@ public boolean actualizarTransDate( String fecha, int trackingId){
 	try{
 		con = ControladorBase.obtenerDtsPromo().getConnection();
 		ptmt = con.prepareStatement(ConsultasSQ.ACTUALIZA_TRANS_DATE_SQ);
-		
+		logger.debug("query para actualizar la fecha trans_date ->" + ConsultasSQ.ACTUALIZA_TRANS_DATE_SQ );
 		//logger.debug("actualizarTrackingId ->" + " la fecha " + fecha);
 		//logger.debug("actualizarTrackingId ->" + " el trackingId " + trackingId);
 		
@@ -530,6 +533,7 @@ public static String obtenerCbPagosid ( String conciliacionid){
 	try{
 		con = ControladorBase.obtenerDtsPromo().getConnection();
 		ptmt = con.prepareStatement(Tools.OBTENER_CBPAGOSID);
+		logger.debug("query para obtener el id del pago ->" + Tools.OBTENER_CBPAGOSID );
 		ptmt.setString(1, conciliacionid);
 		rst = ptmt.executeQuery();
 		
@@ -561,6 +565,7 @@ public static String obtenerNum_Secuenci ( String cbpagosid){
 	try{
 		con = ControladorBase.obtenerDtsPromo().getConnection();
 		ptmt = con.prepareStatement(Tools.OBTENER_NUM_SECUENCI);
+		logger.debug("query para obtener el num secuenci ->" + Tools.OBTENER_CBPAGOSID );
 		ptmt.setString(1, cbpagosid);
 		rst = ptmt.executeQuery();
 		

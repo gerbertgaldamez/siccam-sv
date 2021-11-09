@@ -278,87 +278,87 @@ public class ConsultasSQ {
 			+ "       || RPAD (NVL (empresa_grupo, ' '), 4, ' ')sap " + "  FROM cb_poliza_contable_vw "
 			+ " WHERE 1 = 1 ";
 	//para prueba
-	public static final String OBTIENE_DATOS_SAP2 = "SELECT CBCONTABILIZACIONID, \r\n" + 
-			"		cbestadocuentaid,\r\n" + 
-			"		nvl(clave_contabilizacion, '/') || chr(9)\r\n" + 
-			"		|| nvl(indicador_cme,'/') || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(TO_CHAR (haber/100, 'fm99999999990.00'),'/'),0,16) || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(TO_CHAR (haber/100, 'fm99999999990.00'),'/'),0,16) || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(indicador_iva,'/'),0,2) || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(centro_costo,'/'),0,10) || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(orden_de_proyecto, '/'),0,12) || chr(9)\r\n" + 
-			"		|| '/' || chr(9) \r\n" + 
-			"		|| SUBSTR(nvl(asignacion,'/'),0,18) ||chr(9) \r\n" + 
-			"		|| SUBSTR(nvl(texto2,'/'),0,50) || chr(9)\r\n" + 
-			"		|| '/' || chr(9) \r\n" + 
-			"		|| '/' || chr(9) \r\n" + 
-			"		|| '/' || chr(9) \r\n" + 
-			"		|| SUBSTR(nvl(banco_propio,'/'),0,5) || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(cuenta,'/'),0,17) || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(ref1,'/'),0,12) || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(referenciasap,'/'),0,15) || chr(9)\r\n" + 
-			"		|| '/' || chr(9)\r\n" + 
-			"		|| '/' || chr(9)\r\n" + 
-			"		|| '/' || chr(9)\r\n" + 
-			"		|| '/' || chr(9)\r\n" + 
-			"		|| nvl((sociedad),'/') || chr(9)\r\n" + 
-			"		|| '/' || chr(9)\r\n" + 
-			"		|| '/' || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(car_pa_region,'/'),0,3) || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(car_pa_licencia,'/'),0,2) || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(car_pa_tipo_trafico,'/'),0,2) || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(car_pa_ambito,'/'),0,2) || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(producto,'/'),0,4) || chr(9)\r\n" + 
-			"		|| '/' || chr(9)\r\n" + 
-			"		|| '/' || chr(9)\r\n" + 
-			"		|| '/' || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(empresa_grupo,'/'),0,4) || chr(9)\r\n" + 
-			"		|| '/' || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(actividad,'/'),0,16) || chr(9)\r\n" + 
-			"		|| '/' || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(to_char(fecha_valor,'DDMMYYYY'),'/'),0,8) || chr(9)\r\n" + //cambio
-			"		|| '/' || chr(9)\r\n" + 
-			"		|| '/' || chr(9)\r\n" + 
-			"		|| '/' || chr(9)\r\n" + 
-			"		|| '/' || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(proyecto,'/'),0,24) || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(sociedad_asociada,'/'),0,6) || chr(9)\r\n" + 
-			"		|| '/' || chr(9)\r\n" + 
-			"		|| '/' || chr(9)\r\n" + 
-			"		|| '/' || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(grafo1,'/'),0,12) || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(grafo2,'/'),0,12) || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(subsegmento,'/'),0,2) || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(bundle,'/'),0,2) || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(subtipo_linea,'/'),0,2) || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(canal,'/'),0,2) || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(car_pa_servicio,'/'),0,3) || chr(9)\r\n" + 
-			"		|| SUBSTR(nvl(car_pa_segmento,'/'),0,2) || chr(9)\r\n" + 
-			"		|| '/' || chr(9) sap,\r\n" + 
-			"		(nvl(tcode,'FB01') || chr(9)\r\n" + 
-			"			||SUBSTR(nvl(tipo_documento,'/'),0,2)  || chr(9)\r\n" + 
-			"			|| nvl((SELECT valor_objeto1 \r\n" + 
-			"	             FROM cb_modulo_conciliacion_conf \r\n" + 
-			"	            WHERE modulo = 'CONSULTA_CONTABILIZACION' \r\n" + 
-			"	              AND cbmoduloconciliacionconfid = 38),'/') || chr(9)\r\n" + 
-			"	        || nvl((SELECT SUBSTR(moneda,0,3) FROM CB_CATALOGO_AGENCIA \r\n" + 
-			"	            WHERE CBCATALOGOAGENCIAID =cb_poliza_contable_vw.CBCATALOGOAGENCIAID ),'/') || chr(9)\r\n" + 
-			"	        || SUBSTR(nvl(tipo_de_cambio,'/'),0,9) || chr(9)\r\n" + 
-			"	        || SUBSTR(nvl(to_char(fecha_ingresos,'DDMMYYYY'),''),0,8) || chr(9)\r\n" + //cambio
-			"	        || SUBSTR(nvl(to_char(fecha,'DDMMYYYY'),''),0,8) || chr(9)\r\n" + //cambio
-			"	        || '/' || chr(9)\r\n" + 
-			"	        || SUBSTR(nvl(texto,'/'),0,25) || chr(9)\r\n" + 
-			"	        || '/' || chr(9)\r\n" + 
-			"	        || '/' || chr(9)\r\n" + 
-			"	        || SUBSTR(nvl(referencia,'/'),0,16) || chr(9)\r\n" + 
-			"	        || SUBSTR(nvl(agencia,'/'),0,16) || chr(9)\r\n" + 
-			"	        || nvl(proc,'31') || chr(9)\r\n" + 
-			"	        || 'secuencia' || chr(9)\r\n" + 
-			"	        || nvl(llave,'/') || chr(9)\r\n" + 
-			"	        || nvl(calc_auto_iva,'/') || chr(9)\r\n" + 
-			"		) lineaEncabezado, CBCATALOGOAGENCIAID\r\n" + 
-			"		FROM cb_poliza_contable_vw \r\n" + 
-			" 		WHERE 1 = 1 ";
+	public static final String OBTIENE_DATOS_SAP2 = "SELECT CBCONTABILIZACIONID, \r\n + " +
+			"	cbestadocuentaid,\r\n" + 
+			"	nvl(clave_contabilizacion, '/') || chr(9)\r\n" + 
+			"	|| nvl(indicador_cme,'/') || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(TO_CHAR (haber/100, 'fm99999999990.00'),'/'),0,16) || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(TO_CHAR (haber/100, 'fm99999999990.00'),'/'),0,16) || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(indicador_iva,'/'),0,2) || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(centro_costo,'/'),0,10) || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(orden_de_proyecto, '/'),0,12) || chr(9)\r\n" + 
+			"	|| '/' || chr(9) \r\n" + 
+			"	|| SUBSTR(nvl(asignacion,'/'),0,18) ||chr(9) \r\n" + 
+			"	|| SUBSTR(nvl(texto2,'/'),0,50) || chr(9)\r\n" + 
+			"	|| '/' || chr(9) \r\n" + 
+			"	|| '/' || chr(9) \r\n" + 
+			"	|| '/' || chr(9) \r\n" + 
+			"	|| SUBSTR(nvl(banco_propio,'/'),0,5) || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(cuenta,'/'),0,17) || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(ref1,'/'),0,12) || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(referenciasap,'/'),0,15) || chr(9)\r\n" + 
+			"	|| '/' || chr(9)\r\n" + 
+			"	|| '/' || chr(9)\r\n" + 
+			"	|| '/' || chr(9)\r\n" + 
+			"	|| '/' || chr(9)\r\n" + 
+			"	|| nvl((sociedad),'/') || chr(9)\r\n" + 
+			"	|| '/' || chr(9)\r\n" + 
+			"	|| '/' || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(car_pa_region,'/'),0,3) || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(car_pa_licencia,'/'),0,2) || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(car_pa_tipo_trafico,'/'),0,2) || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(car_pa_ambito,'/'),0,2) || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(producto,'/'),0,4) || chr(9)\r\n" + 
+			"	|| '/' || chr(9)\r\n" + 
+			"	|| '/' || chr(9)\r\n" + 
+			"	|| '/' || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(empresa_grupo,'/'),0,4) || chr(9)\r\n" + 
+			"	|| '/' || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(actividad,'/'),0,16) || chr(9)\r\n" + 
+			"	|| '/' || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(to_char(fecha_valor,'DDMMYYYY'),'/'),0,8) || chr(9)\r\n" + 
+			"	|| '/' || chr(9)\r\n" + 
+			"	|| '/' || chr(9)\r\n" + 
+			"	|| '/' || chr(9)\r\n" + 
+			"	|| '/' || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(proyecto,'/'),0,24) || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(sociedad_asociada,'/'),0,6) || chr(9)\r\n" + 
+			"	|| '/' || chr(9)\r\n" + 
+			"	|| '/' || chr(9)\r\n" + 
+			"	|| '/' || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(grafo1,'/'),0,12) || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(grafo2,'/'),0,12) || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(subsegmento,'/'),0,2) || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(bundle,'/'),0,2) || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(subtipo_linea,'/'),0,2) || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(canal,'/'),0,2) || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(car_pa_servicio,'/'),0,3) || chr(9)\r\n" + 
+			"	|| SUBSTR(nvl(car_pa_segmento,'/'),0,2) || chr(9)\r\n" + 
+			"	|| '/' || chr(9) sap,\r\n" + 
+			"	(nvl(tcode,'FB01') || chr(9)\r\n" + 
+			"		||SUBSTR(nvl(tipo_documento,'/'),0,2)  || chr(9)\r\n" + 
+				"	|| nvl((SELECT valor_objeto1 \r\n" + 
+			  "           FROM cb_modulo_conciliacion_conf \r\n" + 
+			   "         WHERE modulo = 'CONSULTA_CONTABILIZACION' \r\n" + 
+			      "        AND cbmoduloconciliacionconfid = 38),'/') || chr(9)\r\n" + 
+			   "     || nvl((SELECT SUBSTR(moneda,0,3) FROM CB_CATALOGO_AGENCIA \r\n" + 
+			   "         WHERE CBCATALOGOAGENCIAID =cb_poliza_contable_vw.CBCATALOGOAGENCIAID ),'/') || chr(9)\r\n" + 
+			   "     || SUBSTR(nvl(tipo_de_cambio,'/'),0,9) || chr(9)\r\n" + 
+			   "     || SUBSTR(nvl(to_char(fecha_ingresos,'DDMMYYYY'),''),0,8) || chr(9)\r\n" + 
+			  "      || SUBSTR(nvl(to_char(fecha,'DDMMYYYY'),''),0,8) || chr(9)\r\n" + 
+			 "       || '/' || chr(9)\r\n" + 
+			   "     || SUBSTR(nvl(texto,'/'),0,25) || chr(9)\r\n" + 
+			   "     || '/' || chr(9)\r\n" + 
+			    "    || '/' || chr(9)\r\n" + 
+			     "   || SUBSTR(nvl(referencia,'/'),0,16) || chr(9)\r\n" + 
+			     "   || SUBSTR(nvl(agencia,'/'),0,16) || chr(9)\r\n" + 
+			     "   || nvl(proc,'31') || chr(9)\r\n" + 
+			     "   || 'secuencia' || chr(9)\r\n" + 
+			    "    || nvl(llave,'/') || chr(9)\r\n" + 
+			    "    || nvl(calc_auto_iva,'/') || chr(9)\r\n" + 
+			"	) lineaEncabezado, CBCATALOGOAGENCIAID\r\n "+ 
+				"FROM cb_poliza_contable_vw \r\n "+ 
+		 		"WHERE 1 = 1" ;
 	/*public static final String OBTIENE_DATOS_SAP2 = "SELECT CBCONTABILIZACIONID, cbestadocuentaid, (SELECT valor_objeto1 "
 			+ "             FROM cb_modulo_conciliacion_conf "
 			+ "            WHERE modulo = 'CONSULTA_CONTABILIZACION' "
