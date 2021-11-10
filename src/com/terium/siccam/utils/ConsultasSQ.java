@@ -696,7 +696,7 @@ public class ConsultasSQ {
 	//public static final String OBTENER_TELEFONO_SQ = "select num_cuentarbor from te_numeros_contrato a, te_numeros b, te_contrato c, te_cuenta d where a.cod_numeroid = b.cod_numeroid and a.tecontratoid = c.tecontratoid and c.tecuentaid = d.tecuentaid and b.cod_num = ? and a.fec_baja is null ";
 	public static final String OBTENER_TELEFONO_SQ = " SELECT NUM_CUENTARBOR FROM TE_CUENTA A, TCG_CONTRATO B,TCG_INSTANCIA_CONTRATO C,TCG_INSTANCIA D  WHERE A.TECUENTAID = B.TECUENTAID  AND B.TCGCONTRATOID = C.TCGCONTRATOID AND C.TCGINSTANCIAID = D.TCGINSTANCIAID AND D.CODIGO = ? ";
 	
-	public static final String ACTUALIZA_TRANS_DATE_SQ = "UPDATE BMF SET TRANS_DATE = to_date(?) WHERE TRACKING_ID = ? AND TRACKING_ID_SERV = 3 ";
+	public static final String ACTUALIZA_TRANS_DATE_SQ = "UPDATE BMF SET TRANS_DATE = to_date(?,'dd-MM-yyyy') WHERE TRACKING_ID = ? AND TRACKING_ID_SERV = 3 ";
 	
 	public static final String OBTENER_ETH = " select VALOR_OBJETO1 FROM CB_MODULO_CONCILIACION_CONF where valor_objeto1 = 'ETH' ";
 	
