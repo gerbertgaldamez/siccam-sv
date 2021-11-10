@@ -1424,16 +1424,19 @@ public class ConciliacionDetalleController extends ControladorBase {
 		// String idpago = CBParametrosGeneralesModel.FIELD_CBPAGOSID;
 		String conciliacionid = detalle.getConciliacionId();
 		//String codigoColector = conciliacion.getCodigoColector();
-		
+		String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
+		String referencia = CBConciliacionDetalleDAO.obtenerReferencia(trackingid);
 		String cbpagosid = CBConciliacionDetalleDAO.obtenerCbPagosid(detalle.getConciliacionId());
 		
 		log.debug(methodName + " -  cbpagosid = " + cbpagosid);
 		
-		String num_secuenci = CBConciliacionDetalleDAO.obtenerNum_Secuenci(cbpagosid);
-		log.debug(methodName + " -  num_secuenci = " + num_secuenci);
+		//String num_secuenci = CBConciliacionDetalleDAO.obtenerNum_Secuenci(cbpagosid);
+		//log.debug(methodName + " -  num_secuenci = " + num_secuenci);
 
 		log.debug(methodName + " -  el concilacionid = " + conciliacionid);
 		request.setBank_id(CBConciliacionDetalleDAO.obtenerCodAgenciaReversa(conciliacionid));
+		
+		
 
 		// request.setBank_id(CBConciliacionDetalleDAO.obtenerCodAgencia(Constantes.OBTENER_COD_AGENCIA));
 		// log.debug(methodName + " - Codigo Agencia desaplicacion " +
@@ -1444,7 +1447,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 		request.setMonto(detalle.getPendienteBanco().doubleValue());
 		log.debug(methodName + " - el monto es = " + detalle.getPendienteBanco());
 		//request.setReferencia(Constantes.REVERSA_PAGO_WS_REFERENCIA);
-		request.setReferencia(num_secuenci);
+		request.setReferencia(referencia);
 		request.setTelefono(cliente);
 		log.debug(MessageFormat.format(methodName
 				+ "\nRequest Reversa Pago : \nBank_id= {0}\nFecha_Pago = {1}\nMonto = {2}\nRefererencia = {3}\nCliente = {4}",

@@ -364,6 +364,7 @@ public static String obtenerCodAgencia(String cbBancoAgenciaConfrontaID){
 		try{
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			ptmt = con.prepareStatement(Constantes.OBTENER_COD_AGENCIA);
+			logger.debug("obtenerCod Agencia ->" + Constantes.OBTENER_COD_AGENCIA );
 			ptmt.setString(1, cbBancoAgenciaConfrontaID);
 			
 			//logger.debug("obtenerCodAgencia() " + " - Query obtener cod agencia en la dao => : " + Constantes.OBTENER_COD_AGENCIA);
@@ -400,6 +401,7 @@ public static String obtenerCodAgenciaReversa(String conciliacionid){
 		try{
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			ptmt = con.prepareStatement(Constantes.OBTENER_COD_AGENCIA_REVERSA);
+			logger.debug("obtenerCodAgenciaReversa ->" + Constantes.OBTENER_COD_AGENCIA_REVERSA );
 			ptmt.setString(1, conciliacionid);
 			
 			rst = ptmt.executeQuery();
@@ -565,7 +567,7 @@ public static String obtenerNum_Secuenci ( String cbpagosid){
 	try{
 		con = ControladorBase.obtenerDtsPromo().getConnection();
 		ptmt = con.prepareStatement(Tools.OBTENER_NUM_SECUENCI);
-		logger.debug("query para obtener el num secuenci ->" + Tools.OBTENER_CBPAGOSID );
+		logger.debug("query para obtener el num secuenci ->" + Tools.OBTENER_NUM_SECUENCI );
 		ptmt.setString(1, cbpagosid);
 		rst = ptmt.executeQuery();
 		
@@ -585,6 +587,35 @@ public static String obtenerNum_Secuenci ( String cbpagosid){
 		} catch (SQLException e) {
 			logger.error( e);
 		}
+	}
+	return null;
+}
+public static String obtenerReferencia(String trackingid){
+	PreparedStatement ptmt = null;
+	ResultSet rst = null;
+	Connection con = null;
+	try{
+		con = ControladorBase.obtenerDtsPromo().getConnection();
+		ptmt = con.prepareStatement(Tools.OBTENER_REFERENCIA);
+		logger.debug("query para obtener la referencia" + Tools.OBTENER_REFERENCIA);
+		ptmt.setString(1, trackingid);
+		rst = ptmt.executeQuery();
+		if(rst.next()){
+			return rst.getString(1);
+		}
+		
+	}catch(Exception e){
+		logger.error(e);
+		
+	}
+	finally{
+		try{
+			if(con != null)
+				con.close();
+			}catch(SQLException e){
+				
+			}
+		
 	}
 	return null;
 }

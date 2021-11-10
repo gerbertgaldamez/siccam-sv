@@ -249,4 +249,6 @@ public class Tools {
 	
 	public static String OBTENER_NUM_SECUENCI ="select NUM_SECUENCI from cb_pagos where CBPAGOSID = ?";
 	
+	public static String OBTENER_REFERENCIA ="Select REFERENCIA from bellintlog@LINK_MGINTER_ARBOR where r_tracking_id = ?";
+	
 }
