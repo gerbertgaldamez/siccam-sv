@@ -47,14 +47,21 @@ public class CBHistorialAccionDAO {
 		Connection conn = null;
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			queInsert = " Insert into  " + CBHistorialAccionModel.TABLE + " ("
-					+ ObtieneCampos.obtieneSQL(CBHistorialAccionModel.class, null, true, null) + ") values " + " ("
-					+ ObtieneCampos.obtieneInsert(CBHistorialAccionModel.class) + ")";
+			queInsert = " Insert into  "
+					+ CBHistorialAccionModel.TABLE
+					+ " ("
+					+ ObtieneCampos.obtieneSQL(CBHistorialAccionModel.class,
+							null, true, null) + ") values " + " ("
+					+ ObtieneCampos.obtieneInsert(CBHistorialAccionModel.class)
+					+ ")";
 
 			QueryRunner qry = new QueryRunner();
-			Object[] param = new Object[] { registro.getFecha(), registro.getTipo(), registro.getEstado(),
-					registro.getAccion(), registro.getObservaciones(), registro.getCreadoPor(),
-					registro.getModificadoPor(), registro.getFechaCreacion(), registro.getFechaModificacion() };
+			Object[] param = new Object[] { registro.getFecha(),
+					registro.getTipo(), registro.getEstado(),
+					registro.getAccion(), registro.getObservaciones(),
+					registro.getCreadoPor(), registro.getModificadoPor(),
+					registro.getFechaCreacion(),
+					registro.getFechaModificacion() };
 
 			ret = qry.update(conn, queInsert, param);
 
@@ -87,19 +94,27 @@ public class CBHistorialAccionDAO {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
 			queInsert = " Update " + CBHistorialAccionModel.TABLE + " set "
 					+ CBHistorialAccionModel.FIELD_CBDATATELEFONICAID + " =?, "
-					+ CBHistorialAccionModel.FIELD_CBDATABANCOID + " =?, " + CBHistorialAccionModel.FIELD_FECHA
-					+ " =?, " + CBHistorialAccionModel.FIELD_TIPO + " =?, " + CBHistorialAccionModel.FIELD_ESTADO
-					+ " =?, " + CBHistorialAccionModel.FIELD_ACCION + " =?, "
-					+ CBHistorialAccionModel.FIELD_OBSERVACIONES + " =?, " + CBHistorialAccionModel.FIELD_CREADO_POR
-					+ " =?, " + CBHistorialAccionModel.FIELD_MODIFICADO_POR + " =?, "
+					+ CBHistorialAccionModel.FIELD_CBDATABANCOID + " =?, "
+					+ CBHistorialAccionModel.FIELD_FECHA + " =?, "
+					+ CBHistorialAccionModel.FIELD_TIPO + " =?, "
+					+ CBHistorialAccionModel.FIELD_ESTADO + " =?, "
+					+ CBHistorialAccionModel.FIELD_ACCION + " =?, "
+					+ CBHistorialAccionModel.FIELD_OBSERVACIONES + " =?, "
+					+ CBHistorialAccionModel.FIELD_CREADO_POR + " =?, "
+					+ CBHistorialAccionModel.FIELD_MODIFICADO_POR + " =?, "
 					+ CBHistorialAccionModel.FIELD_FECHA_CREACION + " =?, "
-					+ CBHistorialAccionModel.FIELD_FECHA_MODIFICACION + " =?, " + " where  "
-					+ CBHistorialAccionModel.PKFIELD_CBHISTORIALACCIONID + " = ? ";
+					+ CBHistorialAccionModel.FIELD_FECHA_MODIFICACION + " =?, "
+					+ " where  "
+					+ CBHistorialAccionModel.PKFIELD_CBHISTORIALACCIONID
+					+ " = ? ";
 
 			QueryRunner qry = new QueryRunner();
-			Object[] param = new Object[] { registro.getFecha(), registro.getTipo(), registro.getEstado(),
-					registro.getAccion(), registro.getObservaciones(), registro.getCreadoPor(),
-					registro.getModificadoPor(), registro.getFechaCreacion(), registro.getFechaModificacion(), };
+			Object[] param = new Object[] { registro.getFecha(),
+					registro.getTipo(), registro.getEstado(),
+					registro.getAccion(), registro.getObservaciones(),
+					registro.getCreadoPor(), registro.getModificadoPor(),
+					registro.getFechaCreacion(),
+					registro.getFechaModificacion(), };
 
 			ret = qry.update(conn, queInsert, param);
 
@@ -124,14 +139,17 @@ public class CBHistorialAccionDAO {
 	 * @return the list of Objects
 	 */
 	@SuppressWarnings("unchecked")
-	public List<CBHistorialAccionModel> Listado(List<Filtro> filtro, List<Orden> orden) {
+	public List<CBHistorialAccionModel> Listado(List<Filtro> filtro,
+			List<Orden> orden) {
 		List<CBHistorialAccionModel> ret = null;
 		String query;
 		Connection conn = null;
 
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			query = "select " + ObtieneCampos.obtieneSQL(CBHistorialAccionModel.class, null, true, null) + " from "
+			query = "select "
+					+ ObtieneCampos.obtieneSQL(CBHistorialAccionModel.class,
+							null, true, null) + " from "
 					+ CBHistorialAccionModel.TABLE;
 
 			FiltroQuery filtroQuery = null;
@@ -141,12 +159,15 @@ public class CBHistorialAccionDAO {
 			String sqlFiltros = Filtro.getStringFiltros(filtro, true);
 			QueryRunner qry = new QueryRunner();
 			@SuppressWarnings({ "rawtypes" })
-			BeanListHandler blh = new BeanListHandler(CBHistorialAccionModel.class);
+			BeanListHandler blh = new BeanListHandler(
+					CBHistorialAccionModel.class);
 			if (filtroQuery.getParams() != null) {
-				ret = (List<CBHistorialAccionModel>) qry.query(conn, query + sqlFiltros + filtroQuery.getSql(), blh,
+				ret = (List<CBHistorialAccionModel>) qry.query(conn, query
+						+ sqlFiltros + filtroQuery.getSql(), blh,
 						filtroQuery.getParams());
 			} else {
-				ret = (List<CBHistorialAccionModel>) qry.query(conn, query + sqlFiltros + filtroQuery.getSql(), blh);
+				ret = (List<CBHistorialAccionModel>) qry.query(conn, query
+						+ sqlFiltros + filtroQuery.getSql(), blh);
 			}
 			this.totalRegistros = ret.size();
 			log.debug("Listado() " + " - resultado: " + ret.size());
@@ -230,8 +251,19 @@ public class CBHistorialAccionDAO {
 		Statement stmt = null;
 		Connection conn = null;
 		String qry = "INSERT INTO CB_HISTORIAL_ACCION(CBHISTORIALACCIONID,ACCION,MONTO,OBSERVACIONES,CREADO_POR,FECHA_CREACION,CBCONCILIACIONID, CBCAUSASCONCILIACIONID) VALUES"
-				+ "( " + obj.getcBHistorialAccionId() + ", '" + obj.getAccion() + "'," + obj.getMonto() + ",'"
-				+ obj.getObservaciones() + "','" + obj.getCreadoPor() + "',sysdate," + idPadre + ", "
+				+ "( "
+				+ obj.getcBHistorialAccionId()
+				+ ", '"
+				+ obj.getAccion()
+				+ "',"
+				+ obj.getMonto()
+				+ ",'"
+				+ obj.getObservaciones()
+				+ "','"
+				+ obj.getCreadoPor()
+				+ "',sysdate,"
+				+ idPadre
+				+ ", "
 				+ obj.getCbCausasConciliacionId() + ")";
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
@@ -242,8 +274,9 @@ public class CBHistorialAccionDAO {
 				result = true;
 
 		} catch (Exception ex) {
-			Messagebox.show("Ha ocurrido un error, verifique si los datos ingresados son validos", "ERROR",
-					Messagebox.OK, Messagebox.ERROR);
+			Messagebox
+					.show("Ha ocurrido un error, verifique si los datos ingresados son validos",
+							"ERROR", Messagebox.OK, Messagebox.ERROR);
 			log.error("insertarReg() - Error execute query : " + qry, ex);
 
 		} finally {
@@ -269,16 +302,20 @@ public class CBHistorialAccionDAO {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
 			stmt = conn.createStatement();
 
-			String qry = "update CB_HISTORIAL_ACCION set  accion = '" + evt.getAccion() + "'," + " monto = '"
-					+ evt.getMonto() + "'," + " observaciones = '" + evt.getObservaciones() + "',"
-					+ " modificado_por = '" + evt.getModificadoPor() + "'," + " fecha_modificacion = sysdate "
-					+ " WHERE CBHISTORIALACCIONID = '" + evt.getcBHistorialAccionId() + "' and CBCONCILIACIONID = "
-					+ idPadre;
+			String qry = "update CB_HISTORIAL_ACCION set  accion = '"
+					+ evt.getAccion() + "'," + " monto = '" + evt.getMonto()
+					+ "'," + " observaciones = '" + evt.getObservaciones()
+					+ "'," + " modificado_por = '" + evt.getModificadoPor()
+					+ "'," + " fecha_modificacion = sysdate "
+					+ " WHERE CBHISTORIALACCIONID = '"
+					+ evt.getcBHistorialAccionId()
+					+ "' and CBCONCILIACIONID = " + idPadre;
 			log.debug("updateReg()" + " - Query a la BDD === > " + qry);
 			if (stmt.executeUpdate(qry) > 0)
 				;
 			result = true;
-			Messagebox.show("Datos Modificados Exitosamente", "ATENCION", Messagebox.OK, Messagebox.INFORMATION);
+			Messagebox.show("Datos Modificados Exitosamente", "ATENCION",
+					Messagebox.OK, Messagebox.INFORMATION);
 			log.debug("updateReg()" + " - Datos Modificados Exitosamente");
 		} catch (Exception e) {
 			log.error(e);
@@ -304,7 +341,8 @@ public class CBHistorialAccionDAO {
 			// get connection
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
 			stmt = conn.createStatement();
-			String qry = "delete from CB_HISTORIAL_ACCION  WHERE CBHISTORIALACCIONID = '" + evt.getcBHistorialAccionId()
+			String qry = "delete from CB_HISTORIAL_ACCION  WHERE CBHISTORIALACCIONID = '"
+					+ evt.getcBHistorialAccionId()
 					+ "' and CBCONCILIACIONID = " + idPadre;
 			log.debug("deleteReg()" + " - Query a la BDD === > " + qry);
 			if (stmt.executeUpdate(qry) > 0)
@@ -340,7 +378,8 @@ public class CBHistorialAccionDAO {
 					+ ConsultasSQ.OBTIENE_CAUSAS_CONCILIACION_DETALLADA_SQ);
 			ps.setInt(1, tipoid);
 			log.debug("obtieneListadoAcciones() " + " - tipoid : " + tipoid);
-			log.debug("obtieneListadoAcciones() " + " - obtienen causa detallada ");
+			log.debug("obtieneListadoAcciones() "
+					+ " - obtienen causa detallada ");
 			rst = ps.executeQuery();
 			while (rst.next()) {
 				obj = new CBCausasConciliacion();
@@ -378,7 +417,8 @@ public class CBHistorialAccionDAO {
 					log.error(e);
 				}
 		}
-		log.debug("obtieneListadoAcciones() " + " - listado CBCausasConciliacion : " + listado.size());
+		log.debug("obtieneListadoAcciones() "
+				+ " - listado CBCausasConciliacion : " + listado.size());
 		return listado;
 	}
 
@@ -397,8 +437,9 @@ public class CBHistorialAccionDAO {
 			cmd.setInt(1, cbhistorialaccionid);
 
 			result = cmd.executeUpdate() > 0;
-			log.debug("ejecutaApldesRecargaSP()" + " - Ejecuta => " + ConsultasSQ.CB_APLDES_RECARGA_SP
-					+ " => resultado: " + result);
+			log.debug("ejecutaApldesRecargaSP()" + " - Ejecuta => "
+					+ ConsultasSQ.CB_APLDES_RECARGA_SP + " => resultado: "
+					+ result);
 		} catch (Exception e) {
 			log.error(e);
 		} finally {
@@ -429,7 +470,11 @@ public class CBHistorialAccionDAO {
 			ps.setString(4, historial.getUnidadId());
 			ps.setString(5, historial.getSolucion());
 			ps.setString(6, historial.getTipoCierre());
-			ps.setString(7, historial.getNombreCliente());
+			ps.setString(
+					7,
+					historial.getNombreCliente() != null ? historial
+							.getNombreCliente().substring(0, 49) : historial
+							.getNombreCliente());
 			ps.setString(8, historial.getRespuestascl());
 			ps.setInt(9, historial.getcBHistorialAccionId());
 

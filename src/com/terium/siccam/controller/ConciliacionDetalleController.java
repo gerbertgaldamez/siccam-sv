@@ -1414,7 +1414,8 @@ public class ConciliacionDetalleController extends ControladorBase {
 		CBConciliacionDetalleDAO objDao = new CBConciliacionDetalleDAO();
 		String methodName = "setParamsReversaPago()";
 		Date objFecha = new Date();
-		DateFormat fechaFormato = new SimpleDateFormat("ddMMyyyy");
+		//DateFormat fechaFormato = new SimpleDateFormat("ddMMyyyy");
+		DateFormat fechaFormato = new SimpleDateFormat("yyyyMMdd");
 		String fecha = fechaFormato.format(objFecha);
 		log.debug(methodName + " -  inicia ");
 		int cliente = getClienteTelefono(detalle);
