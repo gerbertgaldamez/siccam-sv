@@ -1415,8 +1415,10 @@ public class ConciliacionDetalleController extends ControladorBase {
 		String methodName = "setParamsReversaPago()";
 		Date objFecha = new Date();
 		//DateFormat fechaFormato = new SimpleDateFormat("ddMMyyyy");
-		DateFormat fechaFormato = new SimpleDateFormat("yyyyMMdd");
-		String fecha = fechaFormato.format(objFecha);
+		Format formatter = new SimpleDateFormat("yyyyMMdd");
+		String fecha = formatter.format(detalle.getDia());
+		//DateFormat fechaFormato = new SimpleDateFormat("yyyyMMdd");
+		//String fecha = fechaFormato.format(objFecha);
 		log.debug(methodName + " -  inicia ");
 		int cliente = getClienteTelefono(detalle);
 		log.debug(methodName + " -  codigo cliente a enviar : " + cliente);
