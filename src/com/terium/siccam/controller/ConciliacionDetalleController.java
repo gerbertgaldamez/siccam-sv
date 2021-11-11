@@ -1427,6 +1427,10 @@ public class ConciliacionDetalleController extends ControladorBase {
 		//String codigoColector = conciliacion.getCodigoColector();
 		String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
 		String referencia = CBConciliacionDetalleDAO.obtenerReferencia(trackingid);
+		log.debug(methodName + " -  la referencia es = " + referencia);
+		String ctn = CBConciliacionDetalleDAO.ontenerCTN(trackingid);
+		log.debug(methodName + " - ctn obtenido = " + ctn);
+		
 		String cbpagosid = CBConciliacionDetalleDAO.obtenerCbPagosid(detalle.getConciliacionId());
 		
 		log.debug(methodName + " -  cbpagosid = " + cbpagosid);
@@ -1449,7 +1453,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 		log.debug(methodName + " - el monto es = " + detalle.getPendienteBanco());
 		//request.setReferencia(Constantes.REVERSA_PAGO_WS_REFERENCIA);
 		request.setReferencia(referencia);
-		request.setTelefono(cliente);
+		request.setTelefono(Integer.parseInt(ctn));
 		log.debug(MessageFormat.format(methodName
 				+ "\nRequest Reversa Pago : \nBank_id= {0}\nFecha_Pago = {1}\nMonto = {2}\nRefererencia = {3}\nCliente = {4}",
 				request.getBank_id(), request.getFecha_pago(), request.getMonto(), request.getReferencia(),

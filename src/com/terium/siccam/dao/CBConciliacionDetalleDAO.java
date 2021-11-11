@@ -597,7 +597,7 @@ public static String obtenerReferencia(String trackingid){
 	try{
 		con = ControladorBase.obtenerDtsPromo().getConnection();
 		ptmt = con.prepareStatement(Tools.OBTENER_REFERENCIA);
-		logger.debug("query para obtener la referencia" + Tools.OBTENER_REFERENCIA);
+		logger.debug("query para obtener la referencia " + Tools.OBTENER_REFERENCIA);
 		ptmt.setString(1, trackingid);
 		rst = ptmt.executeQuery();
 		if(rst.next()){
@@ -619,5 +619,34 @@ public static String obtenerReferencia(String trackingid){
 	}
 	return null;
 }
-
+public static String ontenerCTN(String trackingId){
+	PreparedStatement  ptmt = null;
+	ResultSet rst = null;
+	Connection con = null;
+	
+	try {
+		con = ControladorBase.obtenerDtsPromo().getConnection();
+		ptmt = con.prepareStatement(Tools.OBTENER_CTN);
+		logger.debug("query para obtener CTN " + Tools.OBTENER_CTN);
+		ptmt.setString(1, trackingId);
+		rst = ptmt.executeQuery();
+		
+		while(rst.next()){
+			return  rst.getString(1);
+		}
+		
+	}catch(Exception e){
+		logger.error(e);
+	}
+	finally{
+		try{
+			if(con != null)
+				con.close();
+			}catch(SQLException e){
+				
+			}
+		
+	}
+	return null;
+}
 }
