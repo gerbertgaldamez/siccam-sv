@@ -15,6 +15,7 @@
 				<listheader label="Cargo" sort="auto" />
 				<listheader label="Medio de pago" sort="auto"  />
 				<listheader label="Monto" sort="auto"   />
+				<listheader label="Comision Real" sort="auto" />
 			
 
 			</listhead>

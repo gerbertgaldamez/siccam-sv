@@ -705,4 +705,8 @@ public class ConsultasSQ {
 	public static final String OBTENER_TAPFI = " select VALOR_OBJETO1 FROM CB_MODULO_CONCILIACION_CONF where valor_objeto1 = 'TAPFI' ";
 	
 	public static final String OBTENER_WG = " select VALOR_OBJETO1 FROM CB_MODULO_CONCILIACION_CONF where valor_objeto1 = 'WG' ";
+	
+	public static final String INSERT_COMISIONES_QY = "INSERT INTO CB_COMISIONES(CBCOMISIONESID,CBBANCOAGENCIACONFRONTAID,\n"
+			+ "	MONTO,FECHA,CREATEDBY,DATECREATED,COMISION_REAL) VALUES\n"
+			+ "( cb_comisiones_SQ.NEXTVAL,?,?,TO_DATE(?,'dd/MM/yyyy'),?,sysdate,?)";
 }

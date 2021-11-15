@@ -619,7 +619,7 @@ public static String obtenerReferencia(String trackingid){
 	}
 	return null;
 }
-public static String ontenerCTN(String trackingId){
+public static String ontenerCTN(int trackingId){
 	PreparedStatement  ptmt = null;
 	ResultSet rst = null;
 	Connection con = null;
@@ -628,7 +628,7 @@ public static String ontenerCTN(String trackingId){
 		con = ControladorBase.obtenerDtsPromo().getConnection();
 		ptmt = con.prepareStatement(Tools.OBTENER_CTN);
 		logger.debug("query para obtener CTN " + Tools.OBTENER_CTN);
-		ptmt.setString(1, trackingId);
+		ptmt.setInt(1, trackingId);
 		rst = ptmt.executeQuery();
 		
 		while(rst.next()){

@@ -1430,7 +1430,8 @@ public class ConciliacionDetalleController extends ControladorBase {
 		String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
 		String referencia = CBConciliacionDetalleDAO.obtenerReferencia(trackingid);
 		log.debug(methodName + " -  la referencia es = " + referencia);
-		String ctn = CBConciliacionDetalleDAO.ontenerCTN(trackingid);
+		String ctn = CBConciliacionDetalleDAO.ontenerCTN(Integer.parseInt(trackingid));
+
 		log.debug(methodName + " - ctn obtenido = " + ctn);
 		
 		String cbpagosid = CBConciliacionDetalleDAO.obtenerCbPagosid(detalle.getConciliacionId());

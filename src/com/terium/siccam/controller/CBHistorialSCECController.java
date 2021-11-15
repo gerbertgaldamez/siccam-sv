@@ -66,6 +66,7 @@ public class CBHistorialSCECController extends ControladorBase  {
 	private Textbox dmbxMontoSC;
 	private Textbox dmbxMontoEC;
 	private Textbox dmbxMonto;
+	private Textbox dmbxComision;
 	private Textbox dmbxDiferenciaTotal;
 	private Textbox tbxObservacion;
 	private Listbox lbxHistorialscec;
@@ -93,6 +94,7 @@ public class CBHistorialSCECController extends ControladorBase  {
 		dmbxMontoSC.setValue(montosistemacomercial.toString());
 		dmbxMontoEC.setValue(montoestadocuenta.toString());
 		dmbxMonto.setValue("0.00");
+		dmbxComision.setValue("0.00");
 		filtros = (Boolean) misession.getAttribute("filtrosprincipal");
 		System.out.println("parametro en pantalla modal por sesion monto: " + monto);
 		System.out.println("parametro en pantalla modal por sesion montosistemacomercial: " + montosistemacomercial);
@@ -295,7 +297,11 @@ public class CBHistorialSCECController extends ControladorBase  {
 						objModel.setMonto(new BigDecimal(dmbxMonto.getValue()));
 						objModel.setCbcausasconciliacionid((Integer) cmbxCusas.getSelectedItem().getValue());
 						objModel.setCreadopor(usuario);
+						objModel.setComisionReal(new BigDecimal(dmbxComision.getValue()));
 						objChdao.ingresaTipificacion(objModel);
+						if(new BigDecimal(dmbxComision.getValue()).compareTo(BigDecimal.ZERO)  >0){
+						objChdao.ingresaComision(objModel);
+						}
 						Messagebox.show("Se creo el registro con exito", Constantes.ATENCION, Messagebox.OK,
 								Messagebox.INFORMATION);
 						System.out.println("registro guardado: " + objModel.getMonto());
@@ -312,7 +318,8 @@ public class CBHistorialSCECController extends ControladorBase  {
 		} else {
 			System.out.println("EL monto es requerido");
 		}
-
+		
+		
 	}
 
 	public void onClick$btnActualizar() {
@@ -395,6 +402,7 @@ public class CBHistorialSCECController extends ControladorBase  {
 		tbxObservacion.setText("");
 		btnAgregar.setDisabled(false);
 		btnActualizar.setDisabled(true);
+		dmbxComision.setValue("0.00");
 	}
 
 	EventListener<Event> eventBtnEliminarHistorial = new EventListener<Event>() {

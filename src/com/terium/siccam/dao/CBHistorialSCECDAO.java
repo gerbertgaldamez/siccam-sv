@@ -342,5 +342,46 @@ public class CBHistorialSCECDAO {
 		}
 		return lst;
 	}
+	public boolean ingresaComision(CBHistorialSCECModel obj){
+		PreparedStatement pstmt = null;
+		Connection conn = null;
+		
+		try {
+			conn = ControladorBase.obtenerDtsPromo().getConnection();
+			Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.INFO, ConsultasSQ.INSERT_COMISIONES_QY);		
+			pstmt = conn.prepareStatement(ConsultasSQ.INSERT_COMISIONES_QY);
+			pstmt.setInt(1, obj.getCbbancoagenciaconfrontaid());
+			pstmt.setBigDecimal(2, obj.getMonto());
+			pstmt.setString(3, obj.getFecha());
+			pstmt.setString(4, obj.getCreadopor());
+			pstmt.setBigDecimal(5, obj.getComisionReal());
+			
+			if (pstmt.executeUpdate() > 0)
+				return true;
+			else
+				return false;
+		} catch (Exception ex) {			
+			Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, ex);
+			return false;
+		}finally {
+			try {
+				if(pstmt != null)
+					try {
+						pstmt.close();
+					} catch (SQLException e) {
+						Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+					}
+				if(conn != null)
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+					}
+			}catch (Exception e) {
+				Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+			}
+		}
+
+	}
 	
 }

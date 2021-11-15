@@ -114,6 +114,10 @@ public class CBDetalleComisionesController extends ControladorBase {
 				cell.setLabel(convertirADecimal(obj.getMonto()));
 				System.out.println("valor monto en lis2:" + convertirADecimal(obj.getMonto()));
 				cell.setParent(fila);
+				
+				cell = new Listcell();
+				cell.setLabel(obj.getNombreMedioPago());
+				cell.setParent(fila);
 
 				//
 				fila.setValue(obj);
