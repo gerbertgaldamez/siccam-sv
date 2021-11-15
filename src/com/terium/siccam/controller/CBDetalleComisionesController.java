@@ -4,11 +4,18 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpSession;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -16,6 +23,7 @@ import org.zkoss.zul.Window;
 
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBHistorialSCECDAO;
+import com.terium.siccam.dao.CBMantenimientoTipologiasPolizaDAO;
 import com.terium.siccam.model.CBAsignaImpuestosModel;
 import com.terium.siccam.model.CBConciliacionBancoModel;
 import com.terium.siccam.model.CBDetalleComisionesModel;
@@ -116,8 +124,16 @@ public class CBDetalleComisionesController extends ControladorBase {
 				cell.setParent(fila);
 				
 				cell = new Listcell();
-				cell.setLabel(obj.getNombreMedioPago());
+				Button btnDelete = new Button();
+				btnDelete.setImage("/img/globales/16x16/consulta.png");
+
 				cell.setParent(fila);
+				btnDelete.setParent(cell);
+				// btnDelete.setTooltip("popEliminar");
+
+				btnDelete.setAttribute("objModelModal", obj);
+				btnDelete.addEventListener(Events.ON_CLICK, eventBtnComisionReal);
+				
 
 				//
 				fila.setValue(obj);
@@ -151,4 +167,19 @@ public class CBDetalleComisionesController extends ControladorBase {
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
 	}
+	EventListener<Event> eventBtnComisionReal = new EventListener<Event>() {
+		public void onEvent(Event event) throws Exception {
+			try {
+				CBConciliacionBancoModel objModelModal = (CBConciliacionBancoModel) event.getTarget()
+						.getAttribute("objModelModal");
+				Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO,
+						"\n**** Tipologia de poliza seleccionada ****\n");
+				session.setAttribute("objModelModal", objModelModal);
+				Executions.createComponents("/cbcomisionrealmodal.zul", null, null);
+
+			} catch (Exception e) {
+				Logger.getLogger(CBTipologiasPolizaController.class.getName()).log(Level.SEVERE, null, e);
+			}
+		}
+	};
 }
