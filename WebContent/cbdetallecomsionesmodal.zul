@@ -4,6 +4,29 @@
 		border="normal" mode="modal" width="60%" height="50%"
 		position="center, center" closable="true"
 		apply="com.terium.siccam.controller.CBDetalleComisionesController">
+		
+		<grid>
+			<columns>
+				<column label="" width="20%" />
+				<column label="" width="30%" />
+				<column label="" width="20%" />
+				<column label="" width="30%" />
+			</columns>
+			<rows>
+				<row>
+					<label value="Comision Real: " />
+					<textbox id="dmbxComision" />
+					<label value="Comision Real: "  visible="false" />
+					<textbox id="dmbxComisionReal" readonly="true"  visible="false"  />
+				</row>
+			</rows>
+		</grid>
+		<div align="center">
+			<toolbar width="100%">
+				<toolbarbutton id="btnAgregar2" label="Agregar"
+					image="/img/agregar_16.png" />
+					</toolbar>
+		</div>
 
 		<listbox id="lbxHistorialscec" mold="paging" height="50%"
 			pageSize="5" sizedByContent="true" vflex="true"
@@ -15,8 +38,8 @@
 				<listheader label="Cargo" sort="auto" />
 				<listheader label="Medio de pago" sort="auto"  />
 				<listheader label="Monto" sort="auto"   />
-				<listheader label="Comision Real" sort="auto" />
-			
+				<listheader label="Comision Real" sort="auto"   />
+				
 
 			</listhead>
 		</listbox>

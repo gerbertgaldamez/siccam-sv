@@ -39,12 +39,7 @@
 					<label value="Monto Total: "  visible="false" />
 					<textbox id="dmbxMontoTotal" readonly="true"  visible="false"  />
 				</row>
-				<row>
-					<label value="Comision Real: " />
-					<textbox id="dmbxComision" />
-					<label value="Comision Real: "  visible="false" />
-					<textbox id="dmbxComisionReal" readonly="true"  visible="false"  />
-				</row>
+				
 			</rows>
 		</grid>
 		<div align="center">

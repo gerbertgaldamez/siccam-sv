@@ -94,7 +94,7 @@ public class CBHistorialSCECController extends ControladorBase  {
 		dmbxMontoSC.setValue(montosistemacomercial.toString());
 		dmbxMontoEC.setValue(montoestadocuenta.toString());
 		dmbxMonto.setValue("0.00");
-		dmbxComision.setValue("0.00");
+
 		filtros = (Boolean) misession.getAttribute("filtrosprincipal");
 		System.out.println("parametro en pantalla modal por sesion monto: " + monto);
 		System.out.println("parametro en pantalla modal por sesion montosistemacomercial: " + montosistemacomercial);
@@ -297,11 +297,7 @@ public class CBHistorialSCECController extends ControladorBase  {
 						objModel.setMonto(new BigDecimal(dmbxMonto.getValue()));
 						objModel.setCbcausasconciliacionid((Integer) cmbxCusas.getSelectedItem().getValue());
 						objModel.setCreadopor(usuario);
-						objModel.setComisionReal(new BigDecimal(dmbxComision.getValue()));
 						objChdao.ingresaTipificacion(objModel);
-						if(new BigDecimal(dmbxComision.getValue()).compareTo(BigDecimal.ZERO)  >0){
-						objChdao.ingresaComision(objModel);
-						}
 						Messagebox.show("Se creo el registro con exito", Constantes.ATENCION, Messagebox.OK,
 								Messagebox.INFORMATION);
 						System.out.println("registro guardado: " + objModel.getMonto());

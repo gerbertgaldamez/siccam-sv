@@ -525,6 +525,9 @@ public class ConsultasSQ {
 			"                 AND TIPO_OBJETO = 'MEDIO_PAGO' " + 
 			"                 AND VALOR_OBJETO1 = c.MEDIO_PAGO) MEDIO_PAGO, " + 
 			"         NVL (SUM (a.MONTO), 0) " + 
+			//" (select comision_real " +
+			//" from cb_comisiones " +
+			//"  where COMISION_REAL is not null and rownum  = 1 )" +
 			"    FROM cb_comisiones a, CB_MODULO_CONCILIACION_CONF b, CB_COMISIONES_CONFIGURACION c " + 
 			"   WHERE     1 = 1 " + 
 			"         AND a.CBMODULOCONCILIACIONCONFID = b.CBMODULOCONCILIACIONCONFID" + 
@@ -707,6 +710,6 @@ public class ConsultasSQ {
 	public static final String OBTENER_WG = " select VALOR_OBJETO1 FROM CB_MODULO_CONCILIACION_CONF where valor_objeto1 = 'WG' ";
 	
 	public static final String INSERT_COMISIONES_QY = "INSERT INTO CB_COMISIONES(CBCOMISIONESID,CBBANCOAGENCIACONFRONTAID,\n"
-			+ "	MONTO,FECHA,CREATEDBY,DATECREATED,COMISION_REAL) VALUES\n"
-			+ "( cb_comisiones_SQ.NEXTVAL,?,?,TO_DATE(?,'dd/MM/yyyy'),?,sysdate,?)";
+			+ " FECHA,CREATEDBY,DATECREATED,COMISION_REAL) VALUES\n"
+			+ "( cb_comisiones_SQ.NEXTVAL,?,TO_DATE(?,'dd/MM/yyyy'),?,sysdate,?)";
 }

@@ -313,6 +313,7 @@ public class CBHistorialSCECDAO {
 				obj.setNombreImpuesto(rst.getString(4));
 				obj.setNombreMedioPago(rst.getString(5));
 				obj.setMonto(rst.getBigDecimal(6));
+				//obj.setComisionReal(rst.getBigDecimal(7));
 				System.out.println("valor monto en dao:" + obj.getMonto());
 				
 				lst.add(obj);
@@ -351,10 +352,10 @@ public class CBHistorialSCECDAO {
 			Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.INFO, ConsultasSQ.INSERT_COMISIONES_QY);		
 			pstmt = conn.prepareStatement(ConsultasSQ.INSERT_COMISIONES_QY);
 			pstmt.setInt(1, obj.getCbbancoagenciaconfrontaid());
-			pstmt.setBigDecimal(2, obj.getMonto());
-			pstmt.setString(3, obj.getFecha());
-			pstmt.setString(4, obj.getCreadopor());
-			pstmt.setBigDecimal(5, obj.getComisionReal());
+			//pstmt.setBigDecimal(2, obj.getMonto());
+			pstmt.setString(2, obj.getFecha());
+			pstmt.setString(3, obj.getCreadopor());
+			pstmt.setBigDecimal(4, obj.getComisionReal());
 			
 			if (pstmt.executeUpdate() > 0)
 				return true;

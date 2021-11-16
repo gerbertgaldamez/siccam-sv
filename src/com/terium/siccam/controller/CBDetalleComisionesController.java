@@ -51,7 +51,7 @@ public class CBDetalleComisionesController extends ControladorBase {
 	private String fecha = "";
 	private int cbbancoagenciaconfrontaid = 0;
 	private Textbox dmbxComision;
-	private Button btnAgregar;
+	private Button btnAgregar2;
 	private Listbox lbxHistorialscec;
 	private BigDecimal validaComision = new BigDecimal(0.00);
 
@@ -65,8 +65,11 @@ public class CBDetalleComisionesController extends ControladorBase {
 		objModelModal = (CBConciliacionBancoModel) misession.getAttribute("objModelModal");
 		cbbancoagenciaconfrontaid = objModelModal.getCbbancoagenciaconfrontaid();
 		fecha = objModelModal.getFecha();
+		usuario = obtenerUsuario().getUsuario();
+		
 		llenaListboxTipificacion(cbbancoagenciaconfrontaid, fecha);
-		btnAgregar.setDisabled(false);
+		//btnAgregar.setDisabled(false);
+		
 
 	}
 
@@ -130,7 +133,7 @@ public class CBDetalleComisionesController extends ControladorBase {
 				System.out.println("valor monto en lis2:" + convertirADecimal(obj.getMonto()));
 				cell.setParent(fila);
 				
-				cell = new Listcell();
+				/*cell = new Listcell();
 				Button btnDelete = new Button();
 				btnDelete.setImage("/img/globales/16x16/consulta.png");
 
@@ -139,9 +142,12 @@ public class CBDetalleComisionesController extends ControladorBase {
 				// btnDelete.setTooltip("popEliminar");
 
 				btnDelete.setAttribute("ModelModal", obj);
-				btnDelete.addEventListener(Events.ON_CLICK, eventBtnComisionReal);
+				btnDelete.addEventListener(Events.ON_CLICK, eventBtnComisionReal);*/
+				cell = new Listcell();
+				//cell.setLabel(convertirADecimal(obj.getComisionReal()));
+				cell.setLabel(convertirADecimal(validaComision));
 				
-
+				cell.setParent(fila);
 				//
 				fila.setValue(obj);
 				fila.setParent(lbxHistorialscec);
@@ -176,7 +182,33 @@ public class CBDetalleComisionesController extends ControladorBase {
 		this.usuario = usuario;
 	}
 	
-	public void onClick$btnAgregar() {
+	
+	public void onClick$btnLimpiar() {
+		
+		btnAgregar2.setDisabled(false);
+	}
+	public void limpiarCampos() {
+		
+		btnAgregar2.setDisabled(false);
+		
+		dmbxComision.setValue("0.00");
+	}
+	EventListener<Event> eventBtnComisionReal = new EventListener<Event>() {
+		public void onEvent(Event event) throws Exception {
+			try {
+				CBConciliacionBancoModel ModelModal = (CBConciliacionBancoModel) event.getTarget()
+						.getAttribute("objModelModal");
+				Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO,
+						"\n**** Tipologia de poliza seleccionada ****\n");
+				session.setAttribute("ModelModal", ModelModal);
+				Executions.createComponents("/cbcomisionrealmodal.zul", null, null);
+
+			} catch (Exception e) {
+				Logger.getLogger(CBTipologiasPolizaController.class.getName()).log(Level.SEVERE, null, e);
+			}
+		}
+	};
+   public void onClick$btnAgregar2() {
 		
 		
 		if (dmbxComision.getValue() != null) {
@@ -212,17 +244,18 @@ public class CBDetalleComisionesController extends ControladorBase {
 						objModel.setCbbancoagenciaconfrontaid(cbbancoagenciaconfrontaid);
 						objModel.setFecha(fecha);
 						objModel.setCreadopor(usuario);
+						System.out.println("el usuario es : " + usuario);
 						objModel.setComisionReal(new BigDecimal(dmbxComision.getValue()));
-			
+			           // objModel.setTipo(tipo);
 						objChdao.ingresaComision(objModel);
 						
 						Messagebox.show("Se creo el registro con exito", Constantes.ATENCION, Messagebox.OK,
 								Messagebox.INFORMATION);
 						System.out.println("registro guardado: " + objModel.getMonto());
 						llenaListboxTipificacion(cbbancoagenciaconfrontaid, fecha);
-						//limpiarCampos();
+						limpiarCampos();
 					//	btnActualizar.setDisabled(true);
-						btnAgregar.setDisabled(false);
+						btnAgregar2.setDisabled(false);
 						//refrescarModulo();
 					} catch (Exception e) {
 						Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.SEVERE, null, e);
@@ -235,29 +268,5 @@ public class CBDetalleComisionesController extends ControladorBase {
 		
 		
 	}
-	public void onClick$btnLimpiar() {
-		
-		btnAgregar.setDisabled(false);
-	}
-	public void limpiarCampos() {
-		
-		btnAgregar.setDisabled(false);
-		
-		dmbxComision.setValue("0.00");
-	}
-	EventListener<Event> eventBtnComisionReal = new EventListener<Event>() {
-		public void onEvent(Event event) throws Exception {
-			try {
-				CBConciliacionBancoModel ModelModal = (CBConciliacionBancoModel) event.getTarget()
-						.getAttribute("objModelModal");
-				Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO,
-						"\n**** Tipologia de poliza seleccionada ****\n");
-				session.setAttribute("ModelModal", ModelModal);
-				Executions.createComponents("/cbcomisionrealmodal.zul", null, null);
-
-			} catch (Exception e) {
-				Logger.getLogger(CBTipologiasPolizaController.class.getName()).log(Level.SEVERE, null, e);
-			}
-		}
-	};
+	
 }

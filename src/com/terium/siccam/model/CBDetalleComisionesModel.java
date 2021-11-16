@@ -32,7 +32,14 @@ public class CBDetalleComisionesModel {
 	private String nombreMedioPago;
 	private String nombreFormaPago;
 	private String valor;
+	private BigDecimal comisionReal;
 	
+	public BigDecimal getComisionReal() {
+		return comisionReal;
+	}
+	public void setComisionReal(BigDecimal comisionReal) {
+		this.comisionReal = comisionReal;
+	}
 	private int comisionUso;
 	private BigDecimal monto;
 	
