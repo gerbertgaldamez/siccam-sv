@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.lang.model.type.*;
 
 import org.apache.log4j.Logger;
+import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.Combobox;
 
@@ -134,31 +135,36 @@ public class Tools {
 		System.out.println("GetCookie");
 
 		// java.lang.Object getNativeRequest()
+		
 
 		try {
-
+			//Desktop desktop = Executions.getCurrent().getDesktop();
+			//Executions.activate(desktop);
 			// HttpServletRequest hsr = (HttpServletRequest) Executions.getCurrent(); //
 			// .getNativeRequest();
 			// if (hsr != null) {
 
 			// HttpServletRequest hsr = (HttpServletRequest)execution.getNativeRequest();
-
-			Cookie[] cookies = ((HttpServletRequest) Executions.getCurrent().getNativeRequest()).getCookies();
-			System.out.println("es la validacion");
-			if (cookies != null) {
-				for (Cookie cookie : cookies) {
-					if (cookie.getName().equals(name)) {
-						System.out.println(cookie.getValue());
-						return cookie.getValue();
+			if(Executions.getCurrent() != null) {
+				Cookie[] cookies = ((HttpServletRequest) Executions.getCurrent().getNativeRequest()).getCookies();
+				System.out.println("es la validacion");
+				if (cookies != null) {
+					for (Cookie cookie : cookies) {
+						if (cookie.getName().equals(name)) {
+							System.out.println(cookie.getValue());
+							return cookie.getValue();
+						}
 					}
 				}
 			}
+
+			
 			// }
 
 			// HttpServletResponse response =
 			// (HttpServletResponse)Executions.getCurrent().getNativeResponse();
 			// Cookie userCookie = new Cookie(name, "1000");
-
+			//Executions.deactivate(desktop);
 		} catch (Exception e) {
 			logger.error("error", e);
 			// Cookie userCookie = new Cookie(name, "1000");
