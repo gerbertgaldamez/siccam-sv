@@ -321,6 +321,7 @@ public class CBHistorialSCECController extends ControladorBase  {
 		
 		
 	}
+	
 
 	public void onClick$btnActualizar() {
 		BigDecimal validamonto = acumulamonto;

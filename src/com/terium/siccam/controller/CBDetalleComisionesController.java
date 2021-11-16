@@ -39,6 +39,7 @@ public class CBDetalleComisionesController extends ControladorBase {
 	 */
 
 	Window wddetallecomisiones;
+	Window wdComisionReal;
 
 	private static final long serialVersionUID = -968506960180389882L;
 
@@ -52,6 +53,7 @@ public class CBDetalleComisionesController extends ControladorBase {
 	private Textbox dmbxComision;
 	private Button btnAgregar;
 	private Listbox lbxHistorialscec;
+	private BigDecimal validaComision = new BigDecimal(0.00);
 
 	Boolean filtros = false;
 
@@ -63,9 +65,8 @@ public class CBDetalleComisionesController extends ControladorBase {
 		objModelModal = (CBConciliacionBancoModel) misession.getAttribute("objModelModal");
 		cbbancoagenciaconfrontaid = objModelModal.getCbbancoagenciaconfrontaid();
 		fecha = objModelModal.getFecha();
-	//	dmbxComision.setValue("0.00");
-		//btnAgregar.setDisabled(false);
 		llenaListboxTipificacion(cbbancoagenciaconfrontaid, fecha);
+		btnAgregar.setDisabled(false);
 
 	}
 
@@ -164,6 +165,7 @@ public class CBDetalleComisionesController extends ControladorBase {
 	public void onClick$closeBtn() {
 
 		wddetallecomisiones.detach();
+		wdComisionReal.detach();
 	}
 
 	public String getUsuario() {
@@ -173,31 +175,37 @@ public class CBDetalleComisionesController extends ControladorBase {
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
 	}
-	EventListener<Event> eventBtnComisionReal = new EventListener<Event>() {
-		public void onEvent(Event event) throws Exception {
-			try {
-				CBConciliacionBancoModel ModelModal = (CBConciliacionBancoModel) event.getTarget()
-						.getAttribute("objModelModal");
-				Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO,
-						"\n**** Tipologia de poliza seleccionada ****\n");
-				session.setAttribute("ModelModal", ModelModal);
-				Executions.createComponents("/cbcomisionrealmodal.zul", null, null);
-
-			} catch (Exception e) {
-				Logger.getLogger(CBTipologiasPolizaController.class.getName()).log(Level.SEVERE, null, e);
-			}
-		}
-	};
+	
 	public void onClick$btnAgregar() {
 		
-		BigDecimal validaComision = new BigDecimal(0.00);
+		
 		if (dmbxComision.getValue() != null) {
 			 validaComision = validaComision.add(new BigDecimal(dmbxComision.getValue()));
-			System.out.println("Monto al guardar para validar validamonto: " + validaComision);
+			System.out.println("Comision al guardar para validar validaComision: " + validaComision);
 			
 				 if (new BigDecimal(dmbxComision.getValue()).compareTo(BigDecimal.ZERO) == 0) {
-					Messagebox.show("Se debe ingresar un monto mayor a cero", "ATENCION", Messagebox.OK,
+					Messagebox.show("Se debe ingresar una comision mayor a cero", "ATENCION", Messagebox.OK,
 							Messagebox.EXCLAMATION);
+					/*try {
+						CBHistorialSCECModel objModel = new CBHistorialSCECModel();
+						objModel.setCbbancoagenciaconfrontaid(cbbancoagenciaconfrontaid);
+						objModel.setFecha(fecha);
+						objModel.setCreadopor(usuario);
+						objModel.setComisionReal(new BigDecimal(dmbxComision.getValue()));
+			
+						objChdao.ingresaComision(objModel);
+						
+						Messagebox.show("Se creo el registro con exito", Constantes.ATENCION, Messagebox.OK,
+								Messagebox.INFORMATION);
+						System.out.println("registro guardado: " + objModel.getMonto());
+						llenaListboxTipificacion(cbbancoagenciaconfrontaid, fecha);
+						limpiarCampos();
+					//	btnActualizar.setDisabled(true);
+						btnAgregar.setDisabled(false);
+						//refrescarModulo();
+					} catch (Exception e) {
+						Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.SEVERE, null, e);
+					}*/
 				} else {
 					try {
 						CBHistorialSCECModel objModel = new CBHistorialSCECModel();
@@ -222,9 +230,34 @@ public class CBDetalleComisionesController extends ControladorBase {
 				}
 			//}
 		} else {
-			System.out.println("EL monto es requerido");
+			System.out.println("La comision real es requerido");
 		}
 		
 		
 	}
+	public void onClick$btnLimpiar() {
+		
+		btnAgregar.setDisabled(false);
+	}
+	public void limpiarCampos() {
+		
+		btnAgregar.setDisabled(false);
+		
+		dmbxComision.setValue("0.00");
+	}
+	EventListener<Event> eventBtnComisionReal = new EventListener<Event>() {
+		public void onEvent(Event event) throws Exception {
+			try {
+				CBConciliacionBancoModel ModelModal = (CBConciliacionBancoModel) event.getTarget()
+						.getAttribute("objModelModal");
+				Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO,
+						"\n**** Tipologia de poliza seleccionada ****\n");
+				session.setAttribute("ModelModal", ModelModal);
+				Executions.createComponents("/cbcomisionrealmodal.zul", null, null);
+
+			} catch (Exception e) {
+				Logger.getLogger(CBTipologiasPolizaController.class.getName()).log(Level.SEVERE, null, e);
+			}
+		}
+	};
 }
