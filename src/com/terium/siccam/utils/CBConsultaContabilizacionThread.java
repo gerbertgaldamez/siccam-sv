@@ -26,6 +26,6 @@ public class CBConsultaContabilizacionThread extends ControladorBase implements 
 		System.out.println("Fecha en el hilo: " + fecha);
 		System.out.println("Pais en el hilo: " + pais);		
 		System.out.println("Token en el hilo: " + token);
-		objDao.ejecutaSPContabilizacion(fecha, fecha, pais, token);
+		CBConsultaContabilizacionDAO.ejecutaSPContabilizacion(fecha, fecha, pais, token);//cambio
 	}
 }

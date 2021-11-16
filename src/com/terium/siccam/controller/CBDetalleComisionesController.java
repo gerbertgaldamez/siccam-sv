@@ -17,6 +17,7 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Button;
+import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -27,6 +28,7 @@ import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBHistorialSCECDAO;
 import com.terium.siccam.dao.CBMantenimientoTipologiasPolizaDAO;
 import com.terium.siccam.model.CBAsignaImpuestosModel;
+import com.terium.siccam.model.CBCausasModel;
 import com.terium.siccam.model.CBConciliacionBancoModel;
 import com.terium.siccam.model.CBDetalleComisionesModel;
 import com.terium.siccam.model.CBHistorialSCECModel;
@@ -40,7 +42,7 @@ public class CBDetalleComisionesController extends ControladorBase {
 
 	Window wddetallecomisiones;
 	Window wdComisionReal;
-
+	String idseleccionado;
 	private static final long serialVersionUID = -968506960180389882L;
 
 	private HttpSession misession = (HttpSession) Sessions.getCurrent().getNativeSession();
@@ -148,6 +150,7 @@ public class CBDetalleComisionesController extends ControladorBase {
 				cell.setLabel(convertirADecimal(validaComision));
 				
 				cell.setParent(fila);
+				//fila.addEventListener("onClick", eventBtnModificar);
 				//
 				fila.setValue(obj);
 				fila.setParent(lbxHistorialscec);
@@ -268,5 +271,18 @@ public class CBDetalleComisionesController extends ControladorBase {
 		
 		
 	}
+   EventListener<Event> eventBtnModificar = new EventListener<Event>() {
+
+		public void onEvent(Event arg0) throws Exception {
+			
+			CBHistorialSCECModel objModel2 = (CBHistorialSCECModel) arg0.getTarget().getAttribute("objModel2");
+			idseleccionado = (String) arg0.getTarget().getAttribute("idseleccionado");
+
+			dmbxComision.setText(convertirADecimal(objModel2.getComisionReal()));
+			
+
+		
+		}
+	};
 	
 }
