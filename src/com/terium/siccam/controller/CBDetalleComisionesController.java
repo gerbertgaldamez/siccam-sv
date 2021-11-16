@@ -131,7 +131,7 @@ public class CBDetalleComisionesController extends ControladorBase {
 				btnDelete.setParent(cell);
 				// btnDelete.setTooltip("popEliminar");
 
-				btnDelete.setAttribute("objModelModal", obj);
+				btnDelete.setAttribute("ModelModal", obj);
 				btnDelete.addEventListener(Events.ON_CLICK, eventBtnComisionReal);
 				
 
@@ -170,11 +170,11 @@ public class CBDetalleComisionesController extends ControladorBase {
 	EventListener<Event> eventBtnComisionReal = new EventListener<Event>() {
 		public void onEvent(Event event) throws Exception {
 			try {
-				CBConciliacionBancoModel objModelModal = (CBConciliacionBancoModel) event.getTarget()
+				CBConciliacionBancoModel ModelModal = (CBConciliacionBancoModel) event.getTarget()
 						.getAttribute("objModelModal");
 				Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO,
 						"\n**** Tipologia de poliza seleccionada ****\n");
-				session.setAttribute("objModelModal", objModelModal);
+				session.setAttribute("ModelModal", ModelModal);
 				Executions.createComponents("/cbcomisionrealmodal.zul", null, null);
 
 			} catch (Exception e) {

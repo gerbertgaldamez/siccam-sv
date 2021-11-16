@@ -1,6 +1,31 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window title="new page title" border="normal">
-New Content Here!
+<window id="wdComisionReal" title="Comision Real"
+		border="normal" mode="modal" width="70%" height="60%"
+		position="center, center" closable="true"
+		apply="com.terium.siccam.controller.CBDetalleComisionesController">
+<grid>
+			<columns>
+				<column label="" width="20%" />
+				<column label="" width="30%" />
+				<column label="" width="20%" />
+				<column label="" width="30%" />
+			</columns>
+			<rows>
+				
+				<row>
+					<label value="Comision Real: " />
+					<textbox id="dmbxComision" />
+					<label value="Comision Real: "  visible="false" />
+					<textbox id="dmbxComisionReal" readonly="true"  visible="false"  />
+				</row>
+			</rows>
+		</grid>
+		<div align="center">
+			<toolbar width="100%">
+				<toolbarbutton id="btnAgregar" label="Agregar"
+					image="/img/agregar_16.png" />
+					</toolbar>
+		</div>
 </window>
 </zk>
