@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import javax.servlet.http.HttpSession;
 
+import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
@@ -19,6 +20,7 @@ import org.zkoss.zul.Button;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import com.terium.siccam.composer.ControladorBase;
@@ -28,6 +30,7 @@ import com.terium.siccam.model.CBAsignaImpuestosModel;
 import com.terium.siccam.model.CBConciliacionBancoModel;
 import com.terium.siccam.model.CBDetalleComisionesModel;
 import com.terium.siccam.model.CBHistorialSCECModel;
+import com.terium.siccam.utils.Constantes;
 
 public class CBDetalleComisionesController extends ControladorBase {
 
@@ -46,7 +49,8 @@ public class CBDetalleComisionesController extends ControladorBase {
 	private String usuario;
 	private String fecha = "";
 	private int cbbancoagenciaconfrontaid = 0;
-
+	private Textbox dmbxComision;
+	private Button btnAgregar;
 	private Listbox lbxHistorialscec;
 
 	Boolean filtros = false;
@@ -59,6 +63,8 @@ public class CBDetalleComisionesController extends ControladorBase {
 		objModelModal = (CBConciliacionBancoModel) misession.getAttribute("objModelModal");
 		cbbancoagenciaconfrontaid = objModelModal.getCbbancoagenciaconfrontaid();
 		fecha = objModelModal.getFecha();
+	//	dmbxComision.setValue("0.00");
+		//btnAgregar.setDisabled(false);
 		llenaListboxTipificacion(cbbancoagenciaconfrontaid, fecha);
 
 	}
@@ -182,4 +188,43 @@ public class CBDetalleComisionesController extends ControladorBase {
 			}
 		}
 	};
+	public void onClick$btnAgregar() {
+		
+		BigDecimal validaComision = new BigDecimal(0.00);
+		if (dmbxComision.getValue() != null) {
+			 validaComision = validaComision.add(new BigDecimal(dmbxComision.getValue()));
+			System.out.println("Monto al guardar para validar validamonto: " + validaComision);
+			
+				 if (new BigDecimal(dmbxComision.getValue()).compareTo(BigDecimal.ZERO) == 0) {
+					Messagebox.show("Se debe ingresar un monto mayor a cero", "ATENCION", Messagebox.OK,
+							Messagebox.EXCLAMATION);
+				} else {
+					try {
+						CBHistorialSCECModel objModel = new CBHistorialSCECModel();
+						objModel.setCbbancoagenciaconfrontaid(cbbancoagenciaconfrontaid);
+						objModel.setFecha(fecha);
+						objModel.setCreadopor(usuario);
+						objModel.setComisionReal(new BigDecimal(dmbxComision.getValue()));
+			
+						objChdao.ingresaComision(objModel);
+						
+						Messagebox.show("Se creo el registro con exito", Constantes.ATENCION, Messagebox.OK,
+								Messagebox.INFORMATION);
+						System.out.println("registro guardado: " + objModel.getMonto());
+						llenaListboxTipificacion(cbbancoagenciaconfrontaid, fecha);
+						//limpiarCampos();
+					//	btnActualizar.setDisabled(true);
+						btnAgregar.setDisabled(false);
+						//refrescarModulo();
+					} catch (Exception e) {
+						Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.SEVERE, null, e);
+					}
+				}
+			//}
+		} else {
+			System.out.println("EL monto es requerido");
+		}
+		
+		
+	}
 }
