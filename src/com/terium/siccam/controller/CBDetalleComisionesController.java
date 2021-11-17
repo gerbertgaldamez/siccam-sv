@@ -52,6 +52,7 @@ public class CBDetalleComisionesController extends ControladorBase {
 	private String usuario;
 	private String fecha = "";
 	private int cbbancoagenciaconfrontaid = 0;
+	BigDecimal comisionReal;
 	private Textbox dmbxComision;
 	private Button btnAgregar2;
 	private Listbox lbxHistorialscec;
@@ -66,6 +67,7 @@ public class CBDetalleComisionesController extends ControladorBase {
 
 		objModelModal = (CBConciliacionBancoModel) misession.getAttribute("objModelModal");
 		cbbancoagenciaconfrontaid = objModelModal.getCbbancoagenciaconfrontaid();
+		
 		
 		fecha = objModelModal.getFecha();
 		usuario = obtenerUsuario().getUsuario();
@@ -149,7 +151,7 @@ public class CBDetalleComisionesController extends ControladorBase {
 				cell = new Listcell();
 				//cell.setLabel(convertirADecimal(obj.getComisionReal()));
 				cell.setLabel(convertirADecimal(validaComision));
-				fila.setAttribute("objModel2", obj);
+				//fila.setAttribute("objModel2", obj);
 				cell.setParent(fila);
 				fila.setAttribute("idseleccionado", obj.getCbcomisionesconfrontaid());
 				fila.addEventListener("onClick", eventBtnModificar);
@@ -247,7 +249,12 @@ public class CBDetalleComisionesController extends ControladorBase {
 				} else {
 					try {
 						CBHistorialSCECModel objModel = new CBHistorialSCECModel();
-						int comisionesid = objModel.getCbcomisionid();
+						CBDetalleComisionesModel obj = new CBDetalleComisionesModel();
+						int comisionesid = obj.getCbcomisionid();
+						BigDecimal comisionReal = validaComision;
+						System.out.println("comision id es : " + comisionesid);
+						System.out.println("la comision real es : " + comisionReal);
+						
 						//objModel.setCbbancoagenciaconfrontaid(cbbancoagenciaconfrontaid);
 						//objModel.setFecha(fecha);
 						//objModel.setCreadopor(usuario);
@@ -257,7 +264,8 @@ public class CBDetalleComisionesController extends ControladorBase {
 						//objModel.setCbpagosid(cbpagosid);
 			           // objModel.setTipo(tipo);
 						
-						objChdao.actualizaComisionReal(validaComision,comisionesid);
+						boolean resul = objChdao.actualizaComisionReal(comisionReal,comisionesid);
+						System.out.println("Actualiza comision Real: " +  resul);
 						
 						Messagebox.show("Se creo el registro con exito", Constantes.ATENCION, Messagebox.OK,
 								Messagebox.INFORMATION);

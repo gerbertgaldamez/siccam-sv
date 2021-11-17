@@ -315,7 +315,7 @@ public class CBHistorialSCECDAO {
 				obj.setNombreImpuesto(rst.getString(5));
 				obj.setNombreMedioPago(rst.getString(6));
 				obj.setMonto(rst.getBigDecimal(7));
-				//obj.setComisionReal(rst.getBigDecimal(7));
+				obj.setComisionReal(rst.getBigDecimal(8));
 				System.out.println("valor monto en dao:" + obj.getMonto());
 				
 				lst.add(obj);
