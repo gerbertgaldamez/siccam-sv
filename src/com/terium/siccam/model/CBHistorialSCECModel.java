@@ -18,6 +18,7 @@ public class CBHistorialSCECModel {
 	private String fechacreacion;
 	private String fechamodificacion;
 	private BigDecimal comisionReal;
+	private int cbcomisionid;
 	
 	//Causas conciliacion
 	private int tipo;
@@ -145,6 +146,14 @@ public class CBHistorialSCECModel {
 
 	public void setComisionReal(BigDecimal comisionReal) {
 		this.comisionReal = comisionReal;
+	}
+
+	public int getCbcomisionid() {
+		return cbcomisionid;
+	}
+
+	public void setCbcomisionid(int cbcomisionid) {
+		this.cbcomisionid = cbcomisionid;
 	}
 	
 

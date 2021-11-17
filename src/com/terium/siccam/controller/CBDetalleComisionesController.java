@@ -66,6 +66,7 @@ public class CBDetalleComisionesController extends ControladorBase {
 
 		objModelModal = (CBConciliacionBancoModel) misession.getAttribute("objModelModal");
 		cbbancoagenciaconfrontaid = objModelModal.getCbbancoagenciaconfrontaid();
+		
 		fecha = objModelModal.getFecha();
 		usuario = obtenerUsuario().getUsuario();
 		
@@ -148,9 +149,11 @@ public class CBDetalleComisionesController extends ControladorBase {
 				cell = new Listcell();
 				//cell.setLabel(convertirADecimal(obj.getComisionReal()));
 				cell.setLabel(convertirADecimal(validaComision));
-				
+				fila.setAttribute("objModel2", obj);
 				cell.setParent(fila);
-				//fila.addEventListener("onClick", eventBtnModificar);
+				fila.setAttribute("idseleccionado", obj.getCbcomisionesconfrontaid());
+				fila.addEventListener("onClick", eventBtnModificar);
+				
 				//
 				fila.setValue(obj);
 				fila.setParent(lbxHistorialscec);
@@ -244,13 +247,17 @@ public class CBDetalleComisionesController extends ControladorBase {
 				} else {
 					try {
 						CBHistorialSCECModel objModel = new CBHistorialSCECModel();
-						objModel.setCbbancoagenciaconfrontaid(cbbancoagenciaconfrontaid);
-						objModel.setFecha(fecha);
-						objModel.setCreadopor(usuario);
+						int comisionesid = objModel.getCbcomisionid();
+						//objModel.setCbbancoagenciaconfrontaid(cbbancoagenciaconfrontaid);
+						//objModel.setFecha(fecha);
+						//objModel.setCreadopor(usuario);
 						System.out.println("el usuario es : " + usuario);
 						objModel.setComisionReal(new BigDecimal(dmbxComision.getValue()));
+						objModel.setCbcomisionid(comisionesid);
+						//objModel.setCbpagosid(cbpagosid);
 			           // objModel.setTipo(tipo);
-						objChdao.ingresaComision(objModel);
+						
+						objChdao.actualizaComisionReal(validaComision,comisionesid);
 						
 						Messagebox.show("Se creo el registro con exito", Constantes.ATENCION, Messagebox.OK,
 								Messagebox.INFORMATION);
@@ -275,10 +282,12 @@ public class CBDetalleComisionesController extends ControladorBase {
 
 		public void onEvent(Event arg0) throws Exception {
 			
-			CBHistorialSCECModel objModel2 = (CBHistorialSCECModel) arg0.getTarget().getAttribute("objModel2");
-			idseleccionado = (String) arg0.getTarget().getAttribute("idseleccionado");
+			CBDetalleComisionesModel objModel2 = (CBDetalleComisionesModel) arg0.getTarget().getAttribute("objModel2");
+			idseleccionado = String.valueOf( arg0.getTarget().getAttribute("idseleccionado"));
+			
+			System.out.println("el idseleccionado es " + idseleccionado);
 
-			dmbxComision.setText(convertirADecimal(objModel2.getComisionReal()));
+			dmbxComision.setText(String.valueOf(convertirADecimal(objModel2.getComisionReal())));
 			
 
 		

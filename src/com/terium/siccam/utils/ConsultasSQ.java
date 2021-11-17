@@ -498,7 +498,8 @@ public class ConsultasSQ {
 	//public static final String OBTIENE_DETALLE_COMISION_SQ = "SELECT TIPO, NVL(SUM(MONTO), 0) FROM cb_comisiones WHERE "
 //			+ " CBBANCOAGENCIACONFRONTAID = ? AND FECHA = TO_DATE(?,'dd/MM/yyyy') GROUP BY tipo";
 	
-	public static final String OBTIENE_DETALLE_COMISION_SQ = "SELECT (SELECT OBJETO " + 
+	public static final String OBTIENE_DETALLE_COMISION_SQ = "SELECT a.CBCOMISIONESID CBCOMISIONESID,"
+			+ "(SELECT OBJETO " + 
 			"            FROM CB_MODULO_CONCILIACION_CONF " + 
 			"           WHERE     MODULO = 'CALCULO_COMISION' " + 
 			"                 AND TIPO_OBJETO = 'FORMA_PAGO' " + 
@@ -524,8 +525,8 @@ public class ConsultasSQ {
 			"           WHERE     MODULO = 'CALCULO_COMISION' " + 
 			"                 AND TIPO_OBJETO = 'MEDIO_PAGO' " + 
 			"                 AND VALOR_OBJETO1 = c.MEDIO_PAGO) MEDIO_PAGO, " + 
-			"         NVL (SUM (a.MONTO), 0) " + 
-			//" (select comision_real " +
+			"         NVL (SUM (a.MONTO), 0), " + 
+			"  a.COMISION_REAL comision_real " +
 			//" from cb_comisiones " +
 			//"  where COMISION_REAL is not null and rownum  = 1 )" +
 			"    FROM cb_comisiones a, CB_MODULO_CONCILIACION_CONF b, CB_COMISIONES_CONFIGURACION c " + 
@@ -536,7 +537,7 @@ public class ConsultasSQ {
 			"         and c.CBBANCOAGENCIACONFRONTAID = a.CBBANCOAGENCIACONFRONTAID   AND  A.CBPAGOSID is not null  AND a.TIPO = C.TIPO  " + 
 			"          AND  A.CBBANCOAGENCIACONFRONTAID =? " + 
 			"          AND A.FECHA = TO_DATE(?,'dd/MM/yyyy') " + 
-			"GROUP BY a.tipo, c.FORMA_PAGO, c.TIPOLOGIA, A.CBMODULOCONCILIACIONCONFID, c.MEDIO_PAGO ";
+			"GROUP BY a.CBCOMISIONESID, a.tipo, c.FORMA_PAGO, c.TIPOLOGIA, A.CBMODULOCONCILIACIONCONFID, c.MEDIO_PAGO,  a.COMISION_REAL ";
 	
 	public static final String OBTIENE_CAUSAS_CONCILIACION_SQ = "SELECT ID_CAUSAS_CONCILIACION,CAUSAS,CREADO_POR,FECHA_CREACION,"
 			+ "	CODIGO_CONCILIACION,TIPO " + "FROM cb_causas_conciliacion " + "ORDER BY CAUSAS ASC";
@@ -712,4 +713,5 @@ public class ConsultasSQ {
 	public static final String INSERT_COMISIONES_QY = "INSERT INTO CB_COMISIONES(CBCOMISIONESID,CBBANCOAGENCIACONFRONTAID,\n"
 			+ " FECHA,CREATEDBY,DATECREATED,COMISION_REAL) VALUES\n"
 			+ "( cb_comisiones_SQ.NEXTVAL,?,TO_DATE(?,'dd/MM/yyyy'),?,sysdate,?)";
+	public static final String ACTUALIZA_COMISION_REAL = "update CB_COMISIONES set COMISION_REAL = ? where CBCOMISIONESID = ?";
 }

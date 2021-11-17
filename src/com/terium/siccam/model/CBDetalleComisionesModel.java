@@ -33,6 +33,7 @@ public class CBDetalleComisionesModel {
 	private String nombreFormaPago;
 	private String valor;
 	private BigDecimal comisionReal;
+	private int cbcomisionid;
 	
 	public BigDecimal getComisionReal() {
 		return comisionReal;
@@ -164,6 +165,12 @@ public class CBDetalleComisionesModel {
 	}
 	public void setNombreTipologia(String nombreTipologia) {
 		NombreTipologia = nombreTipologia;
+	}
+	public int getCbcomisionid() {
+		return cbcomisionid;
+	}
+	public void setCbcomisionid(int cbcomisionid) {
+		this.cbcomisionid = cbcomisionid;
 	}
 		
 		

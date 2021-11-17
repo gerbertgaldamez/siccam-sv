@@ -1,5 +1,6 @@
 package com.terium.siccam.dao;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -307,12 +308,13 @@ public class CBHistorialSCECDAO {
 			rst = pstmt.executeQuery();
 			while (rst.next()) {
 				obj = new CBDetalleComisionesModel();
-				obj.setNombreFormaPago (rst.getString(1));
-				obj.setNombreTipo(rst.getString(2));
-				obj.setNombreTipologia (rst.getString(3));
-				obj.setNombreImpuesto(rst.getString(4));
-				obj.setNombreMedioPago(rst.getString(5));
-				obj.setMonto(rst.getBigDecimal(6));
+				obj.setCbcomisionid(rst.getInt(1));
+				obj.setNombreFormaPago (rst.getString(2));
+				obj.setNombreTipo(rst.getString(3));
+				obj.setNombreTipologia (rst.getString(4));
+				obj.setNombreImpuesto(rst.getString(5));
+				obj.setNombreMedioPago(rst.getString(6));
+				obj.setMonto(rst.getBigDecimal(7));
 				//obj.setComisionReal(rst.getBigDecimal(7));
 				System.out.println("valor monto en dao:" + obj.getMonto());
 				
@@ -343,7 +345,7 @@ public class CBHistorialSCECDAO {
 		}
 		return lst;
 	}
-	public boolean ingresaComision(CBHistorialSCECModel obj){
+	/*public boolean ingresaComision(CBHistorialSCECModel obj){
 		PreparedStatement pstmt = null;
 		Connection conn = null;
 		
@@ -383,6 +385,48 @@ public class CBHistorialSCECDAO {
 			}
 		}
 
+	}*/
+	public boolean actualizaComisionReal(BigDecimal comisionReal, int comisionid){
+		PreparedStatement pstmt = null;
+		Connection conn = null;
+		
+		try {
+			conn = ControladorBase.obtenerDtsPromo().getConnection();
+			Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.INFO, ConsultasSQ.ACTUALIZA_COMISION_REAL);		
+			pstmt = conn.prepareStatement(ConsultasSQ.ACTUALIZA_COMISION_REAL);
+			
+			
+			pstmt.setBigDecimal(1, comisionReal);
+			pstmt.setInt(2, comisionid);
+			
+			
+			if (pstmt.executeUpdate() > 0)
+				return true;
+			else
+				return false;
+		} catch (Exception ex) {			
+			Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, ex);
+			return false;
+		}finally {
+			try {
+				if(pstmt != null)
+					try {
+						pstmt.close();
+					} catch (SQLException e) {
+						Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+					}
+				if(conn != null)
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+					}
+			}catch (Exception e) {
+				Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+			}
+		}
+
 	}
+
 	
 }

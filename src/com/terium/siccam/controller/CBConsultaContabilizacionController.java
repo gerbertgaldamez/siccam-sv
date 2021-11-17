@@ -1350,7 +1350,7 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 		token = UUID.randomUUID().toString();
 		token = token.replace("-", "");
 
-		final String pais = "CR";
+		final String pais = "SV";
 
 		CBBitacoraLogDAO dao = new CBBitacoraLogDAO();
 
