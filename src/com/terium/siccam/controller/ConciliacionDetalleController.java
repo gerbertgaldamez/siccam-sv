@@ -342,6 +342,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 		try {
 
 			Iterator<CBConciliacionDetallada> ilst = lstConciliacion.iterator();
+			System.out.println("la lista conciliacion trae " + lstConciliacion);
 
 			try {
 				if (lstConciliacion != null && lstConciliacion.size() > 0) {
@@ -899,6 +900,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 					// Pasamos los listitem a objetos detalle y los guardamos en
 					// lista
 					detallesSeleccionados.add(obj);
+					log.debug("entra a solo los seleccionados ");
 
 				}
 				abrirHistorialDeAccionesMasivas();

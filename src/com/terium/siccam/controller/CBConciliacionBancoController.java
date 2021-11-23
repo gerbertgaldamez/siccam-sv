@@ -303,6 +303,13 @@ public class CBConciliacionBancoController extends MenuController {
 
 				cell = new Listcell();
 				cell.setLabel(convertirADecimalComision(obj.getComisionpostpago()));
+				System.out.println("comision   en el controlador " + obj.getComisionpostpago());
+				cell.setParent(item);
+				//Comision Real
+				cell = new Listcell();
+				cell.setLabel(convertirADecimalComision(obj.getComisionReal()));
+				//cell.setLabel(String.valueOf((obj.getComisionReal())));
+				
 				cell.setParent(item);
 
 				cell = new Listcell();

@@ -110,6 +110,7 @@
 								<listheader label="Porcentaje" sort="auto" />
 								<listheader label="Comision confronta" sort="auto" />
 								<listheader label="Comision" sort="auto" />
+								<listheader label="Comision Real" sort="auto" />
 								<listheader label="Detalle comision" sort="auto" />
 								<listheader label="Diferencia comision" sort="auto" />
 								

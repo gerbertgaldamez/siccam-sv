@@ -29,9 +29,16 @@ public class CBConciliacionBancoModel {
 	private BigDecimal comisiontotal;
 	private BigDecimal diferenciacomisionpospago;
 	private int cbbancoagenciaconfrontaid;
+	private BigDecimal comisionReal;
 	
 	//CarlosGodinez -> 07/08/2018
 	
+	public BigDecimal getComisionReal() {
+		return comisionReal;
+	}
+	public void setComisionReal(BigDecimal comisionReal) {
+		this.comisionReal = comisionReal;
+	}
 	private String codigoColector; 
 	private String fechaInicioFiltro;
 	private String fechaFinFiltro;

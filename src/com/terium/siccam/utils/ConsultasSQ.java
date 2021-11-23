@@ -13,7 +13,7 @@ public class ConsultasSQ {
 			+ "estado_cuenta, confronta_banco, dif_postpago, pagosdeldia, pagosotrosdias, pagosotrosmeses, "
 			+ "reversasotrosdias, reversasotrosmeses, total_dia, total_general, estado_cuenta_total, conciliado_manual, diferencia_total, "
 			+ "porcentaje_comision, comision_confronta, comision_sc, diferencia_comision,"
-			+ " comisiontotal, recafinal, totalfinal, cbbancoagenciaconfrontaid, forma_pago "
+			+ " comisiontotal, recafinal, totalfinal, cbbancoagenciaconfrontaid, forma_pago,comision_real "
 			+ "from  cb_conciliacion_banco_vs_vw WHERE 1=1 ";
 
 	//
@@ -526,7 +526,7 @@ public class ConsultasSQ {
 			"                 AND TIPO_OBJETO = 'MEDIO_PAGO' " + 
 			"                 AND VALOR_OBJETO1 = c.MEDIO_PAGO) MEDIO_PAGO, " + 
 			"         NVL (SUM (a.MONTO), 0), " + 
-			"  a.COMISION_REAL comision_real " +
+			"  nvl(a.COMISION_REAL,0) comision_real " +
 			//" from cb_comisiones " +
 			//"  where COMISION_REAL is not null and rownum  = 1 )" +
 			"    FROM cb_comisiones a, CB_MODULO_CONCILIACION_CONF b, CB_COMISIONES_CONFIGURACION c " + 

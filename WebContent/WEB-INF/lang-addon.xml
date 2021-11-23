@@ -12,4 +12,15 @@
         <component-class>com.terium.utils.zk.Quickitem</component-class>
         <macro-uri>/macros/quickitem.zul</macro-uri>
     </component>
+    <!-- ====================================================== -->
+    <!--     Define properties for commonly used components     -->
+    <!-- ====================================================== -->
+    <component>
+        <component-name>decimalbox</component-name>
+        <extends>decimalbox</extends>
+        <property>
+            <property-name>format</property-name>
+            <property-value>#,##0.00</property-value>
+        </property>
+    </component>
 </language-addon>

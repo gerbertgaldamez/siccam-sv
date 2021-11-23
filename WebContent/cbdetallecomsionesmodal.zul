@@ -15,15 +15,13 @@
 			<rows>
 				<row>
 					<label value="Comision Real: " />
-					<textbox id="dmbxComision" />
-					<label value="Comision Real: "  visible="false" />
-					<textbox id="dmbxComisionReal" readonly="true"  visible="false"  />
+					<textbox id="tbxComision" />
 				</row>
 			</rows>
 		</grid>
 		<div align="center">
 			<toolbar width="100%">
-				<toolbarbutton id="btnAgregar2" label="Agregar"
+				<toolbarbutton id="btnAgregar2" label="Guardar"
 					image="/img/agregar_16.png" />
 					</toolbar>
 		</div>
@@ -39,6 +37,7 @@
 				<listheader label="Medio de pago" sort="auto"  />
 				<listheader label="Monto" sort="auto"   />
 				<listheader label="Comision Real" sort="auto"   />
+			
 				
 
 			</listhead>

@@ -308,7 +308,9 @@ public class CBHistorialSCECDAO {
 			rst = pstmt.executeQuery();
 			while (rst.next()) {
 				obj = new CBDetalleComisionesModel();
+				
 				obj.setCbcomisionid(rst.getInt(1));
+				System.out.println("valor comision id en dao:" + obj.getCbcomisionid());
 				obj.setNombreFormaPago (rst.getString(2));
 				obj.setNombreTipo(rst.getString(3));
 				obj.setNombreTipologia (rst.getString(4));
@@ -316,6 +318,7 @@ public class CBHistorialSCECDAO {
 				obj.setNombreMedioPago(rst.getString(6));
 				obj.setMonto(rst.getBigDecimal(7));
 				obj.setComisionReal(rst.getBigDecimal(8));
+				
 				System.out.println("valor monto en dao:" + obj.getMonto());
 				
 				lst.add(obj);
@@ -386,7 +389,7 @@ public class CBHistorialSCECDAO {
 		}
 
 	}*/
-	public boolean actualizaComisionReal(BigDecimal comisionReal, int comisionid){
+	public boolean actualizaComisionReal(String comisionReal, int comisionid){
 		PreparedStatement pstmt = null;
 		Connection conn = null;
 		
@@ -396,7 +399,7 @@ public class CBHistorialSCECDAO {
 			pstmt = conn.prepareStatement(ConsultasSQ.ACTUALIZA_COMISION_REAL);
 			
 			
-			pstmt.setBigDecimal(1, comisionReal);
+			pstmt.setDouble(1, Double.parseDouble(comisionReal));
 			pstmt.setInt(2, comisionid);
 			
 			

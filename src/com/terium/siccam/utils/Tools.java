@@ -258,4 +258,5 @@ public class Tools {
 	public static String OBTENER_REFERENCIA ="Select REFERENCIA,CTN from bellintlog@LINK_MGINTER_ARBOR where r_tracking_id = ?";
 	public static String OBTENER_CTN ="Select CTN from bellintlog@LINK_MGINTER_ARBOR where r_tracking_id = ?";
 	
+	
 }

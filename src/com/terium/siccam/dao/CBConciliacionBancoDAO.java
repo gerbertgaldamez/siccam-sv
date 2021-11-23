@@ -79,6 +79,8 @@ public class CBConciliacionBancoDAO extends ControladorBase {
 				 obj.setTotalfinal(rs.getBigDecimal(24));		
 				 obj.setCbbancoagenciaconfrontaid(rs.getInt(25));
 				 obj.setFormapago(rs.getString(26));
+				 obj.setComisionReal(rs.getBigDecimal(27));
+				 System.out.println("la comision real es: "+ obj.getComisionReal());
 				 
 				 list.add(obj);
 			}
