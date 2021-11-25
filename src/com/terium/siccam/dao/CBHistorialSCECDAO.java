@@ -8,10 +8,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import com.terium.siccam.composer.ControladorBase;
+import com.terium.siccam.controller.CBDetalleComisionesController;
 import com.terium.siccam.model.CBAsignaImpuestosModel;
 import com.terium.siccam.model.CBDetalleComisionesModel;
 import com.terium.siccam.model.CBHistorialSCECModel;
@@ -24,7 +27,7 @@ import com.terium.siccam.utils.ConsultasSQ;
 
 public class CBHistorialSCECDAO {
 
-	
+	private static Logger log = Logger.getLogger(CBHistorialSCECDAO.class.getName());
 	/**
 	 * Se extrae la informacion de la tipificacion por entidad
 	 * @param cbbancoagenciaconfrontaid : Id de la configuracion de confronta asignada a cada agencia
@@ -45,7 +48,8 @@ public class CBHistorialSCECDAO {
 			pstmt = conn.prepareStatement(ConsultasSQ.OBTIENE_HISTORIAL_TIPIFICACION_SQ);
 			pstmt.setInt(1, cbbancoagenciaconfrontaid);
 			pstmt.setString(2, fecha);
-			Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE,ConsultasSQ.OBTIENE_HISTORIAL_TIPIFICACION_SQ);
+			log.debug("query para OBTIENE_HISTORIAL_TIPIFICACION_SQ: " + ConsultasSQ.OBTIENE_HISTORIAL_TIPIFICACION_SQ);
+		//	Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE,ConsultasSQ.OBTIENE_HISTORIAL_TIPIFICACION_SQ);
 			rst = pstmt.executeQuery();
 			while (rst.next()) {
 				obj = new CBHistorialSCECModel();
@@ -71,25 +75,29 @@ public class CBHistorialSCECDAO {
 			}
 
 		} catch (Exception e) {
-			Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.debug("obtenerCBHistorialTipificacion - Error ", e);
+		//	Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 				if(rst != null)
 					try {
 						rst.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.debug("obtenerCBHistorialTipificacion - Error ", e);
+					//	Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(pstmt != null)
 					try {
 						pstmt.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.debug("obtenerCBHistorialTipificacion - Error ", e);
+						//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(conn != null)
 					try {
 						conn.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.debug("obtenerCBHistorialTipificacion - Error ", e);
+						//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 		}
 		return lst;
@@ -110,7 +118,8 @@ public class CBHistorialSCECDAO {
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			stmt  = con.createStatement();
-			Logger.getLogger(CBCausasConciliacionDAO.class.getName()).log(Level.SEVERE,ConsultasSQ.OBTIENE_CAUSAS_CONCILIACION_BANCOS_SQ);
+			log.debug("query para OBTIENE_CAUSAS_CONCILIACION_BANCOS_SQ: " + ConsultasSQ.OBTIENE_CAUSAS_CONCILIACION_BANCOS_SQ);
+			//Logger.getLogger(CBCausasConciliacionDAO.class.getName()).log(Level.SEVERE,ConsultasSQ.OBTIENE_CAUSAS_CONCILIACION_BANCOS_SQ);
 			rst = stmt.executeQuery(ConsultasSQ.OBTIENE_CAUSAS_CONCILIACION_BANCOS_SQ);
 			while(rst.next()){
 				obj = new CBHistorialSCECModel();
@@ -125,26 +134,30 @@ public class CBHistorialSCECDAO {
 			}
 			
 		} catch (Exception e) {
-			Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.debug("obtieneCausasConciliacion - Error ", e);
+			//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(rst != null)
 				try {
 					rst.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.debug("obtieneCausasConciliacion - Error ", e);
+					//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(stmt != null)
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.debug("obtieneCausasConciliacion - Error ", e);
+					//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(con != null)
 				try {
 					if(con != null)
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.debug("obtieneCausasConciliacion - Error ", e);
+					//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 
@@ -157,7 +170,8 @@ public class CBHistorialSCECDAO {
 		
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.INFO, ConsultasSQ.INSERT_CAUSA_TIPIFICACION_QY);		
+			log.debug("query para INSERT_CAUSA_TIPIFICACION_QY: " + ConsultasSQ.INSERT_CAUSA_TIPIFICACION_QY);
+			//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.INFO, ConsultasSQ.INSERT_CAUSA_TIPIFICACION_QY);		
 			pstmt = conn.prepareStatement(ConsultasSQ.INSERT_CAUSA_TIPIFICACION_QY);
 			pstmt.setInt(1, obj.getCbbancoagenciaconfrontaid());
 			pstmt.setInt(2, obj.getCbcausasconciliacionid());
@@ -170,8 +184,9 @@ public class CBHistorialSCECDAO {
 				return true;
 			else
 				return false;
-		} catch (Exception ex) {			
-			Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (Exception ex) {	
+			log.debug("ingresaTipificacion - Error ", ex);
+			//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, ex);
 			return false;
 		}finally {
 			try {
@@ -179,16 +194,19 @@ public class CBHistorialSCECDAO {
 					try {
 						pstmt.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.debug("ingresaTipificacion - Error ", e);
+						//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(conn != null)
 					try {
 						conn.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.debug("ingresaTipificacion - Error ", e);
+						//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 			}catch (Exception e) {
-				Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.debug("ingresaTipificacion - Error ", e);
+			//	Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 
@@ -200,7 +218,8 @@ public class CBHistorialSCECDAO {
 		
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.INFO, ConsultasSQ.UPDATE_CAUSA_TIPIFICACION_QY);		
+			log.debug("query para UPDATE_CAUSA_TIPIFICACION_QY " + ConsultasSQ.UPDATE_CAUSA_TIPIFICACION_QY);
+			//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.INFO, ConsultasSQ.UPDATE_CAUSA_TIPIFICACION_QY);		
 			pstmt = conn.prepareStatement(ConsultasSQ.UPDATE_CAUSA_TIPIFICACION_QY);
 			
 			pstmt.setInt(1, obj.getCbcausasconciliacionid());
@@ -213,8 +232,9 @@ public class CBHistorialSCECDAO {
 				return true;
 			else
 				return false;
-		} catch (Exception ex) {			
-			Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (Exception ex) {
+			log.debug("actualizaTipificacion - Error ", ex);
+			//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, ex);
 			return false;
 		}finally {
 			try {
@@ -222,16 +242,19 @@ public class CBHistorialSCECDAO {
 					try {
 						pstmt.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.debug("actualizaTipificacion - Error ", e);
+						//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(conn != null)
 					try {
 						conn.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.debug("actualizaTipificacion - Error ", e);
+						//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 			}catch (Exception e) {
-				Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.debug("actualizaTipificacion - Error ", e);
+				//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 
@@ -246,6 +269,7 @@ public class CBHistorialSCECDAO {
 		PreparedStatement pstm = null;
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
+			log.debug("query para ELIMINAR_CAUSAS_CONCILIACION_QY " + ConsultasSQ.ELIMINAR_CAUSAS_CONCILIACION_QY);
 			pstm = conn.prepareStatement(ConsultasSQ.ELIMINAR_CAUSAS_CONCILIACION_QY);		
 			pstm.setInt(1, cbhistorialscecid);
 						
@@ -255,7 +279,8 @@ public class CBHistorialSCECDAO {
 				return false;
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.debug("eliminaHistorial - Error ", e);
+			//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 			return false;
 		}finally {
 			try {
@@ -263,16 +288,19 @@ public class CBHistorialSCECDAO {
 					try {
 						pstm.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.debug("eliminaHistorial - Error ", e);
+						//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(conn != null)
 					try {
 						conn.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.debug("eliminaHistorial - Error ", e);
+						//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 			}catch (Exception e) {
-				Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.debug("eliminaHistorial - Error ", e);
+				//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 	}
@@ -292,8 +320,9 @@ public class CBHistorialSCECDAO {
 		ResultSet rst = null;
 		Connection conn = null;
 		CBDetalleComisionesModel obj = null;
-		System.out.println("parametros em dao: " + cbbancoagenciaconfrontaid );
-		System.out.println("parametros em dao2: " + fecha );
+		log.debug("parametros em dao: " + cbbancoagenciaconfrontaid);
+		log.debug("parametros em dao2: " + fecha);
+		
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
 			
@@ -304,7 +333,8 @@ public class CBHistorialSCECDAO {
 			
 			pstmt.setInt(1, cbbancoagenciaconfrontaid);
 			pstmt.setString(2, fecha);
-			Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE,ConsultasSQ.OBTIENE_DETALLE_COMISION_SQ);
+			log.debug("query para obtener el detalle de la comision: " + ConsultasSQ.OBTIENE_DETALLE_COMISION_SQ);
+		//	Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE,ConsultasSQ.OBTIENE_DETALLE_COMISION_SQ);
 			rst = pstmt.executeQuery();
 			while (rst.next()) {
 				obj = new CBDetalleComisionesModel();
@@ -325,25 +355,29 @@ public class CBHistorialSCECDAO {
 			}
 
 		} catch (Exception e) {
-			Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.debug("obtenerDetalleComision - Error ", e);
+			//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 				if(rst != null)
 					try {
 						rst.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.debug("obtenerDetalleComision - Error ", e);
+						//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(pstmt != null)
 					try {
 						pstmt.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.debug("obtenerDetalleComision - Error ", e);
+						//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(conn != null)
 					try {
 						conn.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.debug("obtenerDetalleComision - Error ", e);
+						//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 		}
 		return lst;
@@ -395,7 +429,8 @@ public class CBHistorialSCECDAO {
 		
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.INFO, ConsultasSQ.ACTUALIZA_COMISION_REAL);		
+			log.debug("query para ACTUALIZA_COMISION_REAL " + ConsultasSQ.ACTUALIZA_COMISION_REAL);
+		//	Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.INFO, ConsultasSQ.ACTUALIZA_COMISION_REAL);		
 			pstmt = conn.prepareStatement(ConsultasSQ.ACTUALIZA_COMISION_REAL);
 			
 			
@@ -407,8 +442,9 @@ public class CBHistorialSCECDAO {
 				return true;
 			else
 				return false;
-		} catch (Exception ex) {			
-			Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (Exception ex) {
+			log.debug("actualizaComisionReal - Error ", ex);
+			//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, ex);
 			return false;
 		}finally {
 			try {
@@ -416,16 +452,19 @@ public class CBHistorialSCECDAO {
 					try {
 						pstmt.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.debug("actualizaComisionReal - Error ", e);
+						//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(conn != null)
 					try {
 						conn.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.debug("actualizaComisionReal - Error ", e);
+						//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 			}catch (Exception e) {
-				Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.debug("actualizaComisionReal - Error ", e);
+				//Logger.getLogger(CBHistorialSCECDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 

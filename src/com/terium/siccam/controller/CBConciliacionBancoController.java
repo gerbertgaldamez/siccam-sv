@@ -1,6 +1,7 @@
 package com.terium.siccam.controller;
 
 import java.io.BufferedWriter;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,8 +13,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -32,6 +33,7 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
+import com.terium.siccam.dao.CBBitacoraLogDAO;
 import com.terium.siccam.dao.CBConciliacionBancoDAO;
 import com.terium.siccam.dao.CBMantenimientoTipologiasPolizaDAO;
 import com.terium.siccam.model.CBConciliacionBancoModel;
@@ -39,6 +41,8 @@ import com.terium.siccam.model.CBMantenimientoPolizaModel;
 import com.terium.siccam.utils.Constantes;
 
 public class CBConciliacionBancoController extends MenuController {
+	
+	private static Logger log = Logger.getLogger(CBConciliacionBancoController.class);
 
 	/**
 	 * 
@@ -80,7 +84,8 @@ public class CBConciliacionBancoController extends MenuController {
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBConciliacionBancoController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("llenaComboEntidad() - Error ", e);
+			//Logger.getLogger(CBConciliacionBancoController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -100,7 +105,8 @@ public class CBConciliacionBancoController extends MenuController {
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBConciliacionBancoController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("llenaComboEntidad() - Error ", e);
+			//Logger.getLogger(CBConciliacionBancoController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -120,7 +126,8 @@ public class CBConciliacionBancoController extends MenuController {
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBConciliacionBancoController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("llenaComboEntidad() - Error ", e);
+			//Logger.getLogger(CBConciliacionBancoController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -172,7 +179,8 @@ public class CBConciliacionBancoController extends MenuController {
 			llenaListbox(objDao.generaConsultaPrincipal(objModel));
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBConciliacionBancoController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("llenaComboEntidad() - Error ", e);
+			//Logger.getLogger(CBConciliacionBancoController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -303,7 +311,8 @@ public class CBConciliacionBancoController extends MenuController {
 
 				cell = new Listcell();
 				cell.setLabel(convertirADecimalComision(obj.getComisionpostpago()));
-				System.out.println("comision   en el controlador " + obj.getComisionpostpago());
+				log.debug("comision   en el controlador " + obj.getComisionpostpago());
+				
 				cell.setParent(item);
 				//Comision Real
 				cell = new Listcell();
@@ -396,13 +405,15 @@ public class CBConciliacionBancoController extends MenuController {
 			try {
 				CBConciliacionBancoModel objModelModal = (CBConciliacionBancoModel) event.getTarget()
 						.getAttribute("objModelModal");
-				Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO,
-						"\n**** Tipologia de poliza seleccionada ****\n");
+				log.debug("\n**** Tipologia de poliza seleccionada ****\n " );
+				//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO,
+						//"\n**** Tipologia de poliza seleccionada ****\n");
 				session.setAttribute("objModelModal", objModelModal);
 				Executions.createComponents("/cbdetallecomsionesmodal.zul", null, null);
 
 			} catch (Exception e) {
-				Logger.getLogger(CBTipologiasPolizaController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("eventBtnDetalleComisionModal() - Error ", e);
+				//Logger.getLogger(CBTipologiasPolizaController.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 	};
@@ -434,20 +445,23 @@ public class CBConciliacionBancoController extends MenuController {
 
 			}
 
-			Logger.getLogger(CBCatalogoBancoController.class.getName()).log(Level.INFO, "Inicia descarga del archivo");
+			log.debug("Inicia descarga del archivo" );
+			//Logger.getLogger(CBCatalogoBancoController.class.getName()).log(Level.INFO, "Inicia descarga del archivo");
 			Filedownload.save(archivo, null);
 			Messagebox.show("Reporte generado de manera exitosa, el archivo ha sido descargado", "ATENCION",
 					Messagebox.OK, Messagebox.INFORMATION);
 
 			Clients.clearBusy();
 		} catch (Exception e) {
-			Logger.getLogger(CBConciliacionBancoController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnReporte() - Error ", e);
+			//Logger.getLogger(CBConciliacionBancoController.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (bw != null)
 				try {
 					bw.close();
 				} catch (IOException e) {
-					Logger.getLogger(CBConciliacionBancoController.class.getName()).log(Level.SEVERE, null, e);
+					log.error("onClick$btnReporte() - Error ", e);
+					//Logger.getLogger(CBConciliacionBancoController.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 	}

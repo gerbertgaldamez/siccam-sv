@@ -5,7 +5,9 @@ import java.text.DecimalFormat;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 
@@ -33,6 +35,8 @@ import com.terium.siccam.model.CBHistorialSCECModel;
 import com.terium.siccam.utils.Constantes;
 
 public class CBHistorialSCECController extends ControladorBase  {
+	
+	private static Logger log = Logger.getLogger(CBHistorialSCECController.class);
 	
 	/**
 	 * 
@@ -96,12 +100,11 @@ public class CBHistorialSCECController extends ControladorBase  {
 		dmbxMonto.setValue("0.00");
 
 		filtros = (Boolean) misession.getAttribute("filtrosprincipal");
-		System.out.println("parametro en pantalla modal por sesion monto: " + monto);
-		System.out.println("parametro en pantalla modal por sesion montosistemacomercial: " + montosistemacomercial);
-		System.out.println("parametro en pantalla modal por sesion montoestadocuenta: " + montoestadocuenta);
-		System.out.println(
-				"parametro en pantalla modal por sesion cbbancoagenciaconfrontaid: " + cbbancoagenciaconfrontaid);
-
+		log.debug( "parametro en pantalla modal por sesion monto: " + monto);
+		log.debug( "parametro en pantalla modal por sesion montosistemacomercial: " + montosistemacomercial);
+		log.debug( "parametro en pantalla modal por sesion montoestadocuenta: " + montoestadocuenta);
+		log.debug( "parametro en pantalla modal por sesion cbbancoagenciaconfrontaid: " + cbbancoagenciaconfrontaid);
+		
 		llenaListboxTipificacion(cbbancoagenciaconfrontaid, fecha);
 		cargarComboAcciones();
 		btnActualizar.setDisabled(true);
@@ -127,10 +130,12 @@ public class CBHistorialSCECController extends ControladorBase  {
 	 * */
 	public void llenaListboxTipificacion(int cbbancoagenciaconfrontaid, String fecha) {
 		limpiarListbox(lbxHistorialscec);
-		System.out.println("parametros em control: " + cbbancoagenciaconfrontaid);
-		System.out.println("parametros em control2: " + fecha);
+		log.debug( "parametros em control: " + cbbancoagenciaconfrontaid);
+		log.debug( "parametros em control2: " + fecha);
+		
 		listaTipificacion = objChdao.obtenerCBHistorialTipificacion(cbbancoagenciaconfrontaid, fecha);
-		System.out.println("total lista retornada en llenalistbox:" + listaTipificacion.size());
+		log.debug( "total lista retornada en llenalistbox:" + listaTipificacion.size());
+		
 		if (listaTipificacion.size() > 0) {
 
 			acumulamonto = new BigDecimal(0.00);
@@ -152,7 +157,8 @@ public class CBHistorialSCECController extends ControladorBase  {
 				cell = new Listcell();
 				System.out.println("valor monto en list:" + obj.getMonto());
 				cell.setLabel(convertirADecimal(obj.getMonto()));
-				System.out.println("valor monto en lis2:" + convertirADecimal(obj.getMonto()));
+				log.debug( "valor monto en lis2:" +  convertirADecimal(obj.getMonto()));
+				
 				cell.setParent(fila);
 
 				cell = new Listcell();
@@ -193,13 +199,15 @@ public class CBHistorialSCECController extends ControladorBase  {
 				fila.setValue(obj);
 				fila.setParent(lbxHistorialscec);
 			}
-			System.out.println("Monto total del historial: " + acumulamonto);
+			log.debug( "Monto total del historial: " + acumulamonto);
+			
 			 //misession.setAttribute("montoacumulado", acumulamonto);//linea  a probar
 			dmbxMontoAcumulado.setValue(acumulamonto.toString());
 		
 			calculaDiferencia = DiferenciaTotal.subtract(acumulamonto);
 			dmbxDiferenciaTotal.setValue(calculaDiferencia.toString());
-			System.out.println("diferencia en if " + calculaDiferencia);
+			log.debug( "diferencia en if " + calculaDiferencia);
+			
 		} else {
 
 			dmbxMontoAcumulado.setValue(BigDecimal.valueOf(0).toString());
@@ -260,18 +268,20 @@ public class CBHistorialSCECController extends ControladorBase  {
 	public void onClick$btnAgregar() {
 
 		BigDecimal validaDiferencia = DiferenciaTotal;
-
-		System.out.println("valor DiferenciaTotal:" + DiferenciaTotal);
+		log.debug( "valor DiferenciaTotal:" + DiferenciaTotal);
+		
 
 		BigDecimal validamonto = acumulamonto;
-		System.out.println("valida monto: " + validamonto);
-
-		System.out.println("valida dmbxMonto: " + dmbxMonto.getValue());
+		log.debug( "valida monto: " + validamonto);
+	
+		log.debug( "valida dmbxMonto: " + dmbxMonto.getValue());
+		
 		if (dmbxMonto.getValue() != null) {
 			validamonto = validamonto.add(new BigDecimal(dmbxMonto.getValue()));
-			System.out.println("Monto al guardar para validar validamonto: " + validamonto);
-			System.out.println("Monto al guardar para validar monto: " + monto.compareTo(BigDecimal.ZERO));
-			System.out.println("Monto al guardar para validar dmbxMonto: " + dmbxMonto.getValue());
+			log.debug( "Monto al guardar para validar validamonto: " + validamonto);
+			log.debug( "Monto al guardar para validar monto: " + monto.compareTo(BigDecimal.ZERO));
+			log.debug( "Monto al guardar para validar dmbxMonto: " + dmbxMonto.getValue());
+			
 		/*	if (dmbxMonto.getValue().compareTo(dmbxDiferenciaTotal.getValue()) > 0) {
 				Messagebox.show("No es posible agregar ese monto ya que sobrepasa el valor de "
 						+ dmbxDiferenciaTotal.getValue(), "ATENCION", Messagebox.OK, Messagebox.EXCLAMATION);
@@ -293,25 +303,29 @@ public class CBHistorialSCECController extends ControladorBase  {
 						objModel.setCbbancoagenciaconfrontaid(cbbancoagenciaconfrontaid);
 						objModel.setFecha(fecha);
 						objModel.setObservacion(tbxObservacion.getText());
-						System.out.println("cmpo monto listo para agregar: " + (dmbxMonto.getText().trim()));
+						log.debug( "cmpo monto listo para agregar: " + (dmbxMonto.getText().trim()));
+						
 						objModel.setMonto(new BigDecimal(dmbxMonto.getValue()));
 						objModel.setCbcausasconciliacionid((Integer) cmbxCusas.getSelectedItem().getValue());
 						objModel.setCreadopor(usuario);
 						objChdao.ingresaTipificacion(objModel);
 						Messagebox.show("Se creo el registro con exito", Constantes.ATENCION, Messagebox.OK,
 								Messagebox.INFORMATION);
-						System.out.println("registro guardado: " + objModel.getMonto());
+						log.debug( "registro guardado: " + objModel.getMonto());
+						
 						llenaListboxTipificacion(cbbancoagenciaconfrontaid, fecha);
 						limpiarCampos();
 						btnActualizar.setDisabled(true);
 						btnAgregar.setDisabled(false);
 						refrescarModulo();
 					} catch (Exception e) {
-						Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.SEVERE, null, e);
+						log.error("onClick$btnAgregar() - Error ", e);
+						//Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.SEVERE, null, e);
 					}
 				}
 			//}
 		} else {
+			//log.debug( "EL monto es requerido ");
 			System.out.println("EL monto es requerido");
 		}
 		
@@ -323,12 +337,14 @@ public class CBHistorialSCECController extends ControladorBase  {
 		BigDecimal validamonto = acumulamonto;
 
 		BigDecimal validaDiferencia = DiferenciaTotal;
-		System.out.println("valor DiferenciaTotal:" + DiferenciaTotal);
+		log.debug( "valor DiferenciaTotal:" + DiferenciaTotal);
+		
 
 		validamonto = validamonto.add(new BigDecimal(dmbxMonto.getValue()));
 
 		validamonto = validamonto.subtract(montoseleccionado);
-		System.out.println("Monto al guardar para validar: " + validamonto);
+		log.debug( "Monto al guardar para validar: " + validamonto);
+		
 		if (lbxHistorialscec.getSelectedItem() == null) {
 			Messagebox.show("Debe seleccionar el registro que desea actualizar", "ATENCION", Messagebox.OK,
 					Messagebox.EXCLAMATION);
@@ -368,7 +384,8 @@ public class CBHistorialSCECController extends ControladorBase  {
 					btnActualizar.setDisabled(true);
 					btnAgregar.setDisabled(false);
 				} catch (Exception e) {
-					Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.SEVERE, null, e);
+					log.error("onClick$btnActualizar() - Error ", e);
+					//Logger.getLogger(ConciliacionDetalleController.class.getName()).log(Level.SEVERE, null, e);
 				}
 			}
 		}
@@ -417,7 +434,8 @@ public class CBHistorialSCECController extends ControladorBase  {
 
 								if (objChdao.eliminaHistorial(id)) {
 									llenaListboxTipificacion(cbbancoagenciaconfrontaid, fecha);
-									System.out.println("Elimina historial id: " + id);
+									log.debug( "Elimina historial id: " + id);
+									
 
 									CBBitacoraLogDAO bitacoraDAO = new CBBitacoraLogDAO();
 
@@ -429,8 +447,9 @@ public class CBHistorialSCECController extends ControladorBase  {
 											+ ", con tipologia: " + tipologia + "  y Monto: " + monto);
 									objBitaModel.setUsuario(usuario);
 									if (bitacoraDAO.insertBitacoraLog(objBitaModel)) {
-										Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO,
-												"Inserta accion en log para tipificacion en conciliacion de bancos");
+										log.debug( "Inserta accion en log para tipificacion en conciliacion de bancos");
+										//Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO,
+											//	"Inserta accion en log para tipificacion en conciliacion de bancos");
 									}
 
 									Messagebox.show("Se elimino el registro con exito", Constantes.ATENCION,

@@ -1,10 +1,13 @@
 package com.terium.siccam.utils;
 
-import com.terium.siccam.composer.ControladorBase;
+import org.apache.log4j.Logger;
 
+import com.terium.siccam.composer.ControladorBase;
+import com.terium.siccam.dao.CBBitacoraLogDAO;
 import com.terium.siccam.dao.CBConsultaContabilizacionDAO;
 
 public class CBConsultaContabilizacionThread extends ControladorBase implements Runnable {
+	private static Logger log = Logger.getLogger(CBConsultaContabilizacionThread.class);
 
 	/**
 	 * 
@@ -23,9 +26,10 @@ public class CBConsultaContabilizacionThread extends ControladorBase implements 
 	}
 	
 	public void run() {
-		System.out.println("Fecha en el hilo: " + fecha);
-		System.out.println("Pais en el hilo: " + pais);		
-		System.out.println("Token en el hilo: " + token);
+		log.debug( "Fecha en el hilo: " + fecha);
+		log.debug( "Pais en el hilo: " + pais);
+		log.debug( "Token en el hilo: " + token);	
+		
 		CBConsultaContabilizacionDAO.ejecutaSPContabilizacion(fecha, fecha, pais, token);//cambio
 	}
 }

@@ -7,7 +7,7 @@ import java.util.List;
 
 
 
-import java.util.Locale;
+
 
 //import java.util.logging.Level;
 //import java.util.logging.Logger;
@@ -21,10 +21,10 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zk.ui.event.Events;
+
 import org.zkoss.zul.Button;
-import org.zkoss.zul.Comboitem;
-import org.zkoss.zul.Decimalbox;
+
+
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -33,17 +33,17 @@ import org.zkoss.zul.Window;
 
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBHistorialSCECDAO;
-import com.terium.siccam.dao.CBMantenimientoTipologiasPolizaDAO;
-import com.terium.siccam.model.CBAsignaImpuestosModel;
-import com.terium.siccam.model.CBCausasModel;
+
+
+
 import com.terium.siccam.model.CBConciliacionBancoModel;
 import com.terium.siccam.model.CBDetalleComisionesModel;
-import com.terium.siccam.model.CBHistorialSCECModel;
+
 import com.terium.siccam.utils.Constantes;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
+
+
+
 
 public class CBDetalleComisionesController extends ControladorBase {
 	
@@ -67,14 +67,14 @@ public class CBDetalleComisionesController extends ControladorBase {
 	private String usuario;
 	private String fecha = "";
 	private int cbbancoagenciaconfrontaid = 0;
-	// BigDecimal comisionReal;
+	
 	private Textbox tbxComision;
 	private Button btnAgregar2;
 	private Listbox lbxHistorialscec;
-	// private BigDecimal validaComision = new BigDecimal(0.00);
 	
-	DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
-	//simbolos.setDecimalSeparator('.');
+	
+	
+	
 	
 	
 
@@ -94,7 +94,7 @@ public class CBDetalleComisionesController extends ControladorBase {
 		usuario = obtenerUsuario().getUsuario();
 		 tbxComision.setValue("0.00");
 		llenaListboxTipificacion(cbbancoagenciaconfrontaid, fecha);
-		// btnAgregar.setDisabled(false);
+		
 		limpiarCampos();
 
 	}
@@ -167,7 +167,7 @@ public class CBDetalleComisionesController extends ControladorBase {
 				cell.setParent(fila);
 
 				cell = new Listcell();
-				//cell.setLabel(convertirADecimal(obj.getComisionReal()));
+				
 				cell.setLabel(String.valueOf(obj.getComisionReal().doubleValue()));
               
 				cell.setParent(fila);
@@ -252,8 +252,7 @@ public class CBDetalleComisionesController extends ControladorBase {
 				&& lbxHistorialscec.getSelectedItem() != null) {
 			CBDetalleComisionesModel obj = lbxHistorialscec.getSelectedItem()
 					.getValue();
-			// validaComision = validaComision.add(new
-			// BigDecimal(dmbxComision.getValue()));
+			
 			int comisionesid = obj.getCbcomisionid();
 
 			if (tbxComision.getValue() == null) {
@@ -267,23 +266,26 @@ public class CBDetalleComisionesController extends ControladorBase {
 					boolean resul = objChdao.actualizaComisionReal(
 							tbxComision.getValue(), comisionesid);
 					
-
+					log.debug(
+							"actualiza la comision real  "  + resul);
 					Messagebox.show("Se creo el registro con exito",
 							Constantes.ATENCION, Messagebox.OK,
 							Messagebox.INFORMATION);
 					
 					llenaListboxTipificacion(cbbancoagenciaconfrontaid, fecha);
 					limpiarCampos();
-					// btnActualizar.setDisabled(true);
+					
 					btnAgregar2.setDisabled(false);
-					// refrescarModulo();
+					
 				} catch (Exception e) {
 					log.debug("eventBtnComisionReal - Error ", e);
 				}
 			}
 			// }
 		} else {
-			System.out.println("La comision real es requerido");
+			Messagebox.show("Debe seleccionar una comision real",
+					"ATENCION", Messagebox.OK, Messagebox.EXCLAMATION);
+			
 		}
 
 	}
@@ -295,20 +297,14 @@ public class CBDetalleComisionesController extends ControladorBase {
 		
 		public void onEvent(Event arg0) throws Exception {
 			
-			//NumberFormat.getNumberInstance(Locale.ENGLISH).parse("265.858");
 			
-			 // NumberFormat spanishFormat = NumberFormat.getInstance(new
-					//  Locale("en","US"));
 			
 			CBDetalleComisionesModel objModel2 = (CBDetalleComisionesModel) arg0
 					.getTarget().getAttribute("objModel2");
 			idseleccionado = String.valueOf(arg0.getTarget().getAttribute(
 					"idseleccionado"));
 			
-			//String comision_real = formateador.format(objModel2.getComisionReal().doubleValue());
-		//	String comision_real = spanishFormat.format(objModel2.getComisionReal().doubleValue());
 			
-			//BigDecimal valor = BigDecimal.valueOf(Double.valueOf(comision_real));
 			log.debug(
 					"valor de comision real en el update "  + objModel2.getComisionReal().doubleValue());
 			

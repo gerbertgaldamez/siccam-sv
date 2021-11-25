@@ -1,6 +1,7 @@
 package com.terium.siccam.dao;
 
 import java.sql.CallableStatement;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,7 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 
 import org.apache.commons.dbutils.QueryRunner;
 
@@ -18,8 +19,9 @@ import com.terium.siccam.model.CBCatalogoAgenciaModel;
 import com.terium.siccam.model.CBConciliacionCajasModel;
 import com.terium.siccam.model.CBConsultaContabilizacionModel;
 import com.terium.siccam.model.CBParametrosSAPModel;
+import com.terium.siccam.utils.CBConsultaContabilizacionThread;
 import com.terium.siccam.utils.ConsultasSQ;
-
+import org.apache.log4j.Logger;
 /**
  * creado Ovidio Santos
  * 
@@ -27,6 +29,8 @@ import com.terium.siccam.utils.ConsultasSQ;
 
 @SuppressWarnings("serial")
 public class CBConsultaContabilizacionDAO extends ControladorBase{
+	
+	private static Logger log = Logger.getLogger(CBConsultaContabilizacionDAO.class);
 	/**
 	 * Agrega Carlos Godinez - Qitcorp - 02/06/2017
 	 * 
@@ -43,9 +47,11 @@ public class CBConsultaContabilizacionDAO extends ControladorBase{
 		CBParametrosSAPModel objModel = new CBParametrosSAPModel();
 		try {
 			conn = obtenerDtsPromo().getConnection();
-				System.out.println("==== Obtiene valor configurable ===");
+			log.debug( "==== Obtiene valor configurable === " );
+				
 				ps = conn.createStatement();
-				System.out.println("Consulta para obtener valores configurables SAP = " + QRY_VALOR_CONF);
+				log.debug( "Consulta para obtener valores configurables SAP = " + QRY_VALOR_CONF);
+				
 				rs = ps.executeQuery(QRY_VALOR_CONF);
 				int contObj = 0;
 				while (rs.next()) {
@@ -84,25 +90,29 @@ public class CBConsultaContabilizacionDAO extends ControladorBase{
 					}
 				}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerValoresConfSAP() - Error ", e);
+			//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtenerValoresConfSAP() - Error ", e1);
+					//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			if(ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtenerValoresConfSAP() - Error ", e1);
+					//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerValoresConfSAP() - Error ", e);
+				//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return objModel;
@@ -120,11 +130,13 @@ public class CBConsultaContabilizacionDAO extends ControladorBase{
 		try {
 
 			conn= obtenerDtsPromo().getConnection();
+			
 			String query = ConsultasSQ.CONSULTA_CONTABILIZACION_SQ;
 
 			String where = " ";
-			System.out.println("fecha inicio " + objModel.getFechaini());
-			System.out.println("fecha inicio " + objModel.getFechafin());
+			log.debug( "fecha inicio " + objModel.getFechaini());
+			log.debug( "fecha inicio " + objModel.getFechafin());
+			
 
 			where += " and fecha >= to_date('" + objModel.getFechaini() + "','dd/MM/yyyy') " + " and fecha <= to_date('"
 					+ objModel.getFechafin() + "','dd/MM/yyyy') ";
@@ -166,8 +178,8 @@ public class CBConsultaContabilizacionDAO extends ControladorBase{
 			if (objModel.getObservaciones() != null && !objModel.getObservaciones().equals("")) {
 				where += "AND UPPER (OBSERVACIONES) LIKE '%" + objModel.getObservaciones().toUpperCase() + "%' ";
 			}
-
-			System.out.println("consulta contabilizacion " + ConsultasSQ.CONSULTA_CONTABILIZACION_SQ + where);
+			log.debug( "consulta contabilizacion " + ConsultasSQ.CONSULTA_CONTABILIZACION_SQ + where);
+			
 
 			cmd = conn.createStatement();
 			cmd.setFetchSize(1024);
@@ -210,25 +222,29 @@ public class CBConsultaContabilizacionDAO extends ControladorBase{
 				list.add(objModel);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerContabilizacion() - Error ", e);
+			//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtenerContabilizacion() - Error ", e1);
+					//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			if(cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtenerContabilizacion() - Error ", e1);
+					//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerContabilizacion() - Error ", e);
+				//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return list;
@@ -264,8 +280,9 @@ public class CBConsultaContabilizacionDAO extends ControladorBase{
 			String query = ConsultasSQ.CONSULTA_CONTABILIZACION_SQ;
 
 			String where = " ";
-			System.out.println("fecha inicio " + objModel.getFechaini());
-			System.out.println("fecha inicio " + objModel.getFechafin());
+			log.debug( "fecha inicio " + objModel.getFechaini());
+			log.debug( "fecha inicio " + objModel.getFechafin());
+			
 
 			where += " and fecha >= to_date('" + objModel.getFechaini() + "','dd/MM/yyyy') " + " and fecha <= to_date('"
 					+ objModel.getFechafin() + "','dd/MM/yyyy') ";
@@ -307,9 +324,8 @@ public class CBConsultaContabilizacionDAO extends ControladorBase{
 			if (objModel.getObservaciones() != null && !objModel.getObservaciones().equals("")) {
 				where += "AND UPPER (OBSERVACIONES) LIKE '%" + objModel.getObservaciones().toUpperCase() + "%' ";
 			}
-
-			System.out.println("consulta contabilizacion " + ConsultasSQ.CONSULTA_CONTABILIZACION_SQ + where);
-
+			log.debug( "consulta contabilizacion " + ConsultasSQ.CONSULTA_CONTABILIZACION_SQ + where);
+			
 			cmd = conn.createStatement();
 			cmd.setFetchSize(1024);
 			 rs = cmd.executeQuery(query + where);
@@ -351,25 +367,29 @@ public class CBConsultaContabilizacionDAO extends ControladorBase{
 				list.add(objModel);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerContabilizacion() - Error ", e);
+			//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtenerContabilizacion() - Error ", e1);
+					//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			if(cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtenerContabilizacion() - Error ", e1);
+					//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerContabilizacion() - Error ", e);
+				//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return list;
@@ -385,7 +405,8 @@ public class CBConsultaContabilizacionDAO extends ControladorBase{
 		try {
 			conn = obtenerDtsPromo().getConnection();
 				cmd = conn.prepareStatement(ConsultasSQ.MODIFICAR_CONTABILIZACION_SQ);
-				System.out.println("update  " + ConsultasSQ.MODIFICAR_CONTABILIZACION_SQ);
+				log.debug( "update " + ConsultasSQ.MODIFICAR_CONTABILIZACION_SQ);
+				
 
 				cmd.setString(1, objModel.getCentroCosto());
 				cmd.setString(2, objModel.getClaveContabilizacion());
@@ -410,19 +431,22 @@ public class CBConsultaContabilizacionDAO extends ControladorBase{
 					result = true;
 				}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("update() - Error ", e);
+			//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("update() - Error ", e1);
+					//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("update() - Error ", e);
+				//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -435,7 +459,8 @@ public class CBConsultaContabilizacionDAO extends ControladorBase{
 	 */
 	public List<CBParametrosSAPModel> obtieneDatosSAP(CBConsultaContabilizacionModel objModel, int idAgencia, int idAgenciaIngreso, int tipo) {
 		List<CBParametrosSAPModel> list = new ArrayList<CBParametrosSAPModel>();
-		System.out.println("Prueba");
+		log.debug( "Prueba ");
+		
 		String where = " ";
 		Statement cmd = null;
 		Connection conn = null;
@@ -491,17 +516,17 @@ public class CBConsultaContabilizacionDAO extends ControladorBase{
 				query = ConsultasSQ.OBTIENE_DATOS_SAP2;
 				Logger.getLogger("Sap2 "+ ConsultasSQ.OBTIENE_DATOS_SAP2);
 			}
-
-			System.out.println(query);
+			log.debug( "query: " + query);
+			
 
 			cmd = conn.createStatement();
 			cmd.setFetchSize(1024);
 			rs = cmd.executeQuery(query + where + "ORDER BY cbestadocuentaid asc");
-
-			System.out.println("Parametros enviados para consulta:");
-			System.out.println("fecha inicio " + objModel.getFechaini());
-			System.out.println("fecha inicio " + objModel.getFechafin());
-			System.out.println("Query generacion SAP = " + query + where + "ORDER BY cbestadocuentaid asc");
+			log.debug( "Parametros enviados para consulta: ");
+			log.debug( "fecha inicio " + objModel.getFechaini());
+			log.debug( "fecha inicio " + objModel.getFechafin());
+			log.debug( "Query generacion SAP = " + query + where + "ORDER BY cbestadocuentaid asc");
+			
 			
 			
 			CBParametrosSAPModel obj = null;
@@ -517,27 +542,32 @@ public class CBConsultaContabilizacionDAO extends ControladorBase{
 				
 				list.add(obj);
 			}
-			System.out.println("Tamaño de lista obtiene datos SAP = " + list.size());
+			log.debug( "Tamaño de lista obtiene datos SAP = " + list.size());
+			
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtieneDatosSAP() - Error ", e);
+			//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e2) {
-					Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e2);
+					log.error("obtieneDatosSAP() - Error ", e2);
+				//	Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e2);
 				}
 			if(cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtieneDatosSAP() - Error ", e1);
+					//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtieneDatosSAP() - Error ", e);
+				//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return list;
@@ -569,7 +599,8 @@ public class CBConsultaContabilizacionDAO extends ControladorBase{
 			where += " and fecha = '" + fechaini+"'";
 
 				cmd = conn.prepareStatement(INSERT_CONTABILIZACION_SQ + where);
-System.out.println("query" + INSERT_CONTABILIZACION_SQ+where);
+				log.debug( "query " + INSERT_CONTABILIZACION_SQ+where);
+
 				if (cmd.executeUpdate() > 0) {
 					
 					
@@ -577,19 +608,22 @@ System.out.println("query" + INSERT_CONTABILIZACION_SQ+where);
 				}
  
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertContabilizacion() - Error ", e);
+			//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("insertContabilizacion() - Error ", e1);
+					//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("insertContabilizacion() - Error ", e);
+				//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -603,14 +637,16 @@ System.out.println("query" + INSERT_CONTABILIZACION_SQ+where);
 
 	public CBConsultaContabilizacionModel validaCarga(String fechadesde, String fechaHasta) {
 		CBConsultaContabilizacionModel result = null;
-		System.out.println("fecha en el dao" + fechadesde + fechaHasta);
+		log.debug( "fecha en el dao " + fechadesde + fechaHasta);
+		
 		ResultSet rs = null;
 		PreparedStatement ps = null;
 		Connection conn = null;
 		try {
 			conn = obtenerDtsPromo().getConnection();
 				ps = conn.prepareStatement(VALIDA_CARGA_CONTABILIZACION_SQ);
-				System.out.println("query validacion fecha " + VALIDA_CARGA_CONTABILIZACION_SQ);
+				log.debug( "query validacion fecha " + VALIDA_CARGA_CONTABILIZACION_SQ);
+				
 				ps.setString(1, fechadesde);
 				ps.setString(2, fechaHasta);
 				rs = ps.executeQuery();
@@ -620,25 +656,29 @@ System.out.println("query" + INSERT_CONTABILIZACION_SQ+where);
 					result.setFechaini(rs.getString(1));
 				}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("validaCarga() - Error ", e);
+			//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e2) {
-					Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e2);
+					log.error("validaCarga() - Error ", e2);
+					//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e2);
 				}
 			if(ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("validaCarga() - Error ", e1);
+					//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("validaCarga() - Error ", e);
+				//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -656,27 +696,32 @@ System.out.println("query" + INSERT_CONTABILIZACION_SQ+where);
 
 				//System.out.println("fecha a eliminar dao "+ fecha);
 				ps.setString(1, fecha);
-				System.out.println("query: "+DELETE_REGISTROS_CREDO);
-				System.out.println("fecha en eliminar "+fecha);
+				log.debug( "query: " + DELETE_REGISTROS_CREDO);
+				log.debug( "fecha en eliminar "+fecha);
+				
 				int exec = ps.executeUpdate();
 				if(exec > 0){
 					conn.commit();
-					System.out.println("Script ejecutado correctamente para eliminar registros: "+DELETE_REGISTROS_CREDO);
+					log.debug( "Script ejecutado correctamente para eliminar registros: "+DELETE_REGISTROS_CREDO);
+					
 				}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("eliminarRegistros() - Error ", e);
+			//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("eliminarRegistros() - Error ", e1);
+					//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("eliminarRegistros() - Error ", e);
+				//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 	}
@@ -702,28 +747,28 @@ System.out.println("query" + INSERT_CONTABILIZACION_SQ+where);
 			//cmd.setString(4, token);
 			result = cmd.executeUpdate() > 0;
 
-			Logger.getLogger("Entra a ejecutaSPContabilizacion"+ " [CARGA_CONTABILIZACION_SP]");
-			Logger.getLogger("fecha inicio en el dao sp " + fecha);
-			Logger.getLogger("fecha inicio en el dao sp " + fechaHasta);
+			log.debug("Entra a ejecutaSPContabilizacion"+ " [CARGA_CONTABILIZACION_SP]");
+			log.debug("fecha inicio en el dao sp " + fecha);
+			log.debug("fecha inicio en el dao sp " + fechaHasta);
 			String Query1 = " ";
 			Query1 += "BEGIN CB_CARGA_CONTABILIZACION2_SP('" + fecha + "','" + fechaHasta + "'); END;";
-			Logger.getLogger("SP EN CBConsultaContabilizacionDAO " + Query1);
+			log.debug("SP EN CBConsultaContabilizacionDAO " + Query1);
 
 			// try {
-			Logger.getLogger("obtiene conexion");
+			log.debug("obtiene conexion");
 			//conn = obtenerDtsPromo().getConnection();
 			//QueryRunner qry = new QueryRunner();
 
-			Logger.getLogger("SP EN EL CBConsultaContabilizacionDAO" + Query1);
-			Logger.getLogger("CARGA_CONTABILIZACION_SP  token:" + token);
+			log.debug("SP EN EL CBConsultaContabilizacionDAO" + Query1);
+			log.debug("CARGA_CONTABILIZACION_SP  token:" + token);
 			// cmd = conn.prepareCall(Query1);
 			// con = obtenerDtsPromo().getConnection();
 			// ps = con.prepareStatement(VERIFICA_CARGA_DATA_BANCO);
 
 			// cst.setString(1, fecha);
 //			cst.setString(2, fechaHasta);
-			Logger.getLogger("fecha inicio en el dao sp " + fecha);
-			Logger.getLogger("fecha inicio en el dao sp " + fechaHasta);
+			log.debug("fecha inicio en el dao sp " + fecha);
+			log.debug("fecha inicio en el dao sp " + fechaHasta);
 
 			// ResultSet rs = null;
 			// Statement cmd = null;
@@ -735,18 +780,19 @@ System.out.println("query" + INSERT_CONTABILIZACION_SQ+where);
 			// int exec = cst.executeUpdate();
 			// if(exec > 0){
 			//result = true;
-			Logger.getLogger("se detuvo el proceso ");
+			log.debug("se detuvo el proceso ");
 			// System.out.println(exec);
 
 			CBBitacoraLogDAO dao = new CBBitacoraLogDAO();
 			boolean bitacora = dao.updateBitacoraThread(token, pais, 2);
 			// }
-			Logger.getLogger("Carga exitosa para el dia: " + fecha);
+			log.debug("Carga exitosa para el dia: " + fecha);
 
 		} catch (Exception e) {
 			CBBitacoraLogDAO dao = new CBBitacoraLogDAO();
 			dao.updateBitacoraThread(token, pais, 1);
-			Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("ejecutaSPContabilizacion() - Error ", e);
+			//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 			e.printStackTrace();
 		} finally {
 			try {
@@ -755,7 +801,8 @@ System.out.println("query" + INSERT_CONTABILIZACION_SQ+where);
 				if (conn != null)
 					conn.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("ejecutaSPContabilizacion() - Error ", e);
+				//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -774,6 +821,7 @@ System.out.println("query" + INSERT_CONTABILIZACION_SQ+where);
 		try {
 			conn = obtenerDtsPromo().getConnection();
 			stm = conn.createStatement();
+			log.debug("query banco  "+ OBTIENE_BANCO_SQ);
 			rs = stm.executeQuery(OBTIENE_BANCO_SQ);
 			CBConciliacionCajasModel obj = null;
 			while (rs.next()) {
@@ -783,25 +831,29 @@ System.out.println("query" + INSERT_CONTABILIZACION_SQ+where);
 				list.add(obj);
 			}
 		}catch (Exception e) {
-			Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaBanco() - Error ", e);
+			//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e2) {
-					Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e2);
+					log.error("generaConsultaBanco() - Error ", e2);
+					//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e2);
 				}
 			if(stm != null)
 				try {
 					stm.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("generaConsultaBanco() - Error ", e1);
+					//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("generaConsultaBanco() - Error ", e);
+				//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return list;
@@ -825,7 +877,8 @@ System.out.println("query" + INSERT_CONTABILIZACION_SQ+where);
 			 where = where +" ORDER BY TO_NUMBER(codigo_colector) ASC  "  ;
 			stm = conn.createStatement();
 			rs = stm.executeQuery(OBTIENE_AGENCIA_SQ + where);
-			System.out.println("combo agencia ingreso 1" + OBTIENE_AGENCIA_SQ + where);
+			log.debug( "combo agencia ingreso 1 " + OBTIENE_AGENCIA_SQ + where);
+			
 			CBCatalogoAgenciaModel obj = null;
 			while (rs.next()) {
 				obj = new CBCatalogoAgenciaModel();
@@ -834,25 +887,29 @@ System.out.println("query" + INSERT_CONTABILIZACION_SQ+where);
 				list.add(obj);
 			}
 		}catch (Exception e) {
-			Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaAgencia() - Error ", e);
+			//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e2) {
-					Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e2);
+					log.error("generaConsultaAgencia() - Error ", e2);
+					//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e2);
 				}
 			if(stm != null)
 				try {
 					stm.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("generaConsultaAgencia() - Error ", e1);
+					//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("generaConsultaAgencia() - Error ", e);
+				//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return list;
@@ -877,7 +934,8 @@ System.out.println("query" + INSERT_CONTABILIZACION_SQ+where);
 			//String where = "and b.cbcatalogobancoid = " + idBanco + "";
 
 			stm = conn.createStatement();
-			System.out.println("query combo agencia  2 " + OBTIENE_AGENCIA_INGRESO_SQ);
+			log.debug( "query combo agencia  2 " + OBTIENE_AGENCIA_INGRESO_SQ);
+			
 			rs = stm.executeQuery(OBTIENE_AGENCIA_INGRESO_SQ );
 			CBCatalogoAgenciaModel obj = null;
 			while (rs.next()) {
@@ -887,25 +945,29 @@ System.out.println("query" + INSERT_CONTABILIZACION_SQ+where);
 				list.add(obj);
 			}
 		}catch (Exception e) {
-			Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaAgenciaIngreso() - Error ", e);
+			//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e2) {
-					Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e2);
+					log.error("generaConsultaAgenciaIngreso() - Error ", e2);
+					//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e2);
 				}
 			if(stm != null)
 				try {
 					stm.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("generaConsultaAgenciaIngreso() - Error ", e1);
+					//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("generaConsultaAgenciaIngreso() - Error ", e);
+				//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return list;
@@ -927,7 +989,7 @@ System.out.println("query" + INSERT_CONTABILIZACION_SQ+where);
 		try {
 			conn = obtenerDtsPromo().getConnection();// se cambio a conn
 				ps = conn.prepareStatement(VALIDA_FECHA_CONTABILIZACION_SQ);// se cambio a conn
-				System.out.println("query validacion fecha " + VALIDA_FECHA_CONTABILIZACION_SQ);
+				log.debug( "query validacion fecha " + VALIDA_FECHA_CONTABILIZACION_SQ);
 				
 				rs = ps.executeQuery();
 				
@@ -935,25 +997,29 @@ System.out.println("query" + INSERT_CONTABILIZACION_SQ+where);
 					result=rs.getString(1);
 				}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("validafecha() - Error ", e);
+			//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e2) {
-					Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e2);
+					log.error("validafecha() - Error ", e2);
+					//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e2);
 				}
 			if(ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("validafecha() - Error ", e1);
+					//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("validafecha() - Error ", e);
+				//Logger.getLogger(CBConsultaContabilizacionDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;

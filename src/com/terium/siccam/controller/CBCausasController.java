@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -19,15 +20,19 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
+import org.apache.log4j.Logger;
 
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBAsignaImpuestosDAO;
 import com.terium.siccam.dao.CBCausasDao;
+import com.terium.siccam.dao.CBConsultaContabilizacionDAO;
 import com.terium.siccam.model.CBCausasModel;
 import com.terium.siccam.model.CBParametrosGeneralesModel;
 import com.terium.siccam.model.CBTipologiasPolizaModel;
 
 public class CBCausasController extends ControladorBase {
+	
+	private static Logger log = Logger.getLogger(CBCausasController.class);
 
 	private Textbox tbxCausa;
 	private Textbox tbxCodigo;
@@ -68,7 +73,8 @@ public class CBCausasController extends ControladorBase {
 	private List<CBParametrosGeneralesModel> lstTipologiasConciliacion = new ArrayList<CBParametrosGeneralesModel>();
 
 	public void llenaComboTipo() {
-		System.out.println("Llena combo tipo estado");
+		log.debug( "Llena combo tipo estado ");
+		
 		limpiaCombobox(cmbTipoConciliacion);
 
 		CBCausasDao objeDAO = new CBCausasDao();
@@ -88,7 +94,8 @@ public class CBCausasController extends ControladorBase {
 	private List<CBParametrosGeneralesModel> lstSistema = new ArrayList<CBParametrosGeneralesModel>();
 
 	public void llenaComboSistema() {
-		System.out.println("Llena combo tipo estado");
+		log.debug( "Llena combo sistema ");
+		
 		limpiaCombobox(cmbSistema);
 
 		CBCausasDao objeDAO = new CBCausasDao();
@@ -108,7 +115,8 @@ public class CBCausasController extends ControladorBase {
 	private List<CBParametrosGeneralesModel> lstConvenio = new ArrayList<CBParametrosGeneralesModel>();
 
 	public void llenaComboConvenio() {
-		System.out.println("Llena combo tipo estado");
+		log.debug( "Llena combo convenio ");
+		
 		limpiaCombobox(cmbConvenio);
 
 		CBCausasDao objeDAO = new CBCausasDao();
@@ -129,7 +137,8 @@ public class CBCausasController extends ControladorBase {
 	private List<CBTipologiasPolizaModel> listaTipologias = new ArrayList<CBTipologiasPolizaModel>();
 
 	public void llenaComboTipologias() {
-		Logger.getLogger(CBCausasController.class.getName()).log(Level.INFO, "Llena combo tipologia");
+		log.debug( "Llena combo tipologia ");
+		//Logger.getLogger(CBCausasController.class.getName()).log(Level.INFO, "Llena combo tipologia");
 		limpiaCombobox(cmbTipologiaasociada);
 		CBCausasDao objeDAO = new CBCausasDao();
 		this.listaTipologias = objeDAO.obtenerTipologias();
@@ -214,8 +223,8 @@ public class CBCausasController extends ControladorBase {
 				objModel.setConvenio(cmbConvenio.getSelectedItem().getValue().toString());//Agregado Por Gerbert
 				objModel.setUsuario(getUsuario());
 				objModel.setIdCausaConciliacion(idseleccionado);
-
-				System.out.println("en modificar     " + objModel.getTipoCausa() + objModel.getIdCausaConciliacion());
+				log.debug( "en modificar     " + objModel.getTipoCausa() + objModel.getIdCausaConciliacion());
+				
 				int resultado = cbcd.actualizaRegistroCausa(objModel);
 				if (resultado > 0) {
 					onClick$btnLimpiar();
@@ -263,7 +272,7 @@ public class CBCausasController extends ControladorBase {
 		try {
 			CBCausasDao cbaDao = new CBCausasDao();
 			CBCausasModel objModel = new CBCausasModel();
-			System.out.println("Consulta estados tipologias");
+			log.debug( "Consulta estados tipologias ");
 
 			if (tbxCausa.getText().trim() != null && !"".equals(tbxCausa.getText().trim())) {
 				objModel.setTipoCausa(tbxCausa.getText().trim());
@@ -294,15 +303,16 @@ public class CBCausasController extends ControladorBase {
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBTipologiasPolizaController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnConsultar() - Error ", e);
+			//Logger.getLogger(CBTipologiasPolizaController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
 	// metodo para llenar listbox
 	public void llenaListbox(List<CBCausasModel> list) {
 		limpiarListbox(lbxlistadoCausas);
-
-		System.out.println("cantidad de registros " + list.size());
+		log.debug( "cantidad de registros " + list.size());
+		
 		//
 
 		if (list != null && list.size() > 0) {
@@ -451,7 +461,8 @@ public class CBCausasController extends ControladorBase {
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public void onEvent(Event event) throws Exception {
 			final String idseleccionado = (String) (event.getTarget().getAttribute("idEliminar"));
-			System.out.println("ID  a eliminar = " + idseleccionado);
+			log.debug( "ID  a eliminar = " + idseleccionado);
+			
 			Messagebox.show("¿Desea eliminar el registro seleccionado?", "CONFIRMACION", Messagebox.YES | Messagebox.NO,
 					Messagebox.QUESTION, new EventListener() {
 						public void onEvent(Event event) throws Exception {

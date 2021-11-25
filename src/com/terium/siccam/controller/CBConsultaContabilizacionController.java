@@ -2,6 +2,7 @@ package com.terium.siccam.controller;
 
 import java.io.BufferedWriter;
 
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -180,14 +181,15 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 			CBParametrosSAPModel objConfSAP = paramConfSAP.obtenerValoresConfSAP();
 
 			llenarVariableSAP(objConfSAP);
-			System.out.println("Valores obtenidos");
-			System.out.println("NOMBRE ARCHIVO = " + this.nombreArchivo);
-			System.out.println("IP = " + this.valorIP);
-			System.out.println("USER = " + this.user);
-			System.out.println("RUTA ARCHIVO = " + this.rutaArchivoSAP);
+			log.debug("Valores obtenidos");
+			log.debug("NOMBRE ARCHIVO = " + this.nombreArchivo);
+			log.debug("IP = " + this.valorIP);
+			log.debug("USER = " + this.user);
+			log.debug("RUTA ARCHIVO = " + this.rutaArchivoSAP);
+			
 		} catch (Exception e) {
-			System.out.println("Ha ocurrido un error: " + e.getMessage());
-			log.error(e);
+			log.error("doAfterCompose() - Error ", e);
+			
 			// Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE,
 			// null, e);
 		}
@@ -253,7 +255,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 			idAgenciaIngreso = Integer.parseInt(cmbAgenciaIngreso.getSelectedItem().getValue().toString());
 		}
 
-		System.out.println("Consulta estados contabilizacion");
+		log.debug("Consulta estados contabilizacion" );
+		
 		if (tbxCentroCosto.getText().trim() != null && !"".equals(tbxCentroCosto.getText().trim())) {
 			objModel.setCentroCosto(tbxCentroCosto.getText().trim());
 		}
@@ -295,8 +298,9 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 			fechafin = (fechaFormato.format((dtbHasta.getValue())));
 		}
 
-		System.out.println("fecha desde " + objModel.getFechaini());
-		System.out.println("fecha desde " + objModel.getFechafin());
+		log.debug("fecha desde" + objModel.getFechaini());
+		log.debug("fecha Hasta" + objModel.getFechafin());
+		
 
 		objModel.setBanco(objModel.getBanco());
 		objModel.setAgencia(objModel.getAgencia());
@@ -331,7 +335,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 	public void llenaListbox(List<CBConsultaContabilizacionModel> list) {
 		limpiarListbox(lbxConsulta);
 
-		System.out.println("cantidad de registros " + list.size());
+		log.debug("cantidad de registros " + list.size());
+		
 		//
 
 		if (list != null && list.size() > 0) {
@@ -456,7 +461,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 	public void llenaListbox(List<CBConsultaContabilizacionModel> list, Listbox lbxConsulta) {
 		limpiarListbox(lbxConsulta);
 
-		System.out.println("cantidad de registros " + list.size());
+		log.debug("cantidad de registros " + list.size());
+		
 		//
 
 		if (list != null && list.size() > 0) {
@@ -609,7 +615,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 				Messagebox.show("No se ha especificado segmento para el encabezado para archivo SAP.\n"
 						+ "Contacte a su administrador.", "ATENCION", Messagebox.OK, Messagebox.EXCLAMATION);
 			} else {
-				System.out.println("\n==== ENTRA A GENERACION DE ARCHIVO SAP ====\n");
+				log.debug("\n==== ENTRA A GENERACION DE ARCHIVO SAP ====\n");
+				
 				CBConsultaContabilizacionModel objModel = new CBConsultaContabilizacionModel();
 				DateFormat fechaFormato = new SimpleDateFormat("dd/MM/yyyy");
 				if (dtbDesde.getValue() != null && dtbHasta.getValue() != null) {
@@ -625,8 +632,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 						idAgenciaIngreso = Integer.parseInt(cmbAgenciaIngreso.getSelectedItem().getValue().toString());
 					}
 					
-
-					System.out.println("Consulta estados contabilizacion");
+					log.debug("Consulta estados contabilizacion");
+					
 					if (tbxCentroCosto.getText().trim() != null && !tbxCentroCosto.getText().trim().equals("")) {
 						objModel.setCentroCosto(tbxCentroCosto.getText().trim());
 					}
@@ -671,7 +678,7 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 			}
 		} catch (Exception e) {
 			Messagebox.show("Se ha producido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			System.out.println("Ha ocurrido un error al generar archivo SAP: " + e.getMessage());
+			
 			log.error(e);
 		}
 	}
@@ -784,7 +791,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 			}
 			generaArchivoSAP(listaSapArchivo, totalMontoSAP, tipo);
 		} else {
-			System.out.println("Lista SAP esta vacia.");
+			log.debug("Lista SAP esta vacia.");
+			
 		}
 	}
 
@@ -885,10 +893,10 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 					// encabezado2 + sdf.format(fecha)
 					// + encabezado3;
 					String encabezado = "0	500	" + Tools.getCookie("userName") + "	1";
-
-					System.out.println(nombreArchivo2 + sdf.format(fecha) + ".txt");
-
-					System.out.println("archivo2");
+					log.debug(nombreArchivo2 + sdf.format(fecha) + ".txt");
+					
+					log.debug("archivo2");
+					
 
 					if (!archivoTxt2.exists()) {
 						if (archivoTxt2.createNewFile())
@@ -925,8 +933,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 					// Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,"
 					// **** Longitud de linea de detalle = ", detalleSAP.length());
 					// bw.write(detalleSAP);
-
-					System.out.println("ARCHIVO TIPO 2 .txt GENERADO CON EXITO");
+					log.debug("ARCHIVO TIPO 2 .txt GENERADO CON EXITO");
+					
 
 					/**
 					 * Generacion de archivo .gz
@@ -1088,14 +1096,15 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 			input = new FileInputStream(archivoGZ);// Ruta del archivo para enviar
 			ftpClient.enterLocalPassiveMode();
 			ftpClient.storeFile(archivoGZ.getName(), input);// Ruta completa de alojamiento en el FTP
-			System.out.println("ARCHIVO .gz SUBIDO A SERVIDOR FTP CON EXITO");
+			log.debug("ARCHIVO .gz SUBIDO A SERVIDOR FTP CON EXITO");
+			
 
 			ftpClient.logout(); // Cerrar sesión
 			ftpClient.disconnect();// Desconectarse del servidor
 
 			Messagebox.show("Archivo SAP subido a FTP con exito.", "ATENCION", Messagebox.OK, Messagebox.INFORMATION);
 		} catch (Exception e) {
-			System.out.println("Error: " + e.getMessage());
+			
 			Messagebox.show("Ha ocurrido un error al intentar subir archivo SAP por FTP", "ATENCION", Messagebox.OK,
 					Messagebox.ERROR);
 			log.error("Error onClick$btnFTPSAP()", e);
@@ -1124,8 +1133,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 
 			fechaini = (String) arg0.getTarget().getAttribute("fechaini");
 			fechafin = (String) arg0.getTarget().getAttribute("fechafin");
-
-			System.out.println("obj a modificar: " + objmodificar);
+			log.debug("obj a modificar: " + objmodificar);
+			
 
 			misession1.setAttribute("sesionfecha1", fechaini);
 			misession2.setAttribute("sesionfecha2", fechafin);
@@ -1145,8 +1154,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 		if (ckbMarcarAll.isChecked()) {
 
 			List<Listitem> list = lbxConsulta.getItems();
-
-			System.out.println("listado tama;o " + list.size());
+			log.debug("listado tama;o " + list.size());
+		
 
 			if (list.size() > 0) {
 				detallesSeleccionados = new ArrayList<CBConsultaContabilizacionModel>();
@@ -1214,7 +1223,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 
 	public void generarReporte(List<CBConsultaContabilizacionModel> list) throws IOException {
 		BufferedWriter bw = null;
-		System.out.println("Generando reporte ...");
+		log.debug("Generando reporte ...");
+		
 
 		try {
 			Date fecha = new Date();
@@ -1250,7 +1260,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 						+ changeNull(objModelReporte.getModificado_por()) + "\n");
 			}
 			bw.close();
-			System.out.println("Descarga exitosa del archivo generado...");
+			log.debug("Descarga exitosa del archivo generado...");
+			
 			Filedownload.save(archivo, null);
 			Messagebox.show("Reporte generado de manera exitosa, el archivo ha sido descargado", "ATENCIÓN",
 					Messagebox.OK, Messagebox.INFORMATION);
@@ -1267,7 +1278,8 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 	}
 
 	public void recargaConsultaConta(String fechaini, String fechafin) {
-		System.out.println("Entra a recargar consulta...");
+		log.debug("Entra a recargar consulta...");
+		
 		int idAgencia = 0;
 		int idAgenciaIngreso = 0;
 		
@@ -1325,14 +1337,16 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 		}
 		if (tbxCuenta.getText().trim() != null && !"".equals(tbxCuenta.getText().trim())) {
 			objModel.setCuenta(tbxCuenta.getText().trim());
-			System.out.println("campo cuenta en el dao " + objModel.getCuenta().trim());
+			log.debug("campo cuenta en el dao " + objModel.getCuenta().trim());
+			
 		}
 		if (tbxReferencia.getText().trim() != null && !"".equals(tbxReferencia.getText().trim())) {
 			objModel.setReferencia(tbxReferencia.getText().trim());
 		}
 		if (tbxTexto.getText().trim() != null && !"".equals(tbxTexto.getText().trim())) {
 			objModel.setTexto(tbxTexto.getText().trim());
-			System.out.println("texto controlador " + objModel.getTexto().trim());
+			log.debug("texto controlador "  + objModel.getTexto().trim());
+			
 		}
 		if (tbxTexto2.getText().trim() != null && !"".equals(tbxTexto2.getText().trim())) {
 			objModel.setTexto2(tbxTexto2.getText().trim());
@@ -1340,8 +1354,9 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 		if (tbxObservaciones.getText().trim() != null && !"".equals(tbxObservaciones.getText().trim())) {
 			objModel.setObservaciones(tbxObservaciones.getText().trim());
 		}
-		System.out.println("fecha antes del insert" + fechaDesde);
-		System.out.println("fecha antes del insert" + fechaHasta);
+		log.debug("fecha antes del insert "  + fechaDesde);
+		log.debug("fecha antes del insert "  + fechaHasta);
+		
 
 		/* ********************* INICIA HILOS ************************* */
 		int dias = 0;
@@ -1358,39 +1373,42 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 			SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
 			Date fecha1 = formatoFecha.parse(fechaDesde);
 			Date fecha2 = formatoFecha.parse(fechaHasta);
-
-			System.out.println("Iniciando proceso");
+			log.debug("Iniciando proceso ");
+			
 			dias = Tools.diferenciasDeFechas(fecha1, fecha2);
 			log.debug("GenerarInfo() " + "Cantidad de dias a consultar: " + (dias + 1));
 			// Logger.getLogger(CBConsultaContabilizacionController.class.getName())
 			// .log(Level.INFO,"Cantidad de dias a consultar: " + (dias + 1));
 
 			Tools.setCookie("diasCarga", String.valueOf((dias + 1)));
-
-			System.out.println("ya seteo una cookie");
+			log.debug("ya seteo una cookie ");
+			
 
 			dao.deleteBitacoraThread("CARGA_CONTABILIZACION");
-
-			System.out.println("se ejecuto el delete");
+			log.debug("se ejecuto el delete");
+			
 
 			for (int i = 0; i <= dias; i++) {
 				Date fechaActual = Tools.sumarDias(fecha1, i);
 				long tokenItem = System.currentTimeMillis();
-				System.out.println("Fecha actual: " + i + "  " + fechaActual);
-				System.out.println("Fecha actual: " + tokenItem);
+				log.debug("Fecha actual: " + i + "  " + fechaActual);
+				log.debug("Fecha actual: " + tokenItem);
+				
 				// CBConsultaContabilizacionThread hilo = new
 				// CBConsultaContabilizacionThread(formatoFecha.format(fechaActual));
 				Thread hilo = new Thread(new CBConsultaContabilizacionThread(formatoFecha.format(fechaActual), pais,
 						String.valueOf(tokenItem)));
-				System.out.println("se lanza el hilo");
+				log.debug("se lanza el hilo" );
 				hilo.start();
-				System.out.println("hilo lanzado");
+				log.debug("hilo lanzado" );
+				
 				CBBitacoraLogModel log = new CBBitacoraLogModel();
 				log.setTipoCarga("0");
 				log.setNombreArchivo(String.valueOf(tokenItem));
 				log.setModulo(token);
 				log.setAccion(formatoFecha.format(fechaActual));
 				log.setUsuario("CARGA_CONTABILIZACION");
+				
 				System.out.println("llama a la bitacora");
 				dao.insertBitacoraLog(log);
 				System.out.println("finaliza llamada a la bitacora");
