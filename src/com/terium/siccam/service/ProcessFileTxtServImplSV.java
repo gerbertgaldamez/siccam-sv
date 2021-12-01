@@ -110,6 +110,8 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements
 
 						strLine1 = strLine.trim();
 						logger.debug(methodName + " - strLine1 = " + strLine1);
+						logger.debug(methodName + " - strLine = " + strLine);
+						logger.debug(methodName + " - contLinea = " + contLinea);
 						// ************************************************************************************
 						strLine1 = strLine1.replaceAll("\"", ""); // Agrega
 																	// Carlos
@@ -858,7 +860,7 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements
 					String telefonoAlfaNum = strData.trim();
 					// if (telefonoAlfaNum.length() <= 10) { // se realiza
 					// cambio > 8
-					if (telefonoAlfaNum.length() >= 8) {
+					if (telefonoAlfaNum.length() >= 8 || telefonoAlfaNum.length()<= 6) {
 						logger.debug(methodName + " - Telefono alfanumerico: "
 								+ telefonoAlfaNum);
 						bancoModel.setTelefono(telefonoAlfaNum);
@@ -955,24 +957,39 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements
 								logger.error(methodName + " - Numero vacio: "
 										+ e.getMessage());
 							}
-							/*
-							 * }else if (telefonoEspecial.length() == 20){
-							 * logger.debug(methodName +
-							 * " - cantidad del Telefono Especial antes del subString: "
-							 * + telefonoEspecial.length());
-							 * 
-							 * try { telefonoE = (telefonoEspecial.substring(
-							 * telefonoEspecial.length() - 3, + 10));
-							 * telefonoEspecial = telefonoE;
-							 * bancoModel.setTelefono(telefonoEspecial);
-							 * 
-							 * logger.debug(methodName +
-							 * " - el Telefono Especial con el subString: " +
-							 * telefonoEspecial); } catch (Exception e) {
-							 * logger.error(methodName + " - Numero vacio: " +
-							 * e.getMessage()); }
-							 */
+							
 
+						}else if (telefonoEspecial.length() <= 6 ) {
+							telefonoE = telefonoEspecial;
+							logger.error(methodName + " - entra a esta validacion ");
+								/*int inicioTelefono = Integer
+										.parseInt(telefonoEspecial);
+								if (inicioTelefono == 6){
+									telefonoE = telefonoEspecial;
+									
+								}else if (inicioTelefono == 5){
+									telefonoE = telefonoEspecial;
+									
+								}else if (inicioTelefono == 4){
+									telefonoE = telefonoEspecial;
+									
+								}else if (inicioTelefono == 3){
+									telefonoE = telefonoEspecial;
+								}else {
+									telefonoE = telefonoEspecial;
+								}*/
+								try{
+									bancoModel.setTelefono(telefonoE);
+
+									logger.debug(methodName
+											+ " - el Telefono Especial : "
+											+ telefonoEspecial);
+								
+							}catch(Exception e){
+								logger.error(methodName + " - Numero vacio: "
+										+ e.getMessage());
+							}
+							
 						} else if (telefonoEspecial.contains("II")
 								|| telefonoEspecial.contains("EQ")
 								|| telefonoEspecial.contains("IP")) {
