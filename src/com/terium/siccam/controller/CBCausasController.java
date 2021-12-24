@@ -417,27 +417,26 @@ public class CBCausasController extends ControladorBase {
 					System.out.println("en if en modificar evaluar " + item.getValue());
 					cmbTipoConciliacion.setSelectedItem(item);
 				}
+				
 
 			}
 
 			for (Comboitem item : cmbTipologiaasociada.getItems()) {
-				// System.out.println("en for en modificar evaluar aso " + item.getValue());
-				// System.out.println("en for en modificar evaluar " + item.getLabel());
-				// System.out.println("en if en modificar evaluar asociada " + objmodificar.getTipologiaasociada());
+				 System.out.println("en for en modificar evaluar aso " + item.getValue());
+				
 				if (item.getLabel().equals(String.valueOf(objmodificar.getTipologiaasociada()))) {
-				//	System.out.println("en if en modificar evaluar asociada " + item.getValue());
-					//System.out.println("en if en modificar evaluar asociada " + objmodificar.getTipologiaasociada());
+					System.out.println("en if en modificar evaluar asociada " + item.getValue());
 					cmbTipologiaasociada.setSelectedItem(item);
 				}
 
 			}
 			for (Comboitem item : cmbSistema.getItems()) {
-				// System.out.println("en for en modificar evaluar aso " + item.getValue());
-				// System.out.println("en for en modificar evaluar " + item.getLabel());
-				// System.out.println("en if en modificar evaluar asociada " + objmodificar.getTipologiaasociada());
+				 System.out.println("en for en modificar evaluar aso2 " + item.getValue());
+				
 				if (item.getLabel().equals(String.valueOf(objmodificar.getSistema()))) {
-				//	System.out.println("en if en modificar evaluar asociada " + item.getValue());
-					//System.out.println("en if en modificar evaluar asociada " + objmodificar.getTipologiaasociada());
+					System.out.println("en if en modificar evaluar sistema " + item.getValue());
+					System.out.println("la variable sistema " + objmodificar.getSistema());
+					
 					cmbSistema.setSelectedItem(item);
 				}
 
@@ -452,7 +451,9 @@ public class CBCausasController extends ControladorBase {
 			}
 			
 		}
+		
 	};
+
 
 	// se crea el evento eliminar se crea una variable de atributo personalizado
 	// se setea el id donde se obtiene el id

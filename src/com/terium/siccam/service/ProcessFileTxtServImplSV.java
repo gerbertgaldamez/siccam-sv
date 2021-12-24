@@ -959,40 +959,9 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements
 							}
 							
 
-						}else if (telefonoEspecial.length() <= 6 ) {
-							telefonoE = telefonoEspecial;
-							logger.error(methodName + " - entra a esta validacion ");
-								/*int inicioTelefono = Integer
-										.parseInt(telefonoEspecial);
-								if (inicioTelefono == 6){
-									telefonoE = telefonoEspecial;
-									
-								}else if (inicioTelefono == 5){
-									telefonoE = telefonoEspecial;
-									
-								}else if (inicioTelefono == 4){
-									telefonoE = telefonoEspecial;
-									
-								}else if (inicioTelefono == 3){
-									telefonoE = telefonoEspecial;
-								}else {
-									telefonoE = telefonoEspecial;
-								}*/
-								try{
-									bancoModel.setTelefono(telefonoE);
-
-									logger.debug(methodName
-											+ " - el Telefono Especial : "
-											+ telefonoEspecial);
-								
-							}catch(Exception e){
-								logger.error(methodName + " - Numero vacio: "
-										+ e.getMessage());
-							}
-							
-						} else if (telefonoEspecial.contains("II")
+						}else if (telefonoEspecial.contains("II")
 								|| telefonoEspecial.contains("EQ")
-								|| telefonoEspecial.contains("IP")) {
+								|| telefonoEspecial.contains("IP")){
 							try {
 
 								telefonoE = (telefonoEspecial.substring(
@@ -1031,7 +1000,8 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements
 										telefonoEspecial.length() - 9,
 										telefonoEspecial.length()));
 								telefonoEspecial = telefonoE;
-								bancoModel.setTelefono(telefonoEspecial);
+								int telefonoSinCero = Integer.parseInt(telefonoEspecial);
+								bancoModel.setTelefono(String.valueOf(telefonoSinCero));
 
 								logger.debug(methodName
 										+ " - el Telefono Especial con el subString: "
@@ -1040,18 +1010,53 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements
 								logger.error(methodName + " - Numero vacio: "
 										+ e.getMessage());
 							}
-						} else {
+						} else if(telefonoEspecial.contains("CHAT")) {
+							try{
+							telefonoE = (telefonoEspecial.substring(
+									telefonoEspecial.length() - 10,
+									telefonoEspecial.length()));
+							telefonoEspecial = telefonoE;
+							bancoModel.setTelefono(telefonoEspecial);
+							logger.debug(methodName
+									+ " - el Telefono Especial con el subString: "
+									+ telefonoEspecial);
+						} catch (Exception e) {
+							logger.error(methodName + " - Numero vacio: "
+									+ e.getMessage());
+						}
+							
+						}else if(telefonoEspecial.contains("GDF")
+								||telefonoEspecial.contains("SM")){
+							try{
+								telefonoE = (telefonoEspecial.substring(
+										telefonoEspecial.length() - 8,
+										telefonoEspecial.length()));
+								telefonoEspecial = telefonoE;
+								bancoModel.setTelefono(telefonoEspecial);
+								logger.debug(methodName
+										+ " - el Telefono Especial con el subString: "
+										+ telefonoEspecial);
+							} catch (Exception e) {
+								logger.error(methodName + " - Numero vacio: "
+										+ e.getMessage());
+							}
+							
+						}else {
+							
 
 							try {
 								telefonoE = (telefonoEspecial.substring(
 										telefonoEspecial.length() - 8,
 										telefonoEspecial.length()));
 								telefonoEspecial = telefonoE;
-								bancoModel.setTelefono(telefonoEspecial);
-
+								//bancoModel.setTelefono(telefonoEspecial);
+								int telefonoSinCero = Integer.parseInt(telefonoEspecial);
+									bancoModel.setTelefono(String.valueOf(telefonoSinCero));
+									
+								
 								logger.debug(methodName
 										+ " - el Telefono Especial con el subString: "
-										+ telefonoEspecial);
+										+ telefonoSinCero);
 							} catch (Exception e) {
 								logger.error(methodName + " - Numero vacio: "
 										+ e.getMessage());
@@ -1068,7 +1073,9 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements
 									telefonoEspecial.length() - 6,
 									telefonoEspecial.length()));
 							telefonoEspecial = telefonoE;
-							bancoModel.setTelefono(telefonoEspecial);
+							//bancoModel.setTelefono(telefonoEspecial);
+							int telefonoSinCero = Integer.parseInt(telefonoEspecial);
+							bancoModel.setTelefono(String.valueOf(telefonoSinCero));
 
 							logger.debug(methodName
 									+ " - el Telefono Especial con el subString: "

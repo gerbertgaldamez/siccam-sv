@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://www.qit.com/wsventas/intf/client"
+            xmlns:tns="http://www.qit.com/wsventas/intf/client"
+            elementFormDefault="qualified">
+
+    <xsd:element name="WsVentasRequest">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="Header" type="tns:Header"/>
+                <xsd:element name="detail" type="tns:detail" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="WsConsultaFacturaRequest">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="bill_ref_no" type="xsd:int" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:complexType name="Header">
+        <xsd:sequence>
+            <xsd:element name="serieFac" type="xsd:string"/>
+            <xsd:element name="noFac" type="xsd:int"/>
+            <xsd:element name="accountNo" type="xsd:int"/>
+            <xsd:element name="teCuentaId" type="xsd:int"/>
+            <xsd:element name="swCustomerId" type="xsd:int"/>
+            <xsd:element name="fechaEmision" type="xsd:string"/>
+            <xsd:element name="usuarioEmision" type="xsd:string"/>
+            <xsd:element name="estado" type="xsd:string"/>
+            <xsd:element name="nit" type="xsd:string"/>
+            <xsd:element name="nombre" type="xsd:string"/>
+            <xsd:element name="direccion" type="xsd:string"/>
+            <xsd:element name="tipoFac" type="xsd:string"/>
+            <xsd:element name="montoPagado" type="xsd:decimal"/>
+            <xsd:element name="montoFactura" type="xsd:decimal"/>
+            <xsd:element name="TeNumsContrId" type="xsd:int"/>
+            <xsd:element name="departamento" type="xsd:string"/>
+            <xsd:element name="municipio" type="xsd:string"/>
+            <xsd:element name="fecVencimiento" type="xsd:string"/>
+            <xsd:element name="tesAlmacenesInvId" type="xsd:int"/>
+            <xsd:element name="distribuidor" type="xsd:int"/>
+            <xsd:element name="puntoVenta" type="xsd:int"/>
+            <xsd:element name="vendedor" type="xsd:int"/>
+            <xsd:element name="desEstatusTrib" type="xsd:string"/>
+            <xsd:element name="creditoFiscal" type="xsd:string"/>
+            <xsd:element name="giro" type="xsd:string"/>
+            <xsd:element name="numIva" type="xsd:string"/>
+            <xsd:element name="descuento" type="xsd:decimal"/>
+            <xsd:element name="montoFinal" type="xsd:decimal"/>
+            <xsd:element name="oficina" type="xsd:string"/>
+            <xsd:element name="plaza" type="xsd:string"/>
+            <xsd:element name="dispositivo" type="xsd:string"/>
+            <xsd:element name="puntoVentaFs" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="detail">
+        <xsd:sequence>
+            <xsd:element name="bodega" type="xsd:int"/>
+            <xsd:element name="articulo" type="xsd:int"/>
+            <xsd:element name="tipoPrecio" type="xsd:int"/>
+            <xsd:element name="cantidad" type="xsd:int"/>
+            <xsd:element name="precioUnitario" type="xsd:decimal"/>
+            <xsd:element name="precioTotal" type="xsd:decimal"/>
+            <xsd:element name="precioFinal" type="xsd:decimal"/>
+            <xsd:element name="iva" type="xsd:decimal"/>
+            <xsd:element name="observaciones" type="xsd:string"/>
+            <xsd:element name="seriado" type="xsd:string"/>
+            <xsd:element name="minRecarga" type="xsd:int"/>
+            <xsd:element name="tctiposventanrcid" type="xsd:int"/>
+            <xsd:element name="guiaRemision" type="xsd:string"/>
+            <xsd:element name="icc" type="xsd:string"/>
+            <xsd:element name="ivaUnitario" type="xsd:decimal"/>
+            <xsd:element name="descuento" type="xsd:decimal"/>
+            <xsd:element name="porcentaje" type="xsd:decimal"/>
+            <xsd:element name="monto" type="xsd:decimal"/>
+            <xsd:element name="contribucionSeg" type="xsd:decimal"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:element name="WsVentasResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="codigo" type="xsd:int" />
+                <xsd:element name="mensaje" type="xsd:string"/>
+                <xsd:element name="idFactura" type="xsd:string"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="WsConsultaFacturaResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="url" type="xsd:string" />
+                <xsd:element name="urlA" type="xsd:string"/>
+                <xsd:element name="mensaje" type="xsd:string"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>

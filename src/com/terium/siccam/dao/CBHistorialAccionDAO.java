@@ -463,7 +463,18 @@ public class CBHistorialAccionDAO {
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
 			ps = conn.prepareStatement(ConsultasSQ.ACTUALIZA_HISTORIAL_ACCION);
-
+			log.debug("actualizaHistorialAcciones() - realiza consulta " + ConsultasSQ.ACTUALIZA_HISTORIAL_ACCION);
+			log.debug(
+					"actualizaHistorialAcciones() -  ---------------------VALORES -----------------------------------");
+			log.debug(" actualizaHistorialAcciones() - historial.getEstado() : "+ historial.getEstado());
+			log.debug(
+					"actualizaHistorialAcciones() - historial.getTipologiaGacId() : " + historial.getTipologiaGacId());
+			log.debug("actualizaHistorialAcciones() - historial.getResponseGac() : " + historial.getResponseGac());
+			log.debug("actualizaHistorialAcciones() - historial.getUnidadId() : " + historial.getUnidadId());
+			log.debug("actualizaHistorialAcciones() -  historial.getSolucion() : " +  historial.getSolucion());
+			log.debug("actualizaHistorialAcciones() - historial.getTipoCierre(): " + historial.getTipoCierre());
+			log.debug("actualizaHistorialAcciones() - historial.getNombreCliente() : " + historial.getNombreCliente());
+			log.debug("actualizaHistorialAcciones() - historial.getcBHistorialAccionId() : " + historial.getcBHistorialAccionId());
 			ps.setInt(1, historial.getEstado());
 			ps.setString(2, historial.getTipologiaGacId());
 			ps.setString(3, historial.getResponseGac());
@@ -473,7 +484,7 @@ public class CBHistorialAccionDAO {
 			ps.setString(
 					7,
 					historial.getNombreCliente() != null ? historial
-							.getNombreCliente().substring(0, 49) : historial
+							.getNombreCliente().substring(0, 50) : historial
 							.getNombreCliente());
 			ps.setString(8, historial.getRespuestascl());
 			ps.setInt(9, historial.getcBHistorialAccionId());

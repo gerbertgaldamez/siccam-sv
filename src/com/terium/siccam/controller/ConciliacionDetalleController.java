@@ -1741,6 +1741,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 						historialDao.updateReg(cbHistorial, idPadre);
 
 					} else {
+						log.debug("entra a este insert");
 						// INSERTAR
 
 						cbHistorial = new CBHistorialAccionModel();
@@ -1748,8 +1749,8 @@ public class ConciliacionDetalleController extends ControladorBase {
 						if (Double.parseDouble(txtMonto.getText()) <= Double.parseDouble(txtPendiente.getText())) {
 							cbHistorial.setMonto(txtMonto.getText());
 						} else {
-							// throw new WrongValueException(txtMonto,
-							// Labels.getLabel("El monto no puede sobrepasar lo pendiente"));
+							// throw new WrongValueException(txtMonto, 
+							// Labels.getLabel("El monto no puede sobrepasar lo pendiente")); 
 							Messagebox.show("El  valor del monto no puede ser mayor al valor pendiente", "ERROR",
 									Messagebox.OK, Messagebox.EXCLAMATION);
 							return;
