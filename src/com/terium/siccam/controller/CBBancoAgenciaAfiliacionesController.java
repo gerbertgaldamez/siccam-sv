@@ -1,12 +1,13 @@
 package com.terium.siccam.controller;
 
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import javax.naming.NamingException;
 
 import org.zkoss.zk.ui.Component;
@@ -26,11 +27,14 @@ import org.zkoss.zul.Textbox;
 
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBBancoAgenciaAfiliacionesDAO;
+import com.terium.siccam.dao.CBEstadoCuentaDAO;
 import com.terium.siccam.dao.CBParametrosGeneralesDAO;
 import com.terium.siccam.model.CBBancoAgenciaAfiliacionesModel;
 import com.terium.siccam.model.CBParametrosGeneralesModel;
 
 public class CBBancoAgenciaAfiliacionesController extends ControladorBase {
+	
+	private static Logger log = Logger.getLogger(CBEstadoCuentaDAO.class);
 	/**
 	 * 
 	 */
@@ -180,8 +184,9 @@ public class CBBancoAgenciaAfiliacionesController extends ControladorBase {
 		// CBBancoAgenciaAfiliacionesModel objModel = new
 		// CBBancoAgenciaAfiliacionesModel();
 		objModel.setCbcatalogoagenciaid(objModel.getCbcatalogoagenciaid());
-		Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-				"Entra a consulta estados de afiliaciones");
+		log.debug("onClick$btnConsultar" + " - Entra a consulta estados de afiliaciones");
+		//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+				//"Entra a consulta estados de afiliaciones");
 
 		// objModel.setUsuario(user);
 
@@ -195,8 +200,9 @@ public class CBBancoAgenciaAfiliacionesController extends ControladorBase {
 		limpiarListbox(lbxConsulta);
 		CBBancoAgenciaAfiliacionesModel objModel = null;
 
-		Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-				"cantidad de registros " + list.size());
+		log.debug("llenaListbox" + " - cantidad de registros " + list.size());
+		//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+				//"cantidad de registros " + list.size());
 		if (list != null && list.size() > 0) {
 			Iterator<CBBancoAgenciaAfiliacionesModel> it = list.iterator();
 
@@ -283,8 +289,9 @@ public class CBBancoAgenciaAfiliacionesController extends ControladorBase {
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public void onEvent(Event event) throws Exception {
 			final int idseleccionado = Integer.parseInt(event.getTarget().getAttribute("idEliminar").toString());
-			Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-					"ID  a eliminar = " + idseleccionado);
+			log.debug("eventBtnEliminar" + " - ID  a eliminar = " + idseleccionado);
+			//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+					//"ID  a eliminar = " + idseleccionado);
 			Messagebox.show("¿Desea eliminar el registro seleccionado?", "CONFIRMACION", Messagebox.YES | Messagebox.NO,
 					Messagebox.QUESTION, new EventListener() {
 						public void onEvent(Event event) throws Exception {
@@ -304,8 +311,9 @@ public class CBBancoAgenciaAfiliacionesController extends ControladorBase {
 
 										// onClick$btnConsultar();
 									} else {
-										Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName())
-												.log(Level.INFO, "creo el registro pero no recarga consulta ");
+										log.debug("eventBtnEliminar" + " - creo el registro pero no recarga consulta ");
+										//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName())
+												//.log(Level.INFO, "creo el registro pero no recarga consulta ");
 										limpiarListbox(lbxConsulta);
 										Messagebox.show("Registros eliminado con exito.", "ATENCION", Messagebox.OK,
 												Messagebox.INFORMATION);
@@ -327,12 +335,14 @@ public class CBBancoAgenciaAfiliacionesController extends ControladorBase {
 			// se crea una variable personalizada
 			CBBancoAgenciaAfiliacionesModel objmodificar = (CBBancoAgenciaAfiliacionesModel) arg0.getTarget()
 					.getAttribute("objmodificar");
-			Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-					"obj a modificar: " + objmodificar);
+			log.debug("eventBtnModificar" + " - obj a modificar: " + objmodificar);
+			//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+					//"obj a modificar: " + objmodificar);
 			idseleccionado = (Integer) arg0.getTarget().getAttribute("idseleccionado");
 
-			Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-					"id seleccioando " + idseleccionado);
+			log.debug("eventBtnModificar" + " - id seleccioando " + idseleccionado);
+			//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+					//"id seleccioando " + idseleccionado);
 
 			txtAfiliacion.setText(objmodificar.getAfiliacion());
 			objModel.setAfiliacion(objmodificar.getAfiliacion());
@@ -343,13 +353,16 @@ public class CBBancoAgenciaAfiliacionesController extends ControladorBase {
 				}
 			}
 			for (Comboitem item : cmbEstado.getItems()) {
-				Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-						"for en modificar " + item.getValue());
-				Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-						"comboESTADO abtes de if " + objmodificar.getEstado());
+				log.debug("eventBtnModificar" + " - for en modificar " + item.getValue());
+				//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+						//"for en modificar " + item.getValue());
+				log.debug("eventBtnModificar" + " - comboESTADO abtes de if " + objmodificar.getEstado());
+				//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+						//"comboESTADO abtes de if " + objmodificar.getEstado());
 				if (item.getValue().toString().equals(String.valueOf(objmodificar.getEstado()))) {
-					Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-							"combo ESTADO en if " + objmodificar.getEstado());
+					log.debug("eventBtnModificar" + " - combo ESTADO en if " + objmodificar.getEstado());
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+							//"combo ESTADO en if " + objmodificar.getEstado());
 					cmbEstado.setSelectedItem(item);
 				}
 			}
@@ -369,7 +382,8 @@ public class CBBancoAgenciaAfiliacionesController extends ControladorBase {
 				
 				Executions.createComponents("/cbAsignaImpuestosTiendasPropias.zul", null, null);
 			} catch (Exception e) {
-				Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("evtAsignacionImpuestosTiendasPropias" + "error", e);
+				//Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 	};
@@ -396,35 +410,43 @@ public class CBBancoAgenciaAfiliacionesController extends ControladorBase {
 
 				if (cmbTipo.getSelectedItem() != null && cmbEstado.getSelectedItem() != null) {
 
-					CBBancoAgenciaAfiliacionesDAO objeDAO = new CBBancoAgenciaAfiliacionesDAO();					
+					CBBancoAgenciaAfiliacionesDAO objeDAO = new CBBancoAgenciaAfiliacionesDAO();
+					
 					objModel.setCbcatalogoagenciaid(objModel.getCbcatalogoagenciaid());
-					Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-							"cbcatalogoagenciaid en control guar " + objModel.getCbcatalogoagenciaid());
+					log.debug("onClick$btnRegistrar" + " - cbcatalogoagenciaid en control guar " + objModel.getCbcatalogoagenciaid());
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+						//	"cbcatalogoagenciaid en control guar " + objModel.getCbcatalogoagenciaid());
 
 					objModel.setTipo(cmbTipo.getSelectedItem().getValue().toString());
 
 					objModel.setAfiliacion(txtAfiliacion.getText().trim());
-
-					Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-							"txtafilicaion en control " + txtAfiliacion);
-					Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-							"objmodelgetafiliacion en control " + objModel.getAfiliacion());
+					log.debug("onClick$btnRegistrar" + " - txtafilicaion en control " + txtAfiliacion);
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+						//	"txtafilicaion en control " + txtAfiliacion);
+					log.debug("onClick$btnRegistrar" + " - objmodelgetafiliacion en control " + objModel.getAfiliacion());
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+							//"objmodelgetafiliacion en control " + objModel.getAfiliacion());
 
 					objModel.setEstado(Integer.parseInt(cmbEstado.getSelectedItem().getValue().toString()));
 					objModel.setUsuario(objModel.getUsuario());
 
-					Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-							"usuario en el control " + objModel.getUsuario());
-					Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-							"tipo en el control " + objModel.getTipo());
-					Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-							"estado en el control " + objModel.getEstado());
-					Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-							"datos en tran valida " + objModel.getAfiliacion() + objModel.getCbcatalogoagenciaid());
+					log.debug("onClick$btnRegistrar" + " - usuario en el control " + objModel.getUsuario());
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+							//"usuario en el control " + objModel.getUsuario());
+					log.debug("onClick$btnRegistrar" + " - tipo en el control " + objModel.getTipo());
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+							//"tipo en el control " + objModel.getTipo());
+					log.debug("onClick$btnRegistrar" + " - estado en el control " + objModel.getEstado());
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+							//"estado en el control " + objModel.getEstado());
+					log.debug("onClick$btnRegistrar" + " - datos en tran valida " + objModel.getAfiliacion() + objModel.getCbcatalogoagenciaid());
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+							//"datos en tran valida " + objModel.getAfiliacion() + objModel.getCbcatalogoagenciaid());
 
 					int pk_afiliacion = objeDAO.obtenerPKAfiliacion();
-					Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-							"pk afiliacion en guard " + pk_afiliacion);
+					log.debug("onClick$btnRegistrar" + " - pk afiliacion en guard " + pk_afiliacion);
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+							//"pk afiliacion en guard " + pk_afiliacion);
 					if (objeDAO.transaccionValida(objModel)) {
 
 						if (objeDAO.insertarAfiliacion(objModel, pk_afiliacion)) {
@@ -450,7 +472,8 @@ public class CBBancoAgenciaAfiliacionesController extends ControladorBase {
 			}
 
 		} catch (Exception e) {
-			Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnRegistrar" + "error", e);
+			//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error. Revise los datos ingresados.", "ATENCIÓN", Messagebox.OK,
 					Messagebox.ERROR);
 		}
@@ -474,25 +497,31 @@ public class CBBancoAgenciaAfiliacionesController extends ControladorBase {
 						// CBBancoAgenciaAfiliacionesModel();
 
 						objModel.setCbcatalogoagenciaid(objModel.getCbcatalogoagenciaid());
-						Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-								"cbcatalogoagenciaid en control guar " + objModel.getCbcatalogoagenciaid());
+						log.debug("onClick$btnModificar" + " - cbcatalogoagenciaid en control guar " + objModel.getCbcatalogoagenciaid());
+						//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+								//"cbcatalogoagenciaid en control guar " + objModel.getCbcatalogoagenciaid());
 						objModel.setTipo(cmbTipo.getSelectedItem().getValue().toString());
 
-						Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-								"txtafilicaion en control " + txtAfiliacion + objModel.getAfiliacion());
+						log.debug("onClick$btnModificar" + " - txtafilicaion en control " + txtAfiliacion + objModel.getAfiliacion());
+						//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+							//	"txtafilicaion en control " + txtAfiliacion + objModel.getAfiliacion());
 						objModel.setEstado(Integer.parseInt(cmbEstado.getSelectedItem().getValue().toString()));
 						// objModel.setUsuario(objModel.getUsuario());
 
-						Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-								"usuario en el control " + objModel.getUsuario());
-						Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-								"tipo en el control modif" + objModel.getTipo());
-						Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-								"estado en el control modif" + objModel.getEstado());
+						log.debug("onClick$btnModificar" + " - usuario en el control " + objModel.getUsuario());
+						//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+								//"usuario en el control " + objModel.getUsuario());
+						log.debug("onClick$btnModificar" + " - tipo en el control modif" + objModel.getTipo());
+						//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+								//"tipo en el control modif" + objModel.getTipo());
+						log.debug("onClick$btnModificar" + " - estado en el control modif" + objModel.getEstado());
+						//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+								//"estado en el control modif" + objModel.getEstado());
 
 						objModel.setCbbancoagenciaafiliacionesid(idseleccionado);
-						Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-								"id seleccion modificar cbbancoagenciaafiliacion "
+						log.debug("onClick$btnModificar" + " - id seleccion modificar cbbancoagenciaafiliacion "
+						//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+								//"id seleccion modificar cbbancoagenciaafiliacion "
 										+ objModel.getCbbancoagenciaafiliacionesid());
 						objModel.setCreador(usuario);
 						if (txtAfiliacion.getText().equals(objModel.getAfiliacion().trim())) {
@@ -540,7 +569,8 @@ public class CBBancoAgenciaAfiliacionesController extends ControladorBase {
 			}
 
 		} catch (Exception e) {
-			Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnModificar" + "error", e);
+			//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error. Revise los datos ingresados.", "ATENCIÓN", Messagebox.OK,
 					Messagebox.ERROR);
 

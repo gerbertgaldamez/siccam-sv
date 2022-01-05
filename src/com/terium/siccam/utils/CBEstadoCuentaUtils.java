@@ -149,7 +149,8 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 					Messagebox.show(
 							"Los datos han sido ingresados de forma correcta para el archivo: " + media.getName(),
 							"ATENCION", Messagebox.OK, Messagebox.INFORMATION);
-					System.out.println("inserta credomatic ==>: " + objDao.ejecutaSPCredomatic());
+					log.debug(methodName + " - inserta credomatic ==>: " + objDao.ejecutaSPCredomatic());
+					
 				} else {
 					fpu.cambiaEstadoMensaje(false, media.getName());
 					Messagebox.show("Ocurrio un error en la carga del archivo, favor intentarlo nuevamente...",
@@ -159,15 +160,15 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				isEnd = false;
 				isReloadFile = false;
 			} catch (InvalidFormatException e) {
-				log.debug(methodName + "Archivo con errores", e);
+				log.error(methodName + "Archivo con errores", e);
 				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 				// null, e);
 			} catch (IOException e) {
-				log.debug(methodName + "Archivo con errores", e);
+				log.error(methodName + "Archivo con errores", e);
 				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 				// null, e);
 			} catch (IllegalArgumentException e) {
-				log.debug(methodName + "Archivo con errores", e);
+				log.error(methodName + "Archivo con errores", e);
 				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 				// null, e);
 				Messagebox.show("El archivo cargado contiene errores o esta danado, favor validarlo", "ATENCION",
@@ -247,7 +248,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				fila = 0;
 				read.close();
 			} catch (IOException e) {
-				log.debug(methodName + " error ", e);
+				log.error(methodName + " error ", e);
 				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 				// null, e);
 			}
@@ -332,15 +333,15 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				isEnd = false;
 				isReloadFile = false;
 			} catch (InvalidFormatException e) {
-				log.debug(methodName + " Error ", e);
+				log.error(methodName + " Error ", e);
 				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 				// null, e);
 			} catch (IOException e) {
-				log.debug(methodName + " Error ", e);
+				log.error(methodName + " Error ", e);
 				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 				// null, e);
 			} catch (IllegalArgumentException e) {
-				log.debug(methodName + " Error ", e);
+				log.error(methodName + " Error ", e);
 				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 				// null, e);
 				Messagebox.show("El archivo cargado contiene errores o esta daOado, favor validarlo", "ATENCION",
@@ -367,7 +368,8 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 
 		user = (String) misession.getAttribute("user");
 
-		System.out.println("datos recibidos de la sesion user utils " + user);
+		log.debug(methodName + "datos recibidos de la sesion user utils " + user);
+		
 		nombreArchivoCredomatic = (String) misession.getAttribute("nombreArchivoCredomatic");
 		idArchivo = (Integer) misession.getAttribute("idArchivo");
 		media = (Media) misession.getAttribute("media");
@@ -376,11 +378,12 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 		listCredomatic = (List<CBEstadoCuentasModel>) misession.getAttribute("listCredomatic");
 		CBEstadoCuentasModel objCredo = null;
 
-		System.out.println("datos recibidos de la sesion nombreArchivoCredomatic " + nombreArchivoCredomatic);
-		System.out.println("datos recibidos de la sesion idArchivo " + idArchivo);
-		System.out.println("datos recibidos de la sesion media " + media);
-		System.out.println("datos recibidos de la sesion isReloadFile " + isReloadFile);
-		System.out.println("datos recibidos de la sesion listCredomatic " + listCredomatic.size());
+		log.debug(methodName + "datos recibidos de la sesion nombreArchivoCredomatic " + nombreArchivoCredomatic);
+		log.debug(methodName + "datos recibidos de la sesion idArchivo " + idArchivo);
+		log.debug(methodName + "datos recibidos de la sesion media " + media);
+		log.debug(methodName + "datos recibidos de la sesion isReloadFile " + isReloadFile);
+		log.debug(methodName + "datos recibidos de la sesion listCredomatic " + listCredomatic.size());
+		
 		log.debug(methodName + " - id idBAC: " + idBAC + " formato: " + media.getFormat());
 
 		if (Constantes.XLSX.equals(media.getFormat()) && Tools.SESSION_SV.equals(session)) {
@@ -389,7 +392,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				leerCredomaticEncabezadoNew(user, nombreArchivoCredomatic, media, idBAC, isReloadFile, listCredomatic,
 						idArchivo, fpu, objCredo);
 			} catch (Exception e) {
-				log.debug("leerCredomaticEncabezado() - Error ", e);
+				log.error("leerCredomaticEncabezado() - Error ", e);
 			}
 			return;
 		}
@@ -531,7 +534,8 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 
 					// if (objDao.insertCuentasCredoEncabezado(listCredomatic,
 					// listCredomatic.size() - 8)) {
-					System.out.println("datos prueba valida en if " + media.getName());
+					log.debug(methodName + "datos prueba valida en if " + media.getName());
+					
 					fpu = (CBEstadoCuentasController) misession.getAttribute("interfaceEstadoCuenta");
 					fpu.cambiaEstadoMensaje(true, media.getName());
 					Messagebox.show(
@@ -554,11 +558,11 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				fpu.cambiaEstadoMensaje(true, media.getName());
 				isReloadFile = false;
 			} catch (IOException e) {
-				log.debug(methodName + " error " + e);
+				log.error(methodName + " error " + e);
 //				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
 
 			} catch (InvalidFormatException e) {
-				log.debug(methodName + " error " + e);
+				log.error(methodName + " error " + e);
 				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 				// null, e);
 			}
@@ -730,12 +734,12 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				fpu.cambiaEstadoMensaje(true, media.getName());
 
 			} catch (IOException e) {
-				log.debug(methodName + " error ", e);
+				log.error(methodName + " error ", e);
 				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 				// null, e);
 
 			} catch (InvalidFormatException e) {
-				log.debug(methodName + " error ", e);
+				log.error(methodName + " error ", e);
 				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 				// null, e);
 			}
@@ -758,14 +762,14 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 			// System.out.println("fecha parseada: "+fec);
 			return true;
 		} catch (ParseException e) {
-			log.debug("isDateCredoGT() - " + e);
+			log.error("isDateCredoGT() -error " + e);
 			// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 			// null, e);
 			// System.out.println("fecha con error: "+fecha);
 			return false;
 		} catch (NullPointerException e) {
 			// System.out.println(e.getMessage());
-			log.debug("isDateCredoGT() - " + e);
+			log.error("isDateCredoGT() - error" + e);
 			// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 			// null, e);
 			return false;
@@ -785,10 +789,10 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 			return true;
 		} catch (ParseException e) {
 			// System.out.println(e.getMessage());
-			log.debug("isDateCredo() -f echa con error: " + e);
+			log.error("isDateCredo() -f echa con error: " + e);
 			return false;
 		} catch (NullPointerException e) {
-			log.debug("isDateCredo() - " + e);
+			log.error("isDateCredo() - error " + e);
 			return false;
 		}
 	}
@@ -816,7 +820,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				leerCredomaticEncabezadoNew(user, nombreArchivoCredomatic, media, idBAC, isReloadFile, listCredomatic,
 						idArchivo, fpu, objCredo);
 			} catch (Exception e) {
-				log.debug("leerCredomaticEncabezadoCR() - Error ", e);
+				log.error("leerCredomaticEncabezadoCR() - Error ", e);
 			}
 //			try {
 //				XSSFWorkbook libro = new XSSFWorkbook(OPCPackage.open(media.getStreamData()));
@@ -1092,7 +1096,8 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 							"Los datos han sido ingresados de forma correcta para el archivo: " + media.getName(),
 							"ATENCION", Messagebox.OK, Messagebox.INFORMATION);
 					boolean ex = objDao.ejecutaSPCredomatic();
-					System.out.println("inserta credomatic encabezado ==> " + ex);
+					log.debug("leerCredomaticEncabezadoCR() - " + "inserta credomatic encabezado ==> " + ex);
+					
 				} else {
 
 					fpu = (CBEstadoCuentasController) misession.getAttribute("interfaceEstadoCuenta");
@@ -1106,13 +1111,16 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				fpu.cambiaEstadoMensaje(true, media.getName());
 				isReloadFile = false;
 			} catch (IOException e) {
-				System.out.println("Error invalidformatException: " + e.getMessage());
+				log.error("leerCredomaticEncabezadoCR() - Error ", e);
+
 			} catch (InvalidFormatException e) {
+				log.error("leerCredomaticEncabezadoCR() - Error ", e);
 				e.printStackTrace();
 			}
 
 		} else if ("csv".equals(format)) {
-			System.out.println("id idBAC: " + idBAC + " formato: " + media.getFormat());
+			log.debug("leerCredomaticEncabezadoCR() - " + "id idBAC: " + idBAC + " formato: " + media.getFormat());
+			
 			InputStreamReader ir = null;
 			BufferedReader read = null;
 			try {
@@ -1225,7 +1233,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 							"Los datos han sido ingresados de forma correcta para el archivo: " + media.getName(),
 							"ATENCION", Messagebox.OK, Messagebox.INFORMATION);
 					boolean ex = objDao.ejecutaSPCredomatic();
-					System.out.println("inserta credomatic encabezado ==>: " + ex);
+					log.debug("leerCredomaticEncabezadoCR() - " + "inserta credomatic encabezado ==> " + ex);
 				} else {
 					fpu = (CBEstadoCuentasController) misession.getAttribute("interfaceEstadoCuenta");
 					fpu.cambiaEstadoMensaje(false, media.getName());
@@ -1237,7 +1245,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				fila = 0;
 				read.close();
 			} catch (IOException e) {
-				log.debug("leerCredomaticEncabezadoCR() - Error ", e);
+				log.error("leerCredomaticEncabezadoCR() - Error ", e);
 				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 				// null, e);
 			} finally {
@@ -1247,7 +1255,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 					if (read != null)
 						read.close();
 				} catch (Exception e) {
-					log.debug("leerCredomaticEncabezadoCR() -  Error ", e);
+					log.error("leerCredomaticEncabezadoCR() -  Error ", e);
 					// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 					// null, e);
 				}
@@ -1400,7 +1408,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				Messagebox.show("Los datos han sido ingresados de forma correcta para el archivo: " + media.getName(),
 						"ATENCION", Messagebox.OK, Messagebox.INFORMATION);
 				boolean ex = objDao.ejecutaSPCredomatic();
-				System.out.println("inserta credomatic encabezado ==> " + ex);
+				log.debug("leerCredomaticEncabezadoNew() - " + "inserta credomatic encabezado ==> " + ex);
 			} else {
 				log.debug(methodName + " - Ocurrio un error en la carga del archivo ++++++++++");
 				fpu = (CBEstadoCuentasController) misession.getAttribute("interfaceEstadoCuenta");
@@ -1415,11 +1423,12 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 			isReloadFile = false;
 
 		} catch (IOException e) {
-			System.out.println("errrrrroooooooorrrrrr ++++++++++");
+			log.error("leerCredomaticEncabezadoNew() -  Error ", e);
+			
 			System.out.println("Error invalidformatException: " + e.getMessage());
 			// e.printStackTrace();
 		} catch (InvalidFormatException e) {
-			System.out.println("errrrrroooooooorrrrrr22222 ++++++++++");
+			log.error("leerCredomaticEncabezadoNew() -  Error ", e);
 			System.err.println("EEEERRROOOOOOOOR " + e.getMessage());
 			// e.printStackTrace();
 		}
@@ -1487,7 +1496,8 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 //				"id idBAC: " + idBAC + " formato: " + media.getFormat());
 
 		if ("csv".equals(format)) {
-			System.out.println("id idBAC: " + idBAC + " formato: " + media.getFormat());
+			log.debug("leerCredomaticEncabezadoGT() - id idBAC: " + idBAC + " formato: " + media.getFormat());
+			
 			InputStreamReader ir = null;
 			BufferedReader read = null;
 			try {
@@ -1600,7 +1610,8 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 							"Los datos han sido ingresados de forma correcta para el archivo: " + media.getName(),
 							"ATENCION", Messagebox.OK, Messagebox.INFORMATION);
 					boolean ex = objDao.ejecutaSPCredomatic();
-					System.out.println("inserta credomatic encabezado ==>: " + ex);
+					log.debug("leerCredomaticEncabezadoGT() - inserta credomatic encabezado ==>: " + ex);
+					
 				} else {
 					fpu = (CBEstadoCuentasController) misession.getAttribute("interfaceEstadoCuenta");
 					fpu.cambiaEstadoMensaje(false, media.getName());
@@ -1612,7 +1623,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				fila = 0;
 				read.close();
 			} catch (IOException e) {
-				log.debug("leerCredomaticEncabezadoGT() -  Error ", e);
+				log.error("leerCredomaticEncabezadoGT() -  Error ", e);
 				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 				// null, e);
 			} finally {
@@ -1622,7 +1633,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 					if (read != null)
 						read.close();
 				} catch (Exception e) {
-					log.debug("leerCredomaticEncabezadoGT() -  Error ", e);
+					log.error("leerCredomaticEncabezadoGT() -  Error ", e);
 					// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 					// null, e);
 				}
@@ -1654,7 +1665,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 //				"id idBAC: " + idBAC + " formato: " + media.getFormat());
 
 		if ("csv".equals(format)) {
-			System.out.println("id idBAC: " + idBAC + " formato: " + media.getFormat());
+			log.debug("leerCredomaticDetalleGT() -  " + "id idBAC: " + idBAC + " formato: " + media.getFormat());
 			InputStreamReader ir = null;
 			BufferedReader read = null;
 			try {
@@ -1748,7 +1759,8 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				}
 				CBEstadoCuentaDAO objDao = new CBEstadoCuentaDAO();
 				if (objDao.insertCuentasCredoDetGT(listCredomatic)) {
-					System.out.println("lista " + listCredomatic.size());
+					log.debug("leerCredomaticDetalleGT() -  " + "lista " + listCredomatic.size());
+					
 
 					fpu = (CBEstadoCuentasController) misession.getAttribute("interfaceEstadoCuenta");
 					fpu.cambiaEstadoMensaje(true, media.getName());
@@ -1756,7 +1768,8 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 							"Los datos han sido ingresados de forma correcta para el archivo: " + media.getName(),
 							"ATENCION", Messagebox.OK, Messagebox.INFORMATION);
 					boolean ex = objDao.ejecutaSPCredomatic();
-					System.out.println("inserta credomatic detalle ==>: " + ex);
+					log.debug("leerCredomaticDetalleGT() -  " + "inserta credomatic detalle ==>: " + ex);
+					
 				} else {
 
 					fpu = (CBEstadoCuentasController) misession.getAttribute("interfaceEstadoCuenta");
@@ -1769,7 +1782,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				fila = 0;
 				read.close();
 			} catch (IOException e) {
-				log.debug("leerCredomaticDetalleGT() -  Error ", e);
+				log.error("leerCredomaticDetalleGT() -  Error ", e);
 				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 				// null, e);
 			} finally {
@@ -1779,7 +1792,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 					if (read != null)
 						read.close();
 				} catch (Exception e) {
-					log.debug("leerCredomaticDetalleGT() -  Error ", e);
+					log.error("leerCredomaticDetalleGT() -  Error ", e);
 					// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 					// null, e);
 				}
@@ -1801,14 +1814,14 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 			// System.out.println("fecha parseada: " + fec);
 			return true;
 		} catch (ParseException e) {
-			log.debug("isDateCredoEncabezado() -  Error ", e);
+			log.error("isDateCredoEncabezado() -  Error ", e);
 			// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 			// null, e);
 			// System.out.println("fecha con error: "+fecha);
 			return false;
 		} catch (NullPointerException e) {
 			// System.out.println(e.getMessage());
-			log.debug("isDateCredoEncabezado() -  Error ", e);
+			log.error("isDateCredoEncabezado() -  Error ", e);
 			// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 			// null, e);
 			return false;
@@ -1827,12 +1840,12 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 			// System.out.println("fecha: " + fec.getDate());
 			return true;
 		} catch (ParseException e) {
-			log.debug("isDate() -  Error ", e);
+			log.error("isDate() -  Error ", e);
 			// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 			// null, e);
 			return false;
 		} catch (NullPointerException e) {
-			log.debug("isDate() -  Error ", e);
+			log.error("isDate() -  Error ", e);
 			// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 			// null, e);
 			return false;
@@ -1968,15 +1981,15 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				isEnd = false;
 				isReloadFile = false;
 			} catch (InvalidFormatException e) {
-				log.debug("leerArchivoReporteCierreCaja() - Error ", e);
+				log.error("leerArchivoReporteCierreCaja() - Error ", e);
 				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 				// null, e);
 			} catch (IOException e) {
-				log.debug("leerArchivoReporteCierreCaja() - Error ", e);
+				log.error("leerArchivoReporteCierreCaja() - Error ", e);
 				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 				// null, e);
 			} catch (IllegalArgumentException e) {
-				log.debug("leerArchivoReporteCierreCaja() - Error ", e);
+				log.error("leerArchivoReporteCierreCaja() - Error ", e);
 //				Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
 				Messagebox.show("El archivo cargado contiene errores o esta danado, favor validarlo", "ATENCION",
 						Messagebox.OK, Messagebox.EXCLAMATION);
@@ -2080,7 +2093,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				fila = 0;
 				read.close();
 			} catch (IOException e) {
-				log.debug("leerArchivoReporteCierreCaja() - Error ", e);
+				log.error("leerArchivoReporteCierreCaja() - Error ", e);
 				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 				// null, e);
 			}
@@ -2190,15 +2203,15 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 				isEnd = false;
 				isReloadFile = false;
 			} catch (InvalidFormatException e) {
-				log.debug("leerArchivoReporteCierreCaja() - Error ", e);
+				log.error("leerArchivoReporteCierreCaja() - Error ", e);
 				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 				// null, e);
 			} catch (IOException e) {
-				log.debug("leerArchivoReporteCierreCaja() - Error ", e);
+				log.error("leerArchivoReporteCierreCaja() - Error ", e);
 				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 				// null, e);
 			} catch (IllegalArgumentException e) {
-				log.debug("leerArchivoReporteCierreCaja() - Error ", e);
+				log.error("leerArchivoReporteCierreCaja() - Error ", e);
 				// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 				// null, e);
 				Messagebox.show("El archivo cargado contiene errores o esta daOado, favor validarlo", "ATENCION",

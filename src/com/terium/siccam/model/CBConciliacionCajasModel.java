@@ -39,6 +39,9 @@ public class CBConciliacionCajasModel {
 	private double deposito;
 	private double totalec;
 	private double diferencia;
+	private double comision;
+	private double retencion;
+	private double iva;
 	
 	//Datos para los combos filtros
 	private int idcombo;
@@ -287,4 +290,23 @@ public class CBConciliacionCajasModel {
 	public void setEstadoVisa(double estadoVisa) {
 		this.estadoVisa = estadoVisa;
 	}
+	public double getComision() {
+		return comision;
+	}
+	public void setComision(double comision) {
+		this.comision = comision;
+	}
+	public double getRetencion() {
+		return retencion;
+	}
+	public void setRetencion(double retencion) {
+		this.retencion = retencion;
+	}
+	public double getIva() {
+		return iva;
+	}
+	public void setIva(double iva) {
+		this.iva = iva;
+	}
+	
 }

@@ -863,10 +863,13 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements
 					if (telefonoAlfaNum.length() >= 8 || telefonoAlfaNum.length()<= 6) {
 						logger.debug(methodName + " - Telefono alfanumerico: "
 								+ telefonoAlfaNum);
+						
 						bancoModel.setTelefono(telefonoAlfaNum);
 					}
 				}
-
+/** 
+ * valida si es un telefono especial
+ */
 				if ("TE".equals(valueToSave)) {
 					String telefonoE = "";
 
@@ -898,7 +901,10 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements
 							}
 
 							try {
-								bancoModel.setTelefono(telefonoE);
+								//bancoModel.setTelefono(telefonoE);
+
+								int telefonoSinCero = Integer.parseInt(telefonoE);
+								bancoModel.setTelefono(String.valueOf(telefonoSinCero));
 
 								logger.debug(methodName
 										+ " - el Telefono Especial con el subString: "

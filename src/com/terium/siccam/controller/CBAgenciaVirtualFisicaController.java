@@ -4,7 +4,9 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.naming.NamingException;
 
@@ -25,12 +27,15 @@ import org.zkoss.zul.Textbox;
 
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBAgenciaVirFiscDAO;
+import com.terium.siccam.dao.CBEstadoCuentaDAO;
 import com.terium.siccam.dao.CBParametrosGeneralesDAO;
 import com.terium.siccam.model.CBAgenciaVirtualFisicaModel;
 import com.terium.siccam.model.CBParametrosGeneralesModel;
 import com.terium.siccam.utils.Constantes;
 
 public class CBAgenciaVirtualFisicaController extends ControladorBase {
+	
+	private static Logger log = Logger.getLogger(CBAgenciaVirtualFisicaController.class);
 
 	/**
 	 * modifica ovidio santos 20042018
@@ -62,8 +67,10 @@ public class CBAgenciaVirtualFisicaController extends ControladorBase {
 		nombreBanco = ((String) session.getAttribute("nombreBanco"));
 		
 		idagencia = (Integer.parseInt(session.getAttribute("idAgencia").toString()));
-		Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,"nombre banco ", nombreBanco);
-		Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,"nombre agencia ", session.getAttribute("nombreAgencia"));	
+		log.debug("doAfterCompose" + " - nombre banco "+ nombreBanco);
+		log.debug("doAfterCompose" + " - nombre agencia "+ session.getAttribute("nombreAgencia"));
+		//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,"nombre banco ", nombreBanco);
+		//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,"nombre agencia ", session.getAttribute("nombreAgencia"));	
 
 		lblAgrupacion.setValue(nombreBanco);
 		lblNombreAgencia.setValue((String) session.getAttribute("nombreAgencia"));
@@ -113,8 +120,9 @@ public class CBAgenciaVirtualFisicaController extends ControladorBase {
 	public void onClick$btnConsultar() throws SQLException, NamingException {
 		CBAgenciaVirtualFisicaModel objModel = new CBAgenciaVirtualFisicaModel();
 		objModel.setIdAgencia(objModel.getIdAgencia());
-		Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-				"Entra a consulta estados de afiliaciones");
+		log.debug("onClick$btnConsultar" + " - Entra a consulta estados de afiliaciones");
+		//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+				//"Entra a consulta estados de afiliaciones");
 
 		llenaListbox(objeDAO.listadoAgencias(idagencia));
 		limpiarCampos();
@@ -131,8 +139,9 @@ public class CBAgenciaVirtualFisicaController extends ControladorBase {
 		limpiarListbox(lbxagenciasListado);
 		CBAgenciaVirtualFisicaModel objModel = null;
 
-		Logger.getLogger(CBAgenciaVirtualFisicaController.class.getName()).log(Level.INFO,
-				"cantidad de registros ", list.size());
+		log.debug("llenaListbox" + " - cantidad de registros "+ list.size());
+		//Logger.getLogger(CBAgenciaVirtualFisicaController.class.getName()).log(Level.INFO,
+				//"cantidad de registros ", list.size());
 		if (list.isEmpty()) {
 			//Messagebox.show("No se encontraron resultados!", Constantes.ATENCION, Messagebox.OK, Messagebox.EXCLAMATION);
 		} else {		
@@ -185,8 +194,9 @@ public class CBAgenciaVirtualFisicaController extends ControladorBase {
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public void onEvent(Event event) throws Exception {
 			final int id = (Integer) (event.getTarget().getAttribute("idEliminar"));
-			Logger.getLogger(CBAgenciaVirtualFisicaController.class.getName()).log(Level.INFO,
-					"*** id seleccionado eliminar ***", idseleccionado);
+			log.debug("eventBtnEliminar" + " - *** id seleccionado eliminar ***"+ idseleccionado);
+			//Logger.getLogger(CBAgenciaVirtualFisicaController.class.getName()).log(Level.INFO,
+					//"*** id seleccionado eliminar ***", idseleccionado);
 			Messagebox.show("¿Desea eliminar el registro seleccionado?", Constantes.CONFIRMACION, Messagebox.YES | Messagebox.NO,
 					Messagebox.QUESTION, new EventListener() {
 						public void onEvent(Event event) throws Exception {
@@ -213,11 +223,13 @@ public class CBAgenciaVirtualFisicaController extends ControladorBase {
 			objModel.setCbAgenciaVirfiscid(1);
 			CBAgenciaVirtualFisicaModel objmodificar = (CBAgenciaVirtualFisicaModel) arg0.getTarget()
 					.getAttribute("objmodificar");
-			Logger.getLogger(CBAgenciaVirtualFisicaController.class.getName()).log(Level.INFO,
-					"obj a modificar: " + objmodificar);
+			log.debug("eventBtnModificar" + " - obj a modificar: " + objmodificar);
+			//Logger.getLogger(CBAgenciaVirtualFisicaController.class.getName()).log(Level.INFO,
+					//"obj a modificar: " + objmodificar);
 			idseleccionado = (Integer) arg0.getTarget().getAttribute("idseleccionado");
-			Logger.getLogger(CBAgenciaVirtualFisicaController.class.getName()).log(Level.INFO,
-					"id seleccioando " + idseleccionado);
+			log.debug("eventBtnModificar" + " - id seleccioando " + idseleccionado);
+			//Logger.getLogger(CBAgenciaVirtualFisicaController.class.getName()).log(Level.INFO,
+					//"id seleccioando " + idseleccionado);
 
 			tbxCodigoAgencia.setText(objmodificar.getCodigo());
 			tbxNombreAgencia.setText(objmodificar.getNombre());
@@ -273,7 +285,8 @@ public class CBAgenciaVirtualFisicaController extends ControladorBase {
 							onClick$btnLimpiar();
 						}
 					} catch (Exception e) {
-						Logger.getLogger(CBAgenciaVirtualFisicaController.class.getName()).log(Level.SEVERE, null, e);
+						log.error("onClick$btnRegistrar" + "error", e);
+						//Logger.getLogger(CBAgenciaVirtualFisicaController.class.getName()).log(Level.SEVERE, null, e);
 						Messagebox.show("Ha ocurrido un error. Revise los datos ingresados.", Constantes.ATENCION, Messagebox.OK,
 								Messagebox.ERROR);
 					}

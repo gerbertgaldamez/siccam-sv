@@ -96,6 +96,9 @@
 							 <!-- finalizan los campos version unificada visa-->
 							<listheader label="Totalec" sort="auto" />
 							<listheader label="Diferencia" sort="auto" />
+							<listheader label="Comision" sort="auto" />
+							<listheader label="Retencion" sort="auto" />
+							<listheader label="Iva" sort="auto" />
 						</listhead>
 						<listitem>
 							<listcell />

@@ -295,6 +295,20 @@ public class CBConciliacionCajasController extends MenuController {
 				cell = new Listcell();
 				cell.setLabel(String.valueOf(obj.getDiferencia()));
 				cell.setParent(item);
+				//Comision
+				cell = new Listcell();
+				cell.setLabel(String.valueOf(obj.getComision()));
+				cell.setParent(item);
+				
+				//Retencion
+				cell = new Listcell();
+				cell.setLabel(String.valueOf(obj.getRetencion()));
+				cell.setParent(item);
+				
+				//Iva
+				cell = new Listcell();
+				cell.setLabel(String.valueOf(obj.getIva()));
+				cell.setParent(item);
 
 				item.setValue(obj);
 				item.setParent(lbxConsulta);

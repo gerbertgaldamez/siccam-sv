@@ -1,11 +1,13 @@
 package com.terium.siccam.controller;
 
 import java.util.ArrayList;
+
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import javax.servlet.http.HttpSession;
 
 import org.zkoss.zk.ui.Component;
@@ -24,12 +26,14 @@ import org.zkoss.zul.Textbox;
 
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBAsignaImpuestosDAO;
+import com.terium.siccam.dao.CBEstadoCuentaDAO;
 import com.terium.siccam.model.CBAsignaImpuestosModel;
 import com.terium.siccam.model.CBParametrosGeneralesModel;
 import com.terium.siccam.model.CBTipologiasPolizaModel;
 import com.terium.siccam.utils.Constantes;
 
 public class CBAsignaComisionConfrontaController extends ControladorBase {
+	private static Logger log = Logger.getLogger(CBEstadoCuentaDAO.class);
 
 	/**
 	 * creador ovidio santos
@@ -61,8 +65,9 @@ public class CBAsignaComisionConfrontaController extends ControladorBase {
 
 		bancoAgenciaConfrontaId = (Integer.valueOf(misession.getAttribute("idUnionConfronta").toString()));
 
-		Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
-				"ID banco agencia confronta enviado para configuracion asigna impuesto = ", bancoAgenciaConfrontaId);
+		log.debug("doAfterCompose" + " - ID banco agencia confronta enviado para configuracion asigna impuesto = "+ bancoAgenciaConfrontaId);
+		//Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
+				//"ID banco agencia confronta enviado para configuracion asigna impuesto = ", bancoAgenciaConfrontaId);
 
 		btnModificar.setDisabled(true);
 		usuario = obtenerUsuario().getUsuario();
@@ -87,7 +92,8 @@ public class CBAsignaComisionConfrontaController extends ControladorBase {
 	private List<CBParametrosGeneralesModel> listaImpuestos = new ArrayList<CBParametrosGeneralesModel>();
 
 	public void llenaComboTipoImpuesto() {
-		Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO, "Llena combo tipo IMPUESTO");
+		log.debug("llenaComboTipoImpuesto" + " - Llena combo tipo IMPUESTO");
+		//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO, "Llena combo tipo IMPUESTO");
 		limpiarCombobox(cmbTipoImpuesto);
 		CBAsignaImpuestosDAO objeDAO = new CBAsignaImpuestosDAO();
 		this.listaImpuestos = objeDAO.obtenerImpuestos("CARGO");
@@ -102,7 +108,8 @@ public class CBAsignaComisionConfrontaController extends ControladorBase {
 	private List<CBParametrosGeneralesModel> listaTipo = new ArrayList<CBParametrosGeneralesModel>();
 
 	public void llenaComboTipo() {
-		Logger.getLogger(CBAsignaComisionConfrontaController.class.getName()).log(Level.INFO, "Llena combo tipo");
+		log.debug("llenaComboTipo" + " - Llena combo tipo");
+		//Logger.getLogger(CBAsignaComisionConfrontaController.class.getName()).log(Level.INFO, "Llena combo tipo");
 		limpiarCombobox(cmbTipo);
 		CBAsignaImpuestosDAO objeDAO = new CBAsignaImpuestosDAO();
 		this.listaTipo = objeDAO.obtenertipo("TIPO");
@@ -118,8 +125,9 @@ public class CBAsignaComisionConfrontaController extends ControladorBase {
 	private List<CBParametrosGeneralesModel> listaMedioDePago = new ArrayList<CBParametrosGeneralesModel>();
 
 	public void llenaComboMedioDePago() {
-		Logger.getLogger(CBAsignaComisionConfrontaController.class.getName()).log(Level.INFO,
-				"Llena combo medio de pago");
+		log.debug("llenaComboMedioDePago" + " - Llena combo medio de pago");
+		//Logger.getLogger(CBAsignaComisionConfrontaController.class.getName()).log(Level.INFO,
+			//	"Llena combo medio de pago");
 		limpiarCombobox(cmbMedioDePago);
 		CBAsignaImpuestosDAO objeDAO = new CBAsignaImpuestosDAO();
 		this.listaMedioDePago = objeDAO.obtenerMedioDePago("MEDIO_PAGO");
@@ -134,7 +142,8 @@ public class CBAsignaComisionConfrontaController extends ControladorBase {
 	private List<CBTipologiasPolizaModel> listaTipologias = new ArrayList<CBTipologiasPolizaModel>();
 
 	public void llenaComboTipologias() {
-		Logger.getLogger(CBAsignaComisionConfrontaController.class.getName()).log(Level.INFO, "Llena combo tipologia");
+		log.debug("llenaComboTipologias" + " - Llena combo tipologia");
+		//Logger.getLogger(CBAsignaComisionConfrontaController.class.getName()).log(Level.INFO, "Llena combo tipologia");
 		limpiarCombobox(cmbTipologia);
 		CBAsignaImpuestosDAO objeDAO = new CBAsignaImpuestosDAO();
 		this.listaTipologias = objeDAO.obtenerTipologias();
@@ -149,8 +158,9 @@ public class CBAsignaComisionConfrontaController extends ControladorBase {
 	private List<CBParametrosGeneralesModel> listaFormaDePago = new ArrayList<CBParametrosGeneralesModel>();
 
 	public void llenaComboFormaDePago() {
-		Logger.getLogger(CBAsignaComisionConfrontaController.class.getName()).log(Level.INFO,
-				"Llena combo forma de pago");
+		log.debug("llenaComboFormaDePago" + " - Llena combo forma de pago");
+	//	Logger.getLogger(CBAsignaComisionConfrontaController.class.getName()).log(Level.INFO,
+				//"Llena combo forma de pago");
 		limpiarCombobox(cmbFormaDePago);
 		CBAsignaImpuestosDAO objeDAO = new CBAsignaImpuestosDAO();
 		this.listaFormaDePago = objeDAO.obtenerformaDePago("FORMA_PAGO");
@@ -212,14 +222,16 @@ public class CBAsignaComisionConfrontaController extends ControladorBase {
 				boolean porcentajeValido = false;
 				String tipoImpuestoSeleccionado = cmbTipo.getSelectedItem().getValue().toString();
 				String porcentajetipo = cmbTipo.getSelectedItem().getLabel().toString();
-				System.out.println("tipoImpuestoSeleccionado " + tipoImpuestoSeleccionado);
+				log.debug("onClick$btnNuevo" + " - tipoImpuestoSeleccionado " + tipoImpuestoSeleccionado);
+				//System.out.println("tipoImpuestoSeleccionado " + tipoImpuestoSeleccionado);
 				
 				String validoporcentaje = "";
 				validoporcentaje = objDAO.obtenerporcentajevalido(tipoImpuestoSeleccionado,porcentajetipo);
 				if(validoporcentaje == null) {
 					validoporcentaje = "";
 				}
-				System.out.println("validoporcentaje " + validoporcentaje);
+				log.debug("onClick$btnNuevo" + " - validoporcentaje " + validoporcentaje);
+				
 				
 				/**
 				 * tipoImpuestoSeleccionado = 3 -> MONTO FIJO/TOTAL
@@ -227,8 +239,9 @@ public class CBAsignaComisionConfrontaController extends ControladorBase {
 				if (validoporcentaje.toUpperCase().trim().equals("FIJO")) {
 					porcentajeValido = true;
 				} else {
-					Logger.getLogger(CBAsignaComisionConfrontaController.class.getName()).log(Level.INFO,
-							"Porcentaje ingresado = " + txtValor.getText().trim());
+					log.debug("onClick$btnNuevo" + " - Porcentaje ingresado = " + txtValor.getText().trim());
+					//Logger.getLogger(CBAsignaComisionConfrontaController.class.getName()).log(Level.INFO,
+						//	"Porcentaje ingresado = " + txtValor.getText().trim());
 					if (Double.parseDouble(txtValor.getText().trim()) < 1) {
 						porcentajeValido = true;
 					} else {
@@ -261,7 +274,8 @@ public class CBAsignaComisionConfrontaController extends ControladorBase {
 				}
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnNuevo" + "error", e);
+			//Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", Constantes.ATENCION, Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -310,14 +324,16 @@ public class CBAsignaComisionConfrontaController extends ControladorBase {
 					boolean porcentajeValido = false;
 					String tipoImpuestoSeleccionado = cmbTipo.getSelectedItem().getValue().toString();
 					String porcentajetipo = cmbTipo.getSelectedItem().getLabel().toString();
-					System.out.println("tipoImpuestoSeleccionado " + tipoImpuestoSeleccionado);
+					log.debug("onClick$btnModificar" + " - tipoImpuestoSeleccionado " + tipoImpuestoSeleccionado);
+					
 					
 					String validoporcentaje = "";
 					validoporcentaje = objDAO.obtenerporcentajevalido(tipoImpuestoSeleccionado,porcentajetipo);
 					if(validoporcentaje == null) {
 						validoporcentaje = "";
 					}
-					System.out.println("validoporcentaje " + validoporcentaje.toUpperCase().trim());
+					log.debug("onClick$btnModificar" + " - validoporcentaje " + validoporcentaje.toUpperCase().trim());
+					
 					
 					/**
 					 * tipoImpuestoSeleccionado = 3 -> MONTO FIJO/TOTAL
@@ -325,8 +341,9 @@ public class CBAsignaComisionConfrontaController extends ControladorBase {
 					if ((validoporcentaje.toUpperCase().trim()).equals("PORCENTAJE")) {
 						porcentajeValido = true;
 					} else {
-						Logger.getLogger(CBAsignaComisionConfrontaController.class.getName()).log(Level.INFO,
-								"Porcentaje ingresado = " + txtValor.getText().trim());
+						log.debug("onClick$btnModificar" + " - Porcentaje ingresado = " + txtValor.getText().trim());
+						//Logger.getLogger(CBAsignaComisionConfrontaController.class.getName()).log(Level.INFO,
+								//"Porcentaje ingresado = " + txtValor.getText().trim());
 						if (Double.parseDouble(txtValor.getText().trim()) < 1) {
 							porcentajeValido = true;
 						} else {
@@ -346,8 +363,9 @@ public class CBAsignaComisionConfrontaController extends ControladorBase {
 
 						objModel.setBancoagenciaconfrontaid(bancoAgenciaConfrontaId);
 
-						Logger.getLogger(CBAsignaComisionConfrontaController.class.getName()).log(Level.INFO,
-								"el id a modificar es ", idseleccionado);
+						log.debug("onClick$btnModificar" + " - el id a modificar es "+ idseleccionado);
+						//Logger.getLogger(CBAsignaComisionConfrontaController.class.getName()).log(Level.INFO,
+								//"el id a modificar es ", idseleccionado);
 						if (objDAO.modificaImpuestos(objModel, idseleccionado)) {
 
 							Messagebox.show("Se actualizo el registro", Constantes.ATENCION, Messagebox.OK,
@@ -368,7 +386,8 @@ public class CBAsignaComisionConfrontaController extends ControladorBase {
 				Messagebox.show("Seleccione un registro!", Constantes.ATENCION, Messagebox.OK, Messagebox.EXCLAMATION);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnModificar" + "error", e);
+			//Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", Constantes.ATENCION, Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -434,7 +453,8 @@ public class CBAsignaComisionConfrontaController extends ControladorBase {
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error", Constantes.ATENCION, Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBAsignaComisionConfrontaController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnConsultar" + "error", e);
+			//Logger.getLogger(CBAsignaComisionConfrontaController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -444,7 +464,8 @@ public class CBAsignaComisionConfrontaController extends ControladorBase {
 
 		
 		if (list.isEmpty()) {
-			Logger.getLogger(CBAsignaComisionConfrontaController.class.getName()).log(Level.INFO,"La lista viene vacia!");
+			log.debug("llenaListbox" + " - La lista viene vacia!");
+			//Logger.getLogger(CBAsignaComisionConfrontaController.class.getName()).log(Level.INFO,"La lista viene vacia!");
 		} else {
 			Iterator<CBAsignaImpuestosModel> it = list.iterator();
 
@@ -522,7 +543,8 @@ public class CBAsignaComisionConfrontaController extends ControladorBase {
 					.getAttribute("objmodificar");
 			idseleccionado = (Integer) arg0.getTarget().getAttribute("idseleccionado");
 
-			Logger.getLogger(CBAsignaComisionConfrontaController.class.getName()).log(Level.INFO,"id seleccioando ", idseleccionado);
+			log.debug("eventBtnModificar" + " - id seleccioando "+ idseleccionado);
+			//Logger.getLogger(CBAsignaComisionConfrontaController.class.getName()).log(Level.INFO,"id seleccioando ", idseleccionado);
 
 			for (Comboitem item : cmbTipoImpuesto.getItems()) {
 				if (item.getValue().equals(objmodificar.getImpuestoid())) {
@@ -569,7 +591,8 @@ public class CBAsignaComisionConfrontaController extends ControladorBase {
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public void onEvent(Event event) throws Exception {
 			final int idseleccionado = Integer.parseInt(event.getTarget().getAttribute("idEliminar").toString());
-			Logger.getLogger(CBAsignaComisionConfrontaController.class.getName()).log(Level.INFO,"ID  a eliminar = ", idseleccionado);
+			log.debug("eventBtnEliminar" + " - ID  a eliminar = "+ idseleccionado);
+			//Logger.getLogger(CBAsignaComisionConfrontaController.class.getName()).log(Level.INFO,"ID  a eliminar = ", idseleccionado);
 			Messagebox.show("¿Desea eliminar el registro seleccionado?", Constantes.CONFIRMACION, Messagebox.YES | Messagebox.NO,
 					Messagebox.QUESTION, new EventListener() {
 						public void onEvent(Event event) throws Exception {

@@ -4,7 +4,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.naming.NamingException;
 
@@ -20,10 +22,13 @@ import org.zkoss.zul.Window;
 
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBConsultaEstadoCuentasDAO;
+import com.terium.siccam.dao.CBEstadoCuentaDAO;
 import com.terium.siccam.model.CBCatalogoAgenciaModel;
 import com.terium.siccam.model.CBConsultaEstadoCuentasModel;
 
 public class CBAsociacionManualController extends ControladorBase{
+	
+	private static Logger log = Logger.getLogger(CBAsociacionManualController.class);
 	
 	private static final long serialVersionUID = 9176164927878418930L;
 	
@@ -126,7 +131,8 @@ public class CBAsociacionManualController extends ControladorBase{
 			}
 		}
 		catch(Exception e){
-			Logger.getLogger(CBAsociacionManualController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnAsignar" + "error", e);
+			//Logger.getLogger(CBAsociacionManualController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error.","ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -146,7 +152,8 @@ public class CBAsociacionManualController extends ControladorBase{
 						}
 					});
 		} catch (Exception e) {
-			Logger.getLogger(CBAsociacionManualController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnDesasociar" + "error", e);
+			//Logger.getLogger(CBAsociacionManualController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error.", "ATENCIÓN", Messagebox.OK, Messagebox.ERROR);
 		}
 	}

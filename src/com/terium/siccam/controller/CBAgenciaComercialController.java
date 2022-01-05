@@ -6,8 +6,10 @@ package com.terium.siccam.controller;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.naming.NamingException;
 
@@ -16,7 +18,6 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Button;
-
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -26,6 +27,7 @@ import org.zkoss.zul.Textbox;
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBAgenciaComercialDAO;
 import com.terium.siccam.model.CBAgenciaComercialModel;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 import com.terium.siccam.utils.Constantes;
 
 /**
@@ -33,6 +35,8 @@ import com.terium.siccam.utils.Constantes;
  * 
  */
 public class CBAgenciaComercialController extends ControladorBase {
+	
+	private static Logger log = Logger.getLogger(CBAgenciaComercialController.class);
 
 	/**
 	 * modifica ovidio santos 24042018
@@ -56,8 +60,9 @@ public class CBAgenciaComercialController extends ControladorBase {
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
 		idUnionConfron = session.getAttribute("idUnionConfronta").toString();
-		Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.CONFIG,
-				"ID banco agencia confronta enviado para configuracion age comercial = ", idUnionConfron);
+		log.debug("doAfterCompose" + " - ID banco agencia confronta enviado para configuracion age comercial = " + idUnionConfron);
+		//Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.CONFIG,
+			//	"ID banco agencia confronta enviado para configuracion age comercial = ", idUnionConfron);
 		llenaListbox(objeDAO.listadoAgenComPosPre(idUnionConfron));
 		btnRegistrar.setDisabled(false);
 		btnModificar.setDisabled(true);
@@ -73,8 +78,9 @@ public class CBAgenciaComercialController extends ControladorBase {
 				objModel.setNombreAgenciaComercial(txtUserFiltro.getText().trim());
 				
 				boolean valido = false;
-				Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
-						"id de la confronta asociada " + idUnionConfron);
+				log.debug("onClick$btnRegistrar" + " - id de la confronta asociada " + idUnionConfron);
+				//Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
+						//"id de la confronta asociada " + idUnionConfron);
 				String codAgenciaDevuelto = objeDAO.validarExistencia(idUnionConfron,
 						objModel.getNombreAgenciaComercial());
 				if (codAgenciaDevuelto == null || codAgenciaDevuelto.equals("")) {
@@ -88,8 +94,9 @@ public class CBAgenciaComercialController extends ControladorBase {
 				if (valido) {
 
 					if (objeDAO.insertaData(idUnionConfron, objModel.getNombreAgenciaComercial())) {
-						Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
-								"Registro insertado de agencia comercial.");
+						log.debug("onClick$btnRegistrar" + " - Registro insertado de agencia comercial.");
+						//Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
+								//"Registro insertado de agencia comercial.");
 
 						Messagebox.show("Agencia comercial registrada con exito.", Constantes.ATENCION, Messagebox.OK,
 								Messagebox.INFORMATION);
@@ -110,7 +117,8 @@ public class CBAgenciaComercialController extends ControladorBase {
 			}
 
 		} catch (Exception e) {
-			Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnRegistrar" + "error", e);
+			//Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error. Revise los datos ingresados.", Constantes.ATENCION, Messagebox.OK,
 					Messagebox.ERROR);
 		}
@@ -128,11 +136,13 @@ public class CBAgenciaComercialController extends ControladorBase {
 		limpiarListbox(lbxlistadoAgenciaComercial);
 		CBAgenciaComercialModel objModel = null;
 
-		Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
-				"cantidad de registros: ", list.size());
+		log.debug("llenaListbox" + " - cantidad de registros: " + list.size());
+		//Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
+				//"cantidad de registros: ", list.size());
 		if (list.isEmpty()) {
-			Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
-					"--> La lista con la informacion de agencias comerciales viene vacia.");
+			log.debug("llenaListbox" + " - --> La lista con la informacion de agencias comerciales viene vacia.");
+			//Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
+				//	"--> La lista con la informacion de agencias comerciales viene vacia.");
 		} else {
 			Iterator<CBAgenciaComercialModel> it = list.iterator();
 
@@ -194,8 +204,9 @@ public class CBAgenciaComercialController extends ControladorBase {
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public void onEvent(Event event) throws Exception {
 			final String id = (String) (event.getTarget().getAttribute("idEliminar"));
-			Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
-					"ID  a eliminar = ", id);
+			log.debug("eventBtnEliminar" + " ID  a eliminar = "+ id);
+			//Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
+					//"ID  a eliminar = ", id);
 			Messagebox.show("¿Desea eliminar el registro seleccionado?", Constantes.CONFIRMACION, Messagebox.YES | Messagebox.NO,
 					Messagebox.QUESTION, new EventListener() {
 						public void onEvent(Event event) throws Exception {
@@ -206,8 +217,9 @@ public class CBAgenciaComercialController extends ControladorBase {
 								/// ACTUALIZA DESPUES DE ELIMINAR
 								List<CBAgenciaComercialModel> list = objDAO.listadoAgenComPosPre(idUnionConfron);
 								if (list.isEmpty()) {
-									Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
-											"creo el registro pero no recarga consulta ");
+									log.debug("eventBtnEliminar" + " creo el registro pero no recarga consulta ");
+									//Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
+											//"creo el registro pero no recarga consulta ");
 									limpiarListbox(lbxlistadoAgenciaComercial);
 									Messagebox.show("Registros eliminado con exito.", Constantes.ATENCION, Messagebox.OK,
 											Messagebox.INFORMATION);
@@ -254,12 +266,14 @@ public class CBAgenciaComercialController extends ControladorBase {
 			// se crea una variable personalizada
 			CBAgenciaComercialModel objmodificar = (CBAgenciaComercialModel) arg0.getTarget()
 					.getAttribute("objmodificar");
-			Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
-					"obj a modificar: ", objmodificar);
+			log.debug("onEvent" + " obj a modificar: "+ objmodificar);
+			//Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
+					//"obj a modificar: ", objmodificar);
 			idseleccionado = (String) arg0.getTarget().getAttribute("idseleccionado");
 
-			Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.INFO,
-					"id seleccioando " + idseleccionado);
+			log.debug("onEvent" + " id seleccioando " + idseleccionado);
+			//Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.INFO,
+					//"id seleccioando " + idseleccionado);
 
 			txtUserFiltro.setText(objmodificar.getNombreAgenciaComercial());
 			objModel1.setNombreAgenciaComercial(objmodificar.getNombreAgenciaComercial());
@@ -273,10 +287,12 @@ public class CBAgenciaComercialController extends ControladorBase {
 		CBAgenciaComercialModel objModel = new CBAgenciaComercialModel();
 		boolean valido = false;
 		objModel.setNombreAgenciaComercial(objModel1.getNombreAgenciaComercial());
-		Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
-				"cbcatalogoagenciaid en control guar ", objModel.getNombreAgenciaComercial());
-		System.out.println("id:" + idseleccionado);
-		System.out.println("nombreagenciacomercial:" + objModel.getNombreAgenciaComercial());
+		log.debug("onClick$btnModificar" + " cbcatalogoagenciaid en control guar "+ objModel.getNombreAgenciaComercial());
+		//Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
+				//"cbcatalogoagenciaid en control guar ", objModel.getNombreAgenciaComercial());
+		log.debug("onClick$btnModificar" + " id:" + idseleccionado);
+		log.debug("onClick$btnModificar" + " nombreagenciacomercial:" + objModel.getNombreAgenciaComercial());
+		
 		
 		try {
 			if (idseleccionado != null) {
@@ -299,14 +315,15 @@ public class CBAgenciaComercialController extends ControladorBase {
 
 					if (valido) {
 						objModel.setNombreAgenciaComercial(txtUserFiltro.getText().trim());
-						Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
-								"PREPAGO ID UNION: ", idUnionConfron);
-						Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
-								"PREPAGO VALOR CODIGO AGENCIA: ", objModel.getNombreAgenciaComercial());
+						log.debug("onClick$btnModificar" + " PREPAGO ID UNION: "+ idUnionConfron);
+						log.debug("onClick$btnModificar" + " PREPAGO VALOR CODIGO AGENCIA: "+ objModel.getNombreAgenciaComercial());
+						//Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
+								//"PREPAGO VALOR CODIGO AGENCIA: ", objModel.getNombreAgenciaComercial());
 						if (objeDAO.modificaData(idUnionConfron, objModel.getNombreAgenciaComercial(),
 								idseleccionado)) {
-							Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
-									"Registro de agencia comercial modificado con exito.");
+							log.debug("onClick$btnModificar" + " Registro de agencia comercial modificado con exito.");
+							//Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
+									//"Registro de agencia comercial modificado con exito.");
 
 							Messagebox.show("Agencia comercial modificada con exito.", Constantes.ATENCION, Messagebox.OK,
 									Messagebox.INFORMATION);
@@ -331,7 +348,8 @@ public class CBAgenciaComercialController extends ControladorBase {
 			}
 
 		} catch (Exception e) {
-			Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnModificar" + " error", e);
+			//Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error. Revise los datos ingresados.", Constantes.ATENCION, Messagebox.OK,
 					Messagebox.ERROR);
 

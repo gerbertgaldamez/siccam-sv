@@ -1,6 +1,7 @@
 package com.terium.siccam.dao;
 
 import java.sql.CallableStatement;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,12 +10,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import com.terium.siccam.dao.CBEstadoCuentaDAO;
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.model.CBEstadoCuentasModel;
 import com.terium.siccam.model.CBPagosModel;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 import com.terium.siccam.utils.ConsultasSQ;
 
 /**
@@ -22,6 +24,8 @@ import com.terium.siccam.utils.ConsultasSQ;
  */
 
 public class CBEstadoCuentaDAO extends ControladorBase {
+	
+	private static Logger log = Logger.getLogger(CBEstadoCuentaDAO.class);
 
 	/**
 	 * 
@@ -65,28 +69,32 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 			ps.setInt(1, idarchivo);
 			ps.setInt(2, idConf);
 			// ps.setString(3, archivo);
-
-			System.out.println("entra al metodo para eliminar registros: " + idarchivo + " id conf: " + idConf);
-			System.out.println("query: " + query);
+			log.debug("eliminarRegistros" + " - entra al metodo para eliminar registros: " + idarchivo + " id conf: " + idConf);
+			log.debug("eliminarRegistros" + " - query: " + query);
+			
 
 			int exec = ps.executeUpdate();
 			if (exec > 0) {
-				System.out.println("Script ejecutado correctamente para eliminar registros: " + query);
+				log.debug("eliminarRegistros" + " - Script ejecutado correctamente para eliminar registros: " + query);
+				
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("eliminarRegistros" + " error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("eliminarRegistros" + " error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("eliminarRegistros" + " error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 	}
@@ -103,28 +111,32 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 			ps = con.prepareStatement(ConsultasSQ.UPDATE_LIQUIDACION_DETALLE);
 
 			ps.setInt(1, idarchivo);
-
-			System.out.println("entra al metodo para actualizar registros: " + idarchivo);
+			log.debug("actualizaLiquidacionDetalle" + " - entra al metodo para actualizar registros: " + idarchivo);
+			
 
 			int exec = ps.executeUpdate();
 			if (exec > 0) {
-				System.out.println("Script ejecutado correctamente para actualizar liquidacion detalle: "
+				log.debug("actualizaLiquidacionDetalle" + " - Script ejecutado correctamente para actualizar liquidacion detalle: "
 						+ ConsultasSQ.UPDATE_LIQUIDACION_DETALLE);
+				
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("actualizaLiquidacionDetalle" + "error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("actualizaLiquidacionDetalle" + " error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("actualizaLiquidacionDetalle" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 	}
@@ -141,7 +153,8 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 		try {
 			con = obtenerDtsPromo().getConnection();
 			ps = con.prepareStatement(ConsultasSQ.VALIDA_CARGA_ESTADOS_SQ);
-			System.out.println("query valida " + ConsultasSQ.VALIDA_CARGA_ESTADOS_SQ + idconf);
+			log.debug("validaCarga" + " - query valida " + ConsultasSQ.VALIDA_CARGA_ESTADOS_SQ + idconf);
+			
 			ps.setInt(1, idconf);
 			ps.setString(2, archivo);
 			rs = ps.executeQuery();
@@ -154,25 +167,29 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 				result.setFecha(rs.getString(3));
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("validaCarga" + "error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("validaCarga" + "error", e1);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("validaCarga" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("validaCarga" + " error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return result;
@@ -191,31 +208,36 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 			con = obtenerDtsPromo().getConnection();
 
 			ps = con.prepareStatement(ConsultasSQ.MUESTRA_FECHA_SQ);
+			log.debug("obtieneFecha" + " - query  " + ConsultasSQ.MUESTRA_FECHA_SQ);
 			rs = ps.executeQuery();
 
 			if (rs.next())
 				result = rs.getString(1);
 
 		} catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtieneFecha" + " error", e);
+		//	Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtieneFecha" + " error", e1);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneFecha" + " error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneFecha" + " error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return result;
@@ -233,6 +255,7 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 		try {
 			con = obtenerDtsPromo().getConnection();
 			ps = con.prepareStatement(ConsultasSQ.ESTADO_CUENTA_ARCHIVOS_ID);
+			log.debug("obtieneIdArchivos" + " - query  " + ConsultasSQ.ESTADO_CUENTA_ARCHIVOS_ID);
 			rs = ps.executeQuery();
 
 			if (rs.next()) {
@@ -240,25 +263,29 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 			}
 
 		} catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtieneIdArchivos" + " error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtieneIdArchivos" + " error", e1);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneIdArchivos" + " error", e);
+				//	Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneIdArchivos" + "Archivo con errores", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 
@@ -278,7 +305,8 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 		try {
 			con = obtenerDtsPromo().getConnection();
 			ps = con.prepareStatement(ConsultasSQ.OBTIENE_ESTADO_CUENTACONF_SQ);
-			System.out.println("query combo:" + ConsultasSQ.OBTIENE_ESTADO_CUENTACONF_SQ);
+			log.debug("obtenerCuentasConf" + " - query combo:  " + ConsultasSQ.OBTIENE_ESTADO_CUENTACONF_SQ);
+			
 			rs = ps.executeQuery();
 			CBEstadoCuentasModel objModel = null;
 			while (rs.next()) {
@@ -288,25 +316,29 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 				listado.add(objModel);
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerCuentasConf" + "error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtenerCuentasConf" + "error", e1);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerCuentasConf" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerCuentasConf" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 
@@ -336,8 +368,9 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 			CBEstadoCuentasModel objModel = null;
 			Iterator<CBEstadoCuentasModel> it = list.iterator();
 			int contador = 0;
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
-					"entra al metodo para insertar visa pago: " + list.size());
+			log.debug("insertCuentasBancoNacional" + " - entra al metodo para insertar visa pago: " + list.size());
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
+					//"entra al metodo para insertar visa pago: " + list.size());
 			if (list.size() == 0) {
 				return true;
 			}
@@ -346,7 +379,7 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 				try {
 					contador++;
 					ps = con.prepareStatement(INSERT_BANCO_NACIONAL_SQ);
-
+					log.debug("insertCuentasBancoNacional" + " - query: " + INSERT_BANCO_NACIONAL_SQ);
 					ps.setInt(1, objModel.getCbestadocuentaconfid());
 					ps.setInt(2, objModel.getCbestadocuentaarchivosid());
 					ps.setString(3, objModel.getFechatransaccion());
@@ -374,16 +407,19 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 					ps.close();
 					ps = null;
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertCuentasBancoNacional" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			}
 			if (contador > 0) {
-				Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
-						"Script ejecutado correctamente: " + contador);
+				log.debug("insertCuentasBancoNacional" + " - Script ejecutado correctamente: " + contador);
+				//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
+						//"Script ejecutado correctamente: " + contador);
 				result = true;
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertCuentasBancoNacional" + "error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (ps != null)
@@ -391,7 +427,8 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("insertCuentasBancoNacional" + "error", e);
+				//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 
@@ -414,8 +451,9 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 			CBEstadoCuentasModel objModel = null;
 			Iterator<CBEstadoCuentasModel> it = list.iterator();
 			int contador = 0;
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
-					"entra al metodo para insertar cierre caja: " + list.size());
+			log.debug("insertReporteCierreCaja" + " - entra al metodo para insertar cierre caja: " + list.size());
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
+					//"entra al metodo para insertar cierre caja: " + list.size());
 			if (list.size() == 0) {
 				return true;
 			}
@@ -424,7 +462,7 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 				try {
 					contador++;
 					ps = con.prepareStatement(INSERT_REPORTE_CIERRE_CAJA_SQ);
-
+					log.debug("insertReporteCierreCaja" + " - query " + INSERT_REPORTE_CIERRE_CAJA_SQ);
 					ps.setInt(1, objModel.getCbestadocuentaconfid());
 					ps.setInt(2, objModel.getCbestadocuentaarchivosid());
 					ps.setString(3, objModel.getFecha_solicitud());
@@ -446,16 +484,19 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 					ps.close();
 					ps = null;
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertReporteCierreCaja" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			}
 			if (contador > 0) {
-				Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
-						"Script ejecutado correctamente: " + contador);
+				log.debug("insertReporteCierreCaja" + " - Script ejecutado correctamente: " + contador);
+				//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
+						//"Script ejecutado correctamente: " + contador);
 				result = true;
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertReporteCierreCaja" + "error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (ps != null)
@@ -463,7 +504,8 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("insertReporteCierreCaja" + "error", e);
+				//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 
@@ -483,18 +525,19 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 			CBEstadoCuentasModel objModel = null;
 			Iterator<CBEstadoCuentasModel> it = list.iterator();
 			int contador = 0;
-			System.out.println("entra al metodo para insertar visa pago: " + list.size());
+			log.debug("insertCuentasVisa" + " - entra al metodo para insertar visa pago: " + list.size());
+			
 			if (list.size() == 0) {
 				return true;
 			}
-
-			System.out.println("Query: " + ConsultasSQ.INSERT_VISA_SQ);
+			log.debug("insertCuentasVisa" + " - Query: " + ConsultasSQ.INSERT_VISA_SQ);
+			
 			while (it.hasNext()) {
 				objModel = it.next();
 				try {
 					contador++;
 					ps = con.prepareStatement(ConsultasSQ.INSERT_VISA_SQ);
-
+					log.debug("insertCuentasVisa" + " - Query: " + ConsultasSQ.INSERT_VISA_SQ);
 					ps.setInt(1, objModel.getCbestadocuentaconfid());
 					ps.setInt(2, objModel.getCbestadocuentaarchivosid());
 					ps.setString(3, objModel.getFechatransaccion());
@@ -518,18 +561,21 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 				} catch (Exception e) {
 					ps.close();
 					ps = null;
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
-							"Error de counstring  " + e.getMessage());
+					log.error("insertCuentasVisa" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
+						//	"Error de counstring  " + e.getMessage());
 				}
 			}
 			if (contador > 0) {
-				Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
-						"Script ejecutado correctamente: " + contador);
-				System.out.println("contador " + contador);
+				log.debug("insertCuentasVisa" + " - Script ejecutado correctamente: " + contador);
+				//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
+						//"Script ejecutado correctamente: " + contador);
+				
 				result = true;
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertCuentasVisa" + "error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (ps != null)
@@ -537,7 +583,8 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 				if (con != null)
 					con.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("insertCuentasVisa" + "error", e);
+				//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 
@@ -555,7 +602,8 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			CBEstadoCuentasModel objModel = null;
-			System.out.println("tama�o de lista: " + list.size());
+			log.debug("insertCuentasVisaDet" + " - tama�o de lista: " + list.size());
+			
 			if (list.size() == 0) {
 				return true;
 			}
@@ -566,7 +614,7 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 				try {
 					contador++;
 					ps = con.prepareStatement(ConsultasSQ.INSERT_VISA_DET_SQ);
-
+					log.debug("insertCuentasVisaDet" + " - query: " + ConsultasSQ.INSERT_VISA_DET_SQ);
 					ps.setInt(1, objModel.getCbestadocuentaconfid());
 					ps.setInt(2, objModel.getCbestadocuentaarchivosid());
 					ps.setString(3, objModel.getAfilicacion());
@@ -589,18 +637,21 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 				} catch (Exception e) {
 					ps.close();
 					ps = null;
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
-							"Error de counstring  " + e.getMessage());
+					log.error("insertCuentasVisaDet" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
+							//"Error de counstring  " + e.getMessage());
 				}
 			}
 
 			if (contador > 0) {
-				Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
-						"Script ejecutado correctamente insert iva detalle: " + contador);
+				log.debug("insertCuentasVisaDet" + " - Script ejecutado correctamente insert iva detalle: " + contador);
+				//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
+						//"Script ejecutado correctamente insert iva detalle: " + contador);
 				result = true;
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertCuentasVisaDet" + "error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (ps != null)
@@ -608,7 +659,8 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 				if (con != null)
 					con.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("insertCuentasVisaDet" + "error", e);
+				//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 
@@ -628,9 +680,12 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 		try {
 			con = obtenerDtsPromo().getConnection();
 			CBEstadoCuentasModel objModel = null;
-			System.out.println("tama�o de lista: " + list.size());
+			log.debug("insertCuentasCredo" + " - tama�o de lista: " + list.size());
+			
 			Iterator<CBEstadoCuentasModel> it = list.iterator();
+			
 			ps = con.prepareStatement(ConsultasSQ.INSERT_CREDO_SQ);
+			log.debug("insertCuentasCredo" + " - query: " + ConsultasSQ.INSERT_CREDO_SQ);
 			ps.setFetchSize(1024);
 			while (it.hasNext()) {
 				objModel = it.next();
@@ -650,23 +705,27 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 			}
 			int[] exec = ps.executeBatch();
 			if (exec.length > 0) {
-				System.out.println("Script ejecutado correctamente insert credomatic");
+				log.debug("insertCuentasCredo" + " - Script ejecutado correctamente insert credomatic");
+				
 				result = true;
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertCuentasCredo" + "error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertCuentasCredo" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertCuentasCredo" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 
@@ -690,10 +749,11 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 			con = obtenerDtsPromo().getConnection();
 
 			ps = con.prepareStatement(ConsultasSQ.INSERT_CREDO_SQ2);
-			System.out.println("tama�o de lista: " + list.size());
+			log.debug("insertCuentasCredoEncabezado" + " - tama�o de lista: " + list.size());
+			log.debug("insertCuentasCredoEncabezado" + " - query: " + ConsultasSQ.INSERT_CREDO_SQ2);
 			Iterator<CBEstadoCuentasModel> it = list.iterator();
-
-			System.out.println("entra al metodo para insertar encabezado credo " + list.size());
+			log.debug("insertCuentasCredoEncabezado" + " - entra al metodo para insertar encabezado credo " + list.size());
+			
 			while (it.hasNext()) {
 				objModel = it.next();
 
@@ -719,25 +779,29 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 			}
 			ps.executeBatch();
 			if (contador > 0) {
-				System.out.println("Insert ejecutado correctamente, registros guardados = : " + contador);
+				log.debug("insertCuentasCredoEncabezado" + " - Insert ejecutado correctamente, registros guardados = " + contador);
+				
 
 				result = true;
 			}
 
 		} catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertCuentasCredoEncabezado" + "error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertCuentasCredoEncabezado" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertCuentasCredoEncabezado" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return result;
@@ -828,11 +892,14 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 			con = obtenerDtsPromo().getConnection();
 
 			ps = con.prepareStatement(INSERT_CREDO_SV_SQL);
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO, "tama�o de lista: " + list.size());
-			System.out.println("query insert " + INSERT_CREDO_SV_SQL);
+			log.debug("insertCuentasCredoEncabezadoCR" + " - tama�o de lista: " + list.size());
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO, "tama�o de lista: " + list.size());
+			log.debug("insertCuentasCredoEncabezadoCR" + " - query insert " + INSERT_CREDO_SV_SQL);
+			
 			Iterator<CBEstadoCuentasModel> it = list.iterator();
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
-					"entra al metodo para insertar encabezado credo " + list.size());
+			log.debug("insertCuentasCredoEncabezadoCR" + " - entra al metodo para insertar encabezado credo " + list.size());
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
+					//"entra al metodo para insertar encabezado credo " + list.size());
 			while (it.hasNext()) {
 				objModel = it.next();
 
@@ -894,13 +961,15 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 			}
 			ps.executeBatch();
 			if (contador > 0) {
-				Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
-						"Insert ejecutado correctamente, registros guardados = : " + contador);
+				log.debug("insertCuentasCredoEncabezadoCR" + " - Insert ejecutado correctamente, registros guardados = " + contador);
+				//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
+					//	"Insert ejecutado correctamente, registros guardados = : " + contador);
 				result = true;
 			}
 
 		} catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertCuentasCredoEncabezadoCR" + "error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (ps != null)
@@ -908,7 +977,8 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("insertCuentasCredoEncabezadoCR" + "error", e);
+				//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -934,7 +1004,8 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 		try {
 			con = obtenerDtsPromo().getConnection();
 			CBEstadoCuentasModel objModel = null;
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO, "Tama�o de lista: " + list.size());
+			log.debug("insertCuentasCredoEncabezadoGT" + " - tama�o de lista: " + list.size());
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO, "Tama�o de lista: " + list.size());
 			Iterator<CBEstadoCuentasModel> it = list.iterator();
 
 			int contador = 0;
@@ -943,6 +1014,8 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 				try {
 					contador++;
 					ps = con.prepareStatement(INSERT_CREDO_SQGT);
+					log.debug("insertCuentasCredoEncabezadoGT" + " - query: " + INSERT_CREDO_SQGT);
+					
 					ps.setInt(1, objModel.getCbestadocuentaconfid());
 					ps.setInt(2, objModel.getCbestadocuentaarchivosid());
 					ps.setString(3, objModel.getFechatransaccion());
@@ -969,18 +1042,21 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 				} catch (Exception e) {
 					ps.close();
 					ps = null;
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
-							"Error de counstring  " + e.getMessage());
+					log.error("insertCuentasCredoEncabezadoGT" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
+							//"Error de counstring  " + e.getMessage());
 				}
 			}
 
 			if (contador > 0) {
-				Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
-						"Script ejecutado correctamente insert credomatic " + contador);
+				log.debug("insertCuentasCredoEncabezadoGT" + " - Script ejecutado correctamente insert credomatic: " + contador);
+				//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
+						//"Script ejecutado correctamente insert credomatic " + contador);
 				result = true;
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertCuentasCredoEncabezadoGT" + "error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (ps != null)
@@ -988,7 +1064,8 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 				if (con != null)
 					con.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("insertCuentasCredoEncabezadoGT" + "error", e);
+				//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 
@@ -1006,12 +1083,14 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 		Connection con = null;
 		int contador = 0;
 		CBEstadoCuentasModel objModel = null;
-
-		System.out.println("entra al metodo para insertar detalle credo " + list.size());
+		log.debug("insertCuentasCredoDet" + " - entra al metodo para insertar detalle credo " + list.size());
+		
 		try {
 			con = obtenerDtsPromo().getConnection();
 			ps = con.prepareStatement(ConsultasSQ.INSERT_CREDO_DET_SQ);
-			System.out.println("tama�o de lista: " + list.size());
+			log.debug("insertCuentasCredoDet" + " - query " + ConsultasSQ.INSERT_CREDO_DET_SQ);
+			log.debug("insertCuentasCredoDet" + " - tama�o de lista: " + list.size());
+			
 			Iterator<CBEstadoCuentasModel> it = list.iterator();
 
 			while (it.hasNext()) {
@@ -1039,26 +1118,30 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 			}
 			ps.executeBatch();
 			if (contador > 0) {
-				System.out.println("Insert ejecutado correctamente, registros guardados = : " + contador);
+				log.debug("insertCuentasCredoDet" + " - Insert ejecutado correctamente, registros guardados = : " + contador);
+				
 
 				result = true;
 
 			}
 
 		} catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertCuentasCredoDet" + "error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertCuentasCredoDet" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertCuentasCredoDet" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 
@@ -1090,7 +1173,8 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 
 			con = obtenerDtsPromo().getConnection();
 			CBEstadoCuentasModel objModel = null;
-			System.out.println("tama�o de lista: " + list.size());
+			log.debug("insertCuentasCredoDetGT" + " - tama�o de lista: " + list.size());
+			
 			if (list.size() == 0) {
 				return true;
 			}
@@ -1102,7 +1186,8 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 				try {
 					contador++;
 					ps = con.prepareStatement(INSERT_CREDO_DET_GT_SQ);
-
+					log.debug("insertCuentasCredoDetGT" + " - query: " + INSERT_CREDO_DET_GT_SQ);
+					
 					ps.setInt(1, objModel.getCbestadocuentaconfid());
 					ps.setInt(2, objModel.getCbestadocuentaarchivosid());
 					ps.setString(3, objModel.getAfilicacion());
@@ -1126,20 +1211,24 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 				} catch (Exception e) {
 					ps.close();
 					ps = null;
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
-							"Error de counstring  " + e.getMessage());
+					log.error("insertCuentasCredoDetGT" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
+						//	"Error de counstring  " + e.getMessage());
 				}
 			}
 
 			if (contador > 0) {
-				Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
-						"Script ejecutado correctamente insert credo detalle " + contador);
+				log.debug("insertCuentasCredoDetGT" + " - Script ejecutado correctamente insert credo detalle " + contador);
+				//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
+						//"Script ejecutado correctamente insert credo detalle " + contador);
 				result = true;
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertCuentasCredoDetGT" + "error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} catch (Exception e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertCuentasCredoDetGT" + "error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (ps != null)
@@ -1147,7 +1236,8 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 				if (con != null)
 					con.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("insertCuentasCredoDetGT" + "error", e);
+				//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 
@@ -1168,6 +1258,7 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 			con = obtenerDtsPromo().getConnection();
 
 			ps = con.prepareStatement(ConsultasSQ.INSERT_TABLE_ARCHIVOS);
+			log.debug("insertTableArchivos" + " - query: " + ConsultasSQ.INSERT_TABLE_ARCHIVOS);
 			ps.setInt(1, objModel.getCbestadocuentaarchivosid());
 			ps.setInt(2, objModel.getCbestadocuentaconfid());
 			ps.setString(3, objModel.getNombrearchivos());
@@ -1175,19 +1266,22 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 			ps.setString(5, objModel.getUsuario());
 			result = ps.executeUpdate();
 		} catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertTableArchivos" + "error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertTableArchivos" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertTableArchivos" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 
@@ -1210,8 +1304,9 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 			con = obtenerDtsPromo().getConnection();
 			ps = con.prepareStatement(ConsultasSQ.INSERT_SOCIEDAD_SQ);
 			Iterator<CBEstadoCuentasModel> it = list.iterator();
-			System.out.println("entra al metodo para insertar sociedad " + list.size());
-			System.out.println("INSERT SOCIEDAD = " + ConsultasSQ.INSERT_SOCIEDAD_SQ);
+			log.debug("insertCuentaSociedad" + " - entra al metodo para insertar sociedad " + list.size());
+			log.debug("insertCuentaSociedad" + " - INSERT SOCIEDAD = " + ConsultasSQ.INSERT_SOCIEDAD_SQ);
+			
 			while (it.hasNext()) {
 				objModel = it.next();
 				System.out.println("insertando" + objModel.getNumdocumento());
@@ -1284,24 +1379,28 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 			}
 			ps.executeBatch();
 			if (contador > 0) {
-				System.out.println("Insert ejecutado correctamente, registros guardados = : " + contador);
+				log.debug("insertCuentaSociedad" + " - Insert ejecutado correctamente, registros guardados = : " + contador);
+				
 
 				result = true;
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertCuentaSociedad" + "error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertCuentaSociedad" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertCuentaSociedad" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return result;
@@ -1324,19 +1423,23 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 			con = obtenerDtsPromo().getConnection();
 
 			ps = con.prepareStatement(ConsultasSQ.INSERT_SISTEMACOMERCIAL_SQ);
+			log.debug("insertCuentaComercial" + " - query = " + ConsultasSQ.INSERT_SISTEMACOMERCIAL_SQ);
 			Iterator<CBPagosModel> it = list.iterator();
 
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
-					"INSERT SISTEMA COMERCIAL = " + ConsultasSQ.INSERT_SISTEMACOMERCIAL_SQ);
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
-					"Cantidad de registros antes del insert: " + list.size());
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
+					//"INSERT SISTEMA COMERCIAL = " + ConsultasSQ.INSERT_SISTEMACOMERCIAL_SQ);
+			log.debug("insertCuentaComercial" + " - Cantidad de registros antes del insert: " + list.size());
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO,
+					//"Cantidad de registros antes del insert: " + list.size());
 
 			while (it.hasNext()) {
 				objModel = it.next();
 
 				if ("0".equals(objModel.getFecEfectividad()) || "0".equals(objModel.getFecha())) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO, "datos ingresados para fecha "
+					log.debug("insertCuentaComercial" + " - datos ingresados para fecha "
 							+ objModel.getFecEfectividad() + "   " + objModel.getFecha());
+				//	Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.INFO, "datos ingresados para fecha "
+						//	+ objModel.getFecEfectividad() + "   " + objModel.getFecha());
 				}
 
 				ps.setString(1, objModel.getFecEfectividad());
@@ -1422,25 +1525,29 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 
 			ps.executeBatch();
 			if (exitosas > 0) {
-				System.out.println("Insert ejecutado correctamente, registros guardados = : " + exitosas);
+				log.debug("insertCuentaComercial" + " - Insert ejecutado correctamente, registros guardados = :" + exitosas);
+				
 
 				result = true;
 			}
 
 		} catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertCuentaComercial" + "error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertCuentaComercial" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertCuentaComercial" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return result;
@@ -1456,24 +1563,29 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 		try {
 			con = obtenerDtsPromo().getConnection();
 			cst = con.prepareCall("{CALL CB_CONCILIACION_CAJAS_PKG.cb_depositos_cuenta_sp()}");
+			
 			int exec = cst.executeUpdate();
 			if (exec > 0) {
 				result = true;
+				log.debug("ejecutaSPExtracto" + " - CB_CONCILIACION_CAJAS_PKG.cb_depositos_cuenta_sp" + result);
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("ejecutaSPExtracto" + "error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (cst != null)
 				try {
 					cst.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("ejecutaSPExtracto" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("ejecutaSPExtracto" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return result;
@@ -1489,11 +1601,14 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			cStmt = con.prepareCall("{CALL CB_CONCILIACION_CAJAS_PKG.CB_CONCILIA_VISA_SP()}");
+			
 			if (cStmt.executeUpdate() > 0) {
 				result = true;
+				log.debug("ejecutaSPBancoNacional" + " - CB_CONCILIACION_CAJAS_PKG.CB_CONCILIA_VISA_SP" + result);
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("ejecutaSPBancoNacional" + "error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (cStmt != null)
@@ -1501,7 +1616,8 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("ejecutaSPBancoNacional" + "error", e);
+				//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -1517,24 +1633,29 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 		try {
 			con = obtenerDtsPromo().getConnection();
 			cst = con.prepareCall("{CALL CB_CONCILIACION_CAJAS_PKG.CB_CONCILIA_VISA_SP()}");
+			
 			int exec = cst.executeUpdate();
 			if (exec > 0) {
 				result = true;
+				log.debug("ejecutaSPVisa" + " - CB_CONCILIACION_CAJAS_PKG.CB_CONCILIA_VISA_SP" + result);
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("ejecutaSPVisa" + "error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (cst != null)
 				try {
 					cst.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("ejecutaSPVisa" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("ejecutaSPVisa" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return result;
@@ -1553,24 +1674,29 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 		try {
 			con = obtenerDtsPromo().getConnection();
 			cst = con.prepareCall("{CALL CB_CONCILIACION_CAJAS_PKG.CB_CONCILIA_CRED_SP()}");
+			
 			int exec = cst.executeUpdate();
 			if (exec > 0) {
 				result = true;
+				log.debug("ejecutaSPCredomatic" + " - CB_CONCILIACION_CAJAS_PKG.CB_CONCILIA_CRED_SP" + result);
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("ejecutaSPCredomatic" + "error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (cst != null)
 				try {
 					cst.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("ejecutaSPCredomatic" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("ejecutaSPCredomatic" + "error", e);
+					//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return result;
@@ -1583,13 +1709,15 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 	 */
 	public double changeString(String cadena) {
 		double result = 0.00;
-		System.out.println("string: " + cadena);
+		log.debug("changeString" + " - string: " + cadena);
+		
 		try {
 			if (cadena != null && !"".equals(cadena.trim())) {
 				result = Double.parseDouble(cadena.replace(",", ""));
 			}
 		} catch (NumberFormatException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("changeString" + "error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		}
 		return result;
 	}
@@ -1610,7 +1738,8 @@ public class CBEstadoCuentaDAO extends ControladorBase {
 				result = cadena.trim().replace(",", "");
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("changeFormtatNumber" + "error", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		}
 		return result;
 	}

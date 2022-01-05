@@ -1,11 +1,12 @@
 package com.terium.siccam.controller;
 
 import java.util.ArrayList;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -27,6 +28,7 @@ import com.terium.siccam.dao.CBCatalogoAgenciaDAO;
 import com.terium.siccam.dao.CBConciliacionCajasDAO;
 import com.terium.siccam.dao.CBConfiguracionConexionDao;
 import com.terium.siccam.dao.CBConfiguracionConfrontaDaoB;
+import com.terium.siccam.dao.CBEstadoCuentaDAO;
 import com.terium.siccam.dao.CBParametrosGeneralesDAO;
 import com.terium.siccam.model.CBConciliacionCajasModel;
 import com.terium.siccam.model.CBConfiguracionConModel;
@@ -38,6 +40,8 @@ import com.terium.siccam.utils.Constantes;
  * @author Carlos Godinez - 16/10/2017
  * */
 public class CBAsociacionConfrontasController extends ControladorBase  {
+	
+	private static Logger log = Logger.getLogger(CBAsociacionConfrontasController.class);
 	private static final long serialVersionUID = 9176164927878418930L;
 	
 	Combobox cmbConfConfronta;
@@ -83,13 +87,16 @@ public class CBAsociacionConfrontasController extends ControladorBase  {
 	public void doAfterCompose(Component param) {
 		try{
 			super.doAfterCompose(param);
-			Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.INFO,
-					"\n*** Entra a modal de asociacion de confrontas ***\n");
+			log.debug("doAfterCompose" + " - \n*** Entra a modal de asociacion de confrontas ***\n");
+			//Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.INFO,
+					//"\n*** Entra a modal de asociacion de confrontas ***\n");
 			idAgrupacion = (String)session.getAttribute("idBanco");
 			idEntidad = (String)session.getAttribute("idAgencia");
 			idbancoagenciaconfronta = 0;
-			Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.INFO,"ID Banco = " + idAgrupacion);
-			Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.INFO,"ID Agencia seleccionado = " + idEntidad);
+			log.debug("doAfterCompose" + " - ID Banco = " + idAgrupacion);
+			//Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.INFO,"ID Banco = " + idAgrupacion);
+			log.debug("doAfterCompose" + " - ID Agencia seleccionado = " + idEntidad);
+			//Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.INFO,"ID Agencia seleccionado = " + idEntidad);
 			metodosDeInicio();
 			btnGuardar.setDisabled(false);
 			btnModificar.setDisabled(true);
@@ -98,7 +105,8 @@ public class CBAsociacionConfrontasController extends ControladorBase  {
 			cmbConfrontaPadre.setValue("SIN ASOCIAR");
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
+			log.error("doAfterCompose" + "error", e);
+			//Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
 		}
 	}
 	
@@ -210,7 +218,8 @@ public class CBAsociacionConfrontasController extends ControladorBase  {
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
+			log.error("onClick$btnGuardar"+ "error", e);
+			//Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
 		}
 	}
 	
@@ -302,7 +311,8 @@ public class CBAsociacionConfrontasController extends ControladorBase  {
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
+			log.error("onClick$btnModificar"+ "error", e);
+			//Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
 		}
 	}
 	
@@ -346,7 +356,8 @@ public class CBAsociacionConfrontasController extends ControladorBase  {
 			//txtAfiliacion.setText("0");
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
+			log.error("onClick$btnLimpiar"+ "error", e);
+			//Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
 		}
 	}
 	
@@ -388,7 +399,8 @@ public class CBAsociacionConfrontasController extends ControladorBase  {
 			
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
+			log.error("asociacionConfrontaValida"+ "error", e);
+			//Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
 		}
 		return resultado;
 	}
@@ -465,10 +477,12 @@ public class CBAsociacionConfrontasController extends ControladorBase  {
 				item.setAttribute("objSelected", data);
 				item.addEventListener(Events.ON_CLICK, evtSelectedItem);
 			} 
-			Logger.getLogger(CBAsociacionConfrontasController.class.getName())
-				.log(Level.INFO,"- Llena de listbox de confrontas asignadas");
+			log.debug("llenaListbox"+ "Llena de listbox de confrontas asignadas");
+			//Logger.getLogger(CBAsociacionConfrontasController.class.getName())
+				//.log(Level.INFO,"- Llena de listbox de confrontas asignadas");
 		} catch (Exception e) {
-			Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
+		//	Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
+			log.error("llenaListbox"+ "error"+ e);
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -483,7 +497,8 @@ public class CBAsociacionConfrontasController extends ControladorBase  {
 				session.setAttribute("idUnionConfronta", event.getTarget().getAttribute("idBancoAgenciaConfronta"));
 				Executions.createComponents("/agenciaComercial.zul",null,null);
 			} catch (Exception e) {
-				Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
+				log.error("evtAgenciaComercial"+ "error"+ e);
+				//Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
 			}
 		}
 	};
@@ -499,7 +514,8 @@ public class CBAsociacionConfrontasController extends ControladorBase  {
 				session.setAttribute("idUnionConfronta", event.getTarget().getAttribute("idBancoAgenciaConfronta"));
 				Executions.createComponents("/cbAsignaImpuestosConfronta.zul",null,null);
 			} catch (Exception e) {
-				Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
+				log.error("evtAsignacionImpuestosConfrontas"+ "error"+ e);
+				//Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
 			}
 		}
 	};
@@ -515,8 +531,9 @@ public class CBAsociacionConfrontasController extends ControladorBase  {
 		public void onEvent(Event event) {
 			try {
 				int idFila = Integer.parseInt(event.getTarget().getAttribute("idEliminar").toString());
-				Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.INFO,
-						"Id de asociacion de confronta a verificar antes de eliminar = " + idFila);
+				log.debug("evtEliminar"+ "Id de asociacion de confronta a verificar antes de eliminar = " + idFila);
+				//Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.INFO,
+						//"Id de asociacion de confronta a verificar antes de eliminar = " + idFila);
 				CBBancoAgenciaConfrontaDAO objDAO = new CBBancoAgenciaConfrontaDAO();
 				if (objDAO.cantidadRegistrosConciliacion(idFila) > 0) {
 					Messagebox.show("No se puede eliminar una asociación de confronta que posea registros de conciliación.",
@@ -525,7 +542,8 @@ public class CBAsociacionConfrontasController extends ControladorBase  {
 					eliminarAsociacionConfronta(idFila);
 				}
 			} catch (Exception e) {
-				Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("evtEliminar"+ "error"+ e);
+			//	Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE, null, e);
 				Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 			}
 		}
@@ -533,8 +551,9 @@ public class CBAsociacionConfrontasController extends ControladorBase  {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void eliminarAsociacionConfronta(final int idFila) {
-		Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.INFO,
-				"ID configuracion confronta a eliminar = " + idFila);
+		log.debug("eliminarAsociacionConfronta"+ "ID configuracion confronta a eliminar = " + idFila);
+		//Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.INFO,
+				//"ID configuracion confronta a eliminar = " + idFila);
 		Messagebox.show(
 				"¿Desea eliminar la asociación de confronta seleccionada y todas sus agencias comerciales configuradas?",
 				"CONFIRMACION", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION, new EventListener() {
@@ -619,7 +638,8 @@ public class CBAsociacionConfrontasController extends ControladorBase  {
 				txtNombreBusqueda.setText(objSeleccionado.getPalabraArchivo());
 				txtPathArchivo.setText(objSeleccionado.getPathFtp());
 			} catch (Exception e) {
-				Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
+				log.error("evtSelectedItem" + "error", e);
+			//	Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
 			}
 		}
 	};
@@ -638,10 +658,12 @@ public class CBAsociacionConfrontasController extends ControladorBase  {
 				item.setValue(d.getcBConfiguracionConfrontaId());
 				item.setLabel(d.getNombre());
 			} 
-			Logger.getLogger(CBAsociacionConfrontasController.class.getName())
-				.log(Level.INFO,"- Llena combo de confrontas");
+			log.debug("llenaComboConfrontas" + "Llena combo de confrontas");
+			//Logger.getLogger(CBAsociacionConfrontasController.class.getName())
+				//.log(Level.INFO,"- Llena combo de confrontas");
 		} catch (Exception e) {
-			Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
+			log.error("llenaComboConfrontas" + "error", e);
+			//Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
 		}
 	}
 	
@@ -724,10 +746,12 @@ public class CBAsociacionConfrontasController extends ControladorBase  {
 				item.setValue(d.getValorObjeto1());
 				item.setLabel(d.getObjeto());
 			} 
-			Logger.getLogger(CBAsociacionConfrontasController.class.getName())
-				.log(Level.INFO,"- Llena combo tipo");
+			log.debug("llenaComboTipo" + "Llena combo tipo");
+			//Logger.getLogger(CBAsociacionConfrontasController.class.getName())
+				//.log(Level.INFO,"- Llena combo tipo");
 		} catch (Exception e) {
-			Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
+			log.error("llenaComboTipo" + "error", e);
+			//Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
 		}
 	}
 	
@@ -760,10 +784,12 @@ public class CBAsociacionConfrontasController extends ControladorBase  {
 				item.setValue(d.getValorObjeto1());
 				item.setLabel(d.getObjeto());
 			} 
-			Logger.getLogger(CBAsociacionConfrontasController.class.getName())
-				.log(Level.INFO,"- Llena combo de estado ");
+			log.debug("llenaComboEstado" + "Llena combo de estado ");
+			//Logger.getLogger(CBAsociacionConfrontasController.class.getName())
+				//.log(Level.INFO,"- Llena combo de estado ");
 		} catch (Exception e) {
-			Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
+			log.error("llenaComboEstado" + "error", e);
+			//Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
 		}
 	}
 	
@@ -778,10 +804,12 @@ public class CBAsociacionConfrontasController extends ControladorBase  {
 				item.setValue(d.getIdConexionConf());
 				item.setLabel(d.getNombre());
 			} 
-			Logger.getLogger(CBAsociacionConfrontasController.class.getName())
-				.log(Level.INFO,"- Llena combo de conexiones");
+			log.debug("llenaComboConexiones" + "Llena combo de conexiones");
+			//Logger.getLogger(CBAsociacionConfrontasController.class.getName())
+				//.log(Level.INFO,"- Llena combo de conexiones");
 		} catch (Exception e) {
-			Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
+			log.error("llenaComboConexiones" + "error", e);
+			//Logger.getLogger(CBAsociacionConfrontasController.class.getName()).log(Level.SEVERE,null,e);
 		}
 	}
 	

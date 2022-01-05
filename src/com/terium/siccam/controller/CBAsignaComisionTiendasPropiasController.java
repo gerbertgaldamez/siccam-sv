@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 
@@ -24,6 +26,7 @@ import org.zkoss.zul.Textbox;
 
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBAsignaImpuestosTiendasPropiasDAO;
+import com.terium.siccam.dao.CBEstadoCuentaDAO;
 import com.terium.siccam.model.CBAsignaImpuestosModel;
 import com.terium.siccam.model.CBBancoAgenciaAfiliacionesModel;
 import com.terium.siccam.model.CBParametrosGeneralesModel;
@@ -31,6 +34,8 @@ import com.terium.siccam.model.CBTipologiasPolizaModel;
 import com.terium.siccam.utils.Constantes;
 
 public class CBAsignaComisionTiendasPropiasController extends ControladorBase {
+	
+	private static Logger log = Logger.getLogger(CBAsignaComisionTiendasPropiasController.class);
 
 	/**
 	 * creador ovidio santos
@@ -75,8 +80,9 @@ public class CBAsignaComisionTiendasPropiasController extends ControladorBase {
 		
 		idcatalogobanco = (Integer.valueOf(misession.getAttribute("idcatalogobanco").toString()));
 
-		Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
-				"ID banco agencia confronta enviado para configuracion asigna impuesto = ", bancoAgenciaAfiliacionesId);
+		log.debug("doAfterCompose"+ " - ID banco agencia confronta enviado para configuracion asigna impuesto = "+ bancoAgenciaAfiliacionesId);
+		//Logger.getLogger(CBAgenciaComercialController.class.getName()).log(Level.INFO,
+			//	"ID banco agencia confronta enviado para configuracion asigna impuesto = ", bancoAgenciaAfiliacionesId);
 
 		btnModificar.setDisabled(true);
 		btnTienda.setDisabled(true);
@@ -105,7 +111,8 @@ public class CBAsignaComisionTiendasPropiasController extends ControladorBase {
 	private List<CBParametrosGeneralesModel> listaImpuestos = new ArrayList<CBParametrosGeneralesModel>();
 
 	public void llenaComboTipoImpuesto() {
-		Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO, "Llena combo tipo IMPUESTO");
+		log.debug("llenaComboTipoImpuesto"+ " - Llena combo tipo IMPUESTO");
+		//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO, "Llena combo tipo IMPUESTO");
 		limpiarCombobox(cmbTipoImpuesto);
 		CBAsignaImpuestosTiendasPropiasDAO objeDAO = new CBAsignaImpuestosTiendasPropiasDAO();
 		this.listaImpuestos = objeDAO.obtenerImpuestos("CARGO_TIENDA");
@@ -120,7 +127,8 @@ public class CBAsignaComisionTiendasPropiasController extends ControladorBase {
 	private List<CBParametrosGeneralesModel> listaTipo = new ArrayList<CBParametrosGeneralesModel>();
 
 	public void llenaComboTipo() {
-		Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO, "Llena combo tipo");
+		log.debug("llenaComboTipo"+ " - Llena combo tipo");
+		//Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO, "Llena combo tipo");
 		limpiarCombobox(cmbTipo);
 		CBAsignaImpuestosTiendasPropiasDAO objeDAO = new CBAsignaImpuestosTiendasPropiasDAO();
 		this.listaTipo = objeDAO.obtenertipo("TIPO_TIENDA");
@@ -135,8 +143,9 @@ public class CBAsignaComisionTiendasPropiasController extends ControladorBase {
 	private List<CBParametrosGeneralesModel> listaMedioDePago = new ArrayList<CBParametrosGeneralesModel>();
 
 	public void llenaComboMedioDePago() {
-		Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
-				"Llena combo medio de pago");
+		log.debug("llenaComboMedioDePago"+ " -Llena combo medio de pago");
+		//Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
+			//	"Llena combo medio de pago");
 		limpiarCombobox(cmbMedioDePago);
 		CBAsignaImpuestosTiendasPropiasDAO objeDAO = new CBAsignaImpuestosTiendasPropiasDAO();
 		this.listaMedioDePago = objeDAO.obtenerMedioDePago("MEDIO_PAGO_TIENDA");
@@ -151,8 +160,9 @@ public class CBAsignaComisionTiendasPropiasController extends ControladorBase {
 	private List<CBTipologiasPolizaModel> listaTipologias = new ArrayList<CBTipologiasPolizaModel>();
 
 	public void llenaComboTipologias() {
-		Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
-				"Llena combo tipologia");
+		log.debug("llenaComboTipologias"+ " -Llena combo tipologia");
+		//Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
+				//"Llena combo tipologia");
 		limpiarCombobox(cmbTipologia);
 		CBAsignaImpuestosTiendasPropiasDAO objeDAO = new CBAsignaImpuestosTiendasPropiasDAO();
 		this.listaTipologias = objeDAO.obtenerTipologias();
@@ -167,8 +177,9 @@ public class CBAsignaComisionTiendasPropiasController extends ControladorBase {
 	private List<CBParametrosGeneralesModel> listaFormaDePago = new ArrayList<CBParametrosGeneralesModel>();
 
 	public void llenaComboFormaDePago() {
-		Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
-				"Llena combo forma de pago");
+		log.debug("llenaComboFormaDePago"+ " -Llena combo forma de pago");
+		//Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
+			//	"Llena combo forma de pago");
 		limpiarCombobox(cmbFormaDePago);
 		CBAsignaImpuestosTiendasPropiasDAO objeDAO = new CBAsignaImpuestosTiendasPropiasDAO();
 		this.listaFormaDePago = objeDAO.obtenerformaDePago("FORMA_PAGO_TIENDA");
@@ -219,8 +230,9 @@ public class CBAsignaComisionTiendasPropiasController extends ControladorBase {
 			objModel.setValor(txtValor.getText().trim());
 			objModel.setBancoagenciaafiliacionesid(bancoAgenciaAfiliacionesId);
 
-			Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
-					"PARAM tipologias", objModel.getTipologias());
+			log.debug("onClick$btnNuevo"+ " -PARAM tipologias"+ objModel.getTipologias());
+			//Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
+					//"PARAM tipologias", objModel.getTipologias());
 			if (objDAO.insertImpuestos(objModel)) {
 				Messagebox.show("Se creo el registro con exito", Constantes.ATENCION, Messagebox.OK,
 						Messagebox.INFORMATION);
@@ -272,8 +284,9 @@ public class CBAsignaComisionTiendasPropiasController extends ControladorBase {
 
 				objModel.setBancoagenciaafiliacionesid(bancoAgenciaAfiliacionesId);
 
-				Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
-						"el id a modificar es ", idseleccionado);
+				log.debug("onClick$btnModificar"+ " -el id a modificar es "+ idseleccionado);
+				//Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
+						//"el id a modificar es ", idseleccionado);
 				if (objDAO.modificaImpuestos(objModel, idseleccionado)) {
 
 					Messagebox.show("Se actualizo el registro", Constantes.ATENCION, Messagebox.OK,
@@ -357,7 +370,8 @@ public class CBAsignaComisionTiendasPropiasController extends ControladorBase {
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error", Constantes.ATENCION, Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnConsultar" + "error", e);
+			//Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -379,15 +393,18 @@ public class CBAsignaComisionTiendasPropiasController extends ControladorBase {
 						list2.add(objModel);
 					}
 				
-				Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
-						"**** lista 2: ****" + list2.size());
-				Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
-						"**** lista 3: ****" + list3.size());
+					log.debug("onClick$btnTienda" + " - **** lista 2: ****" + list2.size());
+				//Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
+						//"**** lista 2: ****" + list2.size());
+					log.debug("onClick$btnTienda" + " - **** lista 3: ****" + list3.size());
+				//Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
+						//"**** lista 3: ****" + list3.size());
 				
 			
+					log.debug("onClick$btnTienda" + " - **** Se asigna tiendas de la misma entidad****");
 		
-				Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
-						"**** Se asigna tiendas de la misma entidad****");
+				//Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
+						//"**** Se asigna tiendas de la misma entidad****");
 
 				Messagebox.show(
 						"Se aplicara estos registros para todas los tiendas de esta entidad, ¿desea continuar con la operación?",
@@ -395,8 +412,9 @@ public class CBAsignaComisionTiendasPropiasController extends ControladorBase {
 							public void onEvent(Event event) throws Exception {
 								if (((Integer) event.getData()).intValue() == Messagebox.YES) {
 									if (cbaDao.eliminarImpuestosmasivo(list3)) {
-										Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
-												"**** Se eliminan las configuraciones de tiendas antiguas ****");
+										log.debug("onClick$btnTienda" + " - **** Se eliminan las configuraciones de tiendas antiguas ****");
+										//Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
+											//	"**** Se eliminan las configuraciones de tiendas antiguas ****");
 									}
 									
 									int resultado = cbaDao.asignarTiendasmasivos(list2,list3);
@@ -422,7 +440,8 @@ public class CBAsignaComisionTiendasPropiasController extends ControladorBase {
 			}
 
 		} catch (Exception e) {
-			Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnTienda" + "error", e);
+			//Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -442,21 +461,25 @@ public class CBAsignaComisionTiendasPropiasController extends ControladorBase {
 						list2.add(objModel);
 					}
 				
-			Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
-					"**** lista 2: ****" + list2.size());
-			Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
-					"**** lista 3: ****" + list3.size());
+					log.debug("onClick$btnTiendaTodos" + " - **** lista 2: ****" + list2.size());
+			//Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
+					//"**** lista 2: ****" + list2.size());
+					log.debug("onClick$btnTiendaTodos" + " - **** lista 3: ****" + list3.size());
+			//Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
+					//"**** lista 3: ****" + list3.size());
 	
-				Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
-						"**** Se asigna tiendas masiva para toda la agrupacion ****");
+					log.debug("onClick$btnTiendaTodos" + " - **** Se asigna tiendas masiva para toda la agrupacion ****");
+				//Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
+					//	"**** Se asigna tiendas masiva para toda la agrupacion ****");
 				Messagebox.show(
 						"Se aplicara estos registros para todas las tiendas de esta agrupacion, ¿desea continuar con la operación?",
 						"CONFIRMACION", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION, new EventListener() {
 							public void onEvent(Event event) throws Exception {
 								if (((Integer) event.getData()).intValue() == Messagebox.YES) {
 									if (cbaDao.eliminarImpuestosmasivo(list3)) {
-										Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
-												"**** Seeliminan las configuraciones de tiendas antiguas ****");
+										log.debug("onClick$btnTiendaTodos" + " - **** Seeliminan las configuraciones de tiendas antiguas ****");
+										//Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
+												//"**** Seeliminan las configuraciones de tiendas antiguas ****");
 									}
 									int resultado = cbaDao.asignarTiendasmasivos(list2,list3);
 									if (resultado > 0) {
@@ -481,7 +504,8 @@ public class CBAsignaComisionTiendasPropiasController extends ControladorBase {
 			}
 
 		} catch (Exception e) {
-			Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnTiendaTodos" + " error", e);
+			//Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 
@@ -580,14 +604,16 @@ public class CBAsignaComisionTiendasPropiasController extends ControladorBase {
 	public void llenaListbox(List<CBAsignaImpuestosModel> list) {
 		limpiarListbox(lbxConsultaImpuesto);
 
-		Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
-				"cantidad de registros ", list.size());
+		log.debug("llenaListbox" + " cantidad de registros "+ list.size());
+		//Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
+				//"cantidad de registros ", list.size());
 
 		if (list.isEmpty()) {
 			//btnTienda.setDisabled(false);
 			//btnTiendaTodos.setDisabled(false);
-			Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
-					"La lista viene vacia!");
+			log.debug("llenaListbox" + " La lista viene vacia!");
+			//Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
+					//"La lista viene vacia!");
 		} else {
 
 			//btnTienda.setDisabled(true);
@@ -682,8 +708,9 @@ public class CBAsignaComisionTiendasPropiasController extends ControladorBase {
 					.getAttribute("objmodificar");
 			idseleccionado = (Integer) arg0.getTarget().getAttribute("idseleccionado");
 
-			Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
-					"id seleccioando ", idseleccionado);
+			log.debug("eventBtnModificar" + " id seleccioando "+ idseleccionado);
+			//Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
+					//"id seleccioando ", idseleccionado);
 
 			for (Comboitem item : cmbTipoImpuesto.getItems()) {
 				if (item.getValue().equals(objmodificar.getImpuestoid())) {
@@ -727,8 +754,9 @@ public class CBAsignaComisionTiendasPropiasController extends ControladorBase {
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public void onEvent(Event event) throws Exception {
 			final int idseleccionado = Integer.parseInt(event.getTarget().getAttribute("idEliminar").toString());
-			Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
-					"ID  a eliminar = ", idseleccionado);
+			log.debug("eventBtnEliminar" + " ID  a eliminar = "+ idseleccionado);
+			//Logger.getLogger(CBAsignaComisionTiendasPropiasController.class.getName()).log(Level.INFO,
+					//"ID  a eliminar = ", idseleccionado);
 			Messagebox.show("¿Desea eliminar el registro seleccionado?", Constantes.CONFIRMACION,
 					Messagebox.YES | Messagebox.NO, Messagebox.QUESTION, new EventListener() {
 						public void onEvent(Event event) throws Exception {

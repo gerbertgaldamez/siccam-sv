@@ -207,6 +207,7 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 
 			}
 		} catch (Exception e) {
+			logger.error("onClick$btnCargaEstados() - Error ", e);
 			Messagebox.show("Se ha producido un error al cargar el archivo.", Constantes.ATENCION, Messagebox.OK,
 					Messagebox.ERROR);
 			if (media != null)
@@ -214,7 +215,7 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 			else
 				cambiaEstadoMensaje(false, "Archivo desconocido o no cargado");
 
-			logger.debug("onClick$btnCargaEstados() - Error ", e);
+			logger.error("onClick$btnCargaEstados() - Error ", e);
 			// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 			// null, e);
 		}
@@ -264,11 +265,11 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 						}
 					}
 				} catch (NumberFormatException e) {
-					logger.debug("ingresaRegistro() - Error ", e);
+					logger.error("ingresaRegistro() - Error ", e);
 					// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 					// null, e);
 				} catch (ParseException e) {
-					logger.debug("ingresaRegistro() - Error ", e);
+					logger.error("ingresaRegistro() - Error ", e);
 					// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 					// null, e);
 				}
@@ -308,11 +309,11 @@ public class CBEstadoCuentasController extends ControladorBase implements Selecc
 						}
 					}
 				} catch (NumberFormatException e) {
-					logger.debug("ingresaRegistro() - Error ", e);
+					logger.error("ingresaRegistro() - Error ", e);
 					// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 					// null, e);
 				} catch (ParseException e) {
-					logger.debug("ingresaRegistro() - Error ", e);
+					logger.error("ingresaRegistro() - Error ", e);
 					// Logger.getLogger(CBEstadoCuentasController.class.getName()).log(Level.SEVERE,
 					// null, e);
 				}
