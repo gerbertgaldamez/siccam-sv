@@ -32,7 +32,7 @@ public class CBConciliacionCajasDAO extends ControladorBase{
 			*/
 	String CONSULTA_CAJEROS = "select CBCATALOGOBANCOID,ENTIDAD, CBCATALOGOAGENCIAID, AGENCIA,  TO_CHAR (FECHA, 'dd/MM/yyyy'), CAJA_EFECTIVO, CAJA_CHEQUE, CAJA_EXENSIONES, CAJA_CUOTAS_VISA, CAJA_CUOTAS_CREDOMATIC, CAJA_TARJETA_CREDOMATIC, CAJA_TARJETA_OTRAS," + 
 			"CAJA_TARJETA_VISA, SC_EFECTIVO, SC_PAGOSOD, SC_PAGOSOM, SC_REVERSASOD, SC_REVERSASOM, TOTAL_DIA,CAJA_TOTAL, CONSUMO_CREDOMATIC,  RETENCION_CREDOMATIC, ESTADO_CRED, CONSUMO_VISA,IVA_VISA, ESTADO_VISA, DEPOSITO, TOTAL_EC, " + 
-			"DIFERENCIA,IVA, RETENCION, COMISION from CB_CONCILIACION_CAJAS_VS_VW    WHERE 1 = 1 ";
+			"DIFERENCIA, COMISION, RETENCION, IVA from CB_CONCILIACION_CAJAS_VS_VW    WHERE 1 = 1 ";
 	/**
 	 * Obtenemos el listado de la vista
 	 * @param entidad agencia fechaini fechafin idbanco
@@ -98,9 +98,10 @@ public class CBConciliacionCajasDAO extends ControladorBase{
 				 obj.setDeposito(rs.getDouble(27));
 				 obj.setTotalec(rs.getDouble(28));
 				 obj.setDiferencia(rs.getDouble(29));
-				 obj.setIva(rs.getDouble(30));
-				 obj.setComision(rs.getDouble(31));
-				 obj.setRetencion(rs.getDouble(32));
+				 obj.setComision(rs.getDouble(30));
+				 obj.setRetencion(rs.getDouble(31));
+				 obj.setIva(rs.getDouble(32));
+				
 	
 				 list.add(obj);
 			}

@@ -1322,6 +1322,7 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 								break;
 							case 5:
 								objCredo.setComisionIva(Double.parseDouble(registro.trim()));
+								log.debug("valor del comision iva  "+ registro);
 								break;
 							case 6:
 								objCredo.setRetencionD(Double.parseDouble(registro.trim()));
@@ -1348,7 +1349,8 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 								objCredo.setSerieDCL(registro.trim());
 								break;
 							case 14:
-								objCredo.setDcl(Long.parseLong(registro.trim()));
+
+
 								break;
 							case 15:
 								objCredo.setNombreAfiliado(registro.trim());
