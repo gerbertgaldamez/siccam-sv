@@ -1,6 +1,7 @@
 package com.terium.siccam.controller;
 
 import java.io.BufferedWriter;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,8 +10,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -34,11 +35,14 @@ import com.terium.siccam.implement.CBRecargaListboxEntidadImpl;
 import com.terium.siccam.model.CBCatalogoAgenciaModel;
 import com.terium.siccam.model.CBCatalogoBancoModel;
 import com.terium.siccam.model.CBParametrosGeneralesModel;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 
 /**
  * @author Carlos Godinez - 16/10/2017
  */
 public class CBConsultaEntidadesController extends ControladorBase implements CBRecargaListboxEntidadImpl {
+	
+	private static Logger log = Logger.getLogger(CBConsultaEntidadesController.class);
 	private static final long serialVersionUID = 9176164927878418930L;
 
 	// Componentes
@@ -68,8 +72,10 @@ public class CBConsultaEntidadesController extends ControladorBase implements CB
 	public void doAfterCompose(Component param) {
 		try {
 			super.doAfterCompose(param);
-			Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.INFO,
-					"\n*** Entra a pantalla de consulta de entidades ***\n");
+			log.debug(
+					"doAfterCompose() - " + "\n*** Entra a pantalla de consulta de entidades ***\n");
+			//Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.INFO,
+					//"\n*** Entra a pantalla de consulta de entidades ***\n");
 			llenaComboAgrupaciones();
 			llenaComboEstado();
 			banderaEntidadSelected = false;
@@ -77,7 +83,8 @@ public class CBConsultaEntidadesController extends ControladorBase implements CB
 			llenaListbox(agrupacion, entidad, cuentaContable, estado, codigoColector, nit);
 			
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("doAfterCompose() - Error ", e);
+			//Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -97,7 +104,8 @@ public class CBConsultaEntidadesController extends ControladorBase implements CB
 				item.setValue(d.getCbcatalogobancoid());
 				item.setLabel(d.getNombre());
 			}
-			System.out.println("- Llena combo de agrupaciones");
+			log.debug("llenaComboAgrupaciones() - Llena combo de agrupaciones");
+			
 		}
 	}
 
@@ -111,7 +119,8 @@ public class CBConsultaEntidadesController extends ControladorBase implements CB
 				item.setValue(d.getValorObjeto1());
 				item.setLabel(d.getObjeto());
 			}
-			System.out.println("- Llena combo de estado");
+			log.debug("llenaComboEstado() - Llena combo de estado");
+			
 		}
 	}
 
@@ -126,7 +135,8 @@ public class CBConsultaEntidadesController extends ControladorBase implements CB
 			session.setAttribute("ifcEntidades", CBConsultaEntidadesController.this);
 			Executions.createComponents("/cbentidadmodal.zul", null, null);
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnNuevaEntidad() - Error ", e);
+			//Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -235,10 +245,13 @@ public class CBConsultaEntidadesController extends ControladorBase implements CB
 				item.addEventListener(Events.ON_CLICK, evtSelectedItem);
 				contador++;
 			}
-			Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,
-					"- Llena listbox de consulta general");
+			log.debug(
+					"llenaListbox() - " + " Llena listbox de consulta general");
+			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,
+					//"- Llena listbox de consulta general");
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("llenaListbox() - Error ", e);
+			//Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -265,7 +278,8 @@ public class CBConsultaEntidadesController extends ControladorBase implements CB
 				session.setAttribute("ifcEntidades", CBConsultaEntidadesController.this);
 				Executions.createComponents("/cbentidadmodal.zul", null, null);
 			} catch (Exception e) {
-				Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("evtDoubleClickItem() - Error ", e);
+				//Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 	};
@@ -279,15 +293,18 @@ public class CBConsultaEntidadesController extends ControladorBase implements CB
 			try {
 				banderaEntidadSelected = true;
 				CBCatalogoAgenciaModel obj = (CBCatalogoAgenciaModel) event.getTarget().getAttribute("objSelected");
-				Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,
-						"\n**** Entidad seleccionada ****\n");
+				log.debug(
+						"onClick$btnCargaEstados() - " + "\n**** Entidad seleccionada ****\n");
+				//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.INFO,
+						//"\n**** Entidad seleccionada ****\n");
 				session.setAttribute("idAgencia", obj.getcBCatalogoAgenciaId());
 				session.setAttribute("idBanco", obj.getcBCatalogoBancoId());
 				session.setAttribute("nombreBanco", obj.getNombreBanco());
 				session.setAttribute("nombreAgencia", obj.getNombre());
 
 			} catch (Exception e) {
-				Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("onClick$btnCargaEstados() - Error ", e);
+				//Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 	};
@@ -305,7 +322,8 @@ public class CBConsultaEntidadesController extends ControladorBase implements CB
 						Messagebox.EXCLAMATION);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnAsignarConfronta() - Error ", e);
+			//Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -318,7 +336,8 @@ public class CBConsultaEntidadesController extends ControladorBase implements CB
 						Messagebox.EXCLAMATION);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnSucursales() - Error ", e);
+			//Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -331,7 +350,8 @@ public class CBConsultaEntidadesController extends ControladorBase implements CB
 						Messagebox.EXCLAMATION);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnCajas() - Error ", e);
+			//Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -344,7 +364,8 @@ public class CBConsultaEntidadesController extends ControladorBase implements CB
 						Messagebox.EXCLAMATION);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnAfiliaciones() - Error ", e);
+			//Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -357,7 +378,8 @@ public class CBConsultaEntidadesController extends ControladorBase implements CB
 						Messagebox.EXCLAMATION);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnComisiones() - Error ", e);
+			//Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -408,14 +430,16 @@ public class CBConsultaEntidadesController extends ControladorBase implements CB
 						+ changeNull(registro.getCuentaContable()).trim() + "\n");
 			}
 
-			Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.INFO,
-					"Descarga exitosa del archivo generado...");
+			log.debug("onClick$btnExcel() Descarga exitosa del archivo generado...");
+			//Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.INFO,
+				//	"Descarga exitosa del archivo generado...");
 			Filedownload.save(archivo, null);
 			Messagebox.show("Reporte generado de manera exitosa, el archivo ha sido descargado", "ATENCIÓN",
 					Messagebox.OK, Messagebox.INFORMATION);
 			Clients.clearBusy();
 		} catch (IOException e) {
-			Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnExcel() - Error ", e);
+			//Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (bw != null)
 				bw.close();

@@ -1,6 +1,7 @@
 package com.terium.siccam.controller;
 
 import java.io.BufferedReader;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.text.DateFormat;
@@ -10,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import javax.servlet.http.HttpSession;
 
 import org.zkoss.util.media.Media;
@@ -39,9 +40,13 @@ import com.terium.siccam.model.CBCatalogoAgenciaModel;
 import com.terium.siccam.model.CBConsultaEstadoCuentasModel;
 import com.terium.siccam.model.CBEstadoCuentasModel;
 import com.terium.siccam.model.CBTipologiasPolizaModel;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 import com.terium.siccam.utils.Tools;
 
 public class CBEstadoCuentasTipologiaController extends ControladorBase {
+	
+	private static Logger log = Logger.getLogger(CBEstadoCuentasTipologiaController.class);
+	
 	private HttpSession misession = (HttpSession) Sessions.getCurrent().getNativeSession();
 	private static final long serialVersionUID = 9176164927878418930L;
 	// Propiedades agregadas por Carlos Godínez - Qitcorp 02/03/2017
@@ -86,8 +91,10 @@ public class CBEstadoCuentasTipologiaController extends ControladorBase {
 
 		// finalizan
 		listaID = (List<Integer>) misession.getAttribute("listaIDEstadoCuenta");
-		Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.INFO,
-				"Bandera desasociar tipología de manera masiva = " + desasociarTipologiaMasiva);
+		log.debug(
+				"doAfterCompose() - " + "Bandera desasociar tipología de manera masiva = " + desasociarTipologiaMasiva);
+		//Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.INFO,
+				//"Bandera desasociar tipología de manera masiva = " + desasociarTipologiaMasiva);
 
 		// btnSubirDepositos.setVisible(true);
 		tipologiaMasiva = Boolean.parseBoolean(misession.getAttribute("tipologiaMasiva").toString());
@@ -126,8 +133,10 @@ public class CBEstadoCuentasTipologiaController extends ControladorBase {
 		}
 		// lblMensaje.setValue("No se ha seleccionado ningun archivo de depósitos");
 		// imgEstatus.setSrc("img/negro.png");
-		Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.INFO,
-				"Bandera asignar tipología de manera masiva = " + tipologiaMasiva);
+		log.debug(
+				"doAfterCompose() - " + "Bandera asignar tipología de manera masiva = " + tipologiaMasiva);
+		//Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.INFO,
+				//"Bandera asignar tipología de manera masiva = " + tipologiaMasiva);
 
 	}
 
@@ -138,14 +147,22 @@ public class CBEstadoCuentasTipologiaController extends ControladorBase {
 			String fecha = objSeleccionado.getFechaIngresos();
 			String observaciones = objSeleccionado.getObservaciones();
 
-			Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.INFO,
-					"ID tipologia = " + objSeleccionado.getIdtipologia());
-			Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.INFO,
-					"ID agencia tipologia = " + objSeleccionado.getIdAgenciaTipologia());
-			Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.INFO,
-					"fecha = " + objSeleccionado.getFechaIngresos());
-			Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.INFO,
-					"observaciones = " + objSeleccionado.getObservaciones());
+			log.debug(
+					"obtenerValoresSeleccionados() - " + "ID tipologia = " + objSeleccionado.getIdtipologia());
+			//Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.INFO,
+					//"ID tipologia = " + objSeleccionado.getIdtipologia());
+			log.debug(
+					"obtenerValoresSeleccionados() - " + "ID agencia tipologia = " + objSeleccionado.getIdAgenciaTipologia());
+			//Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.INFO,
+				//	"ID agencia tipologia = " + objSeleccionado.getIdAgenciaTipologia());
+			log.debug(
+					"obtenerValoresSeleccionados() - " + "fecha = " + objSeleccionado.getFechaIngresos());
+			//Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.INFO,
+					//"fecha = " + objSeleccionado.getFechaIngresos());
+			log.debug(
+					"obtenerValoresSeleccionados() - " + "observaciones = " + objSeleccionado.getObservaciones());
+			//Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.INFO,
+					//"observaciones = " + objSeleccionado.getObservaciones());
 
 			if (!"(No asignada)".equals(objSeleccionado.getTipologia())) {
 				for (Comboitem citem : cmbTipologia.getItems()) {
@@ -166,7 +183,8 @@ public class CBEstadoCuentasTipologiaController extends ControladorBase {
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerValoresSeleccionados() - Error ", e);
+			//Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -183,7 +201,8 @@ public class CBEstadoCuentasTipologiaController extends ControladorBase {
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("llenaComboTipologia() - Error ", e);
+			//Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -203,7 +222,8 @@ public class CBEstadoCuentasTipologiaController extends ControladorBase {
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("llenaComboEntidad() - Error ", e);
+		//	Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
 
 		}
 	}
@@ -240,7 +260,8 @@ public class CBEstadoCuentasTipologiaController extends ControladorBase {
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtieneEntidadesAsociadas() - Error ", e);
+			//Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -252,14 +273,22 @@ public class CBEstadoCuentasTipologiaController extends ControladorBase {
 			// CBEstadoCuentasModel objSociedad = null;
 			media = event.getMedia();
 
-			Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
-					"-----File Information-----");
-			Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
-					"name: " + media.getName());
-			Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
-					"contentType: " + media.getContentType());
-			Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
-					"format: " + media.getFormat());
+			log.debug(
+					"onUpload$btnSubirDepositos() - " + "-----File Information-----");
+			//Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
+					//"-----File Information-----");
+			log.debug(
+					"onUpload$btnSubirDepositos() - " + "name: " + media.getName());
+			//Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
+					//"name: " + media.getName());
+			log.debug(
+					"onUpload$btnSubirDepositos() - " + "contentType: " + media.getContentType());
+			//Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
+					//"contentType: " + media.getContentType());
+			log.debug(
+					"onUpload$btnSubirDepositos() - " + "format: " + media.getFormat());
+			//Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
+					//"format: " + media.getFormat());
 
 			if (media.getFormat().equals("txt")) {
 				Reader read = media.getReaderData();
@@ -342,8 +371,9 @@ public class CBEstadoCuentasTipologiaController extends ControladorBase {
 			}
 		} catch (IOException e) {
 			Messagebox.show("Ha ocurrido un error al cargar el archivo.", "ERROR", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.SEVERE, null,
-					e);
+			log.error("onUpload$btnSubirDepositos() - Error ", e);
+			//Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.SEVERE, null,
+					//e);
 
 		}
 	}
@@ -493,8 +523,10 @@ public class CBEstadoCuentasTipologiaController extends ControladorBase {
 				// //CarlosGodinez->30/10/2017
 				final int check_tipologia = (chktipologia.isChecked() ? 1 : 0); // CarlosGodinez->30/10/2017
 				if (listaDepositos.size() != 0) {
-					Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.INFO,
-							"**** Se leera un archivo de depositos ****");
+					log.debug(
+							"asignar() - " + "**** Se leera un archivo de depositos ****");
+					//Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.INFO,
+							//"**** Se leera un archivo de depositos ****");
 
 					Messagebox.show(
 							"Se ha cargado un archivo de depósitos, por lo cual se asignará la tipología poliza ingresada a los registros "
@@ -522,8 +554,10 @@ public class CBEstadoCuentasTipologiaController extends ControladorBase {
 								}
 							});
 				} else {
-					Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.INFO,
-							"**** Actualizacion normal de tipoligia sin depositos ****");
+					log.debug(
+							"asignar() - " + "**** Actualizacion normal de tipoligia sin depositos ****");
+					//Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.INFO,
+							//"**** Actualizacion normal de tipoligia sin depositos ****");
 
 					int resultado = objeDAO.asignarTipologia(tipologia, entidad, fechaIngresos, observaciones,
 							idEstadoCuenta, listaID, listaDepositos, usuario, check_tipologia /* , 0 */);
@@ -541,7 +575,8 @@ public class CBEstadoCuentasTipologiaController extends ControladorBase {
 						Messagebox.OK, Messagebox.EXCLAMATION);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("asignar() - Error ", e);
+			//Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 
@@ -568,8 +603,10 @@ public class CBEstadoCuentasTipologiaController extends ControladorBase {
 																				// check_tipologia ||
 																				// chktipologia.isChecked()))
 				if (listaDepositos.size() != 0) {
-					Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.INFO,
-							"**** Se leera un archivo de depositos ****");
+					log.debug(
+							"asignarGT() - " + "**** Se leera un archivo de depositos ****");
+					//Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.INFO,
+						//	"**** Se leera un archivo de depositos ****");
 					Messagebox.show(
 							"Se ha cargado un archivo de depósitos, por lo cual se asignará la tipología poliza ingresada a los registros "
 									+ "que contengan los depósitos leídos del archivo cargado, ¿desea continuar con la operación?",
@@ -596,8 +633,10 @@ public class CBEstadoCuentasTipologiaController extends ControladorBase {
 								}
 							});
 				} else {
-					Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.INFO,
-							"**** Actualizacion normal de tipoligia sin depositos ****");
+					log.debug(
+							"asignarGT() - " + "**** Actualizacion normal de tipoligia sin depositos ****");
+					//Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.INFO,
+							//"**** Actualizacion normal de tipoligia sin depositos ****");
 					int resultado = objeDAO.asignarTipologiaGT(tipologia, entidad, fechaIngresos, observaciones,
 							idEstadoCuenta, listaID, listaDepositos, usuario, 0, check_tipologia, null);
 					if (resultado > 0) {
@@ -614,7 +653,8 @@ public class CBEstadoCuentasTipologiaController extends ControladorBase {
 						Messagebox.OK, Messagebox.EXCLAMATION);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("asignarGT() - Error ", e);
+		//	Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 
@@ -630,8 +670,10 @@ public class CBEstadoCuentasTipologiaController extends ControladorBase {
 					"ATENCION", Messagebox.OK, Messagebox.EXCLAMATION);
 
 		} else {
-			Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.INFO,
-					"Bandera desasociar tipologia " + txtObservaciones);
+			log.debug(
+					"onClick$btnDesasociar() - " + "Bandera desasociar tipologia " + txtObservaciones);
+			//Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.INFO,
+					//"Bandera desasociar tipologia " + txtObservaciones);
 			System.out.println("observaciones " + txtObservaciones.getText());
 			try {
 				Messagebox.show("¿Desea desasociar esta tipologia poliza al estado de cuenta seleccionado?",
@@ -642,8 +684,10 @@ public class CBEstadoCuentasTipologiaController extends ControladorBase {
 									observaciones = txtObservaciones.getText().trim();
 
 									if (objeDAO.desasociarTipologia(idEstadoCuenta, usuario, observaciones)) {
-										Logger.getLogger(CBConsultaEstadoCuentasController.class.getName())
-												.log(Level.INFO, "Entra a desasociar tipologias individual ");
+										log.debug(
+												"onClick$btnDesasociar() - " + "Entra a desasociar tipologias individual ");
+										//Logger.getLogger(CBConsultaEstadoCuentasController.class.getName())
+												//.log(Level.INFO, "Entra a desasociar tipologias individual ");
 										refrescarModulo("(No asignada)", "(No asignada)", "(No asignada)", 1);
 
 									}
@@ -652,7 +696,8 @@ public class CBEstadoCuentasTipologiaController extends ControladorBase {
 							}
 						});
 			} catch (Exception e) {
-				Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
+				//Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("onClick$btnDesasociar() - Error ", e);
 				Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 			}
 
@@ -685,7 +730,8 @@ public class CBEstadoCuentasTipologiaController extends ControladorBase {
 			result = fecha.replace(".", "/");
 			// System.out.println("result: "+result);
 		} catch (Exception e) {
-			Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("changeDate() - Error ", e);
+			//Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
 		}
 		return result;
 	}
@@ -702,10 +748,12 @@ public class CBEstadoCuentasTipologiaController extends ControladorBase {
 			// System.out.println("fecha: " + fec.getDate());
 			return true;
 		} catch (ParseException e) {
-			Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("isDate() - Error ", e);
+			//Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
 			return false;
 		} catch (NullPointerException e) {
-			Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("isDate() - Error ", e);
+		//	Logger.getLogger(CBEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
 			return false;
 		}
 	}

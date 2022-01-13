@@ -12,7 +12,9 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
@@ -43,9 +45,12 @@ import com.terium.siccam.model.CBCatalogoAgenciaModel;
 import com.terium.siccam.model.CBConsultaEstadoCuentasModel;
 import com.terium.siccam.model.CBEstadoCuentasModel;
 import com.terium.siccam.model.CBTipologiasPolizaModel;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 import com.terium.siccam.utils.Constantes;
 
 public class CBConsultaEstadoCuentasController extends ControladorBase implements CBNotifyChangeEstadoCuentaSociedad{
+	
+	private static Logger log = Logger.getLogger(CBConsultaEstadoCuentasController.class);
 
 	/**
 	 * 
@@ -119,7 +124,8 @@ public class CBConsultaEstadoCuentasController extends ControladorBase implement
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error.", Constantes.ATENCION, Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("llenaComboBanco() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
 	  }
 	}
 	
@@ -146,8 +152,10 @@ public class CBConsultaEstadoCuentasController extends ControladorBase implement
 	
 	public void seleccionComboAgrupacion()  {
 		int agrupacionSeleccionada = Integer.parseInt(cmbxBanco.getSelectedItem().getValue().toString());
-		Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.INFO, 
-				"Agrupacion seleccionada= " + agrupacionSeleccionada);
+		log.debug(
+				"seleccionComboAgrupacion() - " + "Agrupacion seleccionada= " + agrupacionSeleccionada);
+		//Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.INFO, 
+				//"Agrupacion seleccionada= " + agrupacionSeleccionada);
 		cleanCombo(cmbxAgencia);
 		llenaComboAgencia(agrupacionSeleccionada);
 	}
@@ -183,7 +191,8 @@ public class CBConsultaEstadoCuentasController extends ControladorBase implement
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error.", Constantes.ATENCION, Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("llenaComboAgencia() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
 	  }
 	}
 	
@@ -195,8 +204,10 @@ public class CBConsultaEstadoCuentasController extends ControladorBase implement
 	EventListener<Event> evtDoModalTipologia = new EventListener<Event>(){
 		  public void onEvent(Event event) {
 			  try {
-				  Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.INFO, 
-						  "Bandera asignar tipología, onDobleclick  = en modal " );
+				  log.debug(
+							"evtDoModalTipologia() - " + "Bandera asignar tipología, onDobleclick  = en modal " );
+				 // Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.INFO, 
+						 // "Bandera asignar tipología, onDobleclick  = en modal " );
 				  misession.setAttribute("desasociarTipologiaMasiva", false);
 				  misession.setAttribute("tipologiaMasiva", false);
 				  misession.setAttribute("idEstadoCuenta", event.getTarget().getAttribute("idRegistro"));
@@ -206,7 +217,8 @@ public class CBConsultaEstadoCuentasController extends ControladorBase implement
 				  asignarTipologia = (Window) Executions.createComponents("/cbAsignarTipologiaEstadoCuenta.zul", null,null);
 				  asignarTipologia.doModal();
 			  } catch (Exception e) {
-					Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+				  log.error("evtDoModalTipologia() - Error ", e);
+					//Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
 			  }
 		  }
 	};
@@ -226,7 +238,8 @@ public class CBConsultaEstadoCuentasController extends ControladorBase implement
 				}
 			}	
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+			 log.error("llenaComboTipologia() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
 	  }
 	}
 	
@@ -242,7 +255,8 @@ public class CBConsultaEstadoCuentasController extends ControladorBase implement
 			    item.setLabel(d.getNombre());
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+			 log.error("llenaComboTipologia() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
 	  }
 	}
 	/*
@@ -252,8 +266,10 @@ public class CBConsultaEstadoCuentasController extends ControladorBase implement
 	public void onClick$btnConsuta() {
 		try { 
 			limpiarListbox(lbxConsulta);
-			CBConsultaEstadoCuentasDAO objDao = new CBConsultaEstadoCuentasDAO();	
-			Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.INFO, "Consulta estados");
+			CBConsultaEstadoCuentasDAO objDao = new CBConsultaEstadoCuentasDAO();
+			log.debug(
+					"onClick$btnConsuta() - " + "Consulta estados");
+		//	Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.INFO, "Consulta estados");
 			//CBConsultaEstadoCuentasModel objAgencia = null;
 			int banco = 0;
 			int agencia = 0;
@@ -347,7 +363,8 @@ public class CBConsultaEstadoCuentasController extends ControladorBase implement
 				this.btnDesasociarTodos.setDisabled(true);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnConsuta() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", Constantes.ATENCION, Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -474,7 +491,8 @@ public class CBConsultaEstadoCuentasController extends ControladorBase implement
 			asignarTipologia = (Window) Executions.createComponents("/cbAsignarTipologiaEstadoCuenta.zul", null, null);
 			asignarTipologia.doModal();
 		 } catch (Exception e) {
-				Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+			 log.error("onClick$btnAsignarTodos() - Error ", e);
+				//Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
 		  }
 	}
 	
@@ -490,7 +508,8 @@ public class CBConsultaEstadoCuentasController extends ControladorBase implement
 			asignarTipologia = (Window) Executions.createComponents("/cbDesasociarTipologiaEstadoCuenta.zul", null, null);
 			asignarTipologia.doModal();
 		 } catch (Exception e) {
-			 Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+			 log.error("onClick$btnDesasociarTodos() - Error ", e);
+			 //Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
 		  }
 	}
 	
@@ -506,7 +525,8 @@ public class CBConsultaEstadoCuentasController extends ControladorBase implement
 			asignarTipologia = (Window) Executions.createComponents("/cbAsignarTipologiasDepositosMasivosEstadoCuenta.zul", null, null);
 			asignarTipologia.doModal();
 		 } catch (Exception e) {
-				Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+			 log.error("onClick$btnAsignarDepositosTodos() - Error ", e);
+			//	Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
 		  }
 	}
 
@@ -528,8 +548,10 @@ public class CBConsultaEstadoCuentasController extends ControladorBase implement
 	
 	//Agregado por Carlos Godínez - QitCorp - 21/03/2017
 	public void onClick$btnExcel() {
-		Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.INFO, 
-				"Generando reporte de estados de cuenta...");
+		log.debug(
+				"onClick$btnExcel() - " + "Generando reporte de estados de cuenta...");
+		//Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.INFO, 
+			//	"Generando reporte de estados de cuenta...");
 		BufferedWriter bw = null;
 		try {
 			Date fecha = new Date();
@@ -553,20 +575,24 @@ public class CBConsultaEstadoCuentasController extends ControladorBase implement
 						+ changeNull(registro.getNumDocumento()) +"\n");
 			}
 			
-			Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.INFO, 
-					"Descarga exitosa del archivo generado...");
+			log.debug(
+					"onClick$btnExcel() - " + "Descarga exitosa del archivo generado...");
+			//Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.INFO, 
+					//"Descarga exitosa del archivo generado...");
 			Filedownload.save(archivo, null);
 			Messagebox.show("Reporte generado de manera exitosa, el archivo ha sido descargado", Constantes.ATENCION,
 					Messagebox.OK, Messagebox.INFORMATION);
 			Clients.clearBusy();
 		} catch (IOException e) {
-			Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnExcel() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(bw != null) {
 				try {
 					bw.close();
 				} catch (IOException e) {
-					Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
+					log.error("onClick$btnExcel() - Error ", e);
+					//Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.SEVERE, null, e);
 				}
 			}
 		}
@@ -583,8 +609,10 @@ public class CBConsultaEstadoCuentasController extends ControladorBase implement
 	}
 
 	public void recargarConsulta(String valorAsociacion, String valorAgenciaTipologia) {
-		Logger.getLogger(CBConsultaEstadoCuentasController.class.getName())
-			.log(Level.INFO, "Entra a recargar consulta...");
+		log.debug(
+				"recargarConsulta() - " + "Entra a recargar consulta...");
+		//Logger.getLogger(CBConsultaEstadoCuentasController.class.getName())
+			//.log(Level.INFO, "Entra a recargar consulta...");
 		CBEstadoCuentasModel param = new CBEstadoCuentasModel();
 		if(dtbDesde.getValue() != null || dtbHasta.getValue() != null) {
 		param = (CBEstadoCuentasModel)session.getAttribute("paramsListbox");
@@ -596,10 +624,14 @@ public class CBConsultaEstadoCuentasController extends ControladorBase implement
 			valorAgenciaTipologia = Constantes.TODAS;
 		}
 		if(lbxConsulta.getItemCount() > 1) {
-			Logger.getLogger(CBConsultaEstadoCuentasController.class.getName())
-				.log(Level.INFO, "Listbox item count es mayor a 1");
-			Logger.getLogger(CBConsultaEstadoCuentasController.class.getName())
-				.log(Level.INFO, "VALOR FILTRO TIPOLOGIA = " + param.getTipologia());
+			log.debug(
+					"recargarConsulta() - " + "Listbox item count es mayor a 1");
+			//Logger.getLogger(CBConsultaEstadoCuentasController.class.getName())
+				//.log(Level.INFO, "Listbox item count es mayor a 1");
+			log.debug(
+					"recargarConsulta() - " + "VALOR FILTRO TIPOLOGIA = " + param.getTipologia());
+			//Logger.getLogger(CBConsultaEstadoCuentasController.class.getName())
+				//.log(Level.INFO, "VALOR FILTRO TIPOLOGIA = " + param.getTipologia());
 			
 			for(Comboitem item : cmbTipologia.getItems()){
 				if(item.getValue().toString().equals(param.getTipologia())){
@@ -613,10 +645,14 @@ public class CBConsultaEstadoCuentasController extends ControladorBase implement
 				}
 			}
 		} else if(lbxConsulta.getItemCount() == 1){
-			Logger.getLogger(CBConsultaEstadoCuentasController.class.getName())
-				.log(Level.INFO, "Listbox item count es igual a 1");
-			Logger.getLogger(CBConsultaEstadoCuentasController.class.getName())
-				.log(Level.INFO, "VALOR FILTRO TIPOLOGIA = " + valorAsociacion);
+			log.debug(
+					"recargarConsulta() - " + "Listbox item count es igual a 1");
+			//Logger.getLogger(CBConsultaEstadoCuentasController.class.getName())
+				//.log(Level.INFO, "Listbox item count es igual a 1");
+			log.debug(
+					"recargarConsulta() - " + "VALOR FILTRO TIPOLOGIA = " + valorAsociacion);
+			//Logger.getLogger(CBConsultaEstadoCuentasController.class.getName())
+				//.log(Level.INFO, "VALOR FILTRO TIPOLOGIA = " + valorAsociacion);
 		
 			for(Comboitem item : cmbTipologia.getItems()){
 				if(item.getValue().toString().equals(valorAsociacion)){

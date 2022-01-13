@@ -12,12 +12,13 @@ import com.terium.siccam.dao.CBParametrosGeneralesDAO;
 import com.terium.siccam.model.CBCatalogoBancoModel;
 import com.terium.siccam.model.CBCatalogoOpcionModel;
 import com.terium.siccam.model.CBParametrosGeneralesModel;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import javax.servlet.http.HttpSession;
 
 import org.zkoss.zul.Button;
@@ -34,6 +35,8 @@ import org.zkoss.zk.ui.Sessions;
  * 
  */
 public class CBCatalogoBancoModalModificarController extends ControladorBase {
+	
+	private static Logger log = Logger.getLogger(CBCatalogoBancoModalModificarController.class);
 
 	/**
 	 * modificado ovidio santos mvc 17042018
@@ -132,8 +135,10 @@ public class CBCatalogoBancoModalModificarController extends ControladorBase {
 				}
 
 			} catch (Exception e) {
-				Logger.getLogger(CBCatalogoBancoModalModificarController.class.getName()).log(Level.INFO,
-						"valores null ");
+				log.error(
+						"onClick$btnGuardar() - " + "valores null");
+			//	Logger.getLogger(CBCatalogoBancoModalModificarController.class.getName()).log(Level.INFO,
+						//"valores null ");
 			}
 
 		}
@@ -150,7 +155,9 @@ public class CBCatalogoBancoModalModificarController extends ControladorBase {
 	}
 
 	public void llenarcasillas() {
-		System.out.println("id seleccioando " + idseleccionado);
+		log.debug(
+				"llenarcasillas() - " + "id seleccioando " + idseleccionado);
+		
 		// CBMantenimientoPolizaModel objModel = new CBMantenimientoPolizaModel();
 		// idseleccionado = (Integer) arg0.getTarget().getAttribute("idseleccionado");
 
@@ -165,7 +172,9 @@ public class CBCatalogoBancoModalModificarController extends ControladorBase {
 
 		System.out.println("combotipo abtes de if " + objModelModal.getTipoEstado());
 		for (Comboitem item : cmbTipo.getItems()) {
-			System.out.println("for en modificar " + item.getLabel());
+			log.debug(
+					"llenarcasillas() - " + "for en modificar " + item.getLabel());
+			
 			if (item.getLabel().equals(String.valueOf(objModelModal.getTipoEstado()))) {
 				// System.out.println("combo tipo en if " + objmodificar.getTipo());
 				System.out.println("for en modificar " + item.getLabel());
@@ -190,7 +199,9 @@ public class CBCatalogoBancoModalModificarController extends ControladorBase {
 	private List<CBCatalogoOpcionModel> lstEstadoAgrupacion = new ArrayList<CBCatalogoOpcionModel>();
 
 	public void llenaComboEstado() {
-		System.out.println("Llena combo tipo estado");
+		log.debug(
+				"llenaComboEstado() - " + "Llena combo tipo estado");
+		
 		// limpiaCombobox(cmbTipo);
 
 		CBCatalogoOpcionDaoB objeDAO = new CBCatalogoOpcionDaoB();
@@ -209,7 +220,9 @@ public class CBCatalogoBancoModalModificarController extends ControladorBase {
 	private List<CBParametrosGeneralesModel> lstTipo = new ArrayList<CBParametrosGeneralesModel>();
 
 	public void llenaComboTipo() {
-		System.out.println("Llena combo tipo estado");
+		log.debug(
+				"llenaComboTipo() - " + "Llena combo tipo");
+		
 		// limpiaCombobox(cmbTipo);
 
 		CBParametrosGeneralesDAO objeDAO = new CBParametrosGeneralesDAO();

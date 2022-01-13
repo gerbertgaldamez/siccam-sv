@@ -1,12 +1,13 @@
 package com.terium.siccam.controller;
 
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import javax.naming.NamingException;
 
 import org.zkoss.zk.ui.Component;
@@ -27,12 +28,14 @@ import com.terium.siccam.dao.CBBancoAgenciaCajasDAO;
 import com.terium.siccam.dao.CBParametrosGeneralesDAO;
 import com.terium.siccam.model.CBBancoAgenciaCajasModel;
 import com.terium.siccam.model.CBParametrosGeneralesModel;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 
 /*
  * Desarrollado por Carlos Godínez / QitCorp 21-02-2017
  * */
 
 public class CBCatalogoAgenciaCajasController extends ControladorBase {
+	private static Logger log = Logger.getLogger(CBCatalogoAgenciaCajasController.class);
 	private static final long serialVersionUID = 1L;
 	private List<CBParametrosGeneralesModel> listParamEstado = new ArrayList<CBParametrosGeneralesModel>();
 	CBBancoAgenciaCajasModel objModel = new CBBancoAgenciaCajasModel();
@@ -108,7 +111,9 @@ public class CBCatalogoAgenciaCajasController extends ControladorBase {
 	public void llenaComboEstado() {
 		CBParametrosGeneralesDAO objDao = new CBParametrosGeneralesDAO();
 		listParamEstado = objDao.obtenerListaTipoAgrupacion(CBParametrosGeneralesDAO.S_OBTENER_TIPO_AGRUPACIONES_2);
-		System.out.println("tama;o de la lista " + listParamEstado.size());
+		log.debug(
+				"llenaComboEstado() - " + "tama;o de la lista " + listParamEstado.size());
+		
 		if (listParamEstado != null && listParamEstado.size() > 0) {
 			Iterator<CBParametrosGeneralesModel> it = listParamEstado.iterator();
 			CBParametrosGeneralesModel obj = null;
@@ -139,8 +144,10 @@ public class CBCatalogoAgenciaCajasController extends ControladorBase {
 		objModel.setCod_caja(txtCodCaja.getText().trim());
 		objModel.setCod_oficina(txtCodOficina.getText().trim());
 
-		Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.INFO,
-				"Entra a consulta estados de afiliaciones");
+		log.debug(
+				"onClick$btnConsultar() - " + "Entra a consulta estados de afiliaciones");
+		//Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.INFO,
+				//"Entra a consulta estados de afiliaciones");
 
 		// objModel.setUsuario(user);
 
@@ -154,8 +161,10 @@ public class CBCatalogoAgenciaCajasController extends ControladorBase {
 		limpiarListbox(lbxConsulta);
 		CBBancoAgenciaCajasModel objModel = null;
 
-		Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-				"cantidad de registros " + list.size());
+		log.debug(
+				"llenaListbox() - " + "cantidad de registros " + list.size());
+		//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+				//"cantidad de registros " + list.size());
 		if (list != null && list.size() > 0) {
 			Iterator<CBBancoAgenciaCajasModel> it = list.iterator();
 
@@ -242,8 +251,10 @@ public class CBCatalogoAgenciaCajasController extends ControladorBase {
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public void onEvent(Event event) throws Exception {
 			final int idseleccionado = Integer.parseInt(event.getTarget().getAttribute("idEliminar").toString());
-			Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.INFO,
-					"ID  a eliminar = " + idseleccionado);
+			log.debug(
+					"eventBtnEliminar() - " + "ID  a eliminar = " + idseleccionado);
+			//Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.INFO,
+					//"ID  a eliminar = " + idseleccionado);
 			Messagebox.show("¿Desea eliminar el registro seleccionado?", "CONFIRMACION", Messagebox.YES | Messagebox.NO,
 					Messagebox.QUESTION, new EventListener() {
 						public void onEvent(Event event) throws Exception {
@@ -263,8 +274,10 @@ public class CBCatalogoAgenciaCajasController extends ControladorBase {
 
 									// onClick$btnConsultar();
 								} else {
-									Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.INFO,
-											"creo el registro pero no recarga consulta ");
+									log.debug(
+											"eventBtnEliminar() - " + "creo el registro pero no recarga consulta ");
+									//Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.INFO,
+											//"creo el registro pero no recarga consulta ");
 									limpiarListbox(lbxConsulta);
 									Messagebox.show("Registros eliminado con exito.", "ATENCION", Messagebox.OK,
 											Messagebox.INFORMATION);
@@ -286,12 +299,16 @@ public class CBCatalogoAgenciaCajasController extends ControladorBase {
 			// se crea una variable personalizada
 			CBBancoAgenciaCajasModel objmodificar = (CBBancoAgenciaCajasModel) arg0.getTarget()
 					.getAttribute("objmodificar");
-			Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.INFO,
-					"obj a modificar: " + objmodificar);
+			log.debug(
+					"eventBtnModificar() - " + "obj a modificar: " + objmodificar);
+			//Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.INFO,
+				//	"obj a modificar: " + objmodificar);
 			idseleccionado = (Integer) arg0.getTarget().getAttribute("idseleccionado");
 
-			Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.INFO,
-					"id seleccioando " + idseleccionado);
+			log.debug(
+					"eventBtnModificar() - " + "id seleccioando " + idseleccionado);
+			//Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.INFO,
+					//"id seleccioando " + idseleccionado);
 
 			txtCajero.setText(objmodificar.getCajero());
 			txtCodCaja.setText(objmodificar.getCod_caja());
@@ -304,8 +321,10 @@ public class CBCatalogoAgenciaCajasController extends ControladorBase {
 				//Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.INFO,
 				//		"comboESTADO abtes de if " + objmodificar.getEstadoCaja());
 				if (item.getValue().toString().equals(String.valueOf(objmodificar.getEstadoCaja()))) {
-					Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.INFO,
-							"combo ESTADO en if " + objmodificar.getEstadoCaja());
+					log.debug(
+							"eventBtnModificar() - " + "combo ESTADO en if " + objmodificar.getEstadoCaja());
+					//Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.INFO,
+							//"combo ESTADO en if " + objmodificar.getEstadoCaja());
 					cmbEstado.setSelectedItem(item);
 				}
 			}
@@ -342,8 +361,10 @@ public class CBCatalogoAgenciaCajasController extends ControladorBase {
 							CBBancoAgenciaCajasDAO objeDAO = new CBBancoAgenciaCajasDAO();
 
 							objModel.setCbcatalogoagenciaid(objModel.getCbcatalogoagenciaid());
-							Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-									"cbcatalogoagenciaid en control guar " + objModel.getCbcatalogoagenciaid());
+							log.debug(
+									"onClick$btnRegistrar() - " + "cbcatalogoagenciaid en control guar " + objModel.getCbcatalogoagenciaid());
+							//Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+									//"cbcatalogoagenciaid en control guar " + objModel.getCbcatalogoagenciaid());
 
 							objModel.setCajero(txtCajero.getText().trim());
 							objModel.setCod_caja(txtCodCaja.getText().trim());
@@ -353,8 +374,10 @@ public class CBCatalogoAgenciaCajasController extends ControladorBase {
 							objModel.setCreador(usuario);
 
 							int PKCajas = objeDAO.obtenerPKCajas();
-							Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.INFO,
-									"pk afiliacion en guard " + PKCajas);
+							log.debug(
+									"onClick$btnRegistrar() - " + "pk afiliacion en guard " + PKCajas);
+							//Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.INFO,
+								//	"pk afiliacion en guard " + PKCajas);
 							if (objeDAO.transaccionValida(objModel)) {
 
 								if (objeDAO.insertarCajero(objModel, PKCajas)) {
@@ -389,7 +412,8 @@ public class CBCatalogoAgenciaCajasController extends ControladorBase {
 			}
 
 		} catch (Exception e) {
-			Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnRegistrar() - Error ", e);
+			//Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error. Revise los datos ingresados.", "ATENCIÓN", Messagebox.OK,
 					Messagebox.ERROR);
 		}
@@ -409,17 +433,22 @@ public class CBCatalogoAgenciaCajasController extends ControladorBase {
 							if (cmbEstado.getSelectedItem() != null) {
 
 								objModel.setCbcatalogoagenciaid(objModel.getCbcatalogoagenciaid());
-								Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.INFO,
-										"cbcatalogoagenciaid en control guar " + objModel.getCbcatalogoagenciaid());
+								log.debug(
+										"onClick$btnModificar() - " + "cbcatalogoagenciaid en control guar " + objModel.getCbcatalogoagenciaid());
+							//	Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.INFO,
+									//	"cbcatalogoagenciaid en control guar " + objModel.getCbcatalogoagenciaid());
 
 								objModel.setEstadoCaja(
 										Integer.parseInt(cmbEstado.getSelectedItem().getValue().toString()));
 								// objModel.setUsuario(objModel.getUsuario());
 
 								objModel.setCbbancoagenciacajasid(idseleccionado);
-								Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
-										"id seleccion modificar cbbancoagenciaafiliacion "
+								log.debug(
+										"onClick$btnModificar() - " + "id seleccion modificar cbbancoagenciaafiliacion "
 												+ objModel.getCbbancoagenciacajasid());
+							//	Logger.getLogger(CBBancoAgenciaAfiliacionesController.class.getName()).log(Level.INFO,
+										//"id seleccion modificar cbbancoagenciaafiliacion "
+											//	+ objModel.getCbbancoagenciacajasid());
 
 								if (txtCajero.getText().equals(objModel.getCajero().trim())) {
 									objModel.setCajero(txtCajero.getText().trim());
@@ -481,7 +510,8 @@ public class CBCatalogoAgenciaCajasController extends ControladorBase {
 			}
 
 		} catch (Exception e) {
-			Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnModificar() - Error ", e);
+			//Logger.getLogger(CBCatalogoAgenciaCajasController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error. Revise los datos ingresados.", "ATENCIÓN", Messagebox.OK,
 					Messagebox.ERROR);
 

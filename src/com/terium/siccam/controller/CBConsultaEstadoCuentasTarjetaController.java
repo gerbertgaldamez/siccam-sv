@@ -1,6 +1,7 @@
 package com.terium.siccam.controller;
 
 import java.io.BufferedWriter;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,9 +12,10 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import javax.naming.NamingException;
+
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -40,12 +42,15 @@ import com.terium.siccam.model.CBCatalogoAgenciaModel;
 import com.terium.siccam.model.CBConsultaEstadoCuentasModel;
 import com.terium.siccam.model.CBEstadoCuentasModel;
 import com.terium.siccam.model.CBParametrosGeneralesModel;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 import com.terium.siccam.utils.Constantes;
 
 /*
  * @author CarlosGodinez - Qitcorp - 21/03/2017
  * */
 public class CBConsultaEstadoCuentasTarjetaController extends ControladorBase implements CBNotifyChangeController{
+	
+	private static Logger log = Logger.getLogger(CBConsultaEstadoCuentasTarjetaController.class);
 
 	private static final long serialVersionUID = 9176164927878418930L;
 	
@@ -106,9 +111,11 @@ public class CBConsultaEstadoCuentasTarjetaController extends ControladorBase im
 	
 	public void onClick$btnConsulta() throws SQLException, NamingException {
 		limpiarListbox(lstConsulta);
-		CBConsultaEstadoCuentasDAO objDao = new CBConsultaEstadoCuentasDAO();	
-		Logger.getLogger(CBConsultaEstadoCuentasController.class.getName())
-			.log(Level.INFO, "Consulta estados tarjeta");
+		CBConsultaEstadoCuentasDAO objDao = new CBConsultaEstadoCuentasDAO();
+		log.debug(
+				"onClick$btnConsulta() - " + "Consulta estados tarjeta");
+	//	Logger.getLogger(CBConsultaEstadoCuentasController.class.getName())
+			//.log(Level.INFO, "Consulta estados tarjeta");
 		String tipo = "";
 		String fechaIni = "";
 		String fechaFin = ""; 
@@ -282,8 +289,10 @@ public class CBConsultaEstadoCuentasTarjetaController extends ControladorBase im
 	
 	//Agregado por Carlos Godínez - QitCorp - 21/03/2017
 	public void onClick$btnExcel() {
-		Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.INFO, 
-				"Generando reporte de estados de cuenta de tarjetas...");
+		log.debug(
+				"onClick$btnExcel() - " + "Generando reporte de estados de cuenta de tarjetas...");
+		//Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.INFO, 
+				//"Generando reporte de estados de cuenta de tarjetas...");
 		BufferedWriter bw = null;
 		try {
 			Date fecha = new Date();
@@ -306,19 +315,23 @@ public class CBConsultaEstadoCuentasTarjetaController extends ControladorBase im
 						+ "|" + changeNull(registro.getNombreEntidad()).trim() + "\n");
 			}
 			
-			Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.INFO, 
-					"Descarga exitosa del archivo generado...");
+			log.debug(
+					"onClick$btnExcel() - " + "Descarga exitosa del archivo generado...");
+			//Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.INFO, 
+					//"Descarga exitosa del archivo generado...");
 			Filedownload.save(archivo, null);
 			Messagebox.show("Reporte generado de manera exitosa, el archivo ha sido descargado", Constantes.ATENCION,Messagebox.OK, Messagebox.INFORMATION);
 			Clients.clearBusy();
 		} catch (IOException e) {
-			Logger.getLogger(CBConsultaEstadoCuentasTarjetaController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnExcel() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasTarjetaController.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(bw != null) {
 				try {
 					bw.close();
 				} catch (IOException e) {
-					Logger.getLogger(CBConsultaEstadoCuentasTarjetaController.class.getName()).log(Level.SEVERE, null, e);
+					log.error("onClick$btnExcel() - Error ", e);
+					//Logger.getLogger(CBConsultaEstadoCuentasTarjetaController.class.getName()).log(Level.SEVERE, null, e);
 				}
 			}
 		}
@@ -336,8 +349,10 @@ public class CBConsultaEstadoCuentasTarjetaController extends ControladorBase im
 	}
 
 	public void recargarConsulta(String asociacion) {
-		Logger.getLogger(CBConsultaEstadoCuentasController.class.getName())
-			.log(Level.INFO, "Entra a recargar consulta...");
+		log.debug(
+				"recargarConsulta() - " + "Entra a recargar consulta...");
+		//Logger.getLogger(CBConsultaEstadoCuentasController.class.getName())
+			//.log(Level.INFO, "Entra a recargar consulta...");
 		CBEstadoCuentasModel param = new CBEstadoCuentasModel();
 		param = (CBEstadoCuentasModel)session.getAttribute("paramsListboxTarjeta");
 		CBConsultaEstadoCuentasDAO objDao = new CBConsultaEstadoCuentasDAO();
@@ -348,7 +363,8 @@ public class CBConsultaEstadoCuentasTarjetaController extends ControladorBase im
 			}
 			llenaListbox(objDao.consultaEstadoCuentasTarjeta(param.getTipo(), param.getFechaInicio(), param.getFechaFin(), asociacion, param.getAfiliacion()));
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasTarjetaController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("recargarConsulta() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasTarjetaController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	

@@ -590,6 +590,13 @@ public class MenuController extends ControladorBase {
 		String ico = "/img/globales/16x16/edit.png";
 		muestraOpcion(titulo, url, id, ico);
 	}
+	public void onDoubleClick$qkiCuadreSidra(Event ev) {
+		String titulo = "Cuadre Sidra";
+		String url = "/cbCuadreSidra.zul";
+		String id = "inclit" + "cuadreSidra";
+		String ico = "/img/globales/16x16/edit.png";
+		muestraOpcion(titulo, url, id, ico);
+	}
 
 	/**
 	 * Added by CarlosGodinez -> 10/10/2018

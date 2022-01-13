@@ -1,11 +1,12 @@
 package com.terium.siccam.controller;
 
 import java.sql.SQLException;
+
 import java.text.ParseException;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import javax.servlet.http.HttpSession;
 
 import org.zkoss.zk.ui.Component;
@@ -25,9 +26,11 @@ import com.terium.siccam.utils.CBDialogoCargaGT;
 import com.terium.siccam.utils.CBDialogoCargaNi;
 import com.terium.siccam.utils.CBDialogoCargaPa;
 import com.terium.siccam.utils.CBDialogoCargaUtils;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 import com.terium.siccam.utils.Tools;
 
 public class CBDialogoCargaController extends ControladorBase {
+	private static Logger log = Logger.getLogger(CBDialogoCargaController.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -113,7 +116,9 @@ public class CBDialogoCargaController extends ControladorBase {
 
 	public void onClick$btnCargar(){
 		// verifica el tipo de carga
-		System.out.println("tipo de carga: " + tipoDeCarga);
+		log.debug(
+				"onClick$btnCargar() - " + "tipo de carga: " + tipoDeCarga);
+		
 		if (tipoDeCarga.equals("1")) {
 			// tipo de carga normal
 
@@ -136,10 +141,12 @@ public class CBDialogoCargaController extends ControladorBase {
 			cargaDeNuevoPagos();
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
-			Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
+			log.error("onClick$btnCargarTodo() - Error ", e);
+			//Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
 		}
-
-		System.out.println("tipo de carga: " + tipoDeCarga);
+		log.debug(
+				"onClick$btnCargarTodo() - " + "tipo de carga: " + tipoDeCarga);
+		
 		// verifica el tipo de carga
 		if (tipoDeCarga.equals("1")) {
 			cargaConfronta();
@@ -161,40 +168,49 @@ public class CBDialogoCargaController extends ControladorBase {
 			try {
 				cbdialogoGT.cargaConfrontasGT();
 			} catch (ParseException e) {
-				Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
+				log.error("cargaConfronta() - Error ", e);
+				//Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
 			}
 
 		} else if (misession.getAttribute("conexion").equals(Tools.SESSION_NI)) {
 			try {
 				cbdialogoNI.cargaConfrontas();
 			} catch (SQLException e) {
-				Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
+				log.error("cargaConfronta() - Error ", e);
+				//Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
 			} catch (Exception e) {
-				Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
+				log.error("cargaConfronta() - Error ", e);
+				//Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
 			}
 		}else if (misession.getAttribute("conexion").equals(Tools.SESSION_PA)) {
 			try {
 				cbdialogoPA.cargaConfrontas();
 			} catch (SQLException e) {
-				Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
+				log.error("cargaConfronta() - Error ", e);
+				//Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
 			} catch (Exception e) {
-				Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
+				log.error("cargaConfronta() - Error ", e);
+				//Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
 			}
 		}else if (misession.getAttribute("conexion").equals(Tools.SESSION_CR)) {
 			try {
 				cbdialogoCR.cargaConfrontas();
 			} catch (SQLException e) {
-				Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
+				log.error("cargaConfronta() - Error ", e);
+				//Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
 			} catch (Exception e) {
-				Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
+				log.error("cargaConfronta() - Error ", e);
+				//Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
 			}
 		}else {
 			try {
 				cbdialogoSV.cargaConfrontas();
 			} catch (SQLException e) {
-				Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
+				log.error("cargaConfronta() - Error ", e);
+				//Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
 			} catch (Exception e) {
-				Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
+				log.error("cargaConfronta() - Error ", e);
+				//Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
 			}
 		}
 
@@ -214,33 +230,41 @@ public class CBDialogoCargaController extends ControladorBase {
 			try {
 				cbdialogoNI.cargaConfrontaDelDia();
 			} catch (SQLException e) {
-				Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
+				log.error("cargaConfrontaDelDia() - Error ", e);
+				//Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
 			} catch (Exception e) {
-				Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
+				log.error("cargaConfrontaDelDia() - Error ", e);
+				//Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
 			}
 		} else if (misession.getAttribute("conexion").equals(Tools.SESSION_PA)) {
 			try {
 				cbdialogoPA.cargaConfrontas();
 			} catch (SQLException e) {
-				Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
+				log.error("cargaConfrontaDelDia() - Error ", e);
+				//Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
 			} catch (Exception e) {
-				Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
+				log.error("cargaConfrontaDelDia() - Error ", e);
+				//Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
 			}
 		} else if (misession.getAttribute("conexion").equals(Tools.SESSION_CR)) {
 			try {
 				cbdialogoCR.cargaConfrontas();
 			} catch (SQLException e) {
-				Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
+				log.error("cargaConfrontaDelDia() - Error ", e);
+				//Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
 			} catch (Exception e) {
-				Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
+				log.error("cargaConfrontaDelDia() - Error ", e);
+				//Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
 			}
 		}else {
 			try {
 				cbdialogoSV.cargaConfrontaDelDia();
 			} catch (SQLException e) {
-				Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
+				log.error("cargaConfrontaDelDia() - Error ", e);
+				//Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
 			} catch (Exception e) {
-				Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
+				log.error("cargaConfrontaDelDia() - Error ", e);
+				//Logger.getLogger(CBDialogoCargaController.class.getName()).log(Level.INFO, null, e);
 			}
 		}
 	}

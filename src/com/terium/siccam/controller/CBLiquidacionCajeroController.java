@@ -4,8 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import javax.servlet.http.HttpSession;
 
 import org.zkoss.zk.ui.Component;
@@ -26,9 +26,11 @@ import org.zkoss.zul.Window;
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBLiquidacionCajeroDAO;
 import com.terium.siccam.model.CBLiquidacionCajeroModel;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 import com.terium.siccam.utils.Constantes;
 
 public class CBLiquidacionCajeroController extends ControladorBase {
+	private static Logger log = Logger.getLogger(CBLiquidacionCajeroController.class);
 	private static final long serialVersionUID = 1L;
 
 	Textbox txtUserFiltro = null;
@@ -44,13 +46,18 @@ public class CBLiquidacionCajeroController extends ControladorBase {
 		try {
 			super.doAfterCompose(param);
 			
-			Logger.getLogger(CBLiquidacionCajeroController.class.getName()).log(Level.INFO,
-					"Entra al módulo de Liquidaciones.");
+			log.debug(
+					"doAfterCompose() - " + "Entra al módulo de Liquidaciones.");
+			//Logger.getLogger(CBLiquidacionCajeroController.class.getName()).log(Level.INFO,
+					//"Entra al módulo de Liquidaciones.");
 			usuario = obtenerUsuario().getUsuario();
-			Logger.getLogger(CBLiquidacionCajeroController.class.getName()).log(Level.INFO,
-					"Obtiene usuario que ha iniciado sesión: " + usuario);
+			log.debug(
+					"doAfterCompose() - " + "Obtiene usuario que ha iniciado sesión: " + usuario);
+			//Logger.getLogger(CBLiquidacionCajeroController.class.getName()).log(Level.INFO,
+					//"Obtiene usuario que ha iniciado sesión: " + usuario);
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("doAfterCompose() - Error ", e);
+			//Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -89,7 +96,9 @@ public class CBLiquidacionCajeroController extends ControladorBase {
 	public void llenaListbox(List<CBLiquidacionCajeroModel> list) {
 		limpiarListbox(lstLiquidaciones);
 		CBLiquidacionCajeroModel objModel = new CBLiquidacionCajeroModel();
-		System.out.println("cantidad de registros " + list.size());
+		log.debug(
+				"llenaListbox() - " + "cantidad de registros " + list.size());
+		
 
 		if (list != null && list.size() > 0) {
 			Iterator<CBLiquidacionCajeroModel> it = list.iterator();
@@ -188,7 +197,9 @@ public class CBLiquidacionCajeroController extends ControladorBase {
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public void onEvent(Event event) throws Exception {
 			final int idseleccionado = Integer.parseInt(event.getTarget().getAttribute("idEliminar").toString());
-			System.out.println("ID  a eliminar = " + idseleccionado);
+			log.debug(
+					"eventBtnEliminar() - " + "ID  a eliminar = " + idseleccionado);
+			
 			Messagebox.show("¿Desea eliminar el registro seleccionado?", Constantes.CONFIRMACION, Messagebox.YES | Messagebox.NO,
 				Messagebox.QUESTION, new EventListener() {
 					public void onEvent(Event event) throws Exception {
@@ -213,7 +224,8 @@ public class CBLiquidacionCajeroController extends ControladorBase {
 		try {
 			Executions.createComponents("/cbNuevaLiquidacion.zul", null, null);
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
+			//Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnNueva() - Error ", e);
 			Messagebox.show("Ha ocurrido un error", Constantes.ATENCION, Messagebox.OK, Messagebox.ERROR);
 		}
 	}

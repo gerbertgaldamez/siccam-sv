@@ -12,13 +12,15 @@ import com.terium.siccam.dao.CBParametrosGeneralesDAO;
 import com.terium.siccam.model.CBCatalogoBancoModel;
 import com.terium.siccam.model.CBCatalogoOpcionModel;
 import com.terium.siccam.model.CBParametrosGeneralesModel;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
@@ -39,6 +41,7 @@ import org.zkoss.zk.ui.event.EventListener;
  */
 public class CBCatalogoBancoController extends ControladorBase {
 
+	private static Logger log = Logger.getLogger(CBCatalogoBancoController.class);
 	/**
 	 * modificado ovidio santos mvc 17042018
 	 */
@@ -77,7 +80,9 @@ public class CBCatalogoBancoController extends ControladorBase {
 		try {
 			CBCatalogoBancoDaoB cbaDao = new CBCatalogoBancoDaoB();
 			CBCatalogoBancoModel objModel = new CBCatalogoBancoModel();
-			System.out.println("Consulta estados tipologias");
+			log.debug(
+					"onClick$btnConsultar() - " + "Consulta estados tipologias");
+			
 
 			if (tbxNombre.getText().trim() != null && !"".equals(tbxNombre.getText().trim())) {
 				objModel.setNombre(tbxNombre.getText().trim());
@@ -99,7 +104,8 @@ public class CBCatalogoBancoController extends ControladorBase {
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBTipologiasPolizaController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnConsultar() - Error ", e);
+			//Logger.getLogger(CBTipologiasPolizaController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -109,7 +115,9 @@ public class CBCatalogoBancoController extends ControladorBase {
 	public void llenaListbox(List<CBCatalogoBancoModel> list) {
 		limpiarListbox(lbxListaBanco);
 
-		System.out.println("cantidad de registros " + list.size());
+		log.debug(
+				"llenaListbox() - " + "cantidad de registros " + list.size());
+		
 		//
 
 		if (list != null && list.size() > 0) {
@@ -195,7 +203,9 @@ public class CBCatalogoBancoController extends ControladorBase {
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public void onEvent(Event event) throws Exception {
 			final String idseleccionado = (String) (event.getTarget().getAttribute("idEliminar"));
-			System.out.println("ID  a eliminar = " + idseleccionado);
+			log.debug(
+					"eventBtnEliminar() - " + "ID  a eliminar = " + idseleccionado);
+			
 			Messagebox.show("¿Desea eliminar el registro seleccionado?", "CONFIRMACION", Messagebox.YES | Messagebox.NO,
 					Messagebox.QUESTION, new EventListener() {
 						public void onEvent(Event event) throws Exception {
@@ -234,7 +244,8 @@ public class CBCatalogoBancoController extends ControladorBase {
 				agrupacionModal.doModal();
 
 			} catch (Exception e) {
-				Logger.getLogger(CBCatalogoBancoController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("eventBtnModificar() - Error ", e);
+				//Logger.getLogger(CBCatalogoBancoController.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 	};

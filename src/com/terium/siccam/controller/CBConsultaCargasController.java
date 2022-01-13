@@ -4,6 +4,7 @@
 package com.terium.siccam.controller;
 
 import java.io.BufferedWriter;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,8 +14,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import javax.servlet.http.HttpSession;
 
 import org.zkoss.bind.annotation.BindingParam;
@@ -53,6 +54,7 @@ import com.terium.siccam.model.CBCatalogoAgenciaModel;
 import com.terium.siccam.model.CBCatalogoBancoModel;
 import com.terium.siccam.model.CBConsultaContabilizacionModel;
 import com.terium.siccam.model.CBParametrosGeneralesModel;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 import com.terium.siccam.utils.Constantes;
 
 /**
@@ -60,6 +62,8 @@ import com.terium.siccam.utils.Constantes;
  * 
  */
 public class CBConsultaCargasController extends ControladorBase {
+	
+	private static Logger log = Logger.getLogger(CBConsultaCargasController.class);
 
 	/**
 	 * 
@@ -149,15 +153,19 @@ public class CBConsultaCargasController extends ControladorBase {
 			break;
 		
 		}
-		Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO,
-				"Tipo de carga seleccionado = " + this.cmbTipoCarga.getSelectedItem().getLabel());
+		log.debug(
+				"onSelect$cmbTipoCarga() - " + "Tipo de carga seleccionado = " + this.cmbTipoCarga.getSelectedItem().getLabel());
+		//Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO,
+				//"Tipo de carga seleccionado = " + this.cmbTipoCarga.getSelectedItem().getLabel());
 
 	}
 
 	private List<CBParametrosGeneralesModel> listaTipoCarga = new ArrayList<CBParametrosGeneralesModel>();
 
 	public void llenaComboTipoCarga() {
-		Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, "Llena combo tipo carga");
+		log.debug(
+				"llenaComboTipoCarga() - " + "Llena combo tipo carga");
+		//Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, "Llena combo tipo carga");
 		this.cmbTipoCarga.setSelectedIndex(-1);
 		// limpiarCombobox(cmbTipoReporte);
 		CBArchivosInsertadosDAO objeDAO = new CBArchivosInsertadosDAO();
@@ -363,7 +371,8 @@ public class CBConsultaCargasController extends ControladorBase {
 						null);
 				winDetalleCargados.doModal();
 			} catch (Exception e) {
-				Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("eventBtnabrirDetalleNoCargados() - Error ", e);
+				//Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.SEVERE, null, e);
 			}
 
 		}
@@ -379,7 +388,8 @@ public class CBConsultaCargasController extends ControladorBase {
 				detalleCargdos = (Window) Executions.createComponents("/cbDetalleCargados.zul", null, null);
 				detalleCargdos.doModal();
 			} catch (Exception e) {
-				Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("eventBtnabrirDetalleCargados() - Error ", e);
+				//Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.SEVERE, null, e);
 
 			}
 		}
@@ -399,21 +409,29 @@ public class CBConsultaCargasController extends ControladorBase {
 								CBBitacoraLogDAO bitacoraDAO = new CBBitacoraLogDAO();
 										
 								objDAO.borraFilaGrabadaMaestro(eliminarCargasArchivos);
-								Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO,
-										"elimina archivo de tabla cb_archivos_insertados ");
+								log.debug(
+										"eventBtnEliminarCargas() - " + "elimina archivo de tabla cb_archivos_insertados ");
+								//Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO,
+										//"elimina archivo de tabla cb_archivos_insertados ");
 								if (objDAO.borraConciliacionMaestro(eliminarCargasArchivos)) {
-									Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO,
-											"elimina carga de info conciliacion ");
+									log.debug(
+											"eventBtnEliminarCargas() - " + "elimina carga de info conciliacion ");
+									//Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO,
+											//"elimina carga de info conciliacion ");
 								}
 
 								if (objDAO.borraDataBancoMaestro(eliminarCargasArchivos)) {
-									Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO, 
-											"elimina carga de info de data banco ");
+									log.debug(
+											"eventBtnEliminarCargas() - " + "elimina carga de info de data banco ");
+									//Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO, 
+											//"elimina carga de info de data banco ");
 								}
 
 								if (objDAO.borraDatasinProcesarMaestro(eliminarCargasArchivos)) {
-									Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO, 
-											"elimina carga de info data sin procesar");
+									log.debug(
+											"eventBtnEliminarCargas() - " + "elimina carga de info data sin procesar");
+									//Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO, 
+											//"elimina carga de info data sin procesar");
 								}
 								
 								/**
@@ -429,8 +447,10 @@ public class CBConsultaCargasController extends ControladorBase {
 								objBitaModel.setUsuario(usuario);
 								
 								if (bitacoraDAO.insertBitacoraLog(objBitaModel)) {
-									Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO, 
-											"Inserta accion en log para carga de archivos");	
+									log.debug(
+											"eventBtnEliminarCargas() - " + "Inserta accion en log para carga de archivos");	
+									//Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO, 
+											//"Inserta accion en log para carga de archivos");	
 								}
 								/**
 								 * FIN CarlosGodinez -> 19/09/2018
@@ -449,12 +469,15 @@ public class CBConsultaCargasController extends ControladorBase {
 	// @NotifyChange("listaCargas")
 	public void eliminarDataBanco(@BindingParam("idFila") String idFila) {
 		try {
-			Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO, null, "id: " + idFila);
+			log.debug(
+					"eliminarDataBanco() - " + "id: " + idFila);
+			//Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO, null, "id: " + idFila);
 			CBArchivosInsertadosDAO cbaidao = new CBArchivosInsertadosDAO();
 			cbaidao.borraDataBancoMaestro(idFila);
 
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("eliminarDataBanco() - Error ", e);
+			//Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	///
@@ -465,12 +488,15 @@ public class CBConsultaCargasController extends ControladorBase {
 	// @NotifyChange("listaCargas")
 	public void eliminarConciliacion(@BindingParam("idFila") String idFila) {
 		try {
-			Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO, null, "id: " + idFila);
+			log.debug(
+					"eliminarConciliacion() - " + "id: " + idFila);
+			//Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO, null, "id: " + idFila);
 			CBArchivosInsertadosDAO cbaidao = new CBArchivosInsertadosDAO();
 			cbaidao.borraConciliacionMaestro(idFila);
 
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("eliminarConciliacion() - Error ", e);
+			//Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -589,20 +615,28 @@ public class CBConsultaCargasController extends ControladorBase {
 								CBBitacoraLogDAO bitacoraDAO = new CBBitacoraLogDAO();
 								
 								if (objDAO.borraFilaGrabadaMaestro(eliminarCargasArchivos)) {
-									Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO,
-											"elimina archivo maestro..");
+									log.debug(
+											"eventBtnEliminarCargasEstadoCuenta() - " + "elimina archivo maestro..");
+									//Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO,
+											//"elimina archivo maestro..");
 								}
 								if (objDAO.borraRegistrosSociedad(eliminarCargasArchivos)) {
-									Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO,
-											"elimina registros de tabla cb_estado_cuenta_sociedad..");
+									log.debug(
+											"eventBtnEliminarCargasEstadoCuenta() - " + "elimina registros de tabla cb_estado_cuenta_sociedad..");
+									//Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO,
+											//"elimina registros de tabla cb_estado_cuenta_sociedad..");
 								}
 								if (objDAO.borraRegistrosCredomatic(eliminarCargasArchivos)) {
-									Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO,
-											"elimina registros de credomatic..");
+									log.debug(
+											"eventBtnEliminarCargasEstadoCuenta() - " + "elimina registros de credomatic..");
+									//Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO,
+											//"elimina registros de credomatic..");
 								}
 								if (objDAO.borraRegistrosOtras(eliminarCargasArchivos)) {
-									Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO,
-											"elimina registros otros de extracto..");
+									log.debug(
+											"eventBtnEliminarCargasEstadoCuenta() - " + "elimina registros otros de extracto..");
+									//Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO,
+											//"elimina registros otros de extracto..");
 								}
 								/**
 								 * Added by CarlosGodinez -> 19/09/2018
@@ -617,8 +651,10 @@ public class CBConsultaCargasController extends ControladorBase {
 								objBitaModel.setUsuario(usuario);
 								
 								if (bitacoraDAO.insertBitacoraLog(objBitaModel)) {
-									Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO, 
-											"Inserta accion en log para carga de archivos");	
+									log.debug(
+											"eventBtnEliminarCargasEstadoCuenta() - " + "Inserta accion en log para carga de archivos");
+									//Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.INFO, 
+											//"Inserta accion en log para carga de archivos");	
 								}
 								/**
 								 * FIN CarlosGodinez -> 19/09/2018
@@ -648,13 +684,17 @@ public class CBConsultaCargasController extends ControladorBase {
 			String encabezado = "Nombre Archivo|Fecha|Banco|Agencia|Creado por \n";
 			
 			File archivo = new File("reporte_confrontas_cargadas_" + sdf.format(fecha) + ".csv");
-			System.out.println("Generando reporte lista ..." + listconfrontas.size());
+			log.debug(
+					"onClick$btnExcel() - " + "Generando reporte lista ..." + listconfrontas.size());
+			
 			bw = new BufferedWriter(new FileWriter(archivo));
 			bw.write(encabezado);
 
 			CBArchivosInsertadosModel objModelReporte = new CBArchivosInsertadosModel();
 			Iterator<CBArchivosInsertadosModel> it = listconfrontas.iterator();
-			System.out.println("Generando reporte lista2 ..." + listconfrontas.size());
+			log.debug(
+					"onClick$btnExcel() - " + "Generando reporte lista2 ..." + listconfrontas.size());
+			
 			while (it.hasNext()) {
 				objModelReporte = it.next();
 				bw.write((objModelReporte.getNombreArchivo()).trim() + "|"
@@ -663,7 +703,9 @@ public class CBConsultaCargasController extends ControladorBase {
 						+ (objModelReporte.getCreadoPor()) + "\n");
 			}
 			bw.close();
-			System.out.println("Descarga exitosa del archivo generado...");
+			log.debug(
+					"onClick$btnExcel() - " + "Descarga exitosa del archivo generado...");
+			
 			Filedownload.save(archivo, null);
 			Messagebox.show("Reporte generado de manera exitosa, el archivo ha sido descargado", "ATENCIÓN",
 					Messagebox.OK, Messagebox.INFORMATION);
@@ -673,7 +715,8 @@ public class CBConsultaCargasController extends ControladorBase {
 						Messagebox.OK, Messagebox.EXCLAMATION);
 			}
 		} catch (IOException e) {
-			Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnExcel() - Error ", e);
+			//Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(bw != null)
 				bw.close();
@@ -683,7 +726,9 @@ public class CBConsultaCargasController extends ControladorBase {
 		
 		public void onClick$btnExcel2() throws IOException {
 		BufferedWriter bw = null; 
-		System.out.println("Generando reporte ...");
+		log.debug(
+				"onClick$btnExcel2() - " + "Generando reporte ...");
+		
 
 		try {
 			if (listestadocuenta.size()>0) {
@@ -694,13 +739,17 @@ public class CBConsultaCargasController extends ControladorBase {
 			String encabezado = "Nombre Archivo|Tipo de Carga|Cargado por|Fecha Carga \n";
 			
 			File archivo = new File("reporte_estados_cuentas_cargadas_" + sdf.format(fecha) + ".csv");
-			System.out.println("Generando reporte lista ..." + listestadocuenta.size());
+			log.debug(
+					"onClick$btnExcel2() - " + "Generando reporte lista ..." + listestadocuenta.size());
+			
 			bw = new BufferedWriter(new FileWriter(archivo));
 			bw.write(encabezado);
 
 			CBArchivosInsertadosEstadoCuentaModel objModelReporte = new CBArchivosInsertadosEstadoCuentaModel();
 			Iterator<CBArchivosInsertadosEstadoCuentaModel> it = listestadocuenta.iterator();
-			System.out.println("Generando reporte lista2 ..." + listestadocuenta.size());
+			log.debug(
+					"onClick$btnExcel2() - " + "Generando reporte lista2 ..." + listestadocuenta.size());
+			
 			while (it.hasNext()) {
 				objModelReporte = it.next();
 				bw.write((objModelReporte.getNombreArchivo()).trim() + "|"
@@ -708,7 +757,9 @@ public class CBConsultaCargasController extends ControladorBase {
 						+ (objModelReporte.getFecha()) + "\n");
 			}
 			bw.close();
-			System.out.println("Descarga exitosa del archivo generado...");
+			log.debug(
+					"onClick$btnExcel2() - " + "Descarga exitosa del archivo generado...");
+			
 			Filedownload.save(archivo, null);
 			Messagebox.show("Reporte generado de manera exitosa, el archivo ha sido descargado", "ATENCIÓN",
 					Messagebox.OK, Messagebox.INFORMATION);
@@ -718,7 +769,8 @@ public class CBConsultaCargasController extends ControladorBase {
 						Messagebox.OK, Messagebox.EXCLAMATION);
 			}
 		} catch (IOException e) {
-			Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnExcel2() - Error ", e);
+			//Logger.getLogger(CBConsultaCargasController.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(bw != null)
 				bw.close();

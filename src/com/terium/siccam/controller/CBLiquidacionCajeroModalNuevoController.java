@@ -4,8 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -23,8 +24,11 @@ import com.terium.siccam.dao.CBLiquidacionCajeroDAO;
 import com.terium.siccam.dao.CBLiquidacionDetalleDAO;
 import com.terium.siccam.model.CBLiquidacionCajeroModel;
 import com.terium.siccam.model.CBLiquidacionDetalleModel;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 
 public class CBLiquidacionCajeroModalNuevoController extends ControladorBase {
+	
+	private static Logger log = Logger.getLogger(CBLiquidacionCajeroModalNuevoController.class);
 	private static final long serialVersionUID = 1L;
 
 	Textbox txtUser;
@@ -43,13 +47,18 @@ public class CBLiquidacionCajeroModalNuevoController extends ControladorBase {
 			// setTipoCargaFiltro("1");
 			btnRegistrar.setDisabled(true);
 
-			Logger.getLogger(CBLiquidacionCajeroModalNuevoController.class.getName()).log(Level.INFO,
-					"Entra al módulo de Liquidaciones.");
+			log.debug(
+					"doAfterCompose() - " + "Entra al módulo de Liquidaciones.");
+			//Logger.getLogger(CBLiquidacionCajeroModalNuevoController.class.getName()).log(Level.INFO,
+					//"Entra al módulo de Liquidaciones.");
 			usuario = obtenerUsuario().getUsuario();
-			Logger.getLogger(CBLiquidacionCajeroModalNuevoController.class.getName()).log(Level.INFO,
-					"Obtiene usuario que ha iniciado sesión: " + usuario);
+			log.debug(
+					"doAfterCompose() - " + "Obtiene usuario que ha iniciado sesión: " + usuario);
+			//Logger.getLogger(CBLiquidacionCajeroModalNuevoController.class.getName()).log(Level.INFO,
+					//"Obtiene usuario que ha iniciado sesión: " + usuario);
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("doAfterCompose() - Error ", e);
+			//Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -67,7 +76,9 @@ public class CBLiquidacionCajeroModalNuevoController extends ControladorBase {
 		SimpleDateFormat fechaFormato = new SimpleDateFormat("dd-MM-yyyy");
 
 		if (txtUser.getText() == null || txtUser.getText().equals("")) {
-			System.out.println("entra " + txtUser.getText());
+			log.debug(
+					"onClick$btnConsultar() - " + "entra " + txtUser.getText());
+			
 			Messagebox.show("Debe ingresar un nombre antes de consultar datos.", "ATENCION", Messagebox.OK,
 					Messagebox.EXCLAMATION);
 			return;
@@ -77,7 +88,9 @@ public class CBLiquidacionCajeroModalNuevoController extends ControladorBase {
 					Messagebox.EXCLAMATION);
 			return;
 		}
-		System.out.println("no entra " + txtUser.getText());
+		log.debug(
+				"onClick$btnConsultar() - " + "no entra " + txtUser.getText());
+		
 		objModel.setNombtransaccion(txtUser.getText().trim());
 		objModel.setFec_efectividad(fechaFormato.format(dbFechTran.getValue()));
 		nombretransaccion = txtUser.getText().trim();
@@ -168,7 +181,9 @@ public class CBLiquidacionCajeroModalNuevoController extends ControladorBase {
 	public void onClick$btnRegistrar() {
 		try {
 			if (txtUser.getText() == null || txtUser.getText().equals("")) {
-				System.out.println("entra " + txtUser.getText());
+				log.debug(
+						"onClick$btnRegistrar() - " + "entra " + txtUser.getText());
+				
 				Messagebox.show("Debe ingresar un nombre antes de consultar datos.", "ATENCION", Messagebox.OK,
 						Messagebox.EXCLAMATION);
 				return;
@@ -179,10 +194,14 @@ public class CBLiquidacionCajeroModalNuevoController extends ControladorBase {
 				return;
 			}
 
-			System.out.println("nombre " + nombretransaccion);
+			log.debug(
+					"onClick$btnRegistrar() - " + "nombre " + nombretransaccion);
+			
 			if (nombretransaccion.equals(txtUser.getText().trim())) {
 				// if (getNombtransaccion().trim().equals(this.userConsulta)) {*
-				System.out.println("fecha " + fechaTransaccion);
+				log.debug(
+						"onClick$btnRegistrar() - " + "fecha " + fechaTransaccion);
+				
 				if (fechaTransaccion.equals(dbFechTran.getText().trim())) {
 					// if (getFechatransaccion().equals(this.fechaConsulta)) {
 
@@ -213,8 +232,10 @@ public class CBLiquidacionCajeroModalNuevoController extends ControladorBase {
 							if (objeDetalleDAO.guar(list2, pk_liquidacion, usuario)) {
 								onClick$btnConsultar();
 								// BindUtils.postGlobalCommand(null, null, "realizarConsulta", null);
-								Logger.getLogger(CBLiquidacionCajeroModalNuevoController.class.getName())
-										.log(Level.INFO, "Operación exitosa al registrar una nueva liquidación");
+								log.debug(
+										"onClick$btnRegistrar() - " + "Operación exitosa al registrar una nueva liquidación");
+								//Logger.getLogger(CBLiquidacionCajeroModalNuevoController.class.getName())
+										//.log(Level.INFO, "Operación exitosa al registrar una nueva liquidación");
 								Messagebox.show("Operación exitosa", "ATENCIÓN", Messagebox.OK, Messagebox.INFORMATION);
 								onClick$closeBtn();
 								// nuevaTransaccion.onClose();
@@ -242,7 +263,8 @@ public class CBLiquidacionCajeroModalNuevoController extends ControladorBase {
 			}
 
 		} catch (Exception e) {
-			Logger.getLogger(CBLiquidacionCajeroModalNuevoController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnRegistrar() - Error ", e);
+			//Logger.getLogger(CBLiquidacionCajeroModalNuevoController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error. Revise los datos ingresados.", "ATENCIÓN", Messagebox.OK,
 					Messagebox.ERROR);
 		}

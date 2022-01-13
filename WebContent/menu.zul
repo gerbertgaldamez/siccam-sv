@@ -320,6 +320,8 @@
                         <vbox>
                         	<quickitem label="Conciliacion Detallada" image="img/quick/general.png"
                                        id="qkiConciliaciondet" color="white"/>
+                            <quickitem label="Cuadre Sidra" image="img/quick/confrontas.png"
+                                       id="qkiCuadreSidra" color="white"/>
                             <quickitem label="Recaudacion y Regularizacion" image="img/quick/recaudacion.png"
                                        id="qkiRecaRegu" color="white"/>           
                         	<quickitem label="Reportes Conciliaciones" image="img/quick/reporte.png"

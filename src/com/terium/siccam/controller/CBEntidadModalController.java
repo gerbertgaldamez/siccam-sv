@@ -3,8 +3,9 @@ package com.terium.siccam.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
@@ -18,11 +19,13 @@ import com.terium.siccam.dao.CBCatalogoAgenciaDAO;
 import com.terium.siccam.model.CBCatalogoAgenciaModel;
 import com.terium.siccam.model.CBCatalogoBancoModel;
 import com.terium.siccam.model.CBParametrosGeneralesModel;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 
 /**
  * @author Carlos Godinez - 16/10/2017
  * */
 public class CBEntidadModalController extends ControladorBase  {
+	private static Logger log = Logger.getLogger(CBEntidadModalController.class);
 	private static final long serialVersionUID = 9176164927878418930L;
 	
 	//Componentes
@@ -51,13 +54,17 @@ public class CBEntidadModalController extends ControladorBase  {
 	public void doAfterCompose(Component param) {
 		try{
 			super.doAfterCompose(param);
-			Logger.getLogger(CBEntidadModalController.class.getName())
-				.log(Level.INFO, "\n*** Entra a modal de entidad ***\n");
+			log.debug(
+					"doAfterCompose() - " + "\n*** Entra a modal de entidad ***\n");
+			//Logger.getLogger(CBEntidadModalController.class.getName())
+				//.log(Level.INFO, "\n*** Entra a modal de entidad ***\n");
 			llenaComboAgrupaciones();
 			llenaComboEstado();
 			if(session.getAttribute("objEntidadSelected") != null) {
-				Logger.getLogger(CBEntidadModalController.class.getName())
-					.log(Level.INFO, "** Objeto entidad modificable enviado a controlador");
+				log.debug(
+						"doAfterCompose() - " + "** Objeto entidad modificable enviado a controlador");
+				//Logger.getLogger(CBEntidadModalController.class.getName())
+					//.log(Level.INFO, "** Objeto entidad modificable enviado a controlador");
 				btnGuardar.setDisabled(true);
 				btnModificar.setDisabled(false);
 				objSeleccionado = (CBCatalogoAgenciaModel) session.getAttribute("objEntidadSelected");
@@ -79,8 +86,10 @@ public class CBEntidadModalController extends ControladorBase  {
 					}
 				}
 			} else {
-				Logger.getLogger(CBEntidadModalController.class.getName())
-					.log(Level.INFO, "** Ventana lista para registrar entidad");
+				log.debug(
+						"doAfterCompose() - " + "** Ventana lista para registrar entidad");
+				//Logger.getLogger(CBEntidadModalController.class.getName())
+					//.log(Level.INFO, "** Ventana lista para registrar entidad");
 				btnGuardar.setDisabled(false);
 				btnModificar.setDisabled(true);
 				objSeleccionado = new CBCatalogoAgenciaModel();
@@ -88,7 +97,8 @@ public class CBEntidadModalController extends ControladorBase  {
 			}
 			usuario = obtenerUsuario().getUsuario();
 		} catch (Exception e) {
-			Logger.getLogger(CBEntidadModalController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("doAfterCompose() - Error ", e);
+			//Logger.getLogger(CBEntidadModalController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -126,7 +136,8 @@ public class CBEntidadModalController extends ControladorBase  {
 				}
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBEntidadModalController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnGuardar() - Error ", e);
+			//Logger.getLogger(CBEntidadModalController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -165,7 +176,8 @@ public class CBEntidadModalController extends ControladorBase  {
 				}
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBEntidadModalController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnGuardar() - Error ", e);
+			//Logger.getLogger(CBEntidadModalController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -202,7 +214,8 @@ public class CBEntidadModalController extends ControladorBase  {
 				}
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBEntidadModalController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("entidadValida() - Error ", e);
+			//Logger.getLogger(CBEntidadModalController.class.getName()).log(Level.SEVERE, null, e);
 		}
 		return resultado;
 	}
@@ -221,10 +234,13 @@ public class CBEntidadModalController extends ControladorBase  {
 				item.setValue(d.getCbcatalogobancoid());
 				item.setLabel(d.getNombre());
 			} 
-			Logger.getLogger(CBEntidadModalController.class.getName())
-				.log(Level.INFO, "- Llena combo de agrupaciones");
+			log.debug(
+					"llenaComboAgrupaciones() - " + "Llena combo de agrupaciones");
+			//Logger.getLogger(CBEntidadModalController.class.getName())
+				//.log(Level.INFO, "- Llena combo de agrupaciones");
 		} catch (Exception e) {
-			Logger.getLogger(CBEntidadModalController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("llenaComboAgrupaciones() - Error ", e);
+			//Logger.getLogger(CBEntidadModalController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	
@@ -238,10 +254,13 @@ public class CBEntidadModalController extends ControladorBase  {
 				item.setValue(d.getValorObjeto1());
 				item.setLabel(d.getObjeto());
 			} 
-			Logger.getLogger(CBEntidadModalController.class.getName())
-				.log(Level.INFO, "- Llena combo de estado");
+			log.debug(
+					"llenaComboEstado() - " + "Llena combo de estado");
+			//Logger.getLogger(CBEntidadModalController.class.getName())
+				//.log(Level.INFO, "- Llena combo de estado");
 		} catch (Exception e) {
-			Logger.getLogger(CBEntidadModalController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("llenaComboEstado() - Error ", e);
+			//Logger.getLogger(CBEntidadModalController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 }

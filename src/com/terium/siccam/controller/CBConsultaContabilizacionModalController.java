@@ -5,7 +5,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 
@@ -22,10 +24,13 @@ import org.zkoss.zul.Window;
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBConsultaContabilizacionDAO;
 import com.terium.siccam.model.CBConsultaContabilizacionModel;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 
 
 
 public class CBConsultaContabilizacionModalController extends ControladorBase {
+	
+	private static Logger log = Logger.getLogger(CBConsultaContabilizacionModalController.class);
 
 	/**
 	 * 
@@ -91,8 +96,10 @@ public class CBConsultaContabilizacionModalController extends ControladorBase {
 
 		// objb.setCbcontabilizacionid(idseleccionado);
 
-		Logger.getLogger(CBConsultaContabilizacionController.class.getName())
-			.log(Level.INFO, "en el controlador de modificar " + objModel);
+		log.debug(
+				"onClick$btnModificar() - " + "en el controlador de modificar " + objModel);
+		//Logger.getLogger(CBConsultaContabilizacionController.class.getName())
+			//.log(Level.INFO, "en el controlador de modificar " + objModel);
 		if (objDAO.update(objModel, objb.getCbcontabilizacionid())) {
 			refrescarModulo(fechaini, fechafin);
 			Messagebox.show("Se actualizo el registro", "ATENCION", Messagebox.OK, Messagebox.INFORMATION);
@@ -106,8 +113,10 @@ public class CBConsultaContabilizacionModalController extends ControladorBase {
 	}
 
 	public void llenarcasillas() {
-		Logger.getLogger(CBConsultaContabilizacionController.class.getName())
-			.log(Level.INFO, "id seleccioando " + idseleccionado);
+		log.debug(
+				"llenarcasillas() - " + "id seleccioando " + idseleccionado);
+		//Logger.getLogger(CBConsultaContabilizacionController.class.getName())
+			//.log(Level.INFO, "id seleccioando " + idseleccionado);
 
 		tbxCentroCosto.setText(objb.getCentroCosto());
 		tbxClave.setText(objb.getClaveContabilizacion());
@@ -147,8 +156,12 @@ public class CBConsultaContabilizacionModalController extends ControladorBase {
 		CBConsultaContabilizacionController instanciaPrincipal = new CBConsultaContabilizacionController();
 		instanciaPrincipal = (CBConsultaContabilizacionController) session.getAttribute("interfaceTarjeta");
 		onClick$btnLimpiar();
-		System.out.println("fechaini " + fechaini);
-		System.out.println("fechafin " + fechafin);
+		log.debug(
+				"refrescarModulo() - " + "fechaini " + fechaini);
+		log.debug(
+				"refrescarModulo() - " + "fechafin " + fechafin);
+		
+		
 		instanciaPrincipal.recargaConsultaConta(fechaini, fechafin);
 	
 		onClick$closeBtn();

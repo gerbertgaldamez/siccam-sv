@@ -1,15 +1,17 @@
 package com.terium.siccam.controller;
 
 import java.text.DateFormat;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import javax.servlet.http.HttpSession;
+
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.Event;
@@ -21,8 +23,11 @@ import org.zkoss.zul.Window;
 import com.terium.siccam.controller.CBDesasociarEstadoCuentasTipologiaController;
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBConsultaEstadoCuentasDAO;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 
 public class CBDesasociarEstadoCuentasTipologiaController extends ControladorBase {
+	
+	private static Logger log = Logger.getLogger(CBDesasociarEstadoCuentasTipologiaController.class);
 	private HttpSession misession = (HttpSession) Sessions.getCurrent().getNativeSession();
 	private static final long serialVersionUID = 9176164927878418930L;
 	private Textbox txtObservaciones;
@@ -47,8 +52,10 @@ public class CBDesasociarEstadoCuentasTipologiaController extends ControladorBas
 		usuarioDesasociar = (String) (misession.getAttribute("usuarioDesasociar"));
 		// finalizan
 		listaID = (List<Integer>) misession.getAttribute("listaIDEstadoCuenta");
-		Logger.getLogger(CBDesasociarEstadoCuentasTipologiaController.class.getName()).log(Level.INFO,
-				"Bandera desasociar tipología de manera masiva = " + desasociarTipologiaMasiva);
+		log.debug(
+				"doAfterCompose() - " + "Bandera desasociar tipología de manera masiva = " + desasociarTipologiaMasiva);
+		//Logger.getLogger(CBDesasociarEstadoCuentasTipologiaController.class.getName()).log(Level.INFO,
+				//"Bandera desasociar tipología de manera masiva = " + desasociarTipologiaMasiva);
 
 	}
 
@@ -73,8 +80,10 @@ public class CBDesasociarEstadoCuentasTipologiaController extends ControladorBas
 					"ATENCION", Messagebox.OK, Messagebox.EXCLAMATION);
 
 		} else {
-			Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.INFO,
-					"Bandera desasociar tipologia " + txtObservaciones);
+			log.debug(
+					"onClick$btnDesasociar() - " + "Bandera desasociar tipologia " + txtObservaciones);
+			//Logger.getLogger(CBConsultaEstadoCuentasController.class.getName()).log(Level.INFO,
+					//"Bandera desasociar tipologia " + txtObservaciones);
 			System.out.println("observaciones " + txtObservaciones.getText());
 			try {
 				Messagebox.show("¿Desea desasociar esta tipologia poliza al estado de cuenta seleccionado?",
@@ -85,8 +94,10 @@ public class CBDesasociarEstadoCuentasTipologiaController extends ControladorBas
 									observaciones = txtObservaciones.getText().trim();
 
 									if (objeDAO.desasociarTipologiaMasiva(listaID, usuario, observaciones)) {
-										Logger.getLogger(CBConsultaEstadoCuentasController.class.getName())
-												.log(Level.INFO, "Entra a desasociar tipologias masivas ");
+										log.debug(
+												"onClick$btnDesasociar() - " + "Entra a desasociar tipologias masivas ");
+										//Logger.getLogger(CBConsultaEstadoCuentasController.class.getName())
+											//	.log(Level.INFO, "Entra a desasociar tipologias masivas ");
 										int exitosas = listaID.size();
 
 										refrescarModulo("(No asignada)", "(No asignada)", exitosas);
@@ -98,8 +109,10 @@ public class CBDesasociarEstadoCuentasTipologiaController extends ControladorBas
 							}
 						});
 			} catch (Exception e) {
-				Logger.getLogger(CBDesasociarEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null,
-						e);
+				log.error(
+						"onClick$btnDesasociar() - " + "-Error ", e);
+				//Logger.getLogger(CBDesasociarEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null,
+					//	e);
 				Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 			}
 
@@ -117,7 +130,9 @@ public class CBDesasociarEstadoCuentasTipologiaController extends ControladorBas
 			result = fecha.replace(".", "/");
 			// System.out.println("result: "+result);
 		} catch (Exception e) {
-			Logger.getLogger(CBDesasociarEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
+			log.error(
+					"changeDate() - " + "-Error ", e);
+			//Logger.getLogger(CBDesasociarEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
 		}
 		return result;
 	}
@@ -134,10 +149,14 @@ public class CBDesasociarEstadoCuentasTipologiaController extends ControladorBas
 			// System.out.println("fecha: " + fec.getDate());
 			return true;
 		} catch (ParseException e) {
-			Logger.getLogger(CBDesasociarEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
+			log.error(
+					"isDate() - " + "-Error ", e);
+			//Logger.getLogger(CBDesasociarEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
 			return false;
 		} catch (NullPointerException e) {
-			Logger.getLogger(CBDesasociarEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
+			log.error(
+					"isDate() - " + "-Error ", e);
+			//Logger.getLogger(CBDesasociarEstadoCuentasTipologiaController.class.getName()).log(Level.SEVERE, null, e);
 			return false;
 		}
 	}

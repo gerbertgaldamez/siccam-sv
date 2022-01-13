@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 
@@ -34,8 +36,11 @@ import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBConsultaEstadoCuentasDAO;
 import com.terium.siccam.model.CBCatalogoAgenciaModel;
 import com.terium.siccam.model.CBEstadoCuentasModel;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 
 public class CBEstadoCuentasTipologiaDepositosMasivoController extends ControladorBase {
+	
+	private static Logger log = Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class);
 
 	private HttpSession misession = (HttpSession) Sessions.getCurrent().getNativeSession();
 	private static final long serialVersionUID = 9176164927878418930L;
@@ -71,20 +76,25 @@ public class CBEstadoCuentasTipologiaDepositosMasivoController extends Controlad
 		btnDesasociar.setVisible(false);
 
 		try {
-		Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
-				"Bandera asociar tipología de manera masiva archivo depositos ");
+			log.debug(
+					"doAfterCompose() - " + "Bandera asociar tipología de manera masiva archivo depositos ");
+		//Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
+				//"Bandera asociar tipología de manera masiva archivo depositos ");
 		paramsLlenaListbox = (CBEstadoCuentasModel) misession.getAttribute("paramsListbox");
 		}catch (Exception e) {
 			//Messagebox.show("Ha ocurrido un error al obtener la session.", "ERROR", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.SEVERE, null,
-					e);
-			Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
-					"error al obtener la session en metodo principal");
+			log.error("doAfterCompose() - Error ", e);
+			//Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.SEVERE, null,
+					//e);
+		//	Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
+					//"error al obtener la session en metodo principal");
 		}
 		lblMensaje.setValue("No se ha seleccionado ningun archivo de depósitos");
 		imgEstatus.setSrc("img/negro.png");
-		Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
-				"Bandera asignar tipología de manera masiva = " + tipologiaMasiva);
+		log.debug(
+				"doAfterCompose() - " + "Bandera asignar tipología de manera masiva = " + tipologiaMasiva);
+		//Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
+				//"Bandera asignar tipología de manera masiva = " + tipologiaMasiva);
 
 	}
 
@@ -100,14 +110,22 @@ public class CBEstadoCuentasTipologiaDepositosMasivoController extends Controlad
 			// CBEstadoCuentasModel objSociedad = null;
 			media = event.getMedia();
 
-			Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
-					"-----File Information-----");
-			Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
-					"name: " + media.getName());
-			Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
-					"contentType: " + media.getContentType());
-			Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
-					"format: " + media.getFormat());
+			log.debug(
+					"onUpload$btnSubirDepositos() - " + "-----File Information-----");
+			//Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
+					//"-----File Information-----");
+			log.debug(
+					"onUpload$btnSubirDepositos() - " + "name: " + media.getName());
+			//Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
+					//"name: " + media.getName());
+			log.debug(
+					"onUpload$btnSubirDepositos() - " + "contentType: " + media.getContentType());
+			//Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
+					//"contentType: " + media.getContentType());
+			log.debug(
+					"onUpload$btnSubirDepositos() - " + "format: " + media.getFormat());
+			//Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
+					//"format: " + media.getFormat());
 
 			if (media.getFormat().equals("txt")) {
 				Reader read = media.getReaderData();
@@ -184,8 +202,9 @@ public class CBEstadoCuentasTipologiaDepositosMasivoController extends Controlad
 			}
 		} catch (IOException e) {
 			Messagebox.show("Ha ocurrido un error al cargar el archivo.", "ERROR", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.SEVERE, null,
-					e);
+			log.error("onUpload$btnSubirDepositos() - Error ", e);
+			//Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.SEVERE, null,
+					//e);
 
 		}
 	}
@@ -208,8 +227,10 @@ public class CBEstadoCuentasTipologiaDepositosMasivoController extends Controlad
 		try {
 
 			if (listaDepositos.size() != 0) {
-				Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
-						"**** Se leera un archivo de depositos ****");
+				log.debug(
+						"onClick$btnAsignar() - " + "**** Se leera un archivo de depositos ****");
+				//Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.INFO,
+						//"**** Se leera un archivo de depositos ****");
 
 				final String observaciones = txtObservaciones.getText().trim();
 
@@ -245,8 +266,9 @@ public class CBEstadoCuentasTipologiaDepositosMasivoController extends Controlad
 			}
 
 		} catch (Exception e) {
-			Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.SEVERE, null,
-					e);
+			log.error("onClick$btnAsignar() - Error ", e);
+			//Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.SEVERE, null,
+					//e);
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 
@@ -277,8 +299,9 @@ public class CBEstadoCuentasTipologiaDepositosMasivoController extends Controlad
 			result = fecha.replace(".", "/");
 			// System.out.println("result: "+result);
 		} catch (Exception e) {
-			Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.SEVERE, null,
-					e);
+			log.error("changeDate() - Error ", e);
+			//Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.SEVERE, null,
+				//	e);
 		}
 		return result;
 	}
@@ -295,12 +318,14 @@ public class CBEstadoCuentasTipologiaDepositosMasivoController extends Controlad
 			// System.out.println("fecha: " + fec.getDate());
 			return true;
 		} catch (ParseException e) {
-			Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.SEVERE, null,
-					e);
+			log.error("isDate() - Error ", e);
+			//Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.SEVERE, null,
+				//	e);
 			return false;
 		} catch (NullPointerException e) {
-			Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.SEVERE, null,
-					e);
+			log.error("isDate() - Error ", e);
+			//Logger.getLogger(CBEstadoCuentasTipologiaDepositosMasivoController.class.getName()).log(Level.SEVERE, null,
+				//	e);
 			return false;
 		}
 	}

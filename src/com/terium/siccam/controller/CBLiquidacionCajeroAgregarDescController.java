@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
@@ -30,8 +32,10 @@ import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBLiquidacionDetalleDAO;
 import com.terium.siccam.model.CBLiquidacionCajeroModel;
 import com.terium.siccam.model.CBLiquidacionDetalleModel;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 
 public class CBLiquidacionCajeroAgregarDescController extends ControladorBase {
+	private static Logger log = Logger.getLogger(CBLiquidacionCajeroAgregarDescController.class);
 
 	Window contabilizacionModa;
 	HttpSession misession = (HttpSession) Sessions.getCurrent().getNativeSession();
@@ -73,13 +77,18 @@ public class CBLiquidacionCajeroAgregarDescController extends ControladorBase {
 			nombretran = objb.getNombtransaccion();
 			System.out.println("id que recibe " + objb.getCbliquidacionid());
 
-			Logger.getLogger(CBLiquidacionCajeroAgregarDescController.class.getName()).log(Level.INFO,
-					"Entra al módulo de Liquidaciones.");
+			log.debug(
+					"doAfterCompose() - " + "Entra al módulo de Liquidaciones.");
+			//Logger.getLogger(CBLiquidacionCajeroAgregarDescController.class.getName()).log(Level.INFO,
+					//"Entra al módulo de Liquidaciones.");
 			usuario = obtenerUsuario().getUsuario();
-			Logger.getLogger(CBLiquidacionCajeroAgregarDescController.class.getName()).log(Level.INFO,
-					"Obtiene usuario que ha iniciado sesión: " + usuario);
+			log.debug(
+					"doAfterCompose() - " + "Obtiene usuario que ha iniciado sesión: " + usuario);
+			//Logger.getLogger(CBLiquidacionCajeroAgregarDescController.class.getName()).log(Level.INFO,
+					//"Obtiene usuario que ha iniciado sesión: " + usuario);
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("doAfterCompose() - Error ", e);
+			//Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -92,11 +101,14 @@ public class CBLiquidacionCajeroAgregarDescController extends ControladorBase {
 			CBLiquidacionDetalleDAO obje = new CBLiquidacionDetalleDAO();
 			llenaListbox(obje.consByID(idRegistro));
 
-			Logger.getLogger(CBLiquidacionCajeroAgregarDescController.class.getName()).log(Level.INFO,
-					"Módulo de liquidaciones - datos seleccionados de liquidación detalle:");
+			log.debug(
+					"onClick$btnConsultar() - " + "Módulo de liquidaciones - datos seleccionados de liquidación detalle:");
+			//Logger.getLogger(CBLiquidacionCajeroAgregarDescController.class.getName()).log(Level.INFO,
+					//"Módulo de liquidaciones - datos seleccionados de liquidación detalle:");
 
 		} catch (Exception e) {
-			Logger.getLogger(CBLiquidacionCajeroAgregarDescController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnConsultar() - Error ", e);
+			//Logger.getLogger(CBLiquidacionCajeroAgregarDescController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error. ", "ERROR", Messagebox.OK, Messagebox.ERROR);
 		}
 
@@ -189,7 +201,8 @@ public class CBLiquidacionCajeroAgregarDescController extends ControladorBase {
 		try {
 			Executions.createComponents("/cbNuevaLiquidacion.zul", null, null);
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnNueva() - Error ", e);
+			//Logger.getLogger(CBConsultaEntidadesController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -223,7 +236,9 @@ public class CBLiquidacionCajeroAgregarDescController extends ControladorBase {
 
 		try {
 			if (txtDescTipoTarjeta.getText() == null || txtDescTipoTarjeta.getText().equals("")) {
-				System.out.println("entra " + txtDescTipoTarjeta.getText());
+				log.debug(
+						"onClick$btnRegistrarDesc() - " + "entra " + txtDescTipoTarjeta.getText());
+				
 				Messagebox.show("¡Debe ingresar una descripción de tipo tarjeta!", "ADVERTENCIA", Messagebox.OK,
 						Messagebox.EXCLAMATION);
 
@@ -240,12 +255,16 @@ public class CBLiquidacionCajeroAgregarDescController extends ControladorBase {
 			obje.setTotal("0");
 			list.add(obje);
 			int pk = objeDAO.obtenerPK();
-			System.out.println(" parametros " + pk + idRegistro + usuario);
+			log.debug(
+					"onClick$btnRegistrarDesc() - " + "parametros " + pk + idRegistro + usuario);
+			
 			if (objeDAO.guarDetalleTipoValor19(list, pk, idRegistro, usuario)) {
 
 				if (objeDAO.execConciliaDepositoPrc(pk)) {
-					Logger.getLogger(CBLiquidacionCajeroAgregarDescController.class.getName()).log(Level.INFO,
-							"Operación exitosa al registrar detalle liquidación con tipo valor 19.");
+					log.debug(
+							"onClick$btnRegistrarDesc() - " + "Operación exitosa al registrar detalle liquidación con tipo valor 19.");
+					//Logger.getLogger(CBLiquidacionCajeroAgregarDescController.class.getName()).log(Level.INFO,
+							//"Operación exitosa al registrar detalle liquidación con tipo valor 19.");
 					Messagebox.show("Operación exitosa", "ATENCIÓN", Messagebox.OK, Messagebox.INFORMATION);
 					final HashMap<String, Object> map = new HashMap<String, Object>();
 					map.put("idRegistro", idRegistro);
@@ -262,7 +281,8 @@ public class CBLiquidacionCajeroAgregarDescController extends ControladorBase {
 			}
 
 		} catch (Exception e) {
-			Logger.getLogger(CBLiquidacionCajeroAgregarDescController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnRegistrarDesc() - Error ", e);
+			//Logger.getLogger(CBLiquidacionCajeroAgregarDescController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error. Revise los datos ingresados.", "ATENCIÓN", Messagebox.OK,
 					Messagebox.ERROR);
 		}
@@ -277,12 +297,16 @@ public class CBLiquidacionCajeroAgregarDescController extends ControladorBase {
 					CBLiquidacionDetalleDAO objeDAO = new CBLiquidacionDetalleDAO();
 					obje.setDesc(txtDescTipoTarjeta.getText().trim());
 					if (objeDAO.modiDetalleTipoValorX(obje, idseleccionado)) {
-						System.out.println("tipo seleccionado " + tipoValorSeleccionado);
+						log.debug(
+								"onClick$btnModificar() - " + "tipo seleccionado " + tipoValorSeleccionado);
+						
 						if (tipoValorSeleccionado == 19) {
 							if (objeDAO.execConciliaDepositoPrc(idseleccionado)) {
-								Logger.getLogger(CBLiquidacionCajeroAgregarDescController.class.getName()).log(
-										Level.INFO,
-										"Operación exitosa al modificar detalle liquidación con tipo valor 19.");
+								log.debug(
+										"onClick$btnModificar() - " + "Operación exitosa al modificar detalle liquidación con tipo valor 19.");
+								//Logger.getLogger(CBLiquidacionCajeroAgregarDescController.class.getName()).log(
+										//Level.INFO,
+										//"Operación exitosa al modificar detalle liquidación con tipo valor 19.");
 								Messagebox.show("Operación exitosa", "ATENCIÓN", Messagebox.OK, Messagebox.INFORMATION);
 								final HashMap<String, Object> map = new HashMap<String, Object>();
 								map.put("idRegistro", idRegistro);
@@ -297,9 +321,11 @@ public class CBLiquidacionCajeroAgregarDescController extends ControladorBase {
 							}
 						} else if (tipoValorSeleccionado == 12) {
 							if (objeDAO.execConciliaCredUnico(idseleccionado)) {
-								Logger.getLogger(CBLiquidacionCajeroAgregarDescController.class.getName()).log(
-										Level.INFO,
-										"Operación exitosa al modificar detalle liquidación con tipo valor 12.");
+								log.debug(
+										"onClick$btnModificar() - " + "Operación exitosa al modificar detalle liquidación con tipo valor 12.");
+								//Logger.getLogger(CBLiquidacionCajeroAgregarDescController.class.getName()).log(
+										//Level.INFO,
+										//"Operación exitosa al modificar detalle liquidación con tipo valor 12.");
 								Messagebox.show("Operación exitosa", "ATENCIÓN", Messagebox.OK, Messagebox.INFORMATION);
 								final HashMap<String, Object> map = new HashMap<String, Object>();
 								map.put("idRegistro", idRegistro);

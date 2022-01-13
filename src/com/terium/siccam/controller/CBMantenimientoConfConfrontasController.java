@@ -1,10 +1,11 @@
 package com.terium.siccam.controller;
 
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
@@ -29,12 +30,14 @@ import com.terium.siccam.dao.CBConfiguracionConfrontaDaoB;
 import com.terium.siccam.model.CBConfiguracionConfrontaModel;
 import com.terium.siccam.model.CBParametrosGeneralesModel;
 import com.terium.siccam.model.CBParametrosNomenclaturaModel;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 
 /**
  * @author Carlos Godinez - Terium 
  * Controlador creado el 18/08/2017
  * */
 public class CBMantenimientoConfConfrontasController extends ControladorBase{
+	private static Logger log = Logger.getLogger(CBMantenimientoConfConfrontasController.class);
 	private static final long serialVersionUID = 9176164927878418930L;
 	
 	//Componentes
@@ -88,8 +91,10 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 	public void doAfterCompose(Component param) throws Exception {
 		try{
 			super.doAfterCompose(param);
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
-				.log(Level.INFO, "\n*** Entra a pantalla de configuracion de confrontas ***\n");
+			log.debug(
+					"doAfterCompose() - " + "\n*** Entra a pantalla de configuracion de confrontas ***\n");
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
+				//.log(Level.INFO, "\n*** Entra a pantalla de configuracion de confrontas ***\n");
 			llenaComboEstado();
 			llenaComboDelimitador();
 			llenaComboNomenclatura();
@@ -112,7 +117,8 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 			banderaListboxNomen = 2;
 			onClick$btnConsultar();
 		} catch (Exception e) {
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("doAfterCompose() - Error ", e);
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -124,8 +130,10 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 		try {
 			delimSeleccionado = cmbDelimitador.getSelectedItem().getValue().toString();
 			delimSeleccionado = delimSeleccionado.toLowerCase();
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
-				.log(Level.INFO, "Delimitador seleccionado = " + delimSeleccionado);
+			log.debug(
+					"onSelect$cmbDelimitador() - " + "Delimitador seleccionado = " + delimSeleccionado);
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
+				//.log(Level.INFO, "Delimitador seleccionado = " + delimSeleccionado);
 			if(delimSeleccionado.equals("n/a")){
 				gpbDelim.setVisible(false);
 				gpbNA.setVisible(true);
@@ -151,7 +159,8 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 				recargarTotalNomen(listaNomenDelim);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onSelect$cmbDelimitador() - Error ", e);
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -167,8 +176,10 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 				CBParametrosNomenclaturaModel obj = (CBParametrosNomenclaturaModel)event.getTarget().getAttribute("objSelectedNomen");
 				int listboxUsada = Integer.parseInt(event.getTarget().getAttribute("listboxUsada").toString());
 
-				Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
-					.log(Level.INFO, "Listbox usada = " + listboxUsada);
+				log.debug(
+						"evtSelectedItemNomen() - " + "Listbox usada = " + listboxUsada);
+				//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
+					//.log(Level.INFO, "Listbox usada = " + listboxUsada);
 				for (Comboitem citem : cmbNomenclatura.getItems()) {
 					if (citem.getValue().toString().equals(obj.getIdentificador())) {
 						cmbNomenclatura.setSelectedItem(citem);
@@ -185,13 +196,18 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 				btnAddNomen.setImage("img/globales/16x16/guardar.png");
 				btnAddNomen.setLabel("Guardar");
 			} catch (Exception e) {
-				Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("evtSelectedItemNomen() - Error ", e);
+				//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
 				Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 			}
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
-				.log(Level.INFO, "OBJ NOMENCLATURA SELECCIONADO: " + objNomenSeleccionada);
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
-				.log(Level.INFO, "LISTITEM SELECCIONADO: " + itemNomenSeleccionado);
+			log.debug(
+					"evtSelectedItemNomen() - " + "OBJ NOMENCLATURA SELECCIONADO: " + objNomenSeleccionada);
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
+				//.log(Level.INFO, "OBJ NOMENCLATURA SELECCIONADO: " + objNomenSeleccionada);
+			log.debug(
+					"evtSelectedItemNomen() - " + "LISTITEM SELECCIONADO: " + itemNomenSeleccionado);
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
+				//.log(Level.INFO, "LISTITEM SELECCIONADO: " + itemNomenSeleccionado);
 		}
 	};
 	
@@ -201,8 +217,10 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 	 * */
 	public void onClick$btnNuevaNomen(){
 		try{
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
-				.log(Level.INFO, "Listbox usada restablecer = " + banderaListboxNomen);
+			log.debug(
+					"onClick$btnNuevaNomen() - " + "Listbox usada restablecer = " + banderaListboxNomen);
+		//	Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
+			//	.log(Level.INFO, "Listbox usada restablecer = " + banderaListboxNomen);
 			objNomenSeleccionada = null;
 			btnAddNomen.setImage("img/globales/16x16/agregar.png");
 			btnAddNomen.setLabel("Agregar");
@@ -213,7 +231,8 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 				txtTermina.setValue(0);
 			} 
 		} catch (Exception e) {
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnNuevaNomen() - Error ", e);
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	
@@ -226,8 +245,10 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 				Listitem item = (Listitem)event.getTarget().getAttribute("itemNomenclatura");
 				CBParametrosNomenclaturaModel obj = (CBParametrosNomenclaturaModel)event.getTarget().getAttribute("objNomenclatura");
 				int listboxUsada = Integer.parseInt(event.getTarget().getAttribute("listboxUsada").toString());
-				Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
-					.log(Level.INFO, "Listbox usada = " + listboxUsada);
+				log.debug(
+						"evtEliminarNomen() - " + "Listbox usada = " + listboxUsada);
+				//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
+					//.log(Level.INFO, "Listbox usada = " + listboxUsada);
 				onClick$btnNuevaNomen();
 				if(listboxUsada == 1) {
 					//Listbox con N/A
@@ -241,7 +262,8 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 					recargarTotalNomen(listaNomenDelim);
 				}
 			} catch (Exception e) {
-				Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("evtEliminarNomen() - Error ", e);
+				//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
 				Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 			}
 		}
@@ -249,10 +271,14 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 	
 	public void onClick$btnAddNomen() {
 		try {
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
-				.log(Level.INFO, "Objeto nomenclatura seleccionado = " + objNomenSeleccionada);
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
-				.log(Level.INFO, "Operacion a realizar = " + (objNomenSeleccionada == null ? "Agregar" : "Modificar"));
+			log.debug(
+					"onClick$btnAddNomen() - " + "Objeto nomenclatura seleccionado = " + objNomenSeleccionada);
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
+				//.log(Level.INFO, "Objeto nomenclatura seleccionado = " + objNomenSeleccionada);
+			log.debug(
+					"onClick$btnAddNomen() - " + "Operacion a realizar = " + (objNomenSeleccionada == null ? "Agregar" : "Modificar"));
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
+				//.log(Level.INFO, "Operacion a realizar = " + (objNomenSeleccionada == null ? "Agregar" : "Modificar"));
 			if(objNomenSeleccionada == null) {
 				/**
 				 * Se realizara la operacion de AGREGAR nomenclatura
@@ -502,10 +528,14 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 				}
 			}
 		} catch(WrongValueException wve){
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, wve);
+			log.error(
+					"onClick$btnAddNomen() - " + "Error" ,wve);
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, wve);
 			Messagebox.show("Error de validacion: " + wve.getMessage(), "ATENCION", Messagebox.OK, Messagebox.EXCLAMATION);
 		} catch (Exception e) {
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error(
+					"onClick$btnAddNomen() - " + "Error" ,e);
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -545,10 +575,14 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 				}
 			}
 		} catch(WrongValueException wve){
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, wve);
+			log.error(
+					"onClick$btnGuardar() - " + "Error" ,wve);
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, wve);
 			Messagebox.show("Error de validacion: " + wve.getMessage(), "ATENCION", Messagebox.OK, Messagebox.EXCLAMATION);
 		} catch (Exception e) {
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error(
+					"onClick$btnGuardar() - " + "Error" ,e);
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -593,10 +627,14 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 				Messagebox.show("No se ha seleccionado ningun registro de configuracion de confronta", "ATENCION", Messagebox.OK, Messagebox.EXCLAMATION);
 			}
 		} catch(WrongValueException wve){
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, wve);
+			log.error(
+					"onClick$btnModificar() - " + "Error" ,wve);
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, wve);
 			Messagebox.show("Error de validacion: " + wve.getMessage(), "ATENCION", Messagebox.OK, Messagebox.EXCLAMATION);
 		} catch (Exception e) {
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error(
+					"onClick$btnModificar() - " + "Error" ,e);
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -629,8 +667,10 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 					}
 				}
 				String delimitador = objSeleccionado.getDelimitador1();
-				Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
-					.log(Level.INFO, "Delimitador seleccionado = " + delimitador);
+				log.debug(
+						"onEvent() - " + "Delimitador seleccionado = " + delimitador);
+				//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
+					//.log(Level.INFO, "Delimitador seleccionado = " + delimitador);
 				if( "n/a".equals(delimitador)) {
 					/**
 					 * N/A
@@ -772,10 +812,14 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 				}
 				btnGuardar.setDisabled(true);
 				btnModificar.setDisabled(false);
-				Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
-					.log(Level.INFO, "ID parametro general seleccionado = " + idSeleccionado);
+				log.debug(
+						"onEvent() - " + "ID parametro general seleccionado = " + idSeleccionado);
+				//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
+					//.log(Level.INFO, "ID parametro general seleccionado = " + idSeleccionado);
 			} catch (Exception e) {
-				Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
+				log.error(
+						"onEvent() - " + "Error" ,e);
+				//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
 				Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 			}
 		}
@@ -788,8 +832,10 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public void onEvent(Event event) throws Exception {
 			final int idFila = Integer.parseInt(event.getTarget().getAttribute("idEliminar").toString());
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
-				.log(Level.INFO, "ID configuracion confronta a eliminar = " + idFila);
+			log.debug(
+					"evtEliminar() - " + "ID configuracion confronta a eliminar = " + idFila);
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
+				//.log(Level.INFO, "ID configuracion confronta a eliminar = " + idFila);
 			Messagebox.show("¿Desea eliminar la configuracion de confronta seleccionada?", "CONFIRMACION", Messagebox.YES | Messagebox.NO,
 					Messagebox.QUESTION, new EventListener() {
 						public void onEvent(Event event) throws Exception {
@@ -867,10 +913,14 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 				item.setTooltip("popSelected");
 				item.addEventListener(Events.ON_CLICK, evtSelectedItem);
 			} 
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
-				.log(Level.INFO, "- Llena listbox de consulta general");
+			log.debug(
+					"onClick$btnConsultar() - " + "Llena listbox de consulta general");
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
+				//.log(Level.INFO, "- Llena listbox de consulta general");
 		} catch (Exception e) {
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error(
+					"onClick$btnConsultar() - " + "Error" ,e);
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -913,7 +963,9 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 			btnAddNomen.setImage("img/globales/16x16/agregar.png");
 			btnAddNomen.setLabel("Agregar");
 		} catch (Exception e) {
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error(
+					"onClick$btnLimpiar() - " + "Error" ,e);
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -922,12 +974,18 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 	 * Metodo para validar registro de configuracion de confronta antes de insertar o modificar
 	 * */
 	public boolean configuracionConfrontaValida(){
-		Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
-			.log(Level.INFO, "\n***************************************");
-		Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
-			.log(Level.INFO, "*** VALIDACION DE CONF DE CONFRONTA ***");
-		Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
-			.log(Level.INFO, "***************************************");
+		log.debug(
+				"configuracionConfrontaValida() - " + "\n***************************************");
+		//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
+			//.log(Level.INFO, "\n***************************************");
+		log.debug(
+				"configuracionConfrontaValida() - " + "*** VALIDACION DE CONF DE CONFRONTA ***");
+		//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
+			//.log(Level.INFO, "*** VALIDACION DE CONF DE CONFRONTA ***");
+		log.debug(
+				"configuracionConfrontaValida() - " + "***************************************");
+		//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
+			//.log(Level.INFO, "***************************************");
 		boolean resultado = false;
 		try {
 			CBConfiguracionConfrontaDaoB objeDAO = new CBConfiguracionConfrontaDaoB();
@@ -982,12 +1040,15 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 				}
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("configuracionConfrontaValida() - Error ", e);
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 			return false;
 		}
-		Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
-			.log(Level.INFO, "Configuracion de confronta valida = " + resultado);		
+		log.debug(
+				"Configuracion de confronta valida = " + resultado);
+		//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
+			//.log(Level.INFO, "Configuracion de confronta valida = " + resultado);		
 		return resultado;
 	}
 
@@ -1002,8 +1063,10 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 		}
 		nomenStr = StringUtils.join(nomenclatura, ",");
 		//Impresion de valores
-		Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
-			.log(Level.INFO, "Valores nomenclatura: " + nomenStr);
+		log.debug(
+				"obtenerNomenclatura -" + "Valores nomenclatura: " + nomenStr);
+	//	Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
+		//	.log(Level.INFO, "Valores nomenclatura: " + nomenStr);
 		return nomenStr;
 	}
 	
@@ -1018,8 +1081,10 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 		}
 		posStr = StringUtils.join(posiciones, ",");
 		 //Impresion de valores
-		Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
-			.log(Level.INFO, "Valores posiciones: " + posStr);
+		log.debug(
+				"obtenerPosiciones -" + "Valores posiciones: " + posStr);
+		//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
+			//.log(Level.INFO, "Valores posiciones: " + posStr);
 		return posStr;
 	}
 	
@@ -1037,10 +1102,13 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 				item.setValue(d.getValorObjeto1());
 				item.setLabel(d.getObjeto());
 			} 
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
-				.log(Level.INFO, "- Llena combo de estado");
+			log.debug(
+					"llenaComboEstado -" + "Llena combo de estado");
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
+			//	.log(Level.INFO, "- Llena combo de estado");
 		} catch (Exception e) {
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("llenaComboEstado() - Error ", e);
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	
@@ -1055,10 +1123,13 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 				item.setLabel(d.getObjeto());
 				item.setTooltiptext(d.getDescripcion());
 			} 
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
-				.log(Level.INFO, "- Llena combo de delimitadores");
+			log.debug(
+					"llenaComboDelimitador -" + "Llena combo de delimitadores");
+	///Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
+				//.log(Level.INFO, "- Llena combo de delimitadores");
 		} catch (Exception e) {
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("llenaComboDelimitador() - Error ", e);
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	
@@ -1078,10 +1149,13 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 				item.setLabel(d.getObjeto());
 				item.setTooltiptext(d.getDescripcion());
 			}
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
-			.log(Level.INFO, "- Llena combo de nomenclaturas");
+			log.debug(
+					"llenaComboNomenclatura -" + "Llena combo de nomenclaturas");
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName())
+			//.log(Level.INFO, "- Llena combo de nomenclaturas");
 		} catch (Exception e) {
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("llenaComboNomenclatura() - Error ", e);
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	
@@ -1092,7 +1166,8 @@ public class CBMantenimientoConfConfrontasController extends ControladorBase{
 		try {
 			lblTotalNomen.setValue(String.valueOf(lista.size()));
 		} catch (Exception e) {
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("recargarTotalNomen() - Error ", e);
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 	}

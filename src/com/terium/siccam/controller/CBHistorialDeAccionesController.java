@@ -2,10 +2,11 @@ package com.terium.siccam.controller;
 
 
 import java.util.Iterator;
+
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Listbox;
@@ -17,8 +18,10 @@ import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBHistorialAccionDAO;
 import com.terium.siccam.model.CBConciliacionDetallada;
 import com.terium.siccam.model.CBHistorialAccionModel;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 
 public class CBHistorialDeAccionesController extends ControladorBase {
+	private static Logger log = Logger.getLogger(CBHistorialDeAccionesController.class);
 
 	/**
 	 * @author Freddy Ayala to terium.com
@@ -100,11 +103,13 @@ public class CBHistorialDeAccionesController extends ControladorBase {
 				}
 			} catch (Exception e) {
 				// TODO: handle exception
-				Logger.getLogger(CBHistorialDeAccionesController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("listarHistorialDeAcciones() - Error ", e);
+				//Logger.getLogger(CBHistorialDeAccionesController.class.getName()).log(Level.SEVERE, null, e);
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
-			Logger.getLogger(CBHistorialDeAccionesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("listarHistorialDeAcciones() - Error ", e);
+			//Logger.getLogger(CBHistorialDeAccionesController.class.getName()).log(Level.SEVERE, null, e);
 		}
 
 	}
@@ -153,7 +158,8 @@ public class CBHistorialDeAccionesController extends ControladorBase {
 				listarHistorialDeAcciones();
 				limpiarCampos();			
 			} catch (Exception e) {
-				Logger.getLogger(CBHistorialDeAccionesController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("onClick$btnGuardar() - Error ", e);
+				//Logger.getLogger(CBHistorialDeAccionesController.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 
@@ -173,7 +179,8 @@ public class CBHistorialDeAccionesController extends ControladorBase {
 				listarHistorialDeAcciones();
 				limpiarCampos();
 			} catch (Exception e) {
-				Logger.getLogger(CBHistorialDeAccionesController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("onClick$btnEliminar() - Error ", e);
+				//Logger.getLogger(CBHistorialDeAccionesController.class.getName()).log(Level.SEVERE, null, e);
 			}
 
 		}

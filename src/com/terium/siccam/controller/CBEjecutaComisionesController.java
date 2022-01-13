@@ -2,7 +2,9 @@ package com.terium.siccam.controller;
 
 import java.util.Date;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,8 +16,11 @@ import org.zkoss.zul.Window;
 
 import com.terium.siccam.dao.CBConciliacionBancoDAO;
 import com.terium.siccam.dao.CBHistorialSCECDAO;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 
 public class CBEjecutaComisionesController extends GenericForwardComposer<Window> {
+	
+	private static Logger log = Logger.getLogger(CBEjecutaComisionesController.class);
 
 	/**
 	 * 
@@ -66,15 +71,21 @@ public class CBEjecutaComisionesController extends GenericForwardComposer<Window
 			 */
 			fechainicio = dtbDesde.getValue();
 			fechafin = dtbHasta.getValue();
-			Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.INFO,
-					"fecha inicio envio sp" + fechainicio);
-			Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.INFO, "fecha fin envio sp" + fechafin);
+			log.debug(
+					"onClick$btnEjecutarProcesoComisiones() - " + "fecha inicio envio sp" + fechainicio);
+			//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.INFO,
+				//	"fecha inicio envio sp" + fechainicio);
+			log.debug(
+					"onClick$btnEjecutarProcesoComisiones() - " + "fecha fin envio sp" + fechafin);
+		//	Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.INFO, "fecha fin envio sp" + fechafin);
 
 			if (objDao.ejecutaSPComisiones(fechainicio, fechafin)) {
 				Messagebox.show("Proceso Ejecutado con exito.", "ATENCION", Messagebox.OK, Messagebox.INFORMATION);
 				refrescarModulo();
-				Logger.getLogger(CBEjecutaComisionesController.class.getName()).log(Level.INFO,
-						"****************** EJECUTA SP  exito===> ");
+				log.debug(
+						"onClick$btnEjecutarProcesoComisiones() - " + "****************** EJECUTA SP  exito===> ");
+				//Logger.getLogger(CBEjecutaComisionesController.class.getName()).log(Level.INFO,
+					//	"****************** EJECUTA SP  exito===> ");
 			}
 		}
 

@@ -3,7 +3,9 @@ package com.terium.siccam.controller;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 
@@ -20,8 +22,11 @@ import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBBitacoraLogDAO;
 import com.terium.siccam.model.CBBitacoraLogModel;
 import com.terium.siccam.model.CBConciliacionBancoModel;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 
 public class CBDetalleContabilizacionController extends ControladorBase {
+	
+	private static Logger log = Logger.getLogger(CBDetalleContabilizacionController.class);
 
 	/**
 	 * 
@@ -75,9 +80,13 @@ public class CBDetalleContabilizacionController extends ControladorBase {
 	 * */
 	public void llenaListboxTipificacion( String token, String pais, Boolean inicio) {
 		limpiarListbox(lbxHistorialscec);
-		System.out.println("Token: " + token);
+		log.debug(
+				"llenaListboxTipificacion() - " + "Token: " + token);
+		
 		listaDetalleContabilizacion = objChdao.obtenerDetalleContabilizacion( token, pais, inicio);
-		System.out.println("total lista retornada en llenalistbox:" + listaDetalleContabilizacion.size());
+		log.debug(
+				"llenaListboxTipificacion() - " + "total lista retornada en llenalistbox:" + listaDetalleContabilizacion.size());
+		
 		if (listaDetalleContabilizacion.size() > 0) {
 
 			Iterator<CBBitacoraLogModel> it = listaDetalleContabilizacion.iterator();

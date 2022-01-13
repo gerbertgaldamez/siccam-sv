@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.naming.NamingException;
 
@@ -20,14 +22,17 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
+
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBDepositosRecDAO;
 import com.terium.siccam.model.CBCatalogoAgenciaModel;
 import com.terium.siccam.model.CBDepositosRecModel;
 import com.terium.siccam.model.CBParametrosGeneralesModel;
 import com.terium.siccam.model.CBTipologiasPolizaModel;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 
 public class CBDepositosRecController extends ControladorBase {
+	private static Logger log = Logger.getLogger(CBDepositosRecController.class);
 
 	/**
 	 * creador ovidio santos
@@ -89,7 +94,8 @@ public class CBDepositosRecController extends ControladorBase {
 		} catch (Exception e) {
 			Messagebox.show("Se ha producido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 			System.out.println("Se ha producido un error = " + e.getMessage());
-			Logger.getLogger(ConciliacionController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("cargarComboAgencia() - Error ", e);
+			//Logger.getLogger(ConciliacionController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -110,14 +116,17 @@ public class CBDepositosRecController extends ControladorBase {
 		} catch (Exception e) {
 			Messagebox.show("Se ha producido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 			System.out.println("Se ha producido un error = " + e.getMessage());
-			Logger.getLogger(ConciliacionController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("llenaComboTipologia() - Error ", e);
+			//Logger.getLogger(ConciliacionController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
 	private List<CBParametrosGeneralesModel> listaTipoFecha = new ArrayList<CBParametrosGeneralesModel>();
 
 	public void llenaComboTipoFechas() {
-		Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO, "Llena combo tipo fecha");
+		log.debug(
+				"llenaComboTipoFechas() - " + "Llena combo tipo fecha");
+		//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO, "Llena combo tipo fecha");
 		limpiarCombobox(cmbTipoFechas);
 		CBDepositosRecDAO objeDAO = new CBDepositosRecDAO();
 		this.listaTipoFecha = objeDAO.obtenerTipoObjetoX("TIPO_FECHA");
@@ -207,8 +216,10 @@ public class CBDepositosRecController extends ControladorBase {
 				objModel.setTipologia(Integer.parseInt(cmbTipologias.getSelectedItem().getValue().toString()));
 				objModel.setTipofecha(Integer.parseInt(cmbTipoFechas.getSelectedItem().getValue().toString()));
 
-				Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-						"el id a modificar es " + idseleccionado);
+				log.debug(
+						"onClick$btnModificar() - " + "el id a modificar es " + idseleccionado);
+				//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+						//"el id a modificar es " + idseleccionado);
 				if (objDAO.modificaDepositosRec(objModel, idseleccionado)) {
 					// llenaListbox();
 
@@ -282,7 +293,8 @@ public class CBDepositosRecController extends ControladorBase {
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnConsultar() - Error ", e);
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 

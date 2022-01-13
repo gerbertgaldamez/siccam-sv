@@ -6,8 +6,9 @@ package com.terium.siccam.controller;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -21,6 +22,7 @@ import org.zkoss.zul.Textbox;
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBConfiguracionConexionDao;
 import com.terium.siccam.model.CBConfiguracionConModel;
+import com.terium.siccam.utils.CBEstadoCuentaUtils;
 import com.terium.siccam.utils.Constantes;
 
 /**
@@ -28,6 +30,8 @@ import com.terium.siccam.utils.Constantes;
  * 
  */
 public class CBConfiguracionConexionController extends ControladorBase {
+	
+	private static Logger log = Logger.getLogger(CBConfiguracionConexionController.class);
 
 	Button btnConsutar;
 	Button btnGuardar;
@@ -93,7 +97,9 @@ public class CBConfiguracionConexionController extends ControladorBase {
 				objModel.setUsuarioConexion(tbxUsuarioConexion.getText().trim());
 				objModel.setPass(tbxPasswordConexion.getText().trim());
 				objModel.setUsuario(obtenerUsuario().getUsuario());
-				System.out.println("id " + idseleccionado);
+				log.debug(
+						"onClick$btnGuardar() - " + "id " + idseleccionado);
+				
 				cbaDao.insertaConexion(objModel);
 				onClick$btnLimpiar();
 				CBConfiguracionConModel objModel1 = new CBConfiguracionConModel();
@@ -110,9 +116,12 @@ public class CBConfiguracionConexionController extends ControladorBase {
 				objModel.setUsuarioConexion(tbxUsuarioConexion.getText().trim());
 				objModel.setPass(tbxPasswordConexion.getText().trim());
 				objModel.setModificadoPor(obtenerUsuario().getUsuario());
-				System.out.println("ip btn " + objModel.getIpConexion());
-				Logger.getLogger(CBConfiguracionConexionController.class.getName())
-				.log(Level.INFO, "\n*** id seleccionado ***\n" + idseleccionado);
+				log.debug(
+						"onClick$btnGuardar() - " + "ip btn " + objModel.getIpConexion());
+				log.debug(
+						"onClick$btnGuardar() - " + "\n*** id seleccionado ***\n" + idseleccionado);
+				//Logger.getLogger(CBConfiguracionConexionController.class.getName())
+				//.log(Level.INFO, "\n*** id seleccionado ***\n" + idseleccionado);
 				objModel.setIdConexionConf(idseleccionado);
 				cbaDao.actualizaConexion(objModel);
 
@@ -157,8 +166,10 @@ public class CBConfiguracionConexionController extends ControladorBase {
 
 			CBConfiguracionConexionDao cbaDao = new CBConfiguracionConexionDao();
 			CBConfiguracionConModel objModel = new CBConfiguracionConModel();
-			Logger.getLogger(CBConfiguracionConexionController.class.getName())
-			.log(Level.INFO, "\n*** Entra a pantalla de consulta de conexiones ***\n");
+			log.debug(
+					"onClick$btnConsultar() - " + "\n*** Entra a pantalla de consulta de conexiones ***\n");
+			//Logger.getLogger(CBConfiguracionConexionController.class.getName())
+			//.log(Level.INFO, "\n*** Entra a pantalla de consulta de conexiones ***\n");
 
 			if (tbxNombreDeConexion.getText().trim() != null && !"".equals(tbxNombreDeConexion.getText().trim())) {
 				objModel.setNombre(tbxNombreDeConexion.getText().trim());
@@ -175,7 +186,8 @@ public class CBConfiguracionConexionController extends ControladorBase {
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBTipologiasPolizaController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnConsultar() - Error ", e);
+			//Logger.getLogger(CBTipologiasPolizaController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -273,8 +285,9 @@ public class CBConfiguracionConexionController extends ControladorBase {
 		public void onEvent(Event event) throws Exception {
 			final String idseleccionado = (String) (event.getTarget().getAttribute("idEliminar"));
 
-			Logger.getLogger(CBConfiguracionConexionController.class.getName())
-			.log(Level.INFO, "\n*** id seleccionado eliminar ***\n" + idseleccionado);
+			log.debug("onClick$btnConsultar() -\n*** id seleccionado eliminar ***\n" + idseleccionado);
+			//Logger.getLogger(CBConfiguracionConexionController.class.getName())
+			//.log(Level.INFO, "\n*** id seleccionado eliminar ***\n" + idseleccionado);
 			Messagebox.show("¿Desea eliminar el registro seleccionado?", "CONFIRMACION", Messagebox.YES | Messagebox.NO,
 					Messagebox.QUESTION, new EventListener() {
 						public void onEvent(Event event) throws Exception {

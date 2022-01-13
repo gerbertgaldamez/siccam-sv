@@ -1,0 +1,111 @@
+<?page title="Cuadre Sidra" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
+<window id="cuadreSidra" width="100%" title="" vflex="true"
+		border="normal" apply="com.terium.siccam.controller.CBCuadreFacturaController">
+<borderlayout id="blyPrincipal">
+
+
+			<center autoscroll="true">
+				<groupbox>
+					<groupbox mold="3d">
+						<caption label="Consulta cuadre sidra" />
+						<grid>
+							<columns>
+								<column />
+								<column />
+								<column />
+							</columns>
+							<rows>
+								<row>
+									<hbox>
+										<label value="Desde:" />
+										<separator width="44px" />
+										<datebox id="dtbDesde"
+											format="dd/MM/yyyy" />
+									</hbox>
+									<hbox>
+										<label value="Hasta: " />
+										<separator width="46px" />
+										<datebox id="dtbHasta"
+											format="dd/MM/yyyy" />
+									</hbox>
+									
+								</row>
+								<row>
+									<hbox>
+										<label value="Texto: " />
+										<separator width="29px" />
+										<textbox id="tbxTexto" width="190px" />
+									</hbox>
+									<hbox>
+										<label value="Observaciones: " />
+										<separator width="5px" />
+										<textbox id="tbxObservaciones" width="150px"/>
+									</hbox>
+									
+								</row>
+								
+								
+
+
+							</rows>
+						</grid>
+
+					</groupbox>
+
+
+					<button id="btnConsuta" label="Consultar"
+						image="img/globales/16x16/consulta.png" />
+					<separator height="5px" />
+
+					<groupbox mold="3d" width="100%" height="400px">
+						<caption label="Detalle de registros" />
+
+
+						<listbox id="lbxCuadreSidra" height="300px"
+							mold="paging" pageSize="10" sizedByContent="true" vflex="true"
+							emptyMessage="No hay registros consultados">
+							<frozen columns="4"></frozen>
+							<listhead>
+								<listheader label="Serie"
+									sort="auto" />
+								<listheader label="Nombre Cliente" sort="auto" />
+								<listheader label="Nombre Cliente Final" sort="auto" />
+								<listheader label="Rill Ref No"
+									sort="auto" /><!-- CarlosGodinez -> 07/07/2017 -->
+								<listheader label="Fecha Pago" sort="auto" />
+								<listheader label="Monto Pago" sort="auto" />
+								<listheader label="Estado Factura" sort="auto" />
+								<listheader label="Fecha Sincronizacion" sort="auto" />
+								<listheader label="No Boleta"
+									sort="auto" />
+								<!-- Agregado por CarlosGodinez 01/03/2017 -->
+								<listheader label="Fecha Boleta"
+									sort="auto" />
+								<listheader label="Monto Boleta"
+									sort="auto" />
+								<listheader label="Jornada"
+									sort="auto" /><!-- CarlosGodinez -> 07/07/2017 -->
+								<listheader label="Fecha Inicio Jornada"
+									sort="auto" />
+								<listheader label="Fecha LIquidacion Jornada"
+									sort="auto" />
+								<listheader label="Estado Jornada"
+									sort="auto" />
+									<listheader label="Tipo Ruta Panel"
+									sort="auto" />
+								<listheader label="Nombre Ruta Panel"
+									sort="auto" />
+									<listheader label="Nombre Vendedor"
+									sort="auto" />
+							</listhead>
+						</listbox>
+					</groupbox>
+
+
+				</groupbox>
+			</center>
+		</borderlayout>
+		
+</window>
+</zk>
