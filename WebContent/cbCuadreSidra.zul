@@ -34,7 +34,7 @@
 								</row>
 								<row>
 									<hbox>
-										<label value="Nombre: " />
+										<label value="Existe: " />
 										<separator width="29px" />
 										<textbox id="tbxNombre"
 											width="190px" />
@@ -70,7 +70,7 @@
 							emptyMessage="No hay registros consultados">
 							<frozen columns="4"></frozen>
 							<listhead>
-							<listheader label="Fecha Factura" sort="auto" />
+							
 								<listheader label="Serie" sort="auto" />
 								<listheader label="Nombre Cliente"
 									sort="auto" />

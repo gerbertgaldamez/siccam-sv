@@ -28,10 +28,12 @@ public class CBCuadreSidraModel {
 	private String fechaFin;
 	private String nombre;
 	private String existe;
-	private String totalArbor;
-	private String totalPagado;
+	private BigDecimal totalArbor;
+	private BigDecimal totalPagado;
 	private String fechaFactura;
 	private String montoPagadoBmf;
+	private String numFactura;
+	private String codFactura;
 	public String getFechaFactura() {
 		return fechaFactura;
 	}
@@ -50,16 +52,16 @@ public class CBCuadreSidraModel {
 	public void setExiste(String existe) {
 		this.existe = existe;
 	}
-	public String getTotalArbor() {
+	public BigDecimal getTotalArbor() {
 		return totalArbor;
 	}
-	public void setTotalArbor(String totalArbor) {
+	public void setTotalArbor(BigDecimal totalArbor) {
 		this.totalArbor = totalArbor;
 	}
-	public String getTotalPagado() {
+	public BigDecimal getTotalPagado() {
 		return totalPagado;
 	}
-	public void setTotalPagado(String totalPagado) {
+	public void setTotalPagado(BigDecimal totalPagado) {
 		this.totalPagado = totalPagado;
 	}
 	public String getSerie() {
@@ -187,6 +189,18 @@ public class CBCuadreSidraModel {
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+	public String getNumFactura() {
+		return numFactura;
+	}
+	public void setNumFactura(String numFactura) {
+		this.numFactura = numFactura;
+	}
+	public String getCodFactura() {
+		return codFactura;
+	}
+	public void setCodFactura(String codFactura) {
+		this.codFactura = codFactura;
 	}
 	
 	

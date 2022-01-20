@@ -72,13 +72,21 @@ public class CBCuadreFacturaController extends ControladorBase{
 						adr = ilst.next();
 						fila = new Listitem();
 
+					/*	cell = new Listcell();
+						cell.setLabel(adr.getNumFactura());
+						cell.setParent(fila);
+						
 						cell = new Listcell();
 						cell.setLabel(adr.getFechaFactura());
-						cell.setParent(fila);
+						cell.setParent(fila);*/
 						// Serie
 						cell = new Listcell();
 						cell.setLabel(adr.getSerie());
 						cell.setParent(fila);
+						
+						/*cell = new Listcell();
+						cell.setLabel(adr.getCodFactura());
+						cell.setParent(fila);*/
 						
 
 						// NOMBRE CLIENTE
@@ -183,7 +191,7 @@ public class CBCuadreFacturaController extends ControladorBase{
 						cell.setLabel(adr.getExiste());
 						cell.setParent(fila);
 						
-						cell = new Listcell();
+					/*	cell = new Listcell();
 						cell.setStyle("text-align: right");
 						cell.setLabel(adr.getTotalArbor());
 						cell.setParent(fila);
@@ -196,9 +204,9 @@ public class CBCuadreFacturaController extends ControladorBase{
 						cell = new Listcell();
 						cell.setStyle("text-align: right");
 						cell.setLabel(adr.getMontoPagadoBmf());
-						cell.setParent(fila);
+						cell.setParent(fila);*/
 						
-						/*cell = new Listcell();
+						cell = new Listcell();
 						cell.setStyle("text-align: right");
 						cell.setLabel(convertirADecimal(adr.getTotalArbor()).toString());
 						cell.setParent(fila);
@@ -210,8 +218,8 @@ public class CBCuadreFacturaController extends ControladorBase{
 						
 						cell = new Listcell();
 						cell.setStyle("text-align: right");
-						cell.setLabel(convertirADecimal(adr.getMontoPagadoBmf()).toString());
-						cell.setParent(fila);*/
+						cell.setLabel(adr.getMontoPagadoBmf());
+						cell.setParent(fila);
 						
 						
 						cell.setParent(fila);
@@ -271,7 +279,7 @@ public class CBCuadreFacturaController extends ControladorBase{
 	public void realizaBusqueda(int banderaMensaje) {
 		log.debug("realizaBusqueda() - entra al metodo realiza busqueda : ");
 		try { 
-			
+			CBCuadreSidraModel objModel = new CBCuadreSidraModel();
 			
 			limpiarListbox(lbxCuadreSidra);
 			DateFormat fechaFormato = new SimpleDateFormat("dd/MM/yy");
@@ -292,7 +300,9 @@ public class CBCuadreFacturaController extends ControladorBase{
 				String nombre = "";
 				
 				if(tbxNombre.getValue() == null || "".equals(tbxNombre.getText())) {
+				
 					nombre = "";
+					
 				} else {
 					nombre = tbxNombre.getText().trim();
 					
@@ -300,7 +310,7 @@ public class CBCuadreFacturaController extends ControladorBase{
 				}
 				log.debug("realizaBusqueda() - nombre : " + nombre);
 				
-				CBCuadreSidraModel objModel = new CBCuadreSidraModel();
+				
 				objModel.setNombreCliente(nombre);
 				objModel.setFechaInicio(dtbDesde.getText());
 				objModel.setFechaFin(dtbHasta.getText());
