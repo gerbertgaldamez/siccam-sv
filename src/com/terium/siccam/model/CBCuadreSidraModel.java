@@ -17,7 +17,8 @@ public class CBCuadreSidraModel {
 	private String fechaBoleta;
 	private BigDecimal montoBoleta;
 	private String jornada;
-	private Date fechaInicioJ;
+	//private Date fechaInicioJ;
+	private String fechaInicioJ;
 	private String fechaLiquidacionJ;
 	private String estadoJornada;
 	private String tipoRutaPanel;
@@ -27,20 +28,20 @@ public class CBCuadreSidraModel {
 	private String fechaFin;
 	private String nombre;
 	private String existe;
-	private BigDecimal totalArbor;
-	private BigDecimal totalPagado;
+	private String totalArbor;
+	private String totalPagado;
 	private String fechaFactura;
-	private BigDecimal montoPagadoBmf;
+	private String montoPagadoBmf;
 	public String getFechaFactura() {
 		return fechaFactura;
 	}
 	public void setFechaFactura(String fechaFactura) {
 		this.fechaFactura = fechaFactura;
 	}
-	public BigDecimal getMontoPagadoBmf() {
+	public String getMontoPagadoBmf() {
 		return montoPagadoBmf;
 	}
-	public void setMontoPagadoBmf(BigDecimal montoPagadoBmf) {
+	public void setMontoPagadoBmf(String montoPagadoBmf) {
 		this.montoPagadoBmf = montoPagadoBmf;
 	}
 	public String getExiste() {
@@ -49,16 +50,16 @@ public class CBCuadreSidraModel {
 	public void setExiste(String existe) {
 		this.existe = existe;
 	}
-	public BigDecimal getTotalArbor() {
+	public String getTotalArbor() {
 		return totalArbor;
 	}
-	public void setTotalArbor(BigDecimal totalArbor) {
+	public void setTotalArbor(String totalArbor) {
 		this.totalArbor = totalArbor;
 	}
-	public BigDecimal getTotalPagado() {
+	public String getTotalPagado() {
 		return totalPagado;
 	}
-	public void setTotalPagado(BigDecimal totalPagado) {
+	public void setTotalPagado(String totalPagado) {
 		this.totalPagado = totalPagado;
 	}
 	public String getSerie() {
@@ -133,10 +134,10 @@ public class CBCuadreSidraModel {
 	public void setJornada(String jornada) {
 		this.jornada = jornada;
 	}
-	public Date getFechaInicioJ() {
+	public String getFechaInicioJ() {
 		return fechaInicioJ;
 	}
-	public void setFechaInicioJ(Date fechaInicioJ) {
+	public void setFechaInicioJ(String fechaInicioJ) {
 		this.fechaInicioJ = fechaInicioJ;
 	}
 	public String getFechaLiquidacionJ() {

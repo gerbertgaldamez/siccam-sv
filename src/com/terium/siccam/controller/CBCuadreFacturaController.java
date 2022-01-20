@@ -148,7 +148,8 @@ public class CBCuadreFacturaController extends ControladorBase{
 						// FECHA INICIO JORNADA
 						cell = new Listcell();
 						cell.setStyle("text-align: right");
-						cell.setLabel(fechaFormato.format(adr.getFechaInicioJ()));
+						//cell.setLabel(fechaFormato.format(adr.getFechaInicioJ()));
+						cell.setLabel(adr.getFechaInicioJ());
 						cell.setParent(fila);
 					
 						//FECHA LIQUIDACION JORNADA
@@ -184,6 +185,21 @@ public class CBCuadreFacturaController extends ControladorBase{
 						
 						cell = new Listcell();
 						cell.setStyle("text-align: right");
+						cell.setLabel(adr.getTotalArbor());
+						cell.setParent(fila);
+						
+						cell = new Listcell();
+						cell.setStyle("text-align: right");
+						cell.setLabel(adr.getTotalPagado());
+						cell.setParent(fila);
+						
+						cell = new Listcell();
+						cell.setStyle("text-align: right");
+						cell.setLabel(adr.getMontoPagadoBmf());
+						cell.setParent(fila);
+						
+						/*cell = new Listcell();
+						cell.setStyle("text-align: right");
 						cell.setLabel(convertirADecimal(adr.getTotalArbor()).toString());
 						cell.setParent(fila);
 						
@@ -195,7 +211,7 @@ public class CBCuadreFacturaController extends ControladorBase{
 						cell = new Listcell();
 						cell.setStyle("text-align: right");
 						cell.setLabel(convertirADecimal(adr.getMontoPagadoBmf()).toString());
-						cell.setParent(fila);
+						cell.setParent(fila);*/
 						
 						
 						cell.setParent(fila);

@@ -64,16 +64,19 @@ public class CBCuadreSidraDAO extends ControladorBase {
 				objModel.setFechaBoleta(rst.getString(11));
                 objModel.setMontoBoleta(rst.getBigDecimal(12));
 				objModel.setJornada(rst.getString(13));
-				objModel.setFechaInicioJ(rst.getDate(14));
+				objModel.setFechaInicioJ(rst.getString(14));
 				objModel.setFechaLiquidacionJ(rst.getString(15));
 				objModel.setEstadoJornada(rst.getString(16));
 				objModel.setTipoRutaPanel(rst.getString(17));
 				objModel.setNombrerutaP(rst.getString(18));
 				objModel.setNombreVendedor(rst.getString(19));
 				objModel.setExiste(rst.getString(20));
-				objModel.setTotalArbor(rst.getBigDecimal(21));
-				objModel.setTotalPagado(rst.getBigDecimal(22));
-				objModel.setMontoPagadoBmf(rst.getBigDecimal(23));
+				//objModel.setTotalArbor(rst.getBigDecimal(21));
+				//objModel.setTotalPagado(rst.getBigDecimal(22));
+				//objModel.setMontoPagadoBmf(rst.getBigDecimal(23));
+				objModel.setTotalArbor(rst.getString(21));
+				objModel.setTotalPagado(rst.getString(22));
+				objModel.setMontoPagadoBmf(rst.getString(23));
 				
 
 				lst.add(objModel);
