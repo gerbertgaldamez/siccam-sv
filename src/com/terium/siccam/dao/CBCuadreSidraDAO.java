@@ -51,24 +51,30 @@ public class CBCuadreSidraDAO extends ControladorBase {
 			rst = stmt.executeQuery(query + where);
 			while (rst.next()) {
 				objModel = new CBCuadreSidraModel();
-				objModel.setSerie(rst.getString(1));
-				objModel.setNombreCliente(rst.getString(2));
-				objModel.setNombreClienteFinal(rst.getString(3));
-				objModel.setBillRefNo(rst.getString(4));
-				objModel.setFechaPago(rst.getString(5));
-				objModel.setMontoPago(rst.getBigDecimal(6));
-				objModel.setEstadoFactura(rst.getString(7));
-				objModel.setFechaSincronizacion(rst.getString(8));
-				objModel.setNoBoleta(rst.getString(9));
-				objModel.setFechaBoleta(rst.getString(10));
-                objModel.setMontoBoleta(rst.getBigDecimal(11));
-				objModel.setJornada(rst.getString(12));
-				objModel.setFechaInicioJ(rst.getDate(13));
-				objModel.setFechaLiquidacionJ(rst.getString(14));
-				objModel.setEstadoJornada(rst.getString(15));
-				objModel.setTipoRutaPanel(rst.getString(16));
-				objModel.setNombrerutaP(rst.getString(17));
-				objModel.setNombreVendedor(rst.getString(18));
+				objModel.setFechaFactura(rst.getString(1));
+				objModel.setSerie(rst.getString(2));
+				objModel.setNombreCliente(rst.getString(3));
+				objModel.setNombreClienteFinal(rst.getString(4));
+				objModel.setBillRefNo(rst.getString(5));
+				objModel.setFechaPago(rst.getString(6));
+				objModel.setMontoPago(rst.getBigDecimal(7));
+				objModel.setEstadoFactura(rst.getString(8));
+				objModel.setFechaSincronizacion(rst.getString(9));
+				objModel.setNoBoleta(rst.getString(10));
+				objModel.setFechaBoleta(rst.getString(11));
+                objModel.setMontoBoleta(rst.getBigDecimal(12));
+				objModel.setJornada(rst.getString(13));
+				objModel.setFechaInicioJ(rst.getDate(14));
+				objModel.setFechaLiquidacionJ(rst.getString(15));
+				objModel.setEstadoJornada(rst.getString(16));
+				objModel.setTipoRutaPanel(rst.getString(17));
+				objModel.setNombrerutaP(rst.getString(18));
+				objModel.setNombreVendedor(rst.getString(19));
+				objModel.setExiste(rst.getString(20));
+				objModel.setTotalArbor(rst.getBigDecimal(21));
+				objModel.setTotalPagado(rst.getBigDecimal(22));
+				objModel.setMontoPagadoBmf(rst.getBigDecimal(23));
+				
 
 				lst.add(objModel);
 			}
