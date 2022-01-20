@@ -7,15 +7,20 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import com.terium.siccam.composer.ControladorBase;
+
 import com.terium.siccam.model.CBCatalogoAgenciaModel;
 import com.terium.siccam.model.CBRecaReguModel;
 import com.terium.siccam.utils.ConsultasSQ;
 
 public class CBRecaReguDAO {
+	
+	private static Logger log = Logger.getLogger(CBRecaReguDAO.class.getName());
 	
 	/**
 	 * Se consulta 
@@ -49,7 +54,8 @@ public class CBRecaReguDAO {
 			//		+ "";
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
 			stmt = conn.createStatement();
-			Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, query + where);
+			log.debug("obtenerPagos() - query " + query + where);
+			//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, query + where);
 			rst = stmt.executeQuery(query + where);
 			while (rst.next()) {
 				obj = new CBRecaReguModel();
@@ -80,29 +86,35 @@ public class CBRecaReguDAO {
 			}
 			long endTime = System.nanoTime();
 			long totalTime = (endTime - startTime) / 1000000000;
-			Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO,
-					"Tiempo de performance CBRecaReguDAO = " + totalTime + " s");
-			Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, "List.size = " + lst.size());
+			log.debug("obtenerPagos() - Tiempo de performance CBRecaReguDAO = " + totalTime + " s");
+			//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO,
+				//	"Tiempo de performance CBRecaReguDAO = " + totalTime + " s");
+			log.debug("obtenerPagos() - List.size = " + lst.size());
+			//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, "List.size = " + lst.size());
 		} catch (Exception e) {
-			Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
+			//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rst != null)
 				try {
 					rst.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error(e);
+					//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (stmt != null)
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error(e);
+					//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error(e);
+					//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return lst;
@@ -121,17 +133,23 @@ public class CBRecaReguDAO {
 				/**
 				 * MANEJO DE BANCOS
 				 */
-				Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, ConsultasSQ.UPDATE_PAGO_RECAREGU_QR2);	
-				Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, "COD_CAJA = " + nomusuario);
-				Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, "CBPAGOSID = " + cbpagosid);	
+				log.debug("actualizaPagos() - query " + ConsultasSQ.UPDATE_PAGO_RECAREGU_QR2);
+				//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, ConsultasSQ.UPDATE_PAGO_RECAREGU_QR2);
+				log.debug("actualizaPagos() - COD_CAJA = " + nomusuario);
+				//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, "COD_CAJA = " + nomusuario);
+				log.debug("actualizaPagos() - CBPAGOSID = " + cbpagosid);
+				//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, "CBPAGOSID = " + cbpagosid);	
 				pstmt = conn.prepareStatement(ConsultasSQ.UPDATE_PAGO_RECAREGU_QR2);
 			} else { 
 				/**
 				 * MANEJO DE TIENDAS PROPIAS
 				 */
-				Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, ConsultasSQ.UPDATE_PAGO_RECAREGU_QR1);	
-				Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, "USUARIO = " + nomusuario);
-				Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, "CBPAGOSID = " + cbpagosid);	
+				log.debug("actualizaPagos() - query " + ConsultasSQ.UPDATE_PAGO_RECAREGU_QR1);
+				//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, ConsultasSQ.UPDATE_PAGO_RECAREGU_QR1);
+				log.debug("actualizaPagos() - USUARIO = " + nomusuario);
+				//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, "USUARIO = " + nomusuario);
+				log.debug("actualizaPagos() - CBPAGOSID = " + cbpagosid);	
+				//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, "CBPAGOSID = " + cbpagosid);	
 				pstmt = conn.prepareStatement(ConsultasSQ.UPDATE_PAGO_RECAREGU_QR1);
 			}
 			pstmt.setString(1, nomusuario);
@@ -141,8 +159,9 @@ public class CBRecaReguDAO {
 				return true;
 			else
 				return false;
-		} catch (Exception ex) {			
-			Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (Exception ex) {	
+			log.error(ex);
+			//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, ex);
 			return false;
 		}finally {
 			try {
@@ -150,16 +169,19 @@ public class CBRecaReguDAO {
 					try {
 						pstmt.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error(e);
+						//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(conn != null)
 					try {
 						conn.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error(e);
+						//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 			}catch (Exception e) {
-				Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error(e);
+				//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 	}
@@ -175,7 +197,8 @@ public class CBRecaReguDAO {
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
 			pstmt = conn.prepareStatement(ConsultasSQ.ENTIDADES_RECAREGU_QRY);
-			Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, ConsultasSQ.ENTIDADES_RECAREGU_QRY);
+			log.debug("obtenerEntidades() - query " + ConsultasSQ.ENTIDADES_RECAREGU_QRY);
+		//	Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, ConsultasSQ.ENTIDADES_RECAREGU_QRY);
 			rs = pstmt.executeQuery();
 			CBCatalogoAgenciaModel objeBean;
 			while (rs.next()) {
@@ -185,25 +208,29 @@ public class CBRecaReguDAO {
 				list.add(objeBean);
 			}
 		}catch (Exception e) {
-			Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
+			//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e2) {
-					Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e2);
+					log.error(e2);
+					//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e2);
 				}
 			if(pstmt != null)
 				try {
 					pstmt.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error(e1);
+					//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error(e);
+				//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return list;
@@ -218,8 +245,10 @@ public class CBRecaReguDAO {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
 			pstmt = conn.prepareStatement(ConsultasSQ.USUARIOS_RECAREGU_QRY);
 			pstmt.setInt(1, identidad); 
-			Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, ConsultasSQ.USUARIOS_RECAREGU_QRY);
-			Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, "Entidad = " + identidad);
+			log.debug("obtenerUsuarios() - query " +ConsultasSQ.USUARIOS_RECAREGU_QRY);
+			///Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, ConsultasSQ.USUARIOS_RECAREGU_QRY);
+			log.debug("obtenerUsuarios() - Entidad = " + identidad);
+			//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, "Entidad = " + identidad);
 			rs = pstmt.executeQuery();
 			CBRecaReguModel objeBean;
 			while (rs.next()) {
@@ -228,25 +257,29 @@ public class CBRecaReguDAO {
 				list.add(objeBean);
 			}
 		}catch (Exception e) {
-			Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
+			//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e2) {
-					Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e2);
+					log.error(e2);
+				//	Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e2);
 				}
 			if(pstmt != null)
 				try {
 					pstmt.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error(e1);
+					//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error(e);
+				//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return list;
@@ -264,7 +297,8 @@ public class CBRecaReguDAO {
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
 			pstmt = conn.prepareStatement(ConsultasSQ.BANCOS_RECAREGU_QRY);
-			Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, ConsultasSQ.BANCOS_RECAREGU_QRY);
+			log.debug("obtenerUsuarios() - query " +ConsultasSQ.BANCOS_RECAREGU_QRY);
+		//	Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, ConsultasSQ.BANCOS_RECAREGU_QRY);
 			rs = pstmt.executeQuery();
 			CBRecaReguModel objeBean;
 			while (rs.next()) {
@@ -274,25 +308,29 @@ public class CBRecaReguDAO {
 				list.add(objeBean);
 			}
 		}catch (Exception e) {
-			Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
+			//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e2) {
-					Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e2);
+					log.error(e2);
+					//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e2);
 				}
 			if(pstmt != null)
 				try {
 					pstmt.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error(e1);
+					//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error(e);
+				//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return list;

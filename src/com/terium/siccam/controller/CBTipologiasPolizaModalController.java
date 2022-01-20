@@ -4,7 +4,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
@@ -26,6 +28,7 @@ import com.terium.siccam.model.CBMantenimientoPolizaModel;
 import com.terium.siccam.model.CBParametrosGeneralesModel;
 
 public class CBTipologiasPolizaModalController extends ControladorBase {
+	private static Logger log = Logger.getLogger(CBTipologiasPolizaModalController.class);
 
 
 	/**
@@ -94,7 +97,8 @@ public class CBTipologiasPolizaModalController extends ControladorBase {
 		btnModificar.setDisabled(false);
 		usuario = obtenerUsuario().getUsuario();
 		objModelModal =  (CBMantenimientoPolizaModel) misession.getAttribute("objModelModal");
-		System.out.println("idseleccionado  en doafter" + objModelModal);
+		log.debug("doAfterCompose()  " + " - idseleccionado  en doafter" + objModelModal);
+		
 		//objModel.setCbtipologiaspolizaid(Integer.parseInt(session.getAttribute("idseleccionado").toString()));
 		llenaComboPideEntidad();
 		llenarcasillas();
@@ -166,11 +170,12 @@ public class CBTipologiasPolizaModalController extends ControladorBase {
 					objModel.setUsuario(user);
 					
 
+					log.debug("onClick$btnModificar()  " + " - id en el controlador de modificar " + objModelModal.getCbtipologiaspolizaid());
 					
-					System.out.println("id en el controlador de modificar " + objModelModal.getCbtipologiaspolizaid());
 					if (objDAO.modificaTipologiasModal(objModel)) {
 						// llenaListbox();
-						System.out.println("fecha en el controlador de modificar " + objModel.getFecha_valor());
+						log.debug("onClick$btnModificar()  " + " - fecha en el controlador de modificar " + objModel.getFecha_valor());
+						
 
 						Messagebox.show("Se actualizo el registro", "ATTENTION", Messagebox.OK, Messagebox.INFORMATION);
 						
@@ -193,8 +198,9 @@ public class CBTipologiasPolizaModalController extends ControladorBase {
 	Combobox cmbFechaValor;
 	private List<CBParametrosGeneralesModel> lstPideEntidad = new ArrayList<CBParametrosGeneralesModel>();
 	public void llenaComboPideEntidad() {
-		Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO,
-				"Llena combo tipo estado" );
+		log.debug("lstPideEntidad()  " + " - Llena combo pide entidad" );
+		//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO,
+			//	"Llena combo tipo estado" );
 		limpiaCombobox(cmbFechaValor);
 
 		CBMantenimientoTipologiasPolizaDAO objeDAO = new CBMantenimientoTipologiasPolizaDAO();
@@ -232,11 +238,12 @@ public class CBTipologiasPolizaModalController extends ControladorBase {
 	}
 	
 	public void llenarcasillas() {
-		System.out.println("id seleccioando " + idseleccionado);
+		log.debug("llenarcasillas()  " + " - id seleccioando " + idseleccionado);
+		
 		//CBMantenimientoPolizaModel objModel =  new CBMantenimientoPolizaModel();
 		//idseleccionado = (Integer) arg0.getTarget().getAttribute("idseleccionado");
-
-		System.out.println("id seleccioando " + idseleccionado);
+		log.debug("llenarcasillas()  " + " - id seleccioando " + idseleccionado);
+		
 		//String nombrepoliza = objmodificar.getNombre();
 		lblNombre.setValue(objModelModal.getNombre());
 		tbxCentroBeneficio.setText(objModelModal.getCentrodebeneficio());
@@ -275,7 +282,8 @@ public class CBTipologiasPolizaModalController extends ControladorBase {
 		tbxSociedad.setText(objModelModal.getSociedad());
 		for (Comboitem item : cmbFechaValor.getItems()) {
 			if (item.getValue().equals(String.valueOf(objModelModal.getFecha_valor()))) {
-				System.out.println("combo fecha valor en if " + objModelModal.getFecha_valor());
+				log.debug("llenarcasillas()  " + " - combo fecha valor en if " + objModelModal.getFecha_valor());
+				
 				cmbFechaValor.setSelectedItem(item);
 			}
 		}

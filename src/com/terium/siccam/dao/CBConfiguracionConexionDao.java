@@ -8,8 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
@@ -22,6 +23,7 @@ import com.terium.siccam.model.CBConfiguracionConModel;
  */
 @SuppressWarnings("serial")
 public class CBConfiguracionConexionDao extends ControladorBase{
+	private static Logger log = Logger.getLogger(CBConfiguracionConexionDao.class);
 
 	private String CONSULATA_CONF_CONEXION = "SELECT id_conexion_conf idConexionConf, "
 			+ "nombre_conexion nombre, "
@@ -93,16 +95,19 @@ public class CBConfiguracionConexionDao extends ControladorBase{
 						.query(con, CONSULATA_CONF_CONEXION
 								+ " order by fecha_creacion desc", bhl,
 								new Object[] {});
-				Logger.getLogger(CBConfiguracionConexionDao.class.getName())
-				.log(Level.INFO, "\n*** query consulta ***\n" + CONSULATA_CONF_CONEXION);
+				log.debug( "\n*** query consulta ***\n" + CONSULATA_CONF_CONEXION);
+			//	Logger.getLogger(CBConfiguracionConexionDao.class.getName())
+				//.log(Level.INFO, "\n*** query consulta ***\n" + CONSULATA_CONF_CONEXION);
 		} catch (Exception e) {
-			Logger.getLogger(CBConfiguracionConexionDao.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtieneListaConexionex() - Error ", e);
+			//Logger.getLogger(CBConfiguracionConexionDao.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBConfiguracionConexionDao.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneListaConexionex() - Error ", e);
+					//Logger.getLogger(CBConfiguracionConexionDao.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return listado;
@@ -116,17 +121,19 @@ public class CBConfiguracionConexionDao extends ControladorBase{
 				QueryRunner qr = new QueryRunner();
 				qr.update(con, INSERTA_NUEVA_CONF_CONEXION, objModel.getIpConexion(), objModel.getNombre(),
 						objModel.getUsuarioConexion(), objModel.getPass(), objModel.getUsuario());
-
-				Logger.getLogger(CBConfiguracionConexionDao.class.getName())
-				.log(Level.INFO, "\n*** query insert ***\n" + INSERTA_NUEVA_CONF_CONEXION);
+				log.debug( "\n*** query insert ***\n" + INSERTA_NUEVA_CONF_CONEXION);
+			//	Logger.getLogger(CBConfiguracionConexionDao.class.getName())
+				//.log(Level.INFO, "\n*** query insert ***\n" + INSERTA_NUEVA_CONF_CONEXION);
 		} catch (Exception e) {
-			Logger.getLogger(CBConfiguracionConexionDao.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertaConexion() - Error ", e);
+			//Logger.getLogger(CBConfiguracionConexionDao.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBConfiguracionConexionDao.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertaConexion() - Error ", e);
+					//Logger.getLogger(CBConfiguracionConexionDao.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 
@@ -142,16 +149,19 @@ public class CBConfiguracionConexionDao extends ControladorBase{
 				qr.update(con, ACTUALIZA_CONEXION,  objModel.getNombre(), objModel.getIpConexion(),
 						objModel.getUsuarioConexion(), objModel.getPass(), objModel.getModificadoPor(), objModel.getIdConexionConf());
 
-				Logger.getLogger(CBConfiguracionConexionDao.class.getName())
-				.log(Level.INFO, "\n*** query actualiza ***\n" + ACTUALIZA_CONEXION);
+				log.debug( "\n*** query actualiza ***\n" + ACTUALIZA_CONEXION);
+				//Logger.getLogger(CBConfiguracionConexionDao.class.getName())
+				//.log(Level.INFO, "\n*** query actualiza ***\n" + ACTUALIZA_CONEXION);
 		}catch (Exception e) {
-			Logger.getLogger(CBConfiguracionConexionDao.class.getName()).log(Level.SEVERE, null, e);
+			log.error("actualizaConexion() - Error ", e);
+			//Logger.getLogger(CBConfiguracionConexionDao.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBConfiguracionConexionDao.class.getName()).log(Level.SEVERE, null, e);
+					log.error("actualizaConexion() - Error ", e);
+					//Logger.getLogger(CBConfiguracionConexionDao.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 	}
@@ -166,13 +176,15 @@ public class CBConfiguracionConexionDao extends ControladorBase{
 						"delete cb_conexion_conf where id_conexion_conf = ? ",
 						idConexion);
 		}catch (Exception e) {
-			Logger.getLogger(CBConfiguracionConexionDao.class.getName()).log(Level.SEVERE, null, e);
+			log.error("elimaConexion() - Error ", e);
+			//Logger.getLogger(CBConfiguracionConexionDao.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBConfiguracionConexionDao.class.getName()).log(Level.SEVERE, null, e);
+					log.error("elimaConexion() - Error ", e);
+				//	Logger.getLogger(CBConfiguracionConexionDao.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 	}

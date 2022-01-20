@@ -1,7 +1,10 @@
 package com.terium.siccam.controller;
 
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 
@@ -20,6 +23,7 @@ import com.terium.siccam.implement.SeleccionaCargaCredomaticInfz;
  * @author Juankrlos by 17/03/2017
  * */
 public class SeleccionaCargaCredomaticController extends ControladorBase{
+	private static Logger log = Logger.getLogger(SeleccionaCargaCredomaticController.class);
 
 	/**
 	 * 
@@ -52,8 +56,9 @@ public class SeleccionaCargaCredomaticController extends ControladorBase{
 		img = (Image) misession.getAttribute("imagen");
 		lblPregunta.setValue("Que version desea utilizar en la carga del archivo "+archivo.getName()
 				+ " para los estados de cuenta de CREDOMATIC?");
-		Logger.getLogger(ConciliacionDetalleController.class.getName())
-			.log(Level.INFO, "Archivo obtenido: "+archivo.getName());
+		log.debug("cargarComboAgencia()  " + " - Archivo obtenido: "+archivo.getName());
+		//Logger.getLogger(ConciliacionDetalleController.class.getName())
+			//.log(Level.INFO, "Archivo obtenido: "+archivo.getName());
 	}
 	
 	public void onClick$btnV1(){

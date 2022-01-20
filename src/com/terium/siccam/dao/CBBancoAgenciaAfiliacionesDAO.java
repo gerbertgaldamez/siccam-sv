@@ -7,13 +7,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.model.CBBancoAgenciaAfiliacionesModel;
 import com.terium.siccam.sql.ConsultasSQ;
 
 public class CBBancoAgenciaAfiliacionesDAO  {
+	private static Logger log = Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class);
 	
 	public int obtenerPKAfiliacion() {
 		String idAfiliacionSQ = ConsultasSQ.SEQ_AFILIACION;
@@ -23,33 +26,38 @@ public class CBBancoAgenciaAfiliacionesDAO  {
 		Connection conn = null;
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
-					"Consulta secuencia afiliacion SQ = " + idAfiliacionSQ);
+			log.debug( "Consulta secuencia afiliacion SQ = " + idAfiliacionSQ);
+			//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
+					//"Consulta secuencia afiliacion SQ = " + idAfiliacionSQ);
 			cmd = conn.prepareStatement(idAfiliacionSQ);
 			rs = cmd.executeQuery();
 			while (rs.next()) {
 				pk = rs.getInt(1);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerPKAfiliacion() - Error ", e);
+			//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerPKAfiliacion() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerPKAfiliacion() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerPKAfiliacion() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return pk;
@@ -63,10 +71,12 @@ public class CBBancoAgenciaAfiliacionesDAO  {
 		Connection conn = null;
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
-					"Valor objeto objModel = " + objModel.toString());
-			Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
-					"Consulta afiliacion valida = " + afiliacionValidaSQL);
+			log.debug( "Valor objeto objModel = " + objModel.toString());
+			//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
+					//"Valor objeto objModel = " + objModel.toString());
+			log.debug( "Consulta afiliacion valida = " + afiliacionValidaSQL);
+		//	Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
+					//"Consulta afiliacion valida = " + afiliacionValidaSQL);
 			cmd = conn.prepareStatement(afiliacionValidaSQL);
 			cmd.setString(1, objModel.getAfiliacion());
 			cmd.setInt(2, objModel.getCbcatalogoagenciaid());
@@ -74,25 +84,29 @@ public class CBBancoAgenciaAfiliacionesDAO  {
 			if (rs.next())
 				result = false;
 		} catch (Exception e) {
-			Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("transaccionValida() - Error ", e);
+		//	Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("transaccionValida() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("transaccionValida() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("transaccionValida() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return result;
@@ -105,11 +119,14 @@ public class CBBancoAgenciaAfiliacionesDAO  {
 		Connection conn = null;
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
-					"Valor objeto param = " + param.toString());
-			Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO, "Valor pk = " + pk);
-			Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
-					"Insert afiliacion = " + insertAfiliacionSQL);
+			log.debug( "Valor objeto param = " + param.toString());
+		//	Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
+				//	"Valor objeto param = " + param.toString());
+			log.debug( "Valor pk = " + pk);
+			//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO, "Valor pk = " + pk);
+			log.debug( "Insert afiliacion = " + insertAfiliacionSQL);
+			//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
+					//"Insert afiliacion = " + insertAfiliacionSQL);
 			cmd = conn.prepareStatement(insertAfiliacionSQL);
 			cmd.setInt(1, pk);
 			cmd.setInt(2, param.getCbcatalogoagenciaid());
@@ -121,19 +138,22 @@ public class CBBancoAgenciaAfiliacionesDAO  {
 				result = true;
 
 		} catch (SQLException e) {
-			Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertarAfiliacion() - Error ", e);
+			//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertarAfiliacion() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertarAfiliacion() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return result;
@@ -146,12 +166,15 @@ public class CBBancoAgenciaAfiliacionesDAO  {
 		Connection conn = null;
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
-					"Valor objeto param = " + param.toString());
-			Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
-					"Valor idSeleccionado = " + idSeleccionado);
-			Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
-					"Update afiliacion = " + updateAfiliacionSQL);
+			log.debug( "Valor objeto param = " + param.toString());
+			//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
+					//"Valor objeto param = " + param.toString());
+			log.debug( "Valor idSeleccionado = " + idSeleccionado);
+			//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
+					//"Valor idSeleccionado = " + idSeleccionado);
+			log.debug( "Update afiliacion = " + updateAfiliacionSQL);
+			//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
+				//	"Update afiliacion = " + updateAfiliacionSQL);
 			cmd = conn.prepareStatement(updateAfiliacionSQL);
 			cmd.setString(1, param.getTipo());
 			cmd.setString(2, param.getAfiliacion());
@@ -161,19 +184,22 @@ public class CBBancoAgenciaAfiliacionesDAO  {
 			if (cmd.executeUpdate() > 0)
 				result = true;
 		} catch (SQLException e) {
-			Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("actualizarAfiliacion() - Error ", e);
+			//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("actualizarAfiliacion() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("actualizarAfiliacion() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return result;
@@ -186,27 +212,32 @@ public class CBBancoAgenciaAfiliacionesDAO  {
 		Connection conn = null;
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO, "Valor pk = " + pk);
-			Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
-					"Delete afiliacion = " + deleteAfiliacionSQL);
+			log.debug( "Valor pk = " + pk);
+			//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO, "Valor pk = " + pk);
+			log.debug( "Delete afiliacion = " + deleteAfiliacionSQL);
+			//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
+				//	"Delete afiliacion = " + deleteAfiliacionSQL);
 			cmd = conn.prepareStatement(deleteAfiliacionSQL);
 			cmd.setInt(1, pk);
 			if (cmd.executeUpdate() > 0)
 				result = true;
 		} catch (SQLException e) {
-			Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("eliminarAfiliacion() - Error ", e);
+			//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("eliminarAfiliacion() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("eliminarAfiliacion() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return result;
@@ -220,10 +251,12 @@ public class CBBancoAgenciaAfiliacionesDAO  {
 		List<CBBancoAgenciaAfiliacionesModel> list = new ArrayList<CBBancoAgenciaAfiliacionesModel>();
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
-					"Valor objeto objeBean = " + objeBean.toString());
-			Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
-					"Consulta afiliaciones = " + consultaAfiliacionesSQL);
+			log.debug( "Valor objeto objeBean = " + objeBean.toString());
+			//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
+				//	"Valor objeto objeBean = " + objeBean.toString());
+			log.debug( "Consulta afiliaciones = " + consultaAfiliacionesSQL);
+		//	Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
+					//"Consulta afiliaciones = " + consultaAfiliacionesSQL);
 			cmd = conn.prepareStatement(consultaAfiliacionesSQL);
 			cmd.setInt(1, objeBean.getCbcatalogoagenciaid());
 			rs = cmd.executeQuery();
@@ -239,25 +272,29 @@ public class CBBancoAgenciaAfiliacionesDAO  {
 				list.add(objeBean);
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("consByIdAgencia() - Error ", e);
+			//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consByIdAgencia() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consByIdAgencia() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consByIdAgencia() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return list;

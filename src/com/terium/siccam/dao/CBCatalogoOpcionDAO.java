@@ -4,8 +4,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
@@ -21,6 +22,7 @@ import com.terium.siccam.utils.Orden;
  * @author rSianB for terium.com 
  */ 
 public class  CBCatalogoOpcionDAO {  
+	private static Logger log = Logger.getLogger(CBCatalogoOpcionDAO.class);
  
 
 
@@ -57,13 +59,15 @@ public class  CBCatalogoOpcionDAO {
 		ret = qry.update(conn, queInsert, param);
 		
 		}catch (Exception e) {
-			Logger.getLogger(CBCatalogoOpcionDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertar() - Error ", e);
+			//Logger.getLogger(CBCatalogoOpcionDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBCatalogoOpcionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("insertar() - Error ", e);
+				//Logger.getLogger(CBCatalogoOpcionDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
                
@@ -110,13 +114,15 @@ public class  CBCatalogoOpcionDAO {
 		ret = qry.update(conn, queInsert, param);
 
         } catch (Exception e) {
-			Logger.getLogger(CBCatalogoOpcionDAO.class.getName()).log(Level.SEVERE, null, e);
+        	log.error("actualiza() - Error ", e);
+			//Logger.getLogger(CBCatalogoOpcionDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBCatalogoOpcionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("actualiza() - Error ", e);
+				//Logger.getLogger(CBCatalogoOpcionDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
                
@@ -150,15 +156,18 @@ public List<CBCatalogoOpcionModel> Listado(List<Filtro> filtro, List<Orden> orde
 	}
 			this.totalRegistros = ret.size();
 			System.out.println("resultado: " + ret.size());
+			log.debug("resultado: " + ret.size());
 			
         }catch (Exception e) {
-			Logger.getLogger(CBCatalogoOpcionDAO.class.getName()).log(Level.SEVERE, null, e);
+        	log.error("Listado() - Error ", e);
+			//Logger.getLogger(CBCatalogoOpcionDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBCatalogoOpcionDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("Listado() - Error ", e);
+				//Logger.getLogger(CBCatalogoOpcionDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		

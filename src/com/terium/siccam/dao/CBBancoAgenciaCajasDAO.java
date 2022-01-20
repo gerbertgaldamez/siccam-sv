@@ -7,13 +7,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.model.CBBancoAgenciaCajasModel;
 import com.terium.siccam.sql.ConsultasSQ;
 
 public class CBBancoAgenciaCajasDAO {
+	private static Logger log = Logger.getLogger(CBBancoAgenciaCajasDAO.class);
 	
 	public int obtenerPKCajas() {
 		String idCajasSQ = ConsultasSQ.SEQ_CAJERO;
@@ -23,32 +26,37 @@ public class CBBancoAgenciaCajasDAO {
 		Connection conn = null;
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO,
-					"Query secuencia cajas SQ = " + idCajasSQ);
+			log.debug( "Query secuencia cajas SQ = " + idCajasSQ);
+			//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO,
+					//"Query secuencia cajas SQ = " + idCajasSQ);
 			cmd = conn.prepareStatement(idCajasSQ);
 			rs = cmd.executeQuery();
 			if (rs.next())
 				pk = rs.getInt(1);
 		} catch (SQLException e) {
-			Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerPKCajas() - Error ", e);
+			//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerPKCajas() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerPKCajas() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerPKCajas() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return pk;
@@ -62,10 +70,12 @@ public class CBBancoAgenciaCajasDAO {
 		Connection conn = null;
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO,
-					"Valor objeto objModel = " + objModel.toString());
-			Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO,
-					"Query cajero valido = " + cajeroValidoSQL);
+			log.debug( "Valor objeto objModel = " + objModel.toString());
+			//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO,
+					//"Valor objeto objModel = " + objModel.toString());
+			log.debug( "Query cajero valido = " + cajeroValidoSQL);
+			//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO,
+					//"Query cajero valido = " + cajeroValidoSQL);
 			cmd = conn.prepareStatement(cajeroValidoSQL);
 			cmd.setString(1, objModel.getCajero());
 			cmd.setInt(2, objModel.getCbcatalogoagenciaid());
@@ -74,25 +84,29 @@ public class CBBancoAgenciaCajasDAO {
 				result = false;
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("transaccionValida() - Error ", e);
+			//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("transaccionValida() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("transaccionValida() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("transaccionValida() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return result;
@@ -105,11 +119,14 @@ public class CBBancoAgenciaCajasDAO {
 		Connection conn = null;
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO,
-					"Valor objeto param = " + param.toString());
-			Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO, "Valor pk = " + pk);
-			Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO,
-					"Insert cajero = " + insertCajeroSQL);
+			log.debug( "Valor objeto param = " + param.toString());
+			//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO,
+				//	"Valor objeto param = " + param.toString());
+			log.debug( "Valor pk = " + pk);
+			//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO, "Valor pk = " + pk);
+			log.debug( "Insert cajero = " + insertCajeroSQL);
+		//	Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO,
+					//"Insert cajero = " + insertCajeroSQL);
 			cmd = conn.prepareStatement(insertCajeroSQL);
 			cmd.setInt(1, pk);
 			cmd.setInt(2, param.getCbcatalogoagenciaid());
@@ -121,19 +138,22 @@ public class CBBancoAgenciaCajasDAO {
 			if (cmd.executeUpdate() > 0)
 				result = true;
 		} catch (Exception e) {
-			Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertarCajero() - Error ", e);
+			//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertarCajero() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertarCajero() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return result;
@@ -146,11 +166,14 @@ public class CBBancoAgenciaCajasDAO {
 		PreparedStatement cmd = null;
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO,
-					"Valor objeto param = " + param.toString());
-			Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO, "Valor pk = " + pk);
-			Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO,
-					"Update cajero = " + updateCajeroSQL);
+			log.debug( "Valor objeto param = " + param.toString());
+			//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO,
+				//	"Valor objeto param = " + param.toString());
+			log.debug( "Valor pk = " + pk);
+			//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO, "Valor pk = " + pk);
+			log.debug( "Update cajero = " + updateCajeroSQL);
+			//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO,
+					//"Update cajero = " + updateCajeroSQL);
 			cmd = conn.prepareStatement(updateCajeroSQL);
 			cmd.setString(1, param.getCod_oficina());
 			cmd.setString(2, param.getCod_caja());
@@ -161,19 +184,22 @@ public class CBBancoAgenciaCajasDAO {
 			if (cmd.executeUpdate() > 0)
 				result = true;
 		} catch (Exception e) {
-			Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("actualizarCajero() - Error ", e);
+			//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("actualizarCajero() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("actualizarCajero() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return result;
@@ -186,26 +212,31 @@ public class CBBancoAgenciaCajasDAO {
 		PreparedStatement cmd = null;
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO, "Valor pk = " + pk);
-			Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO,
-					"Delete cajero = " + deleteCajeroSQL);
+			log.debug( "Valor pk = " + pk);
+		//	Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO, "Valor pk = " + pk);
+			log.debug( "Delete cajero = " + deleteCajeroSQL);
+			//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO,
+					//"Delete cajero = " + deleteCajeroSQL);
 			cmd = conn.prepareStatement(deleteCajeroSQL);
 			cmd.setInt(1, pk);
 			result = cmd.executeUpdate();
 		} catch (SQLException e) {
-			Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("eliminarCajero() - Error ", e);
+			//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("eliminarCajero() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("eliminarCajero() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return result;
@@ -219,10 +250,12 @@ public class CBBancoAgenciaCajasDAO {
 		ResultSet rs = null;
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO, 
-					"Valor objModel = " + objModel.toString());
-			Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO,
-					"Consulta cajeros = " + consultaCajerosSQL);
+			log.debug( "Valor objModel = " + objModel.toString());
+			//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO, 
+					//"Valor objModel = " + objModel.toString());
+			log.debug( "Consulta cajeros = " + consultaCajerosSQL);
+			//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.INFO,
+				//	"Consulta cajeros = " + consultaCajerosSQL);
 			cmd = conn.prepareStatement(consultaCajerosSQL);
 			cmd.setInt(1, objModel.getCbcatalogoagenciaid());
 			rs = cmd.executeQuery();
@@ -240,25 +273,29 @@ public class CBBancoAgenciaCajasDAO {
 				list.add(objeBean);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("consByIdAgencia() - Error ", e);
+			//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consByIdAgencia() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consByIdAgencia() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consByIdAgencia() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return list;

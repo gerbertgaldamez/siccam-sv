@@ -1,12 +1,13 @@
 package com.terium.siccam.controller;
 
 import java.text.DateFormat;
+
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.Datebox;
@@ -22,6 +23,7 @@ import com.terium.siccam.implement.CBRecargaListboxRecaReguImpl;
 import com.terium.siccam.model.CBRecaReguModel;
 
 public class CBRecaReguController extends ControladorBase implements CBRecargaListboxRecaReguImpl{
+	private static Logger log = Logger.getLogger(CBRecaReguController.class.getName());
 	
 	/**
 	 * 
@@ -41,7 +43,8 @@ public class CBRecaReguController extends ControladorBase implements CBRecargaLi
 		try {
 			super.doAfterCompose(param);
 		} catch (Exception e) {
-			Logger.getLogger(CBRecaReguController.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
+			//Logger.getLogger(CBRecaReguController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
 		}
 	}
@@ -149,8 +152,9 @@ public class CBRecaReguController extends ControladorBase implements CBRecargaLi
 				fila.setParent(lbxPagos);
 			}
 		} else {
-			Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, 
-					"Bandera mensaje = " + banderaMensaje);
+			log.debug("llenaListbox() - Bandera mensaje = " + banderaMensaje);
+			//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, 
+					//"Bandera mensaje = " + banderaMensaje);
 			if(banderaMensaje == 0) { //Ejecucion de metodo desde pantalla principal
 				Messagebox.show("No existen registros en el sistema comercial para los filtros aplicados", 
 						"ATENCION", Messagebox.OK, Messagebox.EXCLAMATION);
@@ -207,7 +211,8 @@ public class CBRecaReguController extends ControladorBase implements CBRecargaLi
 				llenaListbox(objModel, banderaMensaje);
 			}
 		} catch(Exception e) {
-			Logger.getLogger(CBRecaReguController.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
+			//Logger.getLogger(CBRecaReguController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	
@@ -224,7 +229,8 @@ public class CBRecaReguController extends ControladorBase implements CBRecargaLi
 			}
 		} catch(Exception e) {
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBRecaReguController.class.getName()).log(Level.SEVERE, null, e);
+			log.error(e);
+			//Logger.getLogger(CBRecaReguController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	

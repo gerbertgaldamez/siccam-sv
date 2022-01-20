@@ -8,8 +8,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -23,6 +24,8 @@ import com.terium.siccam.sql.ConsultasSQ;
 
 @SuppressWarnings("serial")
 public class CBCatalogoAgenciaDAO extends ControladorBase {
+	
+	private static Logger log = Logger.getLogger(CBCatalogoAgenciaDAO.class);
 	/**
 	 * @author JCDeLaCruz
 	 * 
@@ -52,24 +55,28 @@ public class CBCatalogoAgenciaDAO extends ControladorBase {
 		Connection con = null;
 		try {
 			con = obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
-					"Query obtiene listado agencias : " + consultaAgenciasSQL);
+			log.debug( "Query obtiene listado agencias : " + consultaAgenciasSQL);
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
+					//"Query obtiene listado agencias : " + consultaAgenciasSQL);
 			QueryRunner qr = new QueryRunner();
 
-			System.out.println("query consulta combo agencias " + consultaAgenciasSQL);
-			System.out.println("query consulta combo agencias id " + banco);
+			log.debug( "query consulta combo agencias id " + banco);
+			
+			
 
 			ResultSetHandler<List<CBCatalogoAgenciaModel>> rsh = new BeanListHandler<CBCatalogoAgenciaModel>(
 					CBCatalogoAgenciaModel.class);
 			listado = qr.query(con, consultaAgenciasSQL, rsh, new Object[] {});
 		} catch (Exception e) {
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtieneListadoAgencias() - Error ", e);
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtieneListadoAgencias() - Error ", e);
+				//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		} 
 		return listado;
@@ -108,8 +115,9 @@ public class CBCatalogoAgenciaDAO extends ControladorBase {
 			con = obtenerDtsPromo().getConnection();
 			stm = con.createStatement();
 			where = where + "order by a.NOMBRE asc";
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
-					"query consulta entidades = " + query + where);
+			log.debug( "query consulta entidades = " + query + where);
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
+					//"query consulta entidades = " + query + where);
 			rs = stm.executeQuery(query + where);
 			CBCatalogoAgenciaModel obj = null;
 			while (rs.next()) {
@@ -131,25 +139,29 @@ public class CBCatalogoAgenciaDAO extends ControladorBase {
 				list.add(obj);
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtieneListadoAgenciasMnt() - Error ", e);
+			//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneListadoAgenciasMnt() - Error ", e);
+					//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (stm != null)
 				try {
 					stm.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneListadoAgenciasMnt() - Error ", e);
+					//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneListadoAgenciasMnt() - Error ", e);
+					//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return list;
@@ -165,10 +177,12 @@ public class CBCatalogoAgenciaDAO extends ControladorBase {
 		Connection con = null;
 		try {
 			con = obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
-					"Valor objeto objEntidad = " + objEntidad.toString());
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
-					"Insert agencia = " + insertAgenciaSQL);
+			log.debug( "Valor objeto objEntidad = " + objEntidad.toString());
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
+				//	"Valor objeto objEntidad = " + objEntidad.toString());
+			log.debug( "Insert agencia = " + insertAgenciaSQL);
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
+					//"Insert agencia = " + insertAgenciaSQL);
 			try {
 			cmd = con.prepareStatement(insertAgenciaSQL);
 			cmd.setString(1, objEntidad.getcBCatalogoBancoId());
@@ -182,29 +196,33 @@ public class CBCatalogoAgenciaDAO extends ControladorBase {
 			cmd.setString(9, objEntidad.getCodigoColector());
 			cmd.setString(10, objEntidad.getNit());
 			resultado = cmd.executeUpdate();
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
-					"Se ha ingresado una nueva agencia...");
+			log.debug( "Se ha ingresado una nueva agencia...");
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
+				//	"Se ha ingresado una nueva agencia...");
 		}catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName())
-			.log(Level.INFO,"Error de counstring  "+ e.getMessage());
+			log.error("ingresaNuevaAgencia() - Error ", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName())
+			//.log(Level.INFO,"Error de counstring  "+ e.getMessage());
 			
 		}
 			
 		} catch (Exception e) {
-			
-			Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("ingresaNuevaAgencia() - Error ", e);
+			//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("ingresaNuevaAgencia() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("ingresaNuevaAgencia() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return resultado;
@@ -218,10 +236,12 @@ public class CBCatalogoAgenciaDAO extends ControladorBase {
 		Connection con = null;
 		try {
 			con = obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
-					"Valor objeto objEntidad = " + objEntidad.toString());
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
-					"Update agencia = " + updateAgenciaSQL);
+			log.debug( "Valor objeto objEntidad = " + objEntidad.toString());
+		//	Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
+					//"Valor objeto objEntidad = " + objEntidad.toString());
+			log.debug( "Update agencia = " + updateAgenciaSQL);
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
+					//"Update agencia = " + updateAgenciaSQL);
 			try {
 			cmd = con.prepareStatement(updateAgenciaSQL);
 			cmd.setString(1, objEntidad.getcBCatalogoBancoId());
@@ -236,26 +256,31 @@ public class CBCatalogoAgenciaDAO extends ControladorBase {
 			cmd.setString(10, objEntidad.getNit());
 			cmd.setString(11, objEntidad.getcBCatalogoAgenciaId());
 			resultado = cmd.executeUpdate();
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO, "Se ha modificado agencia...");
+			log.debug( "Se ha modificado agencia...");
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO, "Se ha modificado agencia...");
 		}catch (SQLException e) {
-			Logger.getLogger(CBEstadoCuentaDAO.class.getName())
-			.log(Level.INFO,"Error de counstring  "+ e.getMessage());
+			log.error("actualizaAgencia() - Error ", e);
+			//Logger.getLogger(CBEstadoCuentaDAO.class.getName())
+			//.log(Level.INFO,"Error de counstring  "+ e.getMessage());
 			
 		}
 		} catch (Exception e) {
-			Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("actualizaAgencia() - Error ", e);
+			//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("actualizaAgencia() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("actualizaAgencia() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return resultado;
@@ -274,19 +299,23 @@ public class CBCatalogoAgenciaDAO extends ControladorBase {
 		PreparedStatement cmd = null;
 		try {
 			conn = obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
-					"Valor objeto obj = " + obj.toString());
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
-					"Update asociaciones por entidad = " + updateAsociacionesEntidad);
+			log.debug( "Valor objeto obj = " + obj.toString());
+		//	Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
+					//"Valor objeto obj = " + obj.toString());
+			log.debug( "Update asociaciones por entidad = " + updateAsociacionesEntidad);
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
+				//	"Update asociaciones por entidad = " + updateAsociacionesEntidad);
 			cmd = conn.prepareStatement(updateAsociacionesEntidad);
 			cmd.setString(1, obj.getcBCatalogoBancoId());
 			cmd.setString(2, obj.getcBCatalogoAgenciaId());
 			cmd.executeUpdate();
 			result = true;
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
-					"\n*** Asociacion en CB_BANCO_AGENCIA_CONFRONTA modificado ***\n");
+			log.debug( "\n*** Asociacion en CB_BANCO_AGENCIA_CONFRONTA modificado ***\n");
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
+					//"\n*** Asociacion en CB_BANCO_AGENCIA_CONFRONTA modificado ***\n");
 		} catch (Exception e) {
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("updateAsociaciones() - Error ", e);
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (cmd != null)
@@ -294,7 +323,8 @@ public class CBCatalogoAgenciaDAO extends ControladorBase {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("updateAsociaciones() - Error ", e);
+				//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -309,9 +339,11 @@ public class CBCatalogoAgenciaDAO extends ControladorBase {
 		Connection con = null;
 		try {
 			con = obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO, "Valor nombre = " + nombre);
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
-					"Consulta nombre agencia = " + nombreAgenciaSQL);
+			log.debug( "Valor nombre = " + nombre);
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO, "Valor nombre = " + nombre);
+			log.debug( "Consulta nombre agencia = " + nombreAgenciaSQL);
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
+					//"Consulta nombre agencia = " + nombreAgenciaSQL);
 			ps = con.prepareStatement(nombreAgenciaSQL);
 			ps.setString(1, nombre);
 			rs = ps.executeQuery();
@@ -320,25 +352,29 @@ public class CBCatalogoAgenciaDAO extends ControladorBase {
 				respuesta = true;
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("consultaNombre() - Error ", e);
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consultaNombre() - Error ", e);
+					//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consultaNombre() - Error ", e);
+					//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consultaNombre() - Error ", e);
+					//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return respuesta;
@@ -354,8 +390,9 @@ public class CBCatalogoAgenciaDAO extends ControladorBase {
 		ResultSet rs = null;
 		try {
 			con = obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
-					"Consulta nombre agencia = " + obtieneAgenciaSQ);
+			log.debug( "Consulta nombre agencia = " + obtieneAgenciaSQ);
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
+					//"Consulta nombre agencia = " + obtieneAgenciaSQ);
 			stm = con.createStatement();
 			rs = stm.executeQuery(obtieneAgenciaSQ);
 			CBCatalogoAgenciaModel obj = null;
@@ -366,25 +403,29 @@ public class CBCatalogoAgenciaDAO extends ControladorBase {
 				list.add(obj);
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaAgencia() - Error ", e);
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("generaConsultaAgencia() - Error ", e);
+					//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (stm != null)
 				try {
 					stm.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("generaConsultaAgencia() - Error ", e);
+					//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("generaConsultaAgencia() - Error ", e);
+					//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return list;
@@ -403,8 +444,9 @@ public class CBCatalogoAgenciaDAO extends ControladorBase {
 		Connection con = null;
 		try {
 			con = obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
-					"Query consulta agrupaciones = " + consultaAgrupacionesSQL);
+			log.debug( "Query consulta agrupaciones = " + consultaAgrupacionesSQL);
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
+					//"Query consulta agrupaciones = " + consultaAgrupacionesSQL);
 			ps = con.prepareStatement(consultaAgrupacionesSQL);
 			rs = ps.executeQuery();
 			CBCatalogoBancoModel obj = null;
@@ -415,25 +457,29 @@ public class CBCatalogoAgenciaDAO extends ControladorBase {
 				lista.add(obj);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtieneListaAgrupaciones() - Error ", e);
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneListaAgrupaciones() - Error ", e);
+					//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneListaAgrupaciones() - Error ", e);
+					//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneListaAgrupaciones() - Error ", e);
+					//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return lista;
@@ -447,8 +493,9 @@ public class CBCatalogoAgenciaDAO extends ControladorBase {
 		Connection con = null;
 		try {
 			con = obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
-					"Query consulta agrupaciones = " + obtenerEstadosSQL);
+			log.debug( "Query consulta agrupaciones = " + obtenerEstadosSQL);
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.INFO,
+					//"Query consulta agrupaciones = " + obtenerEstadosSQL);
 			ps = con.prepareStatement(obtenerEstadosSQL);
 			rs = ps.executeQuery();
 			CBParametrosGeneralesModel obj = null;
@@ -459,25 +506,29 @@ public class CBCatalogoAgenciaDAO extends ControladorBase {
 				lista.add(obj);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerEstadoCmb() - Error ", e);
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerEstadoCmb() - Error ", e);
+					//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerEstadoCmb() - Error ", e);
+					//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerEstadoCmb() - Error ", e);
+					//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return lista;

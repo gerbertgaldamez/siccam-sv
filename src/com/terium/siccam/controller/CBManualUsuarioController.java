@@ -1,14 +1,15 @@
 package com.terium.siccam.controller;
 
 import java.io.BufferedOutputStream;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.zkoss.zk.ui.Component;
@@ -24,6 +25,8 @@ import com.terium.siccam.utils.Constantes;
  * */
 public class CBManualUsuarioController extends ControladorBase{
 	
+	private static Logger log = Logger.getLogger(CBManualUsuarioController.class);
+	
 	private static final long serialVersionUID = 4285297288749865925L;
 	
 	Window manualUsuario;
@@ -33,7 +36,8 @@ public class CBManualUsuarioController extends ControladorBase{
 			super.doAfterCompose(param);
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBManualUsuarioController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("doAfterCompose() -  Error ", e);
+			//Logger.getLogger(CBManualUsuarioController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	
@@ -45,7 +49,8 @@ public class CBManualUsuarioController extends ControladorBase{
 			manualUsuario.detach();
 		} catch(Exception e) {
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBManualUsuarioController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnCancelar() -  Error ", e);
+			//Logger.getLogger(CBManualUsuarioController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	} 
 	
@@ -91,10 +96,12 @@ public class CBManualUsuarioController extends ControladorBase{
 		} catch (IOException ex) {
 			Messagebox.show("Ha ocurrido un error al intentar descargar archivo PDF desde server FTP configurado",
 					Constantes.ATENCION, Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBManualUsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+			log.error("onClick$btnDescargarArchivo() -  Error ", ex);
+			//Logger.getLogger(CBManualUsuarioController.class.getName()).log(Level.SEVERE, null, ex);
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error.", Constantes.ATENCION, Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBManualUsuarioController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnDescargarArchivo() -  Error ", e);
+			//Logger.getLogger(CBManualUsuarioController.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (ftpClient.isConnected()) {
@@ -102,7 +109,8 @@ public class CBManualUsuarioController extends ControladorBase{
 					ftpClient.disconnect();
 				}
 			} catch (IOException ex) {
-				Logger.getLogger(CBManualUsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+				log.error("onClick$btnDescargarArchivo() -  Error ", ex);
+				//Logger.getLogger(CBManualUsuarioController.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
 	}

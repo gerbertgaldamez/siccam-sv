@@ -5,7 +5,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,6 +16,7 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.zkoss.zk.ui.Sessions;
 
 import com.terium.siccam.composer.ControladorBase;
+import com.terium.siccam.controller.CBConciliacionBancoController;
 import com.terium.siccam.model.CBAgenciaVirtualFisicaModel;
 import com.terium.siccam.sql.ConsultasSQ;
 import com.terium.siccam.utils.ObtenerSQLPais;
@@ -22,6 +25,7 @@ import com.terium.siccam.utils.ObtenerSQLPais;
  * Modifica Juankrlos 10/12/2017
  */
 public class CBAgenciaVirFiscDAO {
+	private static Logger log = Logger.getLogger(CBAgenciaVirFiscDAO.class);
 	HttpSession misession = (HttpSession) Sessions.getCurrent().getNativeSession();
 	
 	public void agregarAgenciaVirFis(CBAgenciaVirtualFisicaModel objModel) {
@@ -32,20 +36,24 @@ public class CBAgenciaVirFiscDAO {
 		Connection con = null;
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.INFO,
-					"Valor objeto param = " + param);
-			Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.INFO,
-					"Query agregar agencia vir fis = " + agregarAgenciaVirFis);
+			log.debug("Valor objeto param = " + param);
+		//	Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.INFO,
+				//	"Valor objeto param = " + param);
+			log.debug("Query agregar agencia vir fis = " + agregarAgenciaVirFis);
+			//Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.INFO,
+				//	"Query agregar agencia vir fis = " + agregarAgenciaVirFis);
 			QueryRunner qr = new QueryRunner();
 			qr.update(con, agregarAgenciaVirFis, param);
 		} catch (Exception e) {
-			Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("agregarAgenciaVirFis() - Error ", e);
+			//Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("agregarAgenciaVirFis() - Error ", e);
+					//Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 	}
@@ -61,19 +69,23 @@ public class CBAgenciaVirFiscDAO {
 			QueryRunner qr = new QueryRunner();
 			BeanListHandler<CBAgenciaVirtualFisicaModel> blh = new BeanListHandler<CBAgenciaVirtualFisicaModel>(
 					CBAgenciaVirtualFisicaModel.class);
-			Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.INFO,
-					"Valor id agencia = " + idAgencia);
-			Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.INFO,
-					"Query listado agencias vir fis = " + listadoAgencias);
+			log.debug("Valor id agencia = " + idAgencia);
+			//Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.INFO,
+				//	"Valor id agencia = " + idAgencia);
+			log.debug("Query listado agencias vir fis = " + listadoAgencias);
+		//	Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.INFO,
+				//	"Query listado agencias vir fis = " + listadoAgencias);
 			listado = qr.query(con, listadoAgencias , blh, new Object[] { idAgencia });
 		} catch (Exception e) {
-			Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("listadoAgencias() - Error ", e);
+			//Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("listadoAgencias() - Error ", e);
+					//Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return listado;
@@ -94,19 +106,23 @@ public class CBAgenciaVirFiscDAO {
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			QueryRunner qr = new QueryRunner();
-			Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.INFO,
-					"Valores objeto param = " + param);
-			Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.INFO,
-					"Update agencia vir fis = " + updateSQL);
+			log.debug("Valores objeto param = " + param);
+			//Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.INFO,
+					//"Valores objeto param = " + param);
+			log.debug("Update agencia vir fis = " + updateSQL);
+			//Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.INFO,
+					//"Update agencia vir fis = " + updateSQL);
 			qr.update(con, updateSQL, param);
 		} catch (Exception e) {
-			Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("modificarAgencia() - Error ", e);
+			//Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("modificarAgencia() - Error ", e);
+				//Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 	}
@@ -117,19 +133,23 @@ public class CBAgenciaVirFiscDAO {
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			QueryRunner qr = new QueryRunner();
-			Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.INFO,
-					"Valor idFila = " + idFila);
-			Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.INFO,
-					"Delete agencia vir fis = " + deleteSQL);
+			log.debug("Valor idFila = " + idFila);
+			//Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.INFO,
+					//"Valor idFila = " + idFila);
+			log.debug("Delete agencia vir fis = " + deleteSQL);
+			//Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.INFO,
+				//	"Delete agencia vir fis = " + deleteSQL);
 			qr.update(con, deleteSQL, idFila);
 		} catch (Exception e) {
-			Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("eliminarAgencia() - Error ", e);
+			//Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("eliminarAgencia() - Error ", e);
+					//Logger.getLogger(CBAgenciaVirFiscDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 	}

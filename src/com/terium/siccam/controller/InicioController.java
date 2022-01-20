@@ -3,7 +3,9 @@ package com.terium.siccam.controller;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 
@@ -23,6 +25,7 @@ import com.terium.siccam.utils.Constantes;
 import com.terium.siccam.utils.Tools;
 
 public class InicioController extends ControladorBase{
+	private static Logger log = Logger.getLogger(InicioController.class);
 
 	/**
 	 * 
@@ -67,7 +70,8 @@ public class InicioController extends ControladorBase{
 		} catch (Exception e) {
 			//Messagebox.show("entra a excepcion en inicio:", Constantes.ATENCION, Messagebox.OK,
 				//	Messagebox.INFORMATION);
-			Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("doAfterCompose() -  Error ", e);
+			//Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, e);
 		}	
 		
 	}

@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.controller.CBDepositosRecController;
@@ -21,6 +23,7 @@ import com.terium.siccam.utils.ConsultasSQ;
 
 @SuppressWarnings("serial")
 public class CBAsignaImpuestosTiendasPropiasDAO extends ControladorBase {
+	private static Logger log = Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class);
 
 	/**
 	 * Inserta los registros para mantenimiento impuestos Agregado por Ovidio Santos
@@ -35,10 +38,12 @@ public class CBAsignaImpuestosTiendasPropiasDAO extends ControladorBase {
 			con = obtenerDtsPromo().getConnection();
 
 			cmd = con.prepareStatement(ConsultasSQ.INSERT_IMPUESTOS_TIENDAS_PROPIAS_SQ);
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"el query insert " + ConsultasSQ.INSERT_IMPUESTOS_TIENDAS_PROPIAS_SQ);
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"PARAM tipologias" + objModel.getTipologias() );
+			log.debug( "el query insert " + ConsultasSQ.INSERT_IMPUESTOS_TIENDAS_PROPIAS_SQ);
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+				//	"el query insert " + ConsultasSQ.INSERT_IMPUESTOS_TIENDAS_PROPIAS_SQ);
+			log.debug( "PARAM tipologias" + objModel.getTipologias() );
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+				//	"PARAM tipologias" + objModel.getTipologias() );
 			
 			cmd.setInt(1, objModel.getBancoagenciaafiliacionesid());
 			cmd.setInt(2, objModel.getImpuestoid());
@@ -59,7 +64,8 @@ public class CBAsignaImpuestosTiendasPropiasDAO extends ControladorBase {
 			}
 
 		} catch (Exception e) {
-			Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertImpuestos() - Error ", e);
+			//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (cmd != null)
@@ -67,7 +73,8 @@ public class CBAsignaImpuestosTiendasPropiasDAO extends ControladorBase {
 				if (con != null)
 					con.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("insertImpuestos() - Error ", e);
+				//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -124,7 +131,8 @@ public class CBAsignaImpuestosTiendasPropiasDAO extends ControladorBase {
 				where += "AND A.valor = " + objModel.getValor();
 
 			}
-			Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.INFO, "consulta " + query + where);
+			log.debug( "consulta " + query + where);
+			//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.INFO, "consulta " + query + where);
 
 			cmd = con.createStatement();
 			where = where + " order by A.cbcomisionesconfiguracionid asc ";
@@ -153,25 +161,29 @@ public class CBAsignaImpuestosTiendasPropiasDAO extends ControladorBase {
 				list.add(objModel);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerImpuestos() - Error ", e);
+			//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerImpuestos() - Error ", e);
+					//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerImpuestos() - Error ", e);
+					//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerImpuestos() - Error ", e);
+					//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return list;
@@ -180,13 +192,15 @@ public class CBAsignaImpuestosTiendasPropiasDAO extends ControladorBase {
 
 	public double changeString(String cadena) {
 		double result = 0.00;
-		Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.INFO, "string: " + cadena);
+		log.debug( "string: " + cadena);
+		//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.INFO, "string: " + cadena);
 		try {
 			if (cadena != null && !"".equals(cadena)) {
 				result = Double.parseDouble(cadena.replace(",", ""));
 			}
 		} catch (NumberFormatException e) {
-			Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("changeString() - Error ", e);
+			//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
 		}
 		return result;
 	}
@@ -198,6 +212,7 @@ public class CBAsignaImpuestosTiendasPropiasDAO extends ControladorBase {
 		Connection con = null;
 		try {
 			con = obtenerDtsPromo().getConnection();
+			
 			ps = con.prepareStatement(ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_SQ);
 
 			ps.setInt(1, objBean);
@@ -205,7 +220,8 @@ public class CBAsignaImpuestosTiendasPropiasDAO extends ControladorBase {
 				result = true;
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("eliminarImpuestos() - Error ", e);
+			//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (ps != null)
@@ -213,7 +229,8 @@ public class CBAsignaImpuestosTiendasPropiasDAO extends ControladorBase {
 				if (con != null)
 					con.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("eliminarImpuestos() - Error ", e);
+				//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 
@@ -258,8 +275,8 @@ public class CBAsignaImpuestosTiendasPropiasDAO extends ControladorBase {
 			con = obtenerDtsPromo().getConnection();
 			Iterator<CBBancoAgenciaAfiliacionesModel> it = list.iterator();
 			ps = con.prepareStatement(ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIENDAS_SQ);
+			log.debug( "elimina:" + ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIENDAS_SQ );
 
-System.out.println("elimina:" + ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIENDAS_SQ );
 			ps.setFetchSize(1024);
 			
 			while (it.hasNext()) {
@@ -271,13 +288,15 @@ System.out.println("elimina:" + ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIE
 			}
 			ps.executeBatch();
 			System.out.println("eliminar fuera while:" + ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIENDAS_SQ );
-			System.out.println("contador:" + contador);
+			log.debug( "contador:" + contador);
+			
 			if (contador > 0) {
 				result = true;
 			}
 			
 		} catch (Exception e) {
-			Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("eliminarImpuestosmasivo() - Error ", e);
+			//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (ps != null)
@@ -285,7 +304,8 @@ System.out.println("elimina:" + ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIE
 				if (con != null)
 					con.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("eliminarImpuestosmasivo() - Error ", e);
+				//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 
@@ -302,8 +322,9 @@ System.out.println("elimina:" + ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIE
 		try {
 			con = obtenerDtsPromo().getConnection();
 			cmd = con.prepareStatement(ConsultasSQ.MODIFICAR_IMPUESTOS_TIENDAS_PROPIAS_SQ);
-			Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.INFO,
-					"update  " + ConsultasSQ.MODIFICAR_IMPUESTOS_SQ);
+			log.debug( "update  " + ConsultasSQ.MODIFICAR_IMPUESTOS_SQ);
+			//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.INFO,
+				//	"update  " + ConsultasSQ.MODIFICAR_IMPUESTOS_SQ);
 
 			cmd.setInt(1, objModel.getImpuestoid());
 			cmd.setInt(2, objModel.getTipo());
@@ -315,14 +336,16 @@ System.out.println("elimina:" + ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIE
 
 			cmd.setString(8, objModel.getModificadoPor());
 			cmd.setInt(9, idseleccionado);
-			Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.INFO,
-					"idseleccionado en el dao" + idseleccionado);
+			log.debug( "idseleccionado en el dao" + idseleccionado);
+			//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.INFO,
+				//	"idseleccionado en el dao" + idseleccionado);
 
 			if (cmd.executeUpdate() > 0) {
 				result = true;
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("modificaImpuestos() - Error ", e);
+			//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (cmd != null)
@@ -330,7 +353,8 @@ System.out.println("elimina:" + ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIE
 				if (con != null)
 					con.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("modificaImpuestos() - Error ", e);
+				//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -360,25 +384,29 @@ System.out.println("elimina:" + ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIE
 				list.add(objeBean);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerTipologias() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e2) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e2);
+					log.error("obtenerTipologias() - Error ", e2);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e2);
 				}
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtenerTipologias() - Error ", e1);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerTipologias() - Error ", e);
+				//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return list;
@@ -398,10 +426,12 @@ System.out.println("elimina:" + ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIE
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			ps = con.prepareStatement(QRY_OBTIENE_TIPO_IMPUESTO);
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"query tipo impuesto " + QRY_OBTIENE_TIPO_IMPUESTO);
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"query tipo impuesto " + tipoObjeto);
+			log.debug( "query tipo impuesto " + QRY_OBTIENE_TIPO_IMPUESTO);
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+				//	"query tipo impuesto " + QRY_OBTIENE_TIPO_IMPUESTO);
+			log.debug( "query tipo impuesto " + tipoObjeto);
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+				//	"query tipo impuesto " + tipoObjeto);
 			ps.setString(1, tipoObjeto);
 			rs = ps.executeQuery();
 			CBParametrosGeneralesModel obj = null;
@@ -412,25 +442,29 @@ System.out.println("elimina:" + ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIE
 				lista.add(obj);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerImpuestos() - Error ", e);
+			//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerImpuestos() - Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerImpuestos() - Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerImpuestos() - Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return lista;
@@ -450,10 +484,12 @@ System.out.println("elimina:" + ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIE
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			ps = con.prepareStatement(QRY_OBTIENE_TIPO);
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"query tipo impuesto " + QRY_OBTIENE_TIPO);
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"query tipo impuesto " + tipoObjeto);
+			log.debug( "query tipo impuesto " + QRY_OBTIENE_TIPO);
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+					//"query tipo impuesto " + QRY_OBTIENE_TIPO);
+			log.debug( "query tipo impuesto " + tipoObjeto);
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+					//"query tipo impuesto " + tipoObjeto);
 			ps.setString(1, tipoObjeto);
 			rs = ps.executeQuery();
 			CBParametrosGeneralesModel obj = null;
@@ -464,25 +500,29 @@ System.out.println("elimina:" + ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIE
 				lista.add(obj);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenertipo() - Error ", e);
+			//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenertipo() - Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenertipo() - Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenertipo() - Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return lista;
@@ -502,10 +542,12 @@ System.out.println("elimina:" + ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIE
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			ps = con.prepareStatement(QRY_OBTIENE_MEDIO_PAGO);
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"query tipo impuesto " + QRY_OBTIENE_MEDIO_PAGO);
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"query tipo impuesto " + tipoObjeto);
+			log.debug( "query tipo impuesto " + QRY_OBTIENE_MEDIO_PAGO);
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+					//"query tipo impuesto " + QRY_OBTIENE_MEDIO_PAGO);
+			log.debug( "query tipo impuesto " + tipoObjeto);
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+				//	"query tipo impuesto " + tipoObjeto);
 			ps.setString(1, tipoObjeto);
 			rs = ps.executeQuery();
 			CBParametrosGeneralesModel obj = null;
@@ -516,25 +558,29 @@ System.out.println("elimina:" + ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIE
 				lista.add(obj);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerMedioDePago() - Error ", e);
+			//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerMedioDePago() - Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerMedioDePago() - Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerMedioDePago() - Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return lista;
@@ -554,10 +600,12 @@ System.out.println("elimina:" + ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIE
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			ps = con.prepareStatement(QRY_OBTIENE_FORMA_DE_PAGO);
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"query tipo impuesto " + QRY_OBTIENE_FORMA_DE_PAGO);
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"query tipo impuesto " + tipoObjeto);
+			log.debug( "query tipo impuesto " + QRY_OBTIENE_FORMA_DE_PAGO);
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+					//"query tipo impuesto " + QRY_OBTIENE_FORMA_DE_PAGO);
+			log.debug( "query tipo impuesto " + tipoObjeto);
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+				//	"query tipo impuesto " + tipoObjeto);
 			ps.setString(1, tipoObjeto);
 			rs = ps.executeQuery();
 			CBParametrosGeneralesModel obj = null;
@@ -568,25 +616,29 @@ System.out.println("elimina:" + ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIE
 				lista.add(obj);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerformaDePago() - Error ", e);
+			//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerformaDePago() - Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerformaDePago() - Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerformaDePago() - Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return lista;
@@ -702,11 +754,13 @@ System.out.println("elimina:" + ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIE
 			try {
 				con = obtenerDtsPromo().getConnection();
 				ps = con.prepareStatement(ConsultasSQ.INSERT_IMPUESTOS_TIENDAS_PROPIAS_TIENDAS_SQ);
+				log.debug( "query " +  ConsultasSQ.INSERT_IMPUESTOS_TIENDAS_PROPIAS_TIENDAS_SQ);
 				
 				if (listafiliacionid.size() > 0) {
-					Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
-							"Valor lista = " +  list.size());
-					System.out.println("INSERT TIENDAS MASIVO = " + ConsultasSQ.INSERT_IMPUESTOS_TIENDAS_PROPIAS_TIENDAS_SQ);
+					log.debug( "Valor lista = " +  list.size());
+				//	Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
+						//	"Valor lista = " +  list.size());
+					
 					for (CBBancoAgenciaAfiliacionesModel objDepositos:listafiliacionid) {
 				
 				Iterator<CBAsignaImpuestosModel> it = list.iterator();
@@ -737,24 +791,28 @@ System.out.println("elimina:" + ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIE
 				}
 				
 				if (contador > 0) {
-					System.out.println("Insert ejecutado correctamente, registros guardados = : " + contador);
+					log.debug( "Insert ejecutado correctamente, registros guardados = : " + contador);
+					
 
 					result = contador;
 				}
 			}catch (SQLException e) {
-				Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("asignarTiendasmasivos() - Error ", e);
+				//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
 			} finally {
 				if(ps != null)
 					try {
 						ps.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("asignarTiendasmasivos() - Error ", e);
+						//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(con != null)
 					try {
 						con.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("asignarTiendasmasivos() - Error ", e);
+						//Logger.getLogger(CBAsignaImpuestosTiendasPropiasDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 			}
 			return result;
@@ -774,10 +832,12 @@ System.out.println("elimina:" + ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIE
 			List<CBBancoAgenciaAfiliacionesModel> list = new ArrayList<CBBancoAgenciaAfiliacionesModel>();
 			try {
 				conn = ControladorBase.obtenerDtsPromo().getConnection();
-				Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
-						"Valor objeto objeBean = " + idagencia);
-				Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
-						"Consulta afiliaciones = " + CONSULTAR_AFILIACIONES);
+				log.debug( "Valor objeto objeBean = " + idagencia);
+				//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
+					//	"Valor objeto objeBean = " + idagencia);
+				log.debug( "Consulta afiliaciones = " + CONSULTAR_AFILIACIONES);
+				//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
+					//	"Consulta afiliaciones = " + CONSULTAR_AFILIACIONES);
 				cmd = conn.prepareStatement(CONSULTAR_AFILIACIONES);
 				cmd.setInt(1, idagencia);
 				rs = cmd.executeQuery();
@@ -793,25 +853,29 @@ System.out.println("elimina:" + ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIE
 					list.add(objeBean);
 				}
 			} catch (SQLException e) {
-				Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("consultaafiliaciontiendas() - Error ", e);
+				//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 			} finally {
 				if (rs != null)
 					try {
 						rs.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("consultaafiliaciontiendas() - Error ", e);
+						//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if (cmd != null)
 					try {
 						cmd.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("consultaafiliaciontiendas() - Error ", e);
+						//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if (conn != null)
 					try {
 						conn.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("consultaafiliaciontiendas() - Error ", e);
+						//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 			}
 			return list;
@@ -833,10 +897,12 @@ System.out.println("elimina:" + ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIE
 				List<CBBancoAgenciaAfiliacionesModel> list = new ArrayList<CBBancoAgenciaAfiliacionesModel>();
 				try {
 					conn = ControladorBase.obtenerDtsPromo().getConnection();
-					Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
-							"Valor objeto objeBean = " + idcatalogobanco);
-					Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
-							"Consulta afiliaciones = " + CONSULTAR_AFILIACIONES);
+					log.debug( "Valor objeto objeBean = " + idcatalogobanco);
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
+							//"Valor objeto objeBean = " + idcatalogobanco);
+					log.debug( "Consulta afiliaciones = " + CONSULTAR_AFILIACIONES);
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.INFO,
+							//"Consulta afiliaciones = " + CONSULTAR_AFILIACIONES);
 					cmd = conn.prepareStatement(CONSULTAR_AFILIACIONES);
 					cmd.setInt(1, idcatalogobanco);
 					rs = cmd.executeQuery();
@@ -852,25 +918,29 @@ System.out.println("elimina:" + ConsultasSQ.DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIE
 						list.add(objeBean);
 					}
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consultaafiliaciontiendastodasagrupacion() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 				} finally {
 					if (rs != null)
 						try {
 							rs.close();
 						} catch (SQLException e) {
-							Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+							log.error("consultaafiliaciontiendastodasagrupacion() - Error ", e);
+							//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 						}
 					if (cmd != null)
 						try {
 							cmd.close();
 						} catch (SQLException e) {
-							Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+							log.error("consultaafiliaciontiendastodasagrupacion() - Error ", e);
+							//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 						}
 					if (conn != null)
 						try {
 							conn.close();
 						} catch (SQLException e) {
-							Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
+							log.error("consultaafiliaciontiendastodasagrupacion() - Error ", e);
+							//Logger.getLogger(CBBancoAgenciaAfiliacionesDAO.class.getName()).log(Level.SEVERE, null, e);
 						}
 				}
 				return list;

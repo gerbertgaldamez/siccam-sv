@@ -10,8 +10,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
@@ -28,6 +29,7 @@ import com.terium.siccam.sql.ConsultasSQ;
  * @author lab
  */
 public class CBArchivosInsertadosDAO {
+	private static Logger log = Logger.getLogger(CBArchivosInsertadosDAO.class);
 
 	//Inserta en tabla para la consulta de archivos cargados
 	public boolean insertarArchivos(String idMaestro, String nombreArchivo, int idBanco, 
@@ -37,11 +39,14 @@ public class CBArchivosInsertadosDAO {
 		Connection con = null;
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
-					"Parametros: idMaestro = " + idMaestro + " | nombreArchivo = " + nombreArchivo 
+			log.debug( "Parametros: idMaestro = " + idMaestro + " | nombreArchivo = " + nombreArchivo 
 					+ " | idBanco = " + idBanco + " | idAgencia = " + idAgencia + " | usuario = " + usuario);
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
-					"Query insertarArchivosSQL = " + insertarArchivosSQL);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
+				//	"Parametros: idMaestro = " + idMaestro + " | nombreArchivo = " + nombreArchivo 
+				//	+ " | idBanco = " + idBanco + " | idAgencia = " + idAgencia + " | usuario = " + usuario);
+			log.debug( "Query insertarArchivosSQL = " + insertarArchivosSQL);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
+				//	"Query insertarArchivosSQL = " + insertarArchivosSQL);
 
 			String where = " ";
 			where = " VALUES (" + idMaestro + ",'" + nombreArchivo + "'," + idBanco + "," + idAgencia +  ", sysdate,'" + usuario + "',sysdate )";			
@@ -51,13 +56,15 @@ public class CBArchivosInsertadosDAO {
 
 		} catch (Exception e) {
 			resultado = false;
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertarArchivos() - Error ", e);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertarArchivos() - Error ", e);
+					//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return resultado;
@@ -70,21 +77,25 @@ public class CBArchivosInsertadosDAO {
 		Connection con = null;
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
-					"Valor nombreArchivo = " + nombreArchivo);
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
-					"Query max id archivos insertados = " + maxIdArchivoSQL);
+			log.debug( "Valor nombreArchivo = " + nombreArchivo);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
+					//"Valor nombreArchivo = " + nombreArchivo);
+			log.debug( "Query max id archivos insertados = " + maxIdArchivoSQL);
+		//	Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
+				//	"Query max id archivos insertados = " + maxIdArchivoSQL);
 			QueryRunner qr = new QueryRunner();
 			ScalarHandler sh = new ScalarHandler();
 			resultado = qr.query(con, maxIdArchivoSQL, sh, new Object[] { nombreArchivo }).toString();
 		} catch (Exception e) {
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtieneIdConArchivo() - Error ", e);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneIdConArchivo() - Error ", e);
+					//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return resultado;
@@ -118,20 +129,25 @@ public class CBArchivosInsertadosDAO {
 			QueryRunner qr = new QueryRunner();
 			BeanListHandler<CBArchivosInsertadosModel> bhl = new BeanListHandler<CBArchivosInsertadosModel>(
 					CBArchivosInsertadosModel.class);
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO, 
-					"Parametros: banco = " + banco + " | agencia = " + agencia 
+			log.debug( "Parametros: banco = " + banco + " | agencia = " + agencia 
 					+ " | fechaDesde = " + fechaDesde + " | fechaHasta = " + fechaHasta);
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
-					"Consulta archivos cargados = " + archivosCargadosSQL);
+		//	Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO, 
+					//"Parametros: banco = " + banco + " | agencia = " + agencia 
+					//+ " | fechaDesde = " + fechaDesde + " | fechaHasta = " + fechaHasta);
+			log.debug( "Consulta archivos cargados = " + archivosCargadosSQL);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
+				//	"Consulta archivos cargados = " + archivosCargadosSQL);
 			listado = qr.query(con, archivosCargadosSQL, bhl, new Object[] {});
 		} catch (Exception e) {
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtieneListaArchivosCargados() - Error ", e);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneListaArchivosCargados() - Error ", e);
+					//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return listado;
@@ -144,21 +160,25 @@ public class CBArchivosInsertadosDAO {
 		Connection con = null;
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
-					"Valor idMaestroCarga = " + idMaestroCarga);
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
-					"Consulta detalle grabados = " + detalleGrabadosSQL);
+			log.debug( "Valor idMaestroCarga = " + idMaestroCarga);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
+				//	"Valor idMaestroCarga = " + idMaestroCarga);
+			log.debug( "Consulta detalle grabados = " + detalleGrabadosSQL);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
+				//	"Consulta detalle grabados = " + detalleGrabadosSQL);
 			QueryRunner qr = new QueryRunner();
 			BeanListHandler<CBDataBancoModel> bhl = new BeanListHandler<CBDataBancoModel>(CBDataBancoModel.class);
 			listado = qr.query(con, detalleGrabadosSQL, bhl, new Object[] { idMaestroCarga });
 		} catch (Exception e) {
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtieneListadoGrabados() - Error ", e);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneListadoGrabados() - Error ", e);
+				//	Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return listado;
@@ -171,22 +191,26 @@ public class CBArchivosInsertadosDAO {
 		Connection con = null;
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
-					"Valor idMaestroCarga = " + idMaestroCarga);
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
-					"Consulta detalle no grabados = " + detalleNoGrabadosSQL);
+			log.debug( "Valor idMaestroCarga = " + idMaestroCarga);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
+				//	"Valor idMaestroCarga = " + idMaestroCarga);
+			log.debug( "Consulta detalle no grabados = " + detalleNoGrabadosSQL);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
+				//	"Consulta detalle no grabados = " + detalleNoGrabadosSQL);
 			QueryRunner qr = new QueryRunner();
 			BeanListHandler<CBDataSinProcesarModel> bhl = new BeanListHandler<CBDataSinProcesarModel>(
 					CBDataSinProcesarModel.class);
 			listado = qr.query(con, detalleNoGrabadosSQL, bhl, new Object[] { idMaestroCarga });
 		} catch (Exception e) {
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtieneListadoDatosNoProcesados() - Error ", e);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneListadoDatosNoProcesados() - Error ", e);
+					//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return listado;
@@ -198,20 +222,24 @@ public class CBArchivosInsertadosDAO {
 		Connection conn = null;
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
-					"Valor idMaestroCarga = " + idMaestroCarga);
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
-					"Delete archivo maestro = " + deleteArchivoMaestroSQL);
+			log.debug( "Valor idMaestroCarga = " + idMaestroCarga);
+		//	Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
+				//	"Valor idMaestroCarga = " + idMaestroCarga);
+			log.debug( "Delete archivo maestro = " + deleteArchivoMaestroSQL);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
+				//	"Delete archivo maestro = " + deleteArchivoMaestroSQL);
 			QueryRunner qr = new QueryRunner();
 			qr.update(conn, deleteArchivoMaestroSQL, idMaestroCarga);
 		} catch (Exception e) {
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("borraFilaGrabadaMaestro() - Error ", e);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("borraFilaGrabadaMaestro() - Error ", e);
+					//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 	}
@@ -223,22 +251,26 @@ public class CBArchivosInsertadosDAO {
 		boolean resultado = true;
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
-					"Valor idMaestroCarga = " + idMaestroCarga);
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
-					"Delete data banco = " + deleteDataBancoSQL);
+			log.debug( "Valor idMaestroCarga = " + idMaestroCarga);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
+				//	"Valor idMaestroCarga = " + idMaestroCarga);
+			log.debug( "Delete data banco = " + deleteDataBancoSQL);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
+				//	"Delete data banco = " + deleteDataBancoSQL);
 			QueryRunner qr = new QueryRunner();
 			qr.update(conn, deleteDataBancoSQL, idMaestroCarga);
 
 		} catch (Exception e) {
 			resultado = false;
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("borraDataBancoMaestro() - Error ", e);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("borraDataBancoMaestro() - Error ", e);
+				//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return resultado;
@@ -251,21 +283,25 @@ public class CBArchivosInsertadosDAO {
 		boolean resultado = true;
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
-					"Valor idMaestroCarga = " + idMaestroCarga);
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
-					"Delete conciliacion maestro = " + deleteConciliacionMaestro);
+			log.debug( "Valor idMaestroCarga = " + idMaestroCarga);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
+				//	"Valor idMaestroCarga = " + idMaestroCarga);
+			log.debug( "Delete conciliacion maestro = " + deleteConciliacionMaestro);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
+				//	"Delete conciliacion maestro = " + deleteConciliacionMaestro);
 			QueryRunner qr = new QueryRunner();
 			qr.update(conn, deleteConciliacionMaestro, idMaestroCarga);
 		} catch (Exception e) {
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("borraConciliacionMaestro() - Error ", e);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 			resultado = false;
 		} finally {
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("borraConciliacionMaestro() - Error ", e);
+				//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return resultado;
@@ -278,21 +314,25 @@ public class CBArchivosInsertadosDAO {
 		boolean resultado = true;
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
-					"Valor idMaestroCarga = " + idMaestroCarga);
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
-					"Delete data sin procesar = " + deleteDataSinProcesar);
+			log.debug( "Valor idMaestroCarga = " + idMaestroCarga);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
+			//		"Valor idMaestroCarga = " + idMaestroCarga);
+			log.debug( "Delete data sin procesar = " + deleteDataSinProcesar);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
+				//	"Delete data sin procesar = " + deleteDataSinProcesar);
 			QueryRunner qr = new QueryRunner();
 			qr.update(con, deleteDataSinProcesar, idMaestroCarga);
 		} catch (Exception e) {
 			resultado = false;
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("borraDatasinProcesarMaestro() - Error ", e);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("borraDatasinProcesarMaestro() - Error ", e);
+				//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return resultado;
@@ -307,33 +347,39 @@ public class CBArchivosInsertadosDAO {
 		Connection con = null;
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
-					"Generacion nuevo id de archivos insertados = " + idMaestroCargaSQ);
+			log.debug( "Generacion nuevo id de archivos insertados = " + idMaestroCargaSQ);
+		//	Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
+			//		"Generacion nuevo id de archivos insertados = " + idMaestroCargaSQ);
 			ps = con.prepareStatement(idMaestroCargaSQ);
 			rs = ps.executeQuery();
 			rs.next();
 			res = rs.getString(1);
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO, "El nuevo id es = " + res);
+			log.debug( "El nuevo id es = " + res);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO, "El nuevo id es = " + res);
 		} catch (Exception e) {
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("idMaestroCarga() - Error ", e);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("idMaestroCarga() - Error ", e);
+					//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("idMaestroCarga() - Error ", e);
+					//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("idMaestroCarga() - Error ", e);
+					//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return res;
@@ -351,10 +397,12 @@ public class CBArchivosInsertadosDAO {
 		PreparedStatement cmd = null;
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO, "Parametros: idMaestro = "
+			log.debug( "Parametros: idMaestro = "
 					+ idMaestro + " | formatoFecha = " + formatoFecha + " | fecha = " + fecha);
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
-					"Update fecha archivo = " + updateFechaArchivoSQL);
+		//	Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO, "Parametros: idMaestro = "
+				//	+ idMaestro + " | formatoFecha = " + formatoFecha + " | fecha = " + fecha);
+			log.debug( "Update fecha archivo = " + updateFechaArchivoSQL);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.INFO,
 			cmd = conn.prepareStatement(updateFechaArchivoSQL);
 			cmd.setString(1, fecha);
 			cmd.setString(2, formatoFecha);
@@ -362,19 +410,22 @@ public class CBArchivosInsertadosDAO {
 			if (cmd.executeUpdate() > 0)
 				result = true;
 		} catch (Exception e) {
-			Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("updateFechaArchivo() - Error ", e);
+			//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("updateFechaArchivo() - Error ", e);
+					//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("updateFechaArchivo() - Error ", e);
+					//Logger.getLogger(CBArchivosInsertadosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return result;
@@ -394,37 +445,43 @@ public class CBArchivosInsertadosDAO {
 			ResultSet rs = null;
 			try {
 				conn = ControladorBase.obtenerDtsPromo().getConnection();
-				Logger.getLogger(CBReportesDAO.class.getName())
-					.log(Level.INFO,"Consulta para obtener tipo de reporte predefinido = " + QRY_VALOR_DEFECTO);
+				log.debug( "Consulta para obtener tipo de reporte predefinido = " + QRY_VALOR_DEFECTO);
+				//Logger.getLogger(CBReportesDAO.class.getName())
+				//	.log(Level.INFO,"Consulta para obtener tipo de reporte predefinido = " + QRY_VALOR_DEFECTO);
 				cmd = conn.prepareStatement(QRY_VALOR_DEFECTO);
 				rs = cmd.executeQuery();
 				while (rs.next()) {
 					valor = rs.getString(1);
 				}
 		}catch (Exception e) {
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerOpcionPorDefecto() - Error ", e);
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 				if(rs != null)
 					try {
 						rs.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("obtenerOpcionPorDefecto() - Error ", e);
+						//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(cmd != null)
 					try {
 						cmd.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("obtenerOpcionPorDefecto() - Error ", e);
+						//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(conn != null)
 					try {
 						conn.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("obtenerOpcionPorDefecto() - Error ", e);
+						//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 		}
-		Logger.getLogger(CBReportesDAO.class.getName())
-			.log(Level.INFO,"Valor predefinido: " + valor);
+			log.debug( "Valor predefinido: " + valor);
+		//Logger.getLogger(CBReportesDAO.class.getName())
+		//	.log(Level.INFO,"Valor predefinido: " + valor);
 		return valor;
 	}
 	
@@ -454,25 +511,28 @@ public class CBArchivosInsertadosDAO {
 					lista.add(obj);
 				}
 		}catch (Exception e) {
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerTipoObjetoX() - Error ", e);
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerTipoObjetoX() - Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerTipoObjetoX() - Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return lista;

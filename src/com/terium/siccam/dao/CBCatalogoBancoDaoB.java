@@ -11,8 +11,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 //import javax.naming.spi.DirStateFactory.Result;
 
 import org.apache.commons.dbutils.QueryRunner;
@@ -27,6 +28,7 @@ import com.terium.siccam.model.CBCatalogoBancoModel;
  */
 @SuppressWarnings("serial")
 public class CBCatalogoBancoDaoB extends ControladorBase{
+	private static Logger log = Logger.getLogger(CBCatalogoBancoDaoB.class);
 
 	private String CONSULTA_BANCO = "SELECT DISTINCT a.CBCATALOGOBANCOID cbcatalogobancoid, "
 			+ "a.NOMBRE nombre, CONTACTO contacto, a.TELEFONO telefono, EXTENSION extension,"
@@ -89,7 +91,8 @@ public class CBCatalogoBancoDaoB extends ControladorBase{
 		List<CBCatalogoBancoModel> listado = new ArrayList<CBCatalogoBancoModel>();
 
 		// filtros
-		System.out.println("QUERY CONSULTAR 1");
+		log.debug( "QUERY CONSULTAR 1");
+		
 		
 		if (nombre != null && !nombre.equals("")) {
 			CONSULTA_BANCO += "and (upper(a.NOMBRE) like('%' || upper(trim('"
@@ -112,16 +115,19 @@ public class CBCatalogoBancoDaoB extends ControladorBase{
 						CBCatalogoBancoModel.class);
 				listado = qr.query(con, CONSULTA_BANCO
 						+ " order by NOMBRE asc ", blh, new Object[] {});
-				System.out.println("query consultar "+ CONSULTA_BANCO);
+				log.debug( "query consultar "+ CONSULTA_BANCO);
+				
 			
 		} catch (Exception e) {
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtieneListaBanco() - Error ", e);
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if(con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtieneListaBanco() - Error ", e);
+				//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 
@@ -132,7 +138,8 @@ public class CBCatalogoBancoDaoB extends ControladorBase{
 		public List<CBCatalogoBancoModel> obtieneListaBancoMantenimiento( CBCatalogoBancoModel objModel) {
 			List<CBCatalogoBancoModel> listado = new ArrayList<CBCatalogoBancoModel>();
 
-			System.out.println("QUERY CONSULTAR 2");
+			log.debug( "QUERY CONSULTAR 2");
+			
 			// filtros
 			if (objModel.getNombre() != null && !objModel.getNombre().equals("")) {
 				CONSULTA_BANCO2 += "and (upper(NOMBRE) like('%' || upper(trim('"
@@ -155,15 +162,18 @@ public class CBCatalogoBancoDaoB extends ControladorBase{
 							CBCatalogoBancoModel.class);
 					listado = qr.query(con, CONSULTA_BANCO2
 							+ " order by CBCATALOGOBANCOID asc ", blh, new Object[] {});
-					System.out.println("query consultar "+ CONSULTA_BANCO2);
+					log.debug( "query consultar "+ CONSULTA_BANCO2);
+					
 			} catch (Exception e) {
-				Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtieneListaBancoMantenimiento() - Error ", e);
+				//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 			} finally {
 				try {
 					if(con != null)
 						con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneListaBancoMantenimiento() - Error ", e);
+					//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			}
 
@@ -200,13 +210,15 @@ public class CBCatalogoBancoDaoB extends ControladorBase{
 				listado = qr.query(con, CONSULTA_BANCOS_MODIFICADO
 						+ " order by NOMBRE asc ", blh, new Object[] {});
 		} catch (Exception e) {
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtieneListaBanco2() - Error ", e);
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if(con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtieneListaBanco2() - Error ", e);
+				//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 
@@ -234,25 +246,29 @@ public class CBCatalogoBancoDaoB extends ControladorBase{
 				list.add(obj);
 			}
 		}catch (Exception e) {
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaEntidad() - Error ", e);
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("generaConsultaEntidad() - Error ", e1);
+					//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			if(stm != null)
 				try {
 					stm.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("generaConsultaEntidad() - Error ", e1);
+					//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("generaConsultaEntidad() - Error ", e);
+				//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return list;
@@ -261,24 +277,28 @@ public class CBCatalogoBancoDaoB extends ControladorBase{
 	// nuevo ingreso
 	public int ingresaEntidadBancaria(CBCatalogoBancoModel objModel) {
 		int res = 0;
-		System.out.println("nombre: " + objModel.getNombre());
-		System.out.println("usuario: " + objModel.getUsuario());
+		log.debug( "nombre: " + objModel.getNombre());
+		log.debug( "usuario: " + objModel.getUsuario());
+		
 		Connection con = null;
 		try {
 			con = obtenerDtsPromo().getConnection();
 				QueryRunner qr = new QueryRunner();
 				res = qr.update(con, INSERTA_CATALOGO_BANCO,objModel.getNombre(), objModel.getTelefono(), objModel.getContacto(),
 						objModel.getExtension(), objModel.getEstado(), objModel.getTipoEstado(), objModel.getUsuario());
-				System.out.println("query insertar: " + INSERTA_CATALOGO_BANCO);
-				System.out.println("se a insertado el nuevo registo...");
+				log.debug( "query insertar: " + INSERTA_CATALOGO_BANCO);
+				log.debug( "se a insertado el nuevo registo...");
+				
 		} catch (Exception e) {
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("ingresaEntidadBancaria() - Error ", e);
+		//	Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if(con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("ingresaEntidadBancaria() - Error ", e);
+				//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return res;
@@ -289,25 +309,26 @@ public class CBCatalogoBancoDaoB extends ControladorBase{
 
 	public int actualizaBanco(CBCatalogoBancoModel bancoModel) {
 		int res = 0;
-		
-		System.out.println("estado antes de actualizar: "
+		log.debug( "estado antes de actualizar: "
 				+ bancoModel.getEstado());
 		
-		System.out.println("nombre: " + bancoModel.getNombre());
-		System.out.println("telefono: " + bancoModel.getTelefono());
-		System.out.println("contacto: " + bancoModel.getContacto());
-		System.out.println("extencion: " + bancoModel.getExtension());
-		System.out.println("tipo: " + bancoModel.getTipoEstado());
-		System.out.println("id: " + bancoModel.getCbcatalogobancoid());
-		System.out.println("usuario modifico: " + bancoModel.getUsuario());
+		log.debug( "nombre: " + bancoModel.getNombre());
+		log.debug( "telefono: " + bancoModel.getTelefono());
+		log.debug( "contacto: " + bancoModel.getContacto());
+		log.debug( "extencion: " + bancoModel.getExtension());
+		log.debug( "tipo: " + bancoModel.getTipoEstado());
+		log.debug( "id: " + bancoModel.getCbcatalogobancoid());
+		log.debug( "usuario modifico: " + bancoModel.getUsuario());
+		log.debug( "estado = "+ bancoModel.getEstado());
 		
-	System.out.println("estado = "+ bancoModel.getEstado());
+		
+	
 		if (bancoModel.getEstado().equals("1".trim()))
 			bancoModel.setEstado("1");
 		else
 			bancoModel.setEstado("0");
+		log.debug( "estado: " + bancoModel.getEstado());
 		
-		System.out.println("estado: " + bancoModel.getEstado());
 		Connection con = null;
 		try {
 			con = obtenerDtsPromo().getConnection();
@@ -319,15 +340,18 @@ public class CBCatalogoBancoDaoB extends ControladorBase{
 						Integer.parseInt(bancoModel.getEstado()),
 						bancoModel.getTipoEstado(), bancoModel.getUsuario(),
 						bancoModel.getCbcatalogobancoid());
-				System.out.println("query modificar "+ ACTUALIZA_VALORES_CATALGO_BANCO + bancoModel.getEstado());
+				log.debug( "query modificar "+ ACTUALIZA_VALORES_CATALGO_BANCO + bancoModel.getEstado());
+				
 		} catch (Exception e) {
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("actualizaBanco() - Error ", e);
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if(con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("actualizaBanco() - Error ", e);
+				//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return res;
@@ -345,6 +369,7 @@ public class CBCatalogoBancoDaoB extends ControladorBase{
 		try {
 			con = obtenerDtsPromo().getConnection();
 				ps = con.prepareStatement(CONSULTA_NOMBRE_ENTIDAD);
+				log.debug( "query  "+ CONSULTA_NOMBRE_ENTIDAD);
 				ps.setString(1, objModel.getNombre());
 				rs = ps.executeQuery();
 				rs.next();
@@ -352,25 +377,29 @@ public class CBCatalogoBancoDaoB extends ControladorBase{
 					respuesta = true;
 				}
 		}catch (Exception e) {
-			Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("consultaNombre() - Error ", e);
+			//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("consultaNombre() - Error ", e1);
+					//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			if(ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("consultaNombre() - Error ", e1);
+					//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("consultaNombre() - Error ", e);
+				//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return respuesta;
@@ -404,13 +433,15 @@ public class CBCatalogoBancoDaoB extends ControladorBase{
 					listado = qr.query(con, CONSULTA_BANCOS_MODIFICADO
 							+ " order by NOMBRE asc ", blh, new Object[] {});
 			} catch (Exception e) {
-				Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtieneListaBancoModificado() - Error ", e);
+				//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 			} finally {
 				try {
 					if(con != null)
 						con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneListaBancoModificado() - Error ", e);
+					//Logger.getLogger(CBCatalogoAgenciaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			}
 
@@ -428,13 +459,15 @@ public class CBCatalogoBancoDaoB extends ControladorBase{
 				QueryRunner qr = new QueryRunner();
 				i = qr.update(con, BORRA_AGRUPACION, idFila);
 			} catch (Exception e) {
-				Logger.getLogger(CBCatalogoBancoDaoB.class.getName()).log(Level.SEVERE, null, e);
+				log.error("eliminaRegistro() - Error ", e);
+				//Logger.getLogger(CBCatalogoBancoDaoB.class.getName()).log(Level.SEVERE, null, e);
 			} finally {
 				try {
 					if (con != null)
 						con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBCatalogoBancoDaoB.class.getName()).log(Level.SEVERE, null, e);
+					log.error("eliminaRegistro() - Error ", e);
+				//	Logger.getLogger(CBCatalogoBancoDaoB.class.getName()).log(Level.SEVERE, null, e);
 				}
 			}
 			return i;

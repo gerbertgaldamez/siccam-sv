@@ -2,12 +2,13 @@ package com.terium.siccam.controller;
 
 
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import javax.naming.NamingException;
 
 import org.zkoss.zk.ui.Component;
@@ -29,6 +30,7 @@ import com.terium.siccam.dao.CBParametrosGeneralesDAO;
 import com.terium.siccam.model.CBParametrosGeneralesModel;
 
 public class CBParametrosGeneralesController extends ControladorBase{
+	private static Logger log = Logger.getLogger(CBParametrosGeneralesController.class);
 
 	private static final long serialVersionUID = 9176164927878418930L;
 	
@@ -86,9 +88,10 @@ public class CBParametrosGeneralesController extends ControladorBase{
 		String valor3Consulta = "";
 		String descripcionConsulta = "";
 		String estadoConsulta = "";
-		CBParametrosGeneralesDAO objDao = new CBParametrosGeneralesDAO();	
-		Logger.getLogger(CBParametrosGeneralesController.class.getName())
-			.log(Level.INFO, "* Realiza consulta de parametros generales");
+		CBParametrosGeneralesDAO objDao = new CBParametrosGeneralesDAO();
+		log.debug("onClick$btnConsultar()  " + " - * Realiza consulta de parametros generales");
+		//Logger.getLogger(CBParametrosGeneralesController.class.getName())
+			//.log(Level.INFO, "* Realiza consulta de parametros generales");
 		if(txtModulo.getText().trim() != null && !"".equals(txtModulo.getText().trim())) {
 			moduloConsulta = txtModulo.getText().trim();
 		}
@@ -214,8 +217,9 @@ public class CBParametrosGeneralesController extends ControladorBase{
 			}
 			btnRegistrar.setDisabled(true);
 			btnModificar.setDisabled(false);
-			Logger.getLogger(CBParametrosGeneralesController.class.getName())
-				.log(Level.INFO, "ID parametro general seleccionado = " + idSeleccionado);
+			log.debug("evtSelectedItem()  " + " - ID parametro general seleccionado = " + idSeleccionado);
+			//Logger.getLogger(CBParametrosGeneralesController.class.getName())
+				//.log(Level.INFO, "ID parametro general seleccionado = " + idSeleccionado);
 		}
 	};
 
@@ -270,7 +274,8 @@ public class CBParametrosGeneralesController extends ControladorBase{
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBParametrosGeneralesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnRegistrar() -  Error ", e);
+			//Logger.getLogger(CBParametrosGeneralesController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -313,7 +318,8 @@ public class CBParametrosGeneralesController extends ControladorBase{
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBParametrosGeneralesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnModificar() -  Error ", e);
+			//Logger.getLogger(CBParametrosGeneralesController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	
@@ -321,8 +327,9 @@ public class CBParametrosGeneralesController extends ControladorBase{
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public void onEvent(Event event) throws Exception {
 			final int idFila = Integer.parseInt(event.getTarget().getAttribute("idEliminar").toString());
-			Logger.getLogger(CBParametrosGeneralesController.class.getName())
-				.log(Level.INFO, "ID parametro general a eliminar = " + idFila);
+			log.debug("evtEliminar()  " + " - ID parametro general a eliminar = " + idFila);
+			//Logger.getLogger(CBParametrosGeneralesController.class.getName())
+				//.log(Level.INFO, "ID parametro general a eliminar = " + idFila);
 			Messagebox.show("¿Desea eliminar el registro seleccionado?", "CONFIRMACION", Messagebox.YES | Messagebox.NO,
 					Messagebox.QUESTION, new EventListener() {
 						public void onEvent(Event event) throws Exception {

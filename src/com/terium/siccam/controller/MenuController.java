@@ -8,7 +8,9 @@ package com.terium.siccam.controller;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 
@@ -44,6 +46,8 @@ import com.terium.siccam.utils.Constantes;
 import com.terium.siccam.utils.Tools;
 
 public class MenuController extends ControladorBase {
+	
+	private static Logger log = Logger.getLogger(MenuController.class);
 
 	private static final long serialVersionUID = 1L;
 	Window cMenuPrincipal;
@@ -112,7 +116,8 @@ public class MenuController extends ControladorBase {
 				tabPrincipal.addEventListener("onClick", onClick$tabDinamico);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, e);			
+			log.error("doAfterCompose() -  Error ", e);
+			//Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, e);			
 		}
 		
 		
@@ -155,9 +160,11 @@ public class MenuController extends ControladorBase {
 		CBConsultaContabilizacionDAO objDao = new CBConsultaContabilizacionDAO();
 		try {
 		fecha = objDao.validafecha();
-		System.out.println("fecha obtenida al entrar " + fecha);
+		log.debug("obtienefechaactual()  " + " - fecha obtenida al entrar " + fecha);
+		
 		}catch (Exception e) {
-			Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtienefechaactual() -  Error ", e);
+			//Logger.getLogger(CBConsultaContabilizacionController.class.getName()).log(Level.SEVERE, null, e);
 		}
 		
 	}
@@ -590,7 +597,7 @@ public class MenuController extends ControladorBase {
 		String ico = "/img/globales/16x16/edit.png";
 		muestraOpcion(titulo, url, id, ico);
 	}
-	public void onDoubleClick$qkiCuadreSidra(Event ev) {
+	public void onClick$qkiCuadreSidra(Event ev) {
 		String titulo = "Cuadre Sidra";
 		String url = "/cbCuadreSidra.zul";
 		String id = "inclit" + "cuadreSidra";
@@ -699,7 +706,8 @@ public class MenuController extends ControladorBase {
 									execution.sendRedirect(url);
 								
 							} catch (Exception ex) {
-								Logger.getLogger(ControladorBase.class.getName()).log(Level.SEVERE, null, ex);
+								log.error("onClick$qkiSalir() -  Error ", ex);
+								//Logger.getLogger(ControladorBase.class.getName()).log(Level.SEVERE, null, ex);
 								//Messagebox.show(obtenerMensajeExcepcion(ex), "ERROR", Messagebox.OK, Messagebox.ERROR);
 							}
 

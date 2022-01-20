@@ -8,10 +8,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.controller.CBDepositosRecController;
+import com.terium.siccam.controller.ConciliacionController;
 import com.terium.siccam.model.CBAsignaImpuestosModel;
 import com.terium.siccam.model.CBParametrosGeneralesModel;
 import com.terium.siccam.model.CBTipologiasPolizaModel;
@@ -20,6 +23,7 @@ import com.terium.siccam.utils.Tools;;
 
 @SuppressWarnings("serial")
 public class CBAsignaImpuestosDAO extends ControladorBase {
+	private static Logger log = Logger.getLogger(CBAsignaImpuestosDAO.class);
 
 	/**
 	 * Inserta los registros para mantenimiento impuestos Agregado por Ovidio Santos
@@ -34,26 +38,33 @@ public class CBAsignaImpuestosDAO extends ControladorBase {
 			con = obtenerDtsPromo().getConnection();
 
 			cmd = con.prepareStatement(ConsultasSQ.INSERT_IMPUESTOS_SQ);
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"el query insert :" + ConsultasSQ.INSERT_IMPUESTOS_SQ);
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"PARAM tipologias" + objModel.getTipologias() );
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"PARAM getTipo" + objModel.getTipo());
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"PARAM getFormaPago" + objModel.getFormaPago() );
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"PARAM getMedioPago" + objModel.getMedioPago() );
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"PARAM getValor" + objModel.getValor() );
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"PARAM getComisionUso" + objModel.getComisionUso() );
-			
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"PARAM getImpuestoid" + objModel.getImpuestoid() );
-			
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"PARAM getCreadoPor" + objModel.getCreadoPor() );
+			log.debug("insertImpuestos()  " + " - el query insert :" + ConsultasSQ.INSERT_IMPUESTOS_SQ);
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+				//	"el query insert :" + ConsultasSQ.INSERT_IMPUESTOS_SQ);
+			log.debug("insertImpuestos()  " + " - PARAM tipologias" + objModel.getTipologias() );
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+				//	"PARAM tipologias" + objModel.getTipologias() );
+			log.debug("insertImpuestos()  " + " - PARAM getTipo" + objModel.getTipo());
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+			//		"PARAM getTipo" + objModel.getTipo());
+			log.debug("insertImpuestos()  " + " - PARAM getFormaPago" + objModel.getFormaPago() );
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+			//		"PARAM getFormaPago" + objModel.getFormaPago() );
+			log.debug("insertImpuestos()  " + " - PARAM getMedioPago" + objModel.getMedioPago() );
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+				//	"PARAM getMedioPago" + objModel.getMedioPago() );
+			log.debug("insertImpuestos()  " + " - PARAM getValor" + objModel.getValor() );
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+			//		"PARAM getValor" + objModel.getValor() );
+			log.debug("insertImpuestos()  " + " - PARAM getComisionUso" + objModel.getComisionUso() );
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+				//	"PARAM getComisionUso" + objModel.getComisionUso() );
+			log.debug("insertImpuestos()  " + " - PARAM getImpuestoid" + objModel.getImpuestoid() );
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+				//	"PARAM getImpuestoid" + objModel.getImpuestoid() );
+			log.debug("insertImpuestos()  " + " - PARAM getCreadoPor" + objModel.getCreadoPor() );
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+					//"PARAM getCreadoPor" + objModel.getCreadoPor() );
 			
 			cmd.setInt(1, objModel.getBancoagenciaconfrontaid());
 			cmd.setInt(2, objModel.getImpuestoid());
@@ -74,7 +85,8 @@ public class CBAsignaImpuestosDAO extends ControladorBase {
 			}
 
 		} catch (SQLException e) {
-			Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertImpuestos() -  Error ", e);
+			//Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
 			Tools.ingresaLog(e, "Modulo Asigna impuesto confronta", 
 					"Error al ingresar", "CBAsignaImpuestosDAO.java");
 		} finally {
@@ -84,7 +96,8 @@ public class CBAsignaImpuestosDAO extends ControladorBase {
 				if (con != null)
 					con.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("insertImpuestos() -  Error ", e);
+				//Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -130,8 +143,8 @@ public class CBAsignaImpuestosDAO extends ControladorBase {
 			if (objModel.getValor() != null && !objModel.getValor().equals("0.0")) {
 				where += "AND A.valor = " + objModel.getValor();
 			}
-			
-			Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.INFO, "consulta " + query + where);
+			log.debug("obtenerImpuestos()  " + " - consulta " + query + where);
+			//Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.INFO, "consulta " + query + where);
 
 			cmd = con.createStatement();
 			where = where + " order by A.cbcomisionesconfiguracionid asc ";
@@ -155,25 +168,29 @@ public class CBAsignaImpuestosDAO extends ControladorBase {
 				list.add(objModel);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerImpuestos() -  Error ", e);
+			//Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerImpuestos() -  Error ", e);
+					//Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerImpuestos() -  Error ", e);
+					//Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerImpuestos() -  Error ", e);
+					//Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return list;
@@ -182,13 +199,15 @@ public class CBAsignaImpuestosDAO extends ControladorBase {
 
 	public double changeString(String cadena) {
 		double result = 0.00;
-		Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.INFO, "string: " + cadena);
+		log.debug("changeString()  " + " - string: " + cadena);
+		//Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.INFO, "string: " + cadena);
 		try {
 			if (cadena != null && !"".equals(cadena)) {
 				result = Double.parseDouble(cadena.replace(",", ""));
 			}
 		} catch (NumberFormatException e) {
-			Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("changeString() -  Error ", e);
+			//Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
 		}
 		return result;
 	}
@@ -207,7 +226,8 @@ public class CBAsignaImpuestosDAO extends ControladorBase {
 				result = true;
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("eliminarImpuestos() -  Error ", e);
+			//Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (ps != null)
@@ -215,7 +235,8 @@ public class CBAsignaImpuestosDAO extends ControladorBase {
 				if (con != null)
 					con.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("eliminarImpuestos() -  Error ", e);
+				//Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 
@@ -231,8 +252,9 @@ public class CBAsignaImpuestosDAO extends ControladorBase {
 		try {
 			con = obtenerDtsPromo().getConnection();
 			cmd = con.prepareStatement(ConsultasSQ.MODIFICAR_IMPUESTOS_SQ);
-			Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.INFO,
-					"update  " + ConsultasSQ.MODIFICAR_IMPUESTOS_SQ);
+			log.debug("modificaImpuestos()  " + " - update  " + ConsultasSQ.MODIFICAR_IMPUESTOS_SQ);
+			//Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.INFO,
+					//"update  " + ConsultasSQ.MODIFICAR_IMPUESTOS_SQ);
 
 			cmd.setInt(1, objModel.getImpuestoid());
 			cmd.setInt(2, objModel.getTipo());
@@ -244,14 +266,16 @@ public class CBAsignaImpuestosDAO extends ControladorBase {
 
 			cmd.setString(8, objModel.getModificadoPor());
 			cmd.setInt(9, idseleccionado);
-			Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.INFO,
-					"idseleccionado en el dao" + idseleccionado);
+			log.debug("modificaImpuestos()  " + " - idseleccionado en el dao" + idseleccionado);
+			//Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.INFO,
+				//	"idseleccionado en el dao" + idseleccionado);
 
 			if (cmd.executeUpdate() > 0) {
 				result = true;
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("modificaImpuestos() -  Error ", e);
+			//Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (cmd != null)
@@ -259,7 +283,8 @@ public class CBAsignaImpuestosDAO extends ControladorBase {
 				if (con != null)
 					con.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("modificaImpuestos() -  Error ", e);
+				//Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -289,25 +314,29 @@ public class CBAsignaImpuestosDAO extends ControladorBase {
 				list.add(objeBean);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerTipologias() -  Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e2) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e2);
+					log.error("obtenerTipologias() -  Error ", e2);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e2);
 				}
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtenerTipologias() -  Error ", e1);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerTipologias() -  Error ", e);
+				//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return list;
@@ -327,10 +356,12 @@ public class CBAsignaImpuestosDAO extends ControladorBase {
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			ps = con.prepareStatement(QRY_OBTIENE_TIPO_IMPUESTO);
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"query tipo impuesto " + QRY_OBTIENE_TIPO_IMPUESTO);
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"query tipo impuesto " + tipoObjeto);
+			log.debug("obtenerImpuestos()  " + " - query tipo impuesto " + QRY_OBTIENE_TIPO_IMPUESTO);
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+					//"query tipo impuesto " + QRY_OBTIENE_TIPO_IMPUESTO);
+			log.debug("obtenerImpuestos()  " + " - query tipo impuesto " + tipoObjeto);
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+					//"query tipo impuesto " + tipoObjeto);
 			ps.setString(1, tipoObjeto);
 			rs = ps.executeQuery();
 			CBParametrosGeneralesModel obj = null;
@@ -341,25 +372,29 @@ public class CBAsignaImpuestosDAO extends ControladorBase {
 				lista.add(obj);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerImpuestos() -  Error ", e);
+			//Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerImpuestos() -  Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerImpuestos() -  Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerImpuestos() -  Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return lista;
@@ -379,10 +414,12 @@ public class CBAsignaImpuestosDAO extends ControladorBase {
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			ps = con.prepareStatement(QRY_OBTIENE_TIPO);
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"query tipo impuesto " + QRY_OBTIENE_TIPO);
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"query tipo impuesto " + tipoObjeto);
+			log.debug("obtenertipo()  " + " - query tipo impuesto " + QRY_OBTIENE_TIPO);
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+				//	"query tipo impuesto " + QRY_OBTIENE_TIPO);
+			log.debug("obtenertipo()  " + " - query tipo impuesto " + tipoObjeto);
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+				//	"query tipo impuesto " + tipoObjeto);
 			ps.setString(1, tipoObjeto);
 			rs = ps.executeQuery();
 			CBParametrosGeneralesModel obj = null;
@@ -394,25 +431,30 @@ public class CBAsignaImpuestosDAO extends ControladorBase {
 				lista.add(obj);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenertipo() -  Error ", e);
+			//Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+
+					log.error("obtenertipo() -  Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenertipo() -  Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenertipo() -  Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return lista;
@@ -430,11 +472,12 @@ public class CBAsignaImpuestosDAO extends ControladorBase {
 			ResultSet rs = null;
 			try {
 				con = ControladorBase.obtenerDtsPromo().getConnection();
-				Logger.getLogger(CBAgenciaComercialDAO.class.getName()).log(Level.INFO,
-						"Valor porcentaje = " + porcentaje);
-				
-				Logger.getLogger(CBAgenciaComercialDAO.class.getName()).log(Level.INFO,
-						"Query validar porcentaje valido = " + qryValidarExistencia);
+				log.debug("obtenerporcentajevalido()  " + " - Valor porcentaje = " + porcentaje);
+				//Logger.getLogger(CBAgenciaComercialDAO.class.getName()).log(Level.INFO,
+						//"Valor porcentaje = " + porcentaje);
+				log.debug("obtenerporcentajevalido()  " + " - Query validar porcentaje valido = " + qryValidarExistencia);
+				//Logger.getLogger(CBAgenciaComercialDAO.class.getName()).log(Level.INFO,
+					//	"Query validar porcentaje valido = " + qryValidarExistencia);
 				ps = con.prepareStatement(qryValidarExistencia);
 				ps.setString(1, porcentaje);
 				ps.setString(2, porcentajetipo);
@@ -442,25 +485,29 @@ public class CBAsignaImpuestosDAO extends ControladorBase {
 				if (rs.next()) 
 					existe = rs.getString(1);				
 			} catch (Exception e) {
-				Logger.getLogger(CBAgenciaComercialDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerporcentajevalido() -  Error ", e);
+				//Logger.getLogger(CBAgenciaComercialDAO.class.getName()).log(Level.SEVERE, null, e);
 			} finally {
 				if(rs != null)
 					try {
 						rs.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBAgenciaComercialDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("obtenerporcentajevalido() -  Error ", e);
+						//Logger.getLogger(CBAgenciaComercialDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(ps != null)
 					try {
 						ps.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBAgenciaComercialDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("obtenerporcentajevalido() -  Error ", e);
+						//Logger.getLogger(CBAgenciaComercialDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(con != null)
 					try {
 						con.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBAgenciaComercialDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("obtenerporcentajevalido() -  Error ", e);
+						//Logger.getLogger(CBAgenciaComercialDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 			}
 			return existe;
@@ -480,10 +527,12 @@ public class CBAsignaImpuestosDAO extends ControladorBase {
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			ps = con.prepareStatement(QRY_OBTIENE_MEDIO_PAGO);
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"query tipo impuesto " + QRY_OBTIENE_MEDIO_PAGO);
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"query tipo impuesto " + tipoObjeto);
+			log.debug("obtenerMedioDePago()  " + " - query tipo impuesto " + QRY_OBTIENE_MEDIO_PAGO);
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+				//	"query tipo impuesto " + QRY_OBTIENE_MEDIO_PAGO);
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+					//"query tipo impuesto " + tipoObjeto);
+			log.debug("obtenerMedioDePago()  " + " - query tipo impuesto " + tipoObjeto);
 			ps.setString(1, tipoObjeto);
 			rs = ps.executeQuery();
 			CBParametrosGeneralesModel obj = null;
@@ -494,25 +543,29 @@ public class CBAsignaImpuestosDAO extends ControladorBase {
 				lista.add(obj);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerMedioDePago() -  Error ", e);
+			//Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerMedioDePago() -  Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerMedioDePago() -  Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerMedioDePago() -  Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return lista;
@@ -532,10 +585,12 @@ public class CBAsignaImpuestosDAO extends ControladorBase {
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			ps = con.prepareStatement(QRY_OBTIENE_FORMA_DE_PAGO);
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"query tipo impuesto " + QRY_OBTIENE_FORMA_DE_PAGO);
-			Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
-					"query tipo impuesto " + tipoObjeto);
+			log.debug("obtenerformaDePago()  " + " - query tipo impuesto " + QRY_OBTIENE_FORMA_DE_PAGO);
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+				//	"query tipo impuesto " + QRY_OBTIENE_FORMA_DE_PAGO);
+			log.debug("obtenerformaDePago()  " + " - query tipo impuesto " + tipoObjeto);
+			//Logger.getLogger(CBDepositosRecController.class.getName()).log(Level.INFO,
+				//	"query tipo impuesto " + tipoObjeto);
 			ps.setString(1, tipoObjeto);
 			rs = ps.executeQuery();
 			CBParametrosGeneralesModel obj = null;
@@ -546,25 +601,29 @@ public class CBAsignaImpuestosDAO extends ControladorBase {
 				lista.add(obj);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerformaDePago() -  Error ", e);
+			//Logger.getLogger(CBAsignaImpuestosDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerformaDePago() -  Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerformaDePago() -  Error ", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerformaDePago() -  Error ", e);
+				//	Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return lista;

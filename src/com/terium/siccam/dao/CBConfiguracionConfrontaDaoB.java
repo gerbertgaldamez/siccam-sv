@@ -7,8 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
@@ -21,6 +22,7 @@ import com.terium.siccam.utils.ConsultasSQ;
 
 @SuppressWarnings("serial")
 public class CBConfiguracionConfrontaDaoB extends ControladorBase{
+	private static Logger log = Logger.getLogger(CBConfiguracionConfrontaDaoB.class);
 
 	private String CONSULTA_LISTA_CONFRONTA = "SELECT cbconfiguracionconfrontaid cBConfiguracionConfrontaId, "
 			+ " nombre nombre, "
@@ -68,13 +70,15 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 				listado = qr.query(con, CONSULTA_LISTA_CONFRONTA
 						+ " order by nombre asc ", bhl, new Object[] {});
 		}catch (Exception e) {
-			Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtieneListaConfronta() - Error ", e);
+			//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneListaConfronta() - Error ", e);
+				//	Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return listado;
@@ -93,13 +97,15 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 				listado = qr.query(con, CONSULTA_CONFIG_CONFRONTA, bhl,
 						new Object[] { idConfronta });
 		}catch (Exception e) {
-			Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtieneListaConfConfronta() - Error ", e);
+			//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneListaConfConfronta() - Error ", e);
+					//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return listado;
@@ -127,8 +133,9 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 			if(idbancoagenciaconfronta > 0 ) {
 				CONSULTA_CONFRONTAS_ASOCIADAS = CONSULTA_CONFRONTAS_ASOCIADAS + " and not c.cbbancoagenciaconfrontaid  = " + idbancoagenciaconfronta  ;
 			}
-				System.out.println("** Id agencia enviado = " + idAgencia);
-				System.out.println("** Query consulta confrontas asociadas = " + CONSULTA_CONFRONTAS_ASOCIADAS);
+			log.debug( "** Id agencia enviado = " + idAgencia);
+			log.debug( "** Query consulta confrontas asociadas = " + CONSULTA_CONFRONTAS_ASOCIADAS);
+				
 				ps = con.prepareStatement(CONSULTA_CONFRONTAS_ASOCIADAS);
 				ps.setInt(1, idAgencia);
 				/*
@@ -145,25 +152,29 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 					lista.add(obj);
 				}
 		}catch (Exception e) {
-			Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtieneListaConfrontasAsociadas() - Error ", e);
+			//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtieneListaConfrontasAsociadas() - Error ", e1);
+					//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			if(ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtieneListaConfrontasAsociadas() - Error ", e1);
+					//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			if(con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneListaConfrontasAsociadas() - Error ", e);
+					//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return lista;
@@ -182,8 +193,9 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 		Connection con = null;
 		try {
 			con = obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.INFO,
-					"Query llenado de combo de Entidades = " + AGENCIA_SQ);
+			log.debug( "Query llenado de combo de Entidades = " + AGENCIA_SQ);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.INFO,
+					//"Query llenado de combo de Entidades = " + AGENCIA_SQ);
 			ps = con.prepareStatement(AGENCIA_SQ);
 			//ps.setInt(1, agrupacionSeleccionada);
 			rs = ps.executeQuery();
@@ -196,25 +208,29 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 			}
 
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtieneListaConfrontasAsociadass() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e2) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e2);
+					log.error("obtieneListaConfrontasAsociadass() - Error ", e2);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e2);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtieneListaConfrontasAsociadass() - Error ", e1);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtieneListaConfrontasAsociadass() - Error ", e);
+				//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 
@@ -237,6 +253,7 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 		try{
 			conn = obtenerDtsPromo().getConnection();
 			cmd = conn.prepareStatement(QRY_CONFRONTA_EXISTENTE);
+			log.debug( "query " + QRY_CONFRONTA_EXISTENTE);
 			cmd.setString(1, nomb);
 			rs = cmd.executeQuery();
 			if(rs.next()){
@@ -244,25 +261,29 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 			}
 			cmd.close();
 		}catch (Exception e) {
-			Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+			log.error("confrontaExistente() - Error ", e);
+			//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("confrontaExistente() - Error ", e1);
+					//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			if(cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("confrontaExistente() - Error ", e1);
+					//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			if(conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+					log.error("confrontaExistente() - Error ", e);
+					//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return result;
@@ -345,14 +366,17 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 										+ "', "*/
 										+ "    sysdate "
 										+ "  )", new Object[] {});
+				log.debug( "query " + resultado);
 		}catch (Exception e) {
-			Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertaNuevaConfrontaB() - Error ", e);
+			//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertaNuevaConfrontaB() - Error ", e);
+					//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return resultado;
@@ -420,14 +444,17 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 										+ "', "
 										+ "    sysdate "
 										+ "  )", new Object[] {});
+				log.debug( "query " + resultado);
 		}catch (Exception e) {
-			Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertaNuevaConfronta() - Error ", e);
+			//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertaNuevaConfronta() - Error ", e);
+					//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return resultado;
@@ -445,13 +472,15 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 				QueryRunner qr = new QueryRunner();
 				respuesta = qr.update(con, ELIMINA_CONF_CONFRONTA, idFila);
 		}catch (Exception e) {
-			Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+			log.error("eliminaConfConfronta() - Error ", e);
+			//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+					log.error("eliminaConfConfronta() - Error ", e);
+					//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return respuesta;
@@ -502,13 +531,15 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 						formatoFecha, lineaLectura, nomenclaturaString, longitudCadena,
 						/*cantidadAjus, palabraDesc,*/ usuario, idConfronta);
 		}catch (Exception e) {
-			Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+			log.error("modificarConfConfrontaB() - Error ", e);
+			//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+					log.error("modificarConfConfrontaB() - Error ", e);
+					//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return respuesta;
@@ -549,13 +580,15 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 						formatoFecha, lineaLectura, /*cantidadAjus, palabraDesc,*/ usuario,
 						idConfronta);
 		}catch (Exception e) {
-			Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+			log.error("modificarConfConfronta() - Error ", e);
+			//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+					log.error("modificarConfConfronta() - Error ", e);
+					//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return respuesta;
@@ -581,7 +614,7 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 		try {
 			con = obtenerDtsPromo().getConnection();
 				ps = con.prepareStatement(OBTIENE_DELIMITADORES_QRY);
-				
+				log.debug( "query " + OBTIENE_DELIMITADORES_QRY);
 				rs = ps.executeQuery();
 				CBParametrosGeneralesModel obj = null;
 				while(rs.next()){
@@ -592,25 +625,29 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 					lista.add(obj);
 				}
 		} catch (Exception e) {
-			Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerParamDelimitadores() - Error ", e);
+			//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtenerParamDelimitadores() - Error ", e1);
+					//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			if(ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtenerParamDelimitadores() - Error ", e1);
+					//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerParamDelimitadores() - Error ", e);
+				//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return lista;
@@ -636,6 +673,7 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 		try {
 			con = obtenerDtsPromo().getConnection();
 				ps = con.prepareStatement(OBTIENE_NOMENCLATURAS_QRY);
+				log.debug( "query " + OBTIENE_NOMENCLATURAS_QRY);
 				
 				rs = ps.executeQuery();
 				CBParametrosGeneralesModel obj = null;
@@ -647,25 +685,29 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 					lista.add(obj);
 				}
 		}catch (Exception e) {
-			Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerParamNomenclaturas() - Error ", e);
+			//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtenerParamNomenclaturas() - Error ", e1);
+				//	Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			if(ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtenerParamNomenclaturas() - Error ", e1);
+					//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerParamNomenclaturas() - Error ", e);
+				//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return lista;
@@ -679,7 +721,8 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 	private static final String VALIDA_FORMATO_FECHA = "select to_char(sysdate, ?) resultado from dual";
 	
 	public boolean formatoFechaValido(String formatoStr){
-		System.out.println("===== Entra al metodo de validacion de formato de fecha =====");
+		log.debug( "===== Entra al metodo de validacion de formato de fecha =====");
+		
 		boolean resultado = false;
 		ResultSet rs = null;
 		PreparedStatement ps = null;
@@ -687,32 +730,38 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 		try {
 			con = obtenerDtsPromo().getConnection();
 				ps = con.prepareStatement(VALIDA_FORMATO_FECHA);
+				log.debug( "valida formato fecha " + VALIDA_FORMATO_FECHA);
 				ps.setString(1, formatoStr);
 				rs = ps.executeQuery();
 				while(rs.next()){
-					System.out.println("Formato de fecha obtenido por Oracle = " + rs.getString(1));
+					log.debug( "Formato de fecha obtenido por Oracle = " + rs.getString(1));
+					
 					resultado = true;
 				}
 		} catch (Exception e) {
-			Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+			log.error("formatoFechaValido() - Error ", e);
+			//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("formatoFechaValido() - Error ", e1);
+					//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			if(ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("formatoFechaValido() - Error ", e1);
+					//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+				log.error("formatoFechaValido() - Error ", e);
+				//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return resultado;
@@ -731,6 +780,7 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 		try {
 			con = obtenerDtsPromo().getConnection();
 				ps = con.prepareStatement(QRY_OBTIENE_ESTADOS);
+				log.debug( "obtener estado " + QRY_OBTIENE_ESTADOS);
 				rs = ps.executeQuery();
 				CBParametrosGeneralesModel obj = null;
 				while(rs.next()){
@@ -740,25 +790,29 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 					lista.add(obj);
 				}
 		}catch (Exception e) {
-			Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerEstadoCmb() - Error ", e);
+			//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtenerEstadoCmb() - Error ", e1);
+					//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			if(ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtenerEstadoCmb() - Error ", e1);
+					//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerEstadoCmb() - Error ", e);
+				//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return lista;
@@ -781,7 +835,7 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 		try {
 			con = obtenerDtsPromo().getConnection();
 				ps = con.prepareStatement(QRY_GENERAL_CONF_CONFRONTAS);
-				
+				log.debug( "conf confronta " + QRY_GENERAL_CONF_CONFRONTAS);
 				rs = ps.executeQuery();
 				CBConfiguracionConfrontaModel obj = null;
 				while(rs.next()){
@@ -800,25 +854,29 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 					lista.add(obj);
 				}
 		} catch (Exception e) {
-			Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+			log.error("consultaGeneral() - Error ", e);
+			//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("consultaGeneral() - Error ", e1);
+					//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			if(ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("consultaGeneral() - Error ", e1);
+				//	Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+				log.error("consultaGeneral() - Error ", e);
+				//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return lista;
@@ -839,6 +897,7 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 		try {
 			conn = obtenerDtsPromo().getConnection();
 				cmd = conn.prepareStatement(QRY_INSERT);
+				log.debug( "query " + QRY_INSERT);
 				cmd.setString(1, obj.getNombre());
 				cmd.setString(2, obj.getDelimitador1());
 				cmd.setInt(3, obj.getCantidadAgrupacion());
@@ -851,21 +910,25 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 				cmd.setInt(10, obj.getLineaLectura());
 				if(cmd.executeUpdate() > 0)
 					result = true;
-				System.out.println("\n*** Registro insertado con exito ***\n");
+				log.debug( "\n*** Registro insertado con exito ***\n");
+				
 		}catch (Exception e) {
-			Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertar() - Error ", e);
+			//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("insertar() - Error ", e1);
+					//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+				log.error("insertar() - Error ", e);
+				//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -886,6 +949,7 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 		try {
 			conn = obtenerDtsPromo().getConnection();
 				cmd = conn.prepareStatement(QRY_UPDATE);
+				log.debug( "query " + QRY_UPDATE);
 				cmd.setString(1, obj.getNombre());
 				cmd.setString(2, obj.getDelimitador1());
 				cmd.setInt(3, obj.getEstado());
@@ -899,21 +963,25 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 				cmd.setString(11, obj.getcBConfiguracionConfrontaId());
 				cmd.executeUpdate();
 				result = true;
-				System.out.println("\n*** Registro modificado con exito ***\n");
+				log.debug( "\n*** Registro modificado con exito ***\n");
+				
 		}catch (Exception e) {
-			Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+			log.error("modificar() - Error ", e);
+			//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("modificar() - Error ", e1);
+					//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+				log.error("modificar() - Error ", e);
+				//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -931,24 +999,29 @@ public class CBConfiguracionConfrontaDaoB extends ControladorBase{
 		try {
 			conn = obtenerDtsPromo().getConnection();
 				cmd = conn.prepareStatement(QRY_DELETE);
+				log.debug( "query " + QRY_DELETE);
 				cmd.setInt(1, pk);
 				cmd.executeUpdate();
 				result = true;
-				System.out.println("\n*** Registro eliminado con exito ***\n");
+				log.debug( "\n*** Registro eliminado con exito ***\n");
+				
 		}catch (Exception e) {
-			Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+			log.error("eliminar() - Error ", e);
+			//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("eliminar() - Error ", e1);
+					//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
+				log.error("eliminar() - Error ", e);
+				//Logger.getLogger(CBConfiguracionConfrontaDaoB.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;

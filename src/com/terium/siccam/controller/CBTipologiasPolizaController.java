@@ -10,8 +10,9 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -38,6 +39,7 @@ import com.terium.siccam.model.CBParametrosGeneralesModel;
  * @author ovidio santos
  */
 public class CBTipologiasPolizaController extends ControladorBase {
+	private static Logger log = Logger.getLogger(CBTipologiasPolizaController.class);
 
 	private static final long serialVersionUID = 1L;
 	private Textbox tbxCosto;
@@ -103,7 +105,8 @@ public class CBTipologiasPolizaController extends ControladorBase {
 			llenaComboPideEntidad();
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("doAfterCompose() -  Error ", e);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -124,8 +127,9 @@ public class CBTipologiasPolizaController extends ControladorBase {
 				item.setValue(obj.getValorObjeto1());
 				item.setParent(cmbConvenio);
 			}
-			Logger.getLogger(ConciliacionController.class.getName()).log(Level.INFO, 
-					"- Llena combo tipo");
+			log.debug("llenaComboConvenio()  " + " - Llena combo convenio");
+			//Logger.getLogger(ConciliacionController.class.getName()).log(Level.INFO, 
+					//"- Llena combo tipo");
 		} else {
 			Messagebox.show("Error al cargar la configuracion de tipos ", "ATENCION", Messagebox.OK,
 					Messagebox.EXCLAMATION);
@@ -135,8 +139,9 @@ public class CBTipologiasPolizaController extends ControladorBase {
 	
 
 	public void llenaComboTipo() {
-		Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO,
-				"Llena combo tipo estado");
+		log.debug("llenaComboTipo()  " + " - Llena combo tipo estado");
+		//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO,
+				//"Llena combo tipo estado");
 		limpiaCombobox(cmbConvenio);
 		CBMantenimientoTipologiasPolizaDAO objeDAO = new CBMantenimientoTipologiasPolizaDAO();
 		this.lstTipologiasPolizas = objeDAO.obtenerTipo("TIPO_IMPUESTO");
@@ -151,8 +156,9 @@ public class CBTipologiasPolizaController extends ControladorBase {
 	}
 
 	public void llenaComboPideEntidad() {
-		Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO,
-				"Llena combo tipo estado");
+		log.debug("llenaComboPideEntidad()  " + " - Llena combo pide entidad");
+		//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO,
+				//"Llena combo tipo estado");
 		limpiaCombobox(cmbPideEntidad);
 
 		CBMantenimientoTipologiasPolizaDAO objeDAO = new CBMantenimientoTipologiasPolizaDAO();
@@ -248,7 +254,8 @@ public class CBTipologiasPolizaController extends ControladorBase {
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnNuevo() -  Error ", e);
+		//	Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -313,8 +320,9 @@ public class CBTipologiasPolizaController extends ControladorBase {
 						objModel.setPide_Entidad(null);
 					}
 
-					Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO,
-							"id en el controlador de modificar " + idseleccionado);
+					log.debug("onClick$btnModificar()  " + " - id en el controlador de modificar " + idseleccionado);
+					//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO,
+							//"id en el controlador de modificar " + idseleccionado);
 					if (objDAO.update(objModel, idseleccionado)) {
 						// llenaListbox();
 
@@ -340,7 +348,8 @@ public class CBTipologiasPolizaController extends ControladorBase {
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnModificar() -  Error ", e);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -397,8 +406,9 @@ public class CBTipologiasPolizaController extends ControladorBase {
 		try {
 			CBMantenimientoTipologiasPolizaDAO cbaDao = new CBMantenimientoTipologiasPolizaDAO();
 			CBMantenimientoPolizaModel objModel = new CBMantenimientoPolizaModel();
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
-					"Consulta estados tipologias");
+			log.debug("onClick$btnConsultar()  " + " - Consulta estados tipologias");
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
+				//	"Consulta estados tipologias");
 			if (cmbConvenio.getSelectedItem() != null) {
 				objModel.setConvenio(cmbConvenio.getSelectedItem().getValue().toString());
 			}
@@ -492,7 +502,8 @@ public class CBTipologiasPolizaController extends ControladorBase {
 			
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBTipologiasPolizaController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnConsultar() -  Error ", e);
+			//Logger.getLogger(CBTipologiasPolizaController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
@@ -500,8 +511,9 @@ public class CBTipologiasPolizaController extends ControladorBase {
 	public void llenaListbox(List<CBMantenimientoPolizaModel> list) {
 		limpiarListbox(lbxConsulta);
 		this.btnExcel.setDisabled(true);
-		Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO,
-				"cantidad de registros " + list.size());
+		log.debug("llenaListbox()  " + " - cantidad de registros " + list.size());
+		//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO,
+				//"cantidad de registros " + list.size());
 		//
 
 		if (list != null && list.size() > 0) {
@@ -671,7 +683,8 @@ public class CBTipologiasPolizaController extends ControladorBase {
 			Executions.createComponents("/cbmodaltipologiaentidad.zul", null, null);
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBTipologiasPolizaController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnAsignarEntidades() -  Error ", e);
+			//Logger.getLogger(CBTipologiasPolizaController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	
@@ -688,8 +701,9 @@ public class CBTipologiasPolizaController extends ControladorBase {
 					.getAttribute("objmodificar");
 			idseleccionado = (Integer) arg0.getTarget().getAttribute("idseleccionado");
 
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
-					"id seleccioando " + idseleccionado);
+			log.debug("eventBtnModificar()  " + " - id seleccioando " + idseleccionado);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
+					//"id seleccioando " + idseleccionado);
 
 			tbxCosto.setText(objmodificar.getCentroCosto());
 			tbxContabilizacion.setText(objmodificar.getClaveContabilizacion());
@@ -719,8 +733,9 @@ public class CBTipologiasPolizaController extends ControladorBase {
 			// ibxTipo.setValue(objmodificar.getTipo());
 			// ibxEntidad.setValue(objmodificar.getPideEntidad());
 
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
-					"combotipo abtes de if " + objmodificar.getConvenio());
+			log.debug("eventBtnModificar()  " + " - combotipo abtes de if " + objmodificar.getConvenio());
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
+					//"combotipo abtes de if " + objmodificar.getConvenio());
 			for (Comboitem item : cmbConvenio.getItems()) {
 				if (item.getLabel().equals(String.valueOf(objmodificar.getConvenio()))) {
 					cmbConvenio.setSelectedItem(item);
@@ -748,8 +763,9 @@ public class CBTipologiasPolizaController extends ControladorBase {
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public void onEvent(Event event) throws Exception {
 			final int idseleccionado = Integer.parseInt(event.getTarget().getAttribute("idEliminar").toString());
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
-					"ID  a eliminar = " + idseleccionado);
+			log.debug("eventBtnEliminar()  " + " - ID  a eliminar = " + idseleccionado);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
+					//"ID  a eliminar = " + idseleccionado);
 			Messagebox.show("¿Desea eliminar el registro seleccionado?", "CONFIRMACION", Messagebox.YES | Messagebox.NO,
 					Messagebox.QUESTION, new EventListener() {
 						public void onEvent(Event event) throws Exception {
@@ -793,21 +809,24 @@ public class CBTipologiasPolizaController extends ControladorBase {
 				banderaEntidadSelected = true;
 				CBMantenimientoPolizaModel objModelModal = (CBMantenimientoPolizaModel) event.getTarget()
 						.getAttribute("objModelModal");
-				Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
-						"\n**** Tipologia de poliza seleccionada ****\n");
+				log.debug("eventBtnParamAdicionalesModal()  " + " - \n**** Tipologia de poliza seleccionada ****\n");
+				//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
+						//"\n**** Tipologia de poliza seleccionada ****\n");
 				session.setAttribute("objModelModal", objModelModal);
 				session.setAttribute("interfaceTarjeta", CBTipologiasPolizaController.this);
 				Executions.createComponents("/cbTipologiasPolizaModal.zul", null, null);
 
 			} catch (Exception e) {
-				Logger.getLogger(CBTipologiasPolizaController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("eventBtnParamAdicionalesModal() -  Error ", e);
+			//	Logger.getLogger(CBTipologiasPolizaController.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 	};
 
 	public void recargaConsultaConta(CBMantenimientoPolizaModel objModel) {
-		Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO,
-				"Entra a recargar consulta...");
+		log.debug("recargaConsultaConta()  " + " - Entra a recargar consulta...");
+	//	Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO,
+			//	"Entra a recargar consulta...");
 		CBMantenimientoTipologiasPolizaDAO objDao = new CBMantenimientoTipologiasPolizaDAO();
 		llenaListbox(objDao.obtenerTipologias(objModel));
 		onClick$btnLimpiar();
@@ -819,8 +838,9 @@ public class CBTipologiasPolizaController extends ControladorBase {
 	 */
 
 	public void onClick$btnExcel() throws IOException {
-		Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
-				"Generando reporte ...");
+		log.debug("onClick$btnExcel()  " + " - Generando reporte ...");
+		//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
+			//	"Generando reporte ...");
 		BufferedWriter bw = null;
 		try {
 			Date fecha = new Date();
@@ -881,14 +901,16 @@ public class CBTipologiasPolizaController extends ControladorBase {
 						+ changeNull(registro.getTipo()).trim() + "\n");
 			}
 
-			Logger.getLogger(CBTipologiasPolizaController.class.getName()).log(Level.INFO,
-					"Descarga exitosa del archivo generado...");
+			log.debug("onClick$btnExcel()  " + " - Descarga exitosa del archivo generado...");
+			//Logger.getLogger(CBTipologiasPolizaController.class.getName()).log(Level.INFO,
+					//"Descarga exitosa del archivo generado...");
 			Filedownload.save(archivo, null);
 			Messagebox.show("Reporte generado de manera exitosa, el archivo ha sido descargado", "ATENCIÓN",
 					Messagebox.OK, Messagebox.INFORMATION);
 			Clients.clearBusy();
 		} catch (IOException e) {
-			Logger.getLogger(CBTipologiasPolizaController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnExcel() -  Error ", e);
+			//Logger.getLogger(CBTipologiasPolizaController.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (bw != null)
 				bw.close();

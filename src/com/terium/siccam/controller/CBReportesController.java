@@ -1,6 +1,7 @@
 package com.terium.siccam.controller;
 
 import java.io.BufferedWriter;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,8 +14,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import javax.naming.NamingException;
 
 import org.zkoss.zk.ui.Component;
@@ -51,6 +52,7 @@ import com.terium.siccam.utils.UtilidadesReportes;
  * @author CarlosGodinez - QitCorp - 05/04/2017
  */
 public class CBReportesController extends ControladorBase {
+	private static Logger log = Logger.getLogger(CBReportesController.class);
 
 	/**
 	 * 
@@ -93,8 +95,9 @@ public class CBReportesController extends ControladorBase {
 
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
-		Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, 
-				"**** Entra al modulo de reporteria ****");
+		log.debug("doAfterCompose()  " + " - **** Entra al modulo de reporteria ****");
+		//Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, 
+				//"**** Entra al modulo de reporteria ****");
 		llenaComboTipoReporte();
 		obtenerTipoReportePredefinido();
 		llenaComboAgrupacion();
@@ -247,10 +250,12 @@ public class CBReportesController extends ControladorBase {
 			cmbEntidad.setVisible(false);
 			break;
 		}
-		Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO,
-				"Tipo de reporte seleccionado = " + cmbTipoReporte.getSelectedItem().getLabel());
-		Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO,
-				"Identificador reporte seleccionado = " + tipoReporteSeleccionado);
+		log.debug("onSelect$cmbTipoReporte()  " + " - Tipo de reporte seleccionado = " + cmbTipoReporte.getSelectedItem().getLabel());
+		//Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO,
+			//	"Tipo de reporte seleccionado = " + cmbTipoReporte.getSelectedItem().getLabel());
+		log.debug("onSelect$cmbTipoReporte()  " + " - Identificador reporte seleccionado = " + tipoReporteSeleccionado);
+		//Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO,
+				//"Identificador reporte seleccionado = " + tipoReporteSeleccionado);
 		cmbAgrupacion.setSelectedIndex(-1);
 		cmbEntidad.setSelectedIndex(-1);
 		limpiarCombobox(cmbAgrupacion);
@@ -264,7 +269,8 @@ public class CBReportesController extends ControladorBase {
 	 */
 
 	public void llenaComboAgrupacion() {
-		Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, "Llena combo agrupación");
+		log.debug("llenaComboAgrupacion()  " + " - Llena combo agrupación");
+		//Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, "Llena combo agrupación");
 		limpiarCombobox(cmbAgrupacion);
 		CBCatalogoBancoDaoB objeDAO = new CBCatalogoBancoDaoB();
 		if (tipoReporteSeleccionado == 4) {
@@ -281,11 +287,13 @@ public class CBReportesController extends ControladorBase {
 	}
 
 	public void onSelect$cmbAgrupacion() {
-		Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, "Llena combo entidades");
+		log.debug("onSelect$cmbAgrupacion()  " + " - Llena combo entidades");
+		//Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, "Llena combo entidades");
 		limpiarCombobox(cmbEntidad);
 		String bancoId = cmbAgrupacion.getSelectedItem().getValue().toString();
-		Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO,
-				"ID Agrupación seleccionada = " + bancoId);
+		log.debug("onSelect$cmbAgrupacion()  " + " - ID Agrupación seleccionada = " + bancoId);
+		//Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO,
+				//"ID Agrupación seleccionada = " + bancoId);
 		CBCatalogoAgenciaDAO objeDAO = new CBCatalogoAgenciaDAO();
 		if (tipoReporteSeleccionado == 4) {
 			listaEntidad = objeDAO.generaConsultaAgencia();
@@ -302,7 +310,8 @@ public class CBReportesController extends ControladorBase {
 	}
 
 	public void llenaComboTipoReporte() {
-		Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, "Llena combo tipo reporte");
+		log.debug("llenaComboTipoReporte()  " + " - Llena combo tipo reporte");
+		//Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, "Llena combo tipo reporte");
 		limpiarCombobox(cmbTipoReporte);
 		CBReportesDAO objeDAO = new CBReportesDAO();
 		listaTipoReporte = objeDAO.obtenerTipoObjetoX("TIPO_REPORTE");
@@ -331,8 +340,9 @@ public class CBReportesController extends ControladorBase {
 				item.setValue(obj.getValorObjeto1());
 				item.setParent(cmbTipo);
 			}
-			Logger.getLogger(ConciliacionController.class.getName()).log(Level.INFO, 
-					"- Llena combo tipo");
+			log.debug("llenaComboTipo()  " + " - Llena combo tipo");
+			//Logger.getLogger(ConciliacionController.class.getName()).log(Level.INFO, 
+					//"- Llena combo tipo");
 		} else {
 			Messagebox.show("Error al cargar la configuracion de tipos de conciliacion", "ATENCION", Messagebox.OK,
 					Messagebox.EXCLAMATION);
@@ -340,7 +350,8 @@ public class CBReportesController extends ControladorBase {
 	}
 	
 	public void llenaComboTipoEntidad() {
-		Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, "Llena combo tipo entidad");
+		log.debug("llenaComboTipoEntidad()  " + " - Llena combo tipo entidad");
+		//Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, "Llena combo tipo entidad");
 		limpiarCombobox(cmbTipoEntidad);
 		CBReportesDAO objeDAO = new CBReportesDAO();
 		listaTipoEntidad = objeDAO.obtenerTipoObjetoX("TIPO_ENTIDAD");
@@ -427,55 +438,69 @@ public class CBReportesController extends ControladorBase {
 
 				}
 			} catch (WrongValueException e) {
-				Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("onClick$btnExcel() -  Error ", e);
+				//Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
 				Messagebox.show("Ha ocurrido un error", "ADVERTENCIA", Messagebox.OK, Messagebox.ERROR);
 			} catch (NumberFormatException e) {
-				Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("onClick$btnExcel() -  Error ", e);
+				//Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
 				Messagebox.show("Ha ocurrido un error", "ADVERTENCIA", Messagebox.OK, Messagebox.ERROR);
 			} catch (ParseException e) {
-				Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("onClick$btnExcel() -  Error ", e);
+				//Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
 				Messagebox.show("Ha ocurrido un error", "ADVERTENCIA", Messagebox.OK, Messagebox.ERROR);
 			}
 	}
 
 	public void llamadaGenerarTipoReporte() {
 		if (tipoReporteSeleccionado == 1) {
-			System.out.println("\n*** Genera reporte por entidad ***\n");
+			log.debug("llamadaGenerarTipoReporte()  " + " - \n*** Genera reporte por entidad ***\n");
+			
 			try {
 				generaReporteXEntidad();
 			} catch (IOException e) {
-				Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("llamadaGenerarTipoReporte() -  Error ", e);
+				//Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
 			}
 		} else if (tipoReporteSeleccionado == 2) {
-			System.out.println("\n*** Genera conciliacion resumido ***\n");
+			log.debug("llamadaGenerarTipoReporte()  " + " - \n*** Genera conciliacion resumido ***\n");
+			
 			try {
 				generaArchivoExcel();
 			} catch (IOException e) {
-				Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("llamadaGenerarTipoReporte() -  Error ", e);
+				//Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
 			}
 		} else if (tipoReporteSeleccionado == 3) {
-			System.out.println("\n*** Genera reporte conciliacion detallado ***\n");
+			log.debug("llamadaGenerarTipoReporte()  " + " - \n*** Genera reporte conciliacion detallado ***\n");
+			
 			try {
 				generaReporteConciliacionDetalle();
 			} catch (IOException e) {
-				Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("llamadaGenerarTipoReporte() -  Error ", e);
+				//Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
 			}
 		} else if (tipoReporteSeleccionado == 4) {
-			System.out.println("\n*** Genera reporte conciliacion cajas ***\n");
+			log.debug("llamadaGenerarTipoReporte()  " + " - \n*** Genera reporte conciliacion cajas ***\n");
+			
 			try {
 				generaReporteCajas();
 			} catch (IOException e) {
-				Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("llamadaGenerarTipoReporte() -  Error ", e);
+				//Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
 			}
 		} else if (tipoReporteSeleccionado == 5) {
-			System.out.println("\n*** Genera reporte liquidaciones ***\n");
+			log.debug("llamadaGenerarTipoReporte()  " + " - \n*** Genera reporte liquidaciones ***\n");
+			
 			try {
 				generaReporteLiquidaciones();
 			} catch (IOException e) {
-				Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("llamadaGenerarTipoReporte() -  Error ", e);
+				//Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
 			}
 		} else if (tipoReporteSeleccionado == 6) {
-			System.out.println("\n*** Genera reporte de recaudacion ***\n");
+			log.debug("llamadaGenerarTipoReporte()  " + " - \n*** Genera reporte de recaudacion ***\n");
+			
 			generaReporteRecaudacion();
 		}
 
@@ -505,7 +530,8 @@ public class CBReportesController extends ControladorBase {
 			}
 			if (cmbTipo.getSelectedItem() != null) {
 				tipoRecarga = cmbTipo.getSelectedItem().getValue().toString();
-				System.out.println("tipoRecarga tipo" + tipoRecarga);
+				log.debug("generaReporteXEntidad()  " + " - tipoRecarga tipo" + tipoRecarga);
+				
 			}
 			if (cmbTipoEntidad.getSelectedItem() != null) {
 				tipoEntidad = cmbTipoEntidad.getSelectedItem().getValue().toString();
@@ -544,7 +570,8 @@ public class CBReportesController extends ControladorBase {
 								+ "\n");
 					}
 				}
-				Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, "Descargamos el archivo");
+				log.debug("generaReporteXEntidad()  " + " - Descargamos el archivo");
+				//Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, "Descargamos el archivo");
 				Filedownload.save(archivo, null);
 				Messagebox.show("Reporte generado de manera exitosa, el archivo ha sido descargado", "ATENCION",
 						Messagebox.OK, Messagebox.INFORMATION);
@@ -554,13 +581,16 @@ public class CBReportesController extends ControladorBase {
 						"ADVERTENCIA", Messagebox.OK, Messagebox.EXCLAMATION);
 			}
 		} catch (SQLException e1) {
-			Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e1);
+			log.error("generaReporteXEntidad() -  Error ", e1);
+			//Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e1);
 			Messagebox.show("Ha ocurrido un error", "ADVERTENCIA", Messagebox.OK, Messagebox.ERROR);
 		} catch (NamingException e1) {
-			Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e1);
+			log.error("generaReporteXEntidad() -  Error ", e1);
+			//Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e1);
 			Messagebox.show("Ha ocurrido un error", "ADVERTENCIA", Messagebox.OK, Messagebox.ERROR);
 		} catch (IOException e) {
-			Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaReporteXEntidad() -  Error ", e);
+			//Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", "ADVERTENCIA", Messagebox.OK, Messagebox.ERROR);
 		} finally {
 			if (bw != null)
@@ -588,7 +618,8 @@ public class CBReportesController extends ControladorBase {
 			
 			if (cmbTipo.getSelectedItem() != null) {
 				tipoRecarga = cmbTipo.getSelectedItem().getValue().toString();
-				System.out.println("tipoRecarga tipo combo " + tipoRecarga);
+				log.debug("generaArchivoExcel()  " + " - tipoRecarga tipo combo " + tipoRecarga);
+				
 			}
 			if (cmbEstado.getSelectedItem() != null) {
 				tipoEstado = cmbEstado.getSelectedItem().getValue().toString();
@@ -634,7 +665,8 @@ public class CBReportesController extends ControladorBase {
 					}
 
 				}
-				System.out.println("Descargamos el archivo");
+				log.debug("generaArchivoExcel()  " + " - Descargamos el archivo");
+				
 				Filedownload.save(archivo, null);
 				Messagebox.show("Reporte generado de manera exitosa, el archivo ha sido descargado", "ATENCION",
 						Messagebox.OK, Messagebox.INFORMATION);
@@ -644,13 +676,16 @@ public class CBReportesController extends ControladorBase {
 						"ADVERTENCIA", Messagebox.OK, Messagebox.EXCLAMATION);
 			}
 		} catch (SQLException e1) {
-			Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e1);
+			log.error("generaArchivoExcel() -  Error ", e1);
+			//Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e1);
 			Messagebox.show("Ha ocurrido un error", "ADVERTENCIA", Messagebox.OK, Messagebox.ERROR);
 		} catch (NamingException e1) {
-			Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e1);
+			log.error("generaArchivoExcel() -  Error ", e1);
+			//Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e1);
 			Messagebox.show("Ha ocurrido un error", "ADVERTENCIA", Messagebox.OK, Messagebox.ERROR);
 		} catch (IOException e) {
-			Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaArchivoExcel() -  Error ", e);
+			//Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
 			Messagebox.show("Ha ocurrido un error", "ADVERTENCIA", Messagebox.OK, Messagebox.ERROR);
 		} finally {
 			if (bw != null)
@@ -723,7 +758,8 @@ public class CBReportesController extends ControladorBase {
 								+ "\n");
 					}
 				}
-				Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, "Descargamos el archivo");
+				log.debug("generaReporteConciliacionDetalle()  " + " - Descargamos el archivo");
+				//Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, "Descargamos el archivo");
 				Filedownload.save(archivo, null);
 				Messagebox.show(
 						"Reporte " + archivo.getName() + " generado de manera exitosa, el archivo ha sido descargado",
@@ -731,7 +767,8 @@ public class CBReportesController extends ControladorBase {
 
 				Clients.clearBusy();
 			} catch (Exception e) {
-				Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("generaReporteConciliacionDetalle() -  Error ", e);
+				//Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
 			} finally {
 				if (bw != null)
 					bw.close();
@@ -799,7 +836,8 @@ public class CBReportesController extends ControladorBase {
 					}
 
 				}
-				Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, "Descargamos el archivo");
+				log.debug("generaReporteCajas()  " + " - Descargamos el archivo");
+				//Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, "Descargamos el archivo");
 				Filedownload.save(archivo, null);
 				Messagebox.show("Reporte generado de manera exitosa, el archivo ha sido descargado", "ATENCION",
 						Messagebox.OK, Messagebox.INFORMATION);
@@ -807,8 +845,9 @@ public class CBReportesController extends ControladorBase {
 				Clients.clearBusy();
 
 			} catch (Exception e) {
-				Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
-				System.out.println("Error al intentar crear nuevo archivo...");
+				log.error("generaReporteCajas() -  Error ", e);
+				//Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
+				
 			} finally {
 				if (bw != null)
 					bw.close();
@@ -843,7 +882,8 @@ public class CBReportesController extends ControladorBase {
 			try {
 				if (!archivo.exists()) {
 					if(archivo.createNewFile())
-						Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, "Archivo temporal creado");
+						log.debug("generaReporteLiquidaciones()  " + " - Archivo temporal creado");
+						//Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, "Archivo temporal creado");
 				}
 
 				if (list.size() > 0) {
@@ -857,14 +897,16 @@ public class CBReportesController extends ControladorBase {
 								+ changeNull(obj.getTotal()) + "\n");
 					}
 				}
-				Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, "Descargamos el archivo");
+				log.debug("generaReporteLiquidaciones()  " + " - Descargamos el archivo");
+				//Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, "Descargamos el archivo");
 				Filedownload.save(archivo, null);
 				Messagebox.show("Reporte generado de manera exitosa, el archivo ha sido descargado", "ATENCION",
 						Messagebox.OK, Messagebox.INFORMATION);
 
 				Clients.clearBusy();
 			} catch (Exception e) {
-				Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
+				log.error("generaReporteLiquidaciones() -  Error ", e);
+				//Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
 			} finally {
 				if (bw != null)
 					bw.close();
@@ -901,8 +943,9 @@ public class CBReportesController extends ControladorBase {
 				try {
 					if (!archivo.exists()) {
 						if (archivo.createNewFile())
-							Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO,
-									"Archivo temporal creado");
+							log.debug("generaReporteRecaudacion()  " + " - Archivo temporal creado");
+							//Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO,
+									//"Archivo temporal creado");
 					}
 
 					if (list.size() > 0) {
@@ -923,14 +966,16 @@ public class CBReportesController extends ControladorBase {
 
 						}
 					}
-					Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, "Descargamos el archivo");
+					log.debug("generaReporteRecaudacion()  " + " - Descargamos el archivo");
+					//Logger.getLogger(CBReportesController.class.getName()).log(Level.INFO, "Descargamos el archivo");
 					Filedownload.save(archivo, null);
 					Messagebox.show("Reporte generado de manera exitosa, el archivo ha sido descargado", "ATENCION",
 							Messagebox.OK, Messagebox.INFORMATION);
 
 					Clients.clearBusy();
 				} catch (Exception e) {
-					Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
+					log.error("generaReporteRecaudacion() -  Error ", e);
+					//Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
 				} finally {
 					if (bw != null)
 						bw.close();
@@ -940,9 +985,11 @@ public class CBReportesController extends ControladorBase {
 						"ADVERTENCIA", Messagebox.OK, Messagebox.EXCLAMATION);
 			}
 		} catch (IOException ioe) {
-			Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, ioe);
+			log.error("generaReporteRecaudacion() -  Error ", ioe);
+			//Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, ioe);
 		} catch (Exception e) {
-			Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaReporteRecaudacion() -  Error ", e);
+			//Logger.getLogger(CBReportesController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	

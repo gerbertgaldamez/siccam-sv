@@ -12,8 +12,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.apache.commons.dbutils.QueryRunner;
 import org.zkoss.zul.Messagebox;
 
@@ -28,6 +29,7 @@ import com.terium.siccam.model.CBTipologiasPolizaModel;
  */
 @SuppressWarnings("serial")
 public class CBCausasDao extends ControladorBase {
+	private static Logger log = Logger.getLogger(CBCausasDao.class);
 
 	private String INSERTA_CAUSA = "INSERT " + "INTO cb_causas_conciliacion (    id_causas_conciliacion, "
 			+ "    causas, codigo_conciliacion, tipo, sistema, convenio, CBTIPOLOGIASPOLIZAID,  creado_por,   fecha_creacion  )  values  ( "
@@ -47,17 +49,20 @@ public class CBCausasDao extends ControladorBase {
 			con = obtenerDtsPromo().getConnection();
 			QueryRunner qr = new QueryRunner();
 			i = qr.update(con, INSERTA_CAUSA, objModel.getTipoCausa(), objModel.getCodigoTipologia(), objModel.getTipo(), objModel.getSistema(),objModel.getConvenio(),  objModel.getTipologiaasociada(), objModel.getUsuario());
-			System.out.println("query insert " + INSERTA_CAUSA + objModel.getTipoCausa());
-			Logger.getLogger(CBCausasDao.class.getName()).log(Level.INFO,
-					"el query insertar   " + INSERTA_CAUSA);
+			log.debug( "query insert " + INSERTA_CAUSA + objModel.getTipoCausa());
+			log.debug( "el query insertar   " + INSERTA_CAUSA);
+			//Logger.getLogger(CBCausasDao.class.getName()).log(Level.INFO,
+					//"el query insertar   " + INSERTA_CAUSA);
 		} catch (Exception e) {
-			Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
+			log.error("ingresaNuevaCausa() - Error ", e);
+			//Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
+				log.error("ingresaNuevaCausa() - Error ", e);
+				//Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return i;
@@ -97,7 +102,8 @@ public class CBCausasDao extends ControladorBase {
 					where += "and (upper(CBTIPOLOGIASPOLIZAID) like('%' || upper(trim('" + objModel.getTipologiaasociada() + "'))) || '%') ";
 				}
 
-				Logger.getLogger(CBDepositosRecDAO.class.getName()).log(Level.INFO, "consulta " + query + where);
+				log.debug( "consulta " + query + where);
+				//Logger.getLogger(CBDepositosRecDAO.class.getName()).log(Level.INFO, "consulta " + query + where);
 
 				cmd = con.createStatement();
 				where = where + " order by fecha_creacion asc ";
@@ -120,25 +126,29 @@ public class CBCausasDao extends ControladorBase {
 					list.add(objModel);
 				}
 			} catch (Exception e) {
-				Logger.getLogger(CBDepositosRecDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("consultaCausas() - Error ", e);
+				//Logger.getLogger(CBDepositosRecDAO.class.getName()).log(Level.SEVERE, null, e);
 			} finally {
 				if (rs != null)
 					try {
 						rs.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBDepositosRecDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("consultaCausas() - Error ", e);
+					//	Logger.getLogger(CBDepositosRecDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if (cmd != null)
 					try {
 						cmd.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBDepositosRecDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("consultaCausas() - Error ", e);
+						//Logger.getLogger(CBDepositosRecDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if (con != null)
 					try {
 						con.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBDepositosRecDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("consultaCausas() - Error ", e);
+						//Logger.getLogger(CBDepositosRecDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 			}
 			return list;
@@ -188,16 +198,19 @@ public class CBCausasDao extends ControladorBase {
 			con = obtenerDtsPromo().getConnection();
 			QueryRunner qr = new QueryRunner();
 			i = qr.update(con, BORRA_CAUSA, idFila);
-			Logger.getLogger(CBCausasDao.class.getName()).log(Level.INFO,
-					"el id eliminar  " + idFila);
+			log.debug( "el id eliminar  " + idFila);
+			//Logger.getLogger(CBCausasDao.class.getName()).log(Level.INFO,
+					//"el id eliminar  " + idFila);
 		} catch (Exception e) {
-			Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
+			log.error("eliminaRegistro() - Error ", e);
+			//Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
+				log.error("eliminaRegistro() - Error ", e);
+				//Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return i;
@@ -214,18 +227,22 @@ public class CBCausasDao extends ControladorBase {
 			i = qr.update(con, ACTUALIZA_CAUSA, objModel.getTipoCausa(), objModel.getCodigoTipologia(), objModel.getTipo(),objModel.getSistema(), objModel.getConvenio(), objModel.getTipologiaasociada(), objModel.getUsuario(),objModel.getIdCausaConciliacion());
 			}catch (SQLException e) {
 				
-				Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
+				log.error("actualizaRegistroCausa() - Error ", e);
+				///Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
 			}
-			Logger.getLogger(CBCausasDao.class.getName()).log(Level.INFO,
-					"el actualizar  " + ACTUALIZA_CAUSA);
+			log.debug( "el actualizar  " + ACTUALIZA_CAUSA);
+			//Logger.getLogger(CBCausasDao.class.getName()).log(Level.INFO,
+					//"el actualizar  " + ACTUALIZA_CAUSA);
 		} catch (Exception e) {
-			Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
+			log.error("actualizaRegistroCausa() - Error ", e);
+			//Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
+				log.error("actualizaRegistroCausa() - Error ", e);
+				//Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return i;
@@ -255,25 +272,29 @@ public List<CBParametrosGeneralesModel> obtenerTipoConciliacion(String tipoObjet
 				lista.add(obj);
 			}
 	} catch (Exception e) {
-		Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+		log.error("obtenerTipoConciliacion() - Error ", e);
+	//	Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 	}finally {
 		if(rs != null)
 			try {
 				rs.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerTipoConciliacion() - Error ", e);
+				//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		if(ps != null)
 			try {
 				ps.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerTipoConciliacion() - Error ", e);
+				//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		if(con != null)
 			try {
 				con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerTipoConciliacion() - Error ", e);
+				//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 	}
 	return lista;
@@ -293,6 +314,7 @@ public List<CBParametrosGeneralesModel> obtenerSistemas() {
 			con = obtenerDtsPromo().getConnection();
 			//ps = con.prepareStatement("select CBMODULOCONCILIACIONCONFID,  MODULO , TIPO_OBJETO, OBJETO,VALOR_OBJETO1, VALOR_OBJETO2, VALOR_OBJETO3, SACREATEDY, DESCRIPCION, ESTADO from CB_MODULO_CONCILIACION_CONF where modulo = 'CONCILIACION' and tipo_objeto = 'SISTEMA'");
 			ps = con.prepareStatement(OBTIENE_SISTEMAS_QRY);
+			log.debug("query - " + OBTIENE_SISTEMAS_QRY);
 			rs = ps.executeQuery();
 			
 			CBParametrosGeneralesModel obj;
@@ -317,25 +339,29 @@ public List<CBParametrosGeneralesModel> obtenerSistemas() {
 				lista.add(obj);
 			}
 	} catch (Exception e) {
-		Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
+		log.error("obtenerSistemas() - Error ", e);
+		//Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
 	}finally {
 		if(rs != null)
 			try {
 				rs.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerSistemas() - Error ", e);
+				//Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
 			}
 		if(ps != null)
 			try {
 				ps.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerSistemas() - Error ", e);
+				//Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
 			}
 		if(con != null)
 			try {
 				con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerSistemas() - Error ", e);
+				//Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
 			}
 	}
 	return lista;
@@ -357,6 +383,7 @@ try {
 	con = obtenerDtsPromo().getConnection();
 	
 	ps = con.prepareStatement(OBTIENE_CONVENIO_QRY);
+	log.debug("query - " + OBTIENE_CONVENIO_QRY);
 	rs = ps.executeQuery();
 	
 	CBParametrosGeneralesModel obj;
@@ -375,25 +402,29 @@ try {
 		lista.add(obj);
 	}
 } catch (Exception e) {
-Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
+	log.error("obtenerConvenio() - Error ", e);
+//Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
 }finally {
 if(rs != null)
 	try {
 		rs.close();
 	} catch (SQLException e) {
-		Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
+		log.error("obtenerConvenio() - Error ", e);
+		//Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
 	}
 if(ps != null)
 	try {
 		ps.close();
 	} catch (SQLException e) {
-		Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
+		log.error("obtenerConvenio() - Error ", e);
+		//Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
 	}
 if(con != null)
 	try {
 		con.close();
 	} catch (SQLException e) {
-		Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
+		log.error("obtenerConvenio() - Error ", e);
+		//Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
 	}
 }
 return lista;
@@ -423,25 +454,29 @@ public List<CBTipologiasPolizaModel> obtenerTipologias() {
 			list.add(objeBean);
 		}
 	} catch (Exception e) {
-		Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
+		log.error("obtenerTipologias() - Error ", e);
+		//Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
 	} finally {
 		if (rs != null)
 			try {
 				rs.close();
 			} catch (SQLException e2) {
-				Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e2);
+				log.error("obtenerTipologias() - Error ", e2);
+				//Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e2);
 			}
 		if (cmd != null)
 			try {
 				cmd.close();
 			} catch (SQLException e1) {
-				Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e1);
+				log.error("obtenerTipologias() - Error ", e1);
+				//Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e1);
 			}
 		try {
 			if (con != null)
 				con.close();
 		} catch (SQLException e) {
-			Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerTipologias() - Error ", e);
+			//Logger.getLogger(CBCausasDao.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	return list;

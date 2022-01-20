@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -33,6 +34,7 @@ import com.terium.siccam.utils.Constantes;
  * @author CarlosGodinez -> 13/08/2018
  */
 public class CBTipologiasEntidadesController extends ControladorBase{
+	private static Logger log = Logger.getLogger(CBTipologiasEntidadesController.class);
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -48,7 +50,8 @@ public class CBTipologiasEntidadesController extends ControladorBase{
 			usuario = obtenerUsuario().getUsuario();
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBTipologiasEntidadesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("doAfterCompose() -  Error ", e);
+			//Logger.getLogger(CBTipologiasEntidadesController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	
@@ -96,7 +99,8 @@ public class CBTipologiasEntidadesController extends ControladorBase{
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBTipologiasEntidadesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("llenaComboAgrupaciones() -  Error ", e);
+			//Logger.getLogger(CBTipologiasEntidadesController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	
@@ -107,8 +111,9 @@ public class CBTipologiasEntidadesController extends ControladorBase{
 		try {
 			if (cmbAgrupacion.getSelectedItem().getValue() != null && !Constantes.TODAS.equals(cmbAgrupacion.getText())) {
 				int agrupacionSeleccionada = Integer.parseInt(cmbAgrupacion.getSelectedItem().getValue().toString());
-				Logger.getLogger(CBTipologiasEntidadesController.class.getName()).log(Level.INFO,
-						"Agrupacion seleccionada= " + agrupacionSeleccionada);
+				log.debug("onSelect$cmbAgrupacion()  " + " - Agrupacion seleccionada= " + agrupacionSeleccionada);
+				//Logger.getLogger(CBTipologiasEntidadesController.class.getName()).log(Level.INFO,
+						//"Agrupacion seleccionada= " + agrupacionSeleccionada);
 				cleanCombo(cmbEntidad);
 				llenaComboEntidades(agrupacionSeleccionada);
 				if (listaEntidad.isEmpty()) {
@@ -119,7 +124,8 @@ public class CBTipologiasEntidadesController extends ControladorBase{
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBTipologiasEntidadesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onSelect$cmbAgrupacion() -  Error ", e);
+			//Logger.getLogger(CBTipologiasEntidadesController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	
@@ -149,7 +155,8 @@ public class CBTipologiasEntidadesController extends ControladorBase{
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBTipologiasEntidadesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("llenaComboEntidades() -  Error ", e);
+			//Logger.getLogger(CBTipologiasEntidadesController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	
@@ -182,7 +189,8 @@ public class CBTipologiasEntidadesController extends ControladorBase{
 			objModel.setCbTipologiasPolizaId(filtroTipologia);
 			llenaListbox(objModel, objSeleccionado.getCbtipologiaspolizaid(), banderaMensaje);
 		} catch(Exception e) {
-			Logger.getLogger(CBRecaReguController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("realizaBusqueda() -  Error ", e);
+			//Logger.getLogger(CBRecaReguController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	
@@ -254,7 +262,8 @@ public class CBTipologiasEntidadesController extends ControladorBase{
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBTipologiasEntidadesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("llenaListbox() -  Error ", e);
+			//Logger.getLogger(CBTipologiasEntidadesController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	
@@ -272,13 +281,15 @@ public class CBTipologiasEntidadesController extends ControladorBase{
 						cont++;
 					}
 				}
-				Logger.getLogger(CBTipologiasEntidadesController.class.getName()).log(Level.INFO, 
-						"(Marcar Todas) cant. de items marcados = "+ cont);
+				log.debug("onCheck$chkMarcarTodas()  " + " - (Marcar Todas) cant. de items marcados = "+ cont);
+				//Logger.getLogger(CBTipologiasEntidadesController.class.getName()).log(Level.INFO, 
+						//"(Marcar Todas) cant. de items marcados = "+ cont);
 			}
 		} else {
 			List<Listitem> list = lbxConsulta.getItems();
-			Logger.getLogger(CBTipologiasEntidadesController.class.getName()).log(Level.INFO, 
-					"Se desmarcan todos los items del Grid principal");
+			log.debug("onCheck$chkMarcarTodas()  " + " - Se desmarcan todos los items del Grid principal");
+			//Logger.getLogger(CBTipologiasEntidadesController.class.getName()).log(Level.INFO, 
+					//"Se desmarcan todos los items del Grid principal");
 			if (list.size() > 0) {
 				for (Listitem item : list) {
 					item.setSelected(false);
@@ -319,7 +330,8 @@ public class CBTipologiasEntidadesController extends ControladorBase{
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBTipologiasEntidadesController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onClick$btnGuardar() -  Error ", e);
+			//Logger.getLogger(CBTipologiasEntidadesController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	
@@ -352,8 +364,9 @@ public class CBTipologiasEntidadesController extends ControladorBase{
 			CBTipologiasEntidadesModel objModel = (CBTipologiasEntidadesModel) event.getTarget()
 					.getAttribute("objEntidad");
 			final int idFila = objModel.getCbCatalogoAgenciaId();
-			Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.INFO,
-					"ID entidad asociada a eliminar = " + idFila);
+			log.debug("evtEliminar()  " + " - ID entidad asociada a eliminar = " + idFila);
+			//Logger.getLogger(CBMantenimientoConfConfrontasController.class.getName()).log(Level.INFO,
+					//"ID entidad asociada a eliminar = " + idFila);
 			Messagebox.show("¿Desea eliminar la asociación de esta entidad?", Constantes.CONFIRMACION,
 					Messagebox.YES | Messagebox.NO, Messagebox.QUESTION, new EventListener() {
 						public void onEvent(Event event) throws Exception {

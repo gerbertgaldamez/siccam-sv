@@ -3,8 +3,9 @@ package com.terium.siccam.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
@@ -21,6 +22,7 @@ import com.terium.siccam.utils.Constantes;
  * @author CarlosGodinez -> 09/08/2018
  * */
 public class CBRecaudacionUsuarioController extends ControladorBase{
+	private static Logger log = Logger.getLogger(CBRecaudacionUsuarioController.class);
 	
 	private static final long serialVersionUID = 4285297288749865925L;
 	
@@ -31,7 +33,8 @@ public class CBRecaudacionUsuarioController extends ControladorBase{
 			cbpagosid = Integer.parseInt(session.getAttribute("cbpagosid").toString());
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("doAfterCompose() -  Error ", e);
+			//Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	
@@ -65,7 +68,8 @@ public class CBRecaudacionUsuarioController extends ControladorBase{
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("listaEntidad() -  Error ", e);
+			//Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	
@@ -73,8 +77,9 @@ public class CBRecaudacionUsuarioController extends ControladorBase{
 	public void onSelect$cmbEntidad()  {
 		try {
 			int entidadSeleccionada = Integer.parseInt(cmbEntidad.getSelectedItem().getValue().toString());
-			Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.INFO, 
-					"Entidad seleccionada= " + entidadSeleccionada);
+			log.debug("onSelect$cmbEntidad()  " + " - Entidad seleccionada= " + entidadSeleccionada);
+			//Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.INFO, 
+					//"Entidad seleccionada= " + entidadSeleccionada);
 			cleanCombo(cmbUsuario);
 			llenaComboUsuarios(entidadSeleccionada);
 			if(listaUsuarios.isEmpty()) {
@@ -84,7 +89,8 @@ public class CBRecaudacionUsuarioController extends ControladorBase{
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("onSelect$cmbEntidad() -  Error ", e);
+			//Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	
@@ -92,8 +98,9 @@ public class CBRecaudacionUsuarioController extends ControladorBase{
 		try {
 			CBRecaReguDAO objeDAO = new CBRecaReguDAO();
 			if(entidadSeleccionada == 0) { 
-				Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.INFO, 
-						"Manejo de BANCOS en combo de ENTIDADES");
+				log.debug("llenaComboUsuarios()  " + " - Manejo de BANCOS en combo de ENTIDADES");
+				//Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.INFO, 
+						//"Manejo de BANCOS en combo de ENTIDADES");
 				listaUsuarios = objeDAO.obtenerBancos();
 				for (CBRecaReguModel d : listaUsuarios) {
 					Comboitem item = new Comboitem();
@@ -102,8 +109,9 @@ public class CBRecaudacionUsuarioController extends ControladorBase{
 					item.setLabel(d.getNombreBanco());
 				}
 			} else {
-				Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.INFO, 
-						"Manejo de TIENDAS PROPIAS en combo de ENTIDADES");
+				log.debug("llenaComboUsuarios()  " + " - Manejo de TIENDAS PROPIAS en combo de ENTIDADES");
+				//Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.INFO, 
+						//"Manejo de TIENDAS PROPIAS en combo de ENTIDADES");
 				listaUsuarios = objeDAO.obtenerUsuarios(entidadSeleccionada);
 				for (CBRecaReguModel d : listaUsuarios) {
 					Comboitem item = new Comboitem();
@@ -114,7 +122,8 @@ public class CBRecaudacionUsuarioController extends ControladorBase{
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("llenaComboUsuarios() -  Error ", e);
+			//Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 	
@@ -127,15 +136,17 @@ public class CBRecaudacionUsuarioController extends ControladorBase{
 			/**
 			 * MANEJO DE BANCOS
 			 */
-			Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.INFO, 
-					"Se modificara COD_CAJA y COD_OFICINA en tabla CB_PAGOS");
+			log.debug("onClick$btnModificarUsuario()  " + " - Se modificara COD_CAJA y COD_OFICINA en tabla CB_PAGOS");
+			//Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.INFO, 
+					//"Se modificara COD_CAJA y COD_OFICINA en tabla CB_PAGOS");
 			modificacionCajero(0);
 		} else { 
 			/**
 			 * MANEJO DE TIENDAS PROPIAS
 			 */
-			Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.INFO, 
-					"Se modificara NOM_USUARORA en tabla CB_PAGOS");
+			log.debug("onClick$btnModificarUsuario()  " + " - Se modificara NOM_USUARORA en tabla CB_PAGOS");
+			//Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.INFO, 
+				//	"Se modificara NOM_USUARORA en tabla CB_PAGOS");
 			modificacionCajero(1);
 		}
 	}
@@ -150,8 +161,9 @@ public class CBRecaudacionUsuarioController extends ControladorBase{
 				if (objeDAO.actualizaPagos(banderaOperacion, cmbUsuario.getSelectedItem().getValue().toString(), cbpagosid)) {
 					Messagebox.show("Usuario modificado con éxito, id de registro de pago modificado = " + cbpagosid,
 							"ATENCION", Messagebox.OK, Messagebox.INFORMATION);
-					Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.INFO,
-							"Actualiza el pago de forma correcta id: " + cbpagosid);
+					log.debug("onClick$btnModificarUsuario()  " + " - Actualiza el pago de forma correcta id: " + cbpagosid);
+					//Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.INFO,
+							//"Actualiza el pago de forma correcta id: " + cbpagosid);
 					CBRecaReguController instanciaPrincipal = new CBRecaReguController();
 					instanciaPrincipal = (CBRecaReguController) session.getAttribute("ifcRecaRegu");
 					instanciaPrincipal.realizaBusqueda(1);
@@ -160,7 +172,8 @@ public class CBRecaudacionUsuarioController extends ControladorBase{
 			}
 		} catch (Exception e) {
 			Messagebox.show("Ha ocurrido un error.", "ATENCION", Messagebox.OK, Messagebox.ERROR);
-			Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.SEVERE, null, e);
+			log.error("modificacionCajero() -  Error ", e);
+			//Logger.getLogger(CBRecaudacionUsuarioController.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 

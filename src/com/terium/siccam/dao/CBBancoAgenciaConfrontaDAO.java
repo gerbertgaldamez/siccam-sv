@@ -7,8 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
@@ -21,6 +22,7 @@ import com.terium.siccam.sql.ConsultasSQ;
  * Modifica Juankrlos --> 11/12/2017
  * */
 public class CBBancoAgenciaConfrontaDAO extends ControladorBase {
+	private static Logger log = Logger.getLogger(CBBancoAgenciaConfrontaDAO.class);
 	
 	// Consulta listado banco agencia confronta
 	public List<CBConfiguracionConfrontaModel> obtieneListadoBancoAgeConfronta(String idBanco, String idAgencia) {
@@ -32,22 +34,27 @@ public class CBBancoAgenciaConfrontaDAO extends ControladorBase {
 		Connection con = null;
 		try {
 			con = obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO, "Valor idBanco = " + idBanco);
-			Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO, "Valor idAgencia = " + idAgencia);
-			Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
-					"Consulta banco agencia confronta prueba = " + consultaBACSQL + where);
+			log.debug( "Valor idBanco = " + idBanco);
+			//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO, "Valor idBanco = " + idBanco);
+			log.debug( "Valor idAgencia = " + idAgencia);
+			//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO, "Valor idAgencia = " + idAgencia);
+			log.debug( "Consulta banco agencia confronta prueba = " + consultaBACSQL + where);
+			//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
+					//"Consulta banco agencia confronta prueba = " + consultaBACSQL + where);
 			QueryRunner qr = new QueryRunner();
 			BeanListHandler<CBConfiguracionConfrontaModel> bhl = new BeanListHandler<CBConfiguracionConfrontaModel>(
 					CBConfiguracionConfrontaModel.class);
 			listado = qr.query(con, consultaBACSQL + where, bhl, new Object[] {});
 		} catch (Exception e) {
-			Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtieneListadoBancoAgeConfronta() - Error ", e);
+			//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneListadoBancoAgeConfronta() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return listado;
@@ -56,31 +63,36 @@ public class CBBancoAgenciaConfrontaDAO extends ControladorBase {
 	// Consulta listado banco agencia confronta
 		public List<CBConfiguracionConfrontaModel> obtieneListadoBancoAgeConfrontaAsociacionConfrontas(String idBanco, String idAgencia) {
 			String consultaBACSQL = ConsultasSQ.CONSULTA_BANC_AGE_CONFRONTA_ASOCIACION;
-			System.out.println("query :" + ConsultasSQ.CONSULTA_BANC_AGE_CONFRONTA_ASOCIACION);
-			System.out.println("query 2:" + consultaBACSQL);
+			log.debug( "query :" + ConsultasSQ.CONSULTA_BANC_AGE_CONFRONTA_ASOCIACION);
+			log.debug( "query 2:" + consultaBACSQL);
+			
 			List<CBConfiguracionConfrontaModel> listado = new ArrayList<CBConfiguracionConfrontaModel>();
 			Connection con = null;
 			try {
 				con = ControladorBase.obtenerDtsPromo().getConnection();
 				String where = " ";
 				where += " where cbcatalogobancoid = " + idBanco + " and cbcatalogoagenciaid = " + idAgencia;
-
-				Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO, "Valor idBanco = " + idBanco);
-				Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO, "Valor idAgencia = " + idAgencia);
-				Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
-						"Consulta banco agencia confronta = " + consultaBACSQL + where);
+				log.debug( "Valor idBanco = " + idBanco);
+				//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO, "Valor idBanco = " + idBanco);
+				log.debug( "Valor idAgencia = " + idAgencia);
+				//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO, "Valor idAgencia = " + idAgencia);
+				log.debug( "Consulta banco agencia confronta = " + consultaBACSQL + where);
+				//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
+						//"Consulta banco agencia confronta = " + consultaBACSQL + where);
 				QueryRunner qr = new QueryRunner();
 				BeanListHandler<CBConfiguracionConfrontaModel> bhl = new BeanListHandler<CBConfiguracionConfrontaModel>(
 						CBConfiguracionConfrontaModel.class);
 				listado = qr.query(con, consultaBACSQL + where,  bhl, new Object[] {});
 			} catch (Exception e) {
-				Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtieneListadoBancoAgeConfrontaAsociacionConfrontas() - Error ", e);
+				//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 			} finally {
 				if (con != null)
 					try {
 						con.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("obtieneListadoBancoAgeConfrontaAsociacionConfrontas() - Error ", e);
+						//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 			}
 			return listado;
@@ -91,16 +103,19 @@ public class CBBancoAgenciaConfrontaDAO extends ControladorBase {
 	public int insertaAsociacionConfronta(CBConfiguracionConfrontaModel objModel) {
 		String insertAsociacionConfronta = ConsultasSQ.INSERTAR_BANCO_AGE_CONF;
 
-		System.out.println("query  " + insertAsociacionConfronta);
+		log.debug( "query  " + insertAsociacionConfronta);
+		
 		int resultado = 0;
 		PreparedStatement cmd = null;
 		Connection con = null;
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
-					"Valor objeto objModel = " + objModel.toString());
-			Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
-					"Insert banco agencia confronta = " + insertAsociacionConfronta);
+			log.debug( "Valor objeto objModel = " + objModel.toString());
+			//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
+				//	"Valor objeto objModel = " + objModel.toString());
+			log.debug( "Insert banco agencia confronta = " + insertAsociacionConfronta);
+			//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
+					//"Insert banco agencia confronta = " + insertAsociacionConfronta);
 			cmd = con.prepareStatement(insertAsociacionConfronta);
 			cmd.setString(1, objModel.getCbCatalogoBancoId()); // bancoId
 			cmd.setString(2, objModel.getCbCatalogoAgenciaId()); // agenciaId
@@ -120,22 +135,26 @@ public class CBBancoAgenciaConfrontaDAO extends ControladorBase {
 			//cmd.setInt(15, objModel.getEstadoComision()); // estadoComision
 			cmd.setInt(14, objModel.getConfrontasocia()); // confronta socia
 			resultado = cmd.executeUpdate();
-			Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
-					"Se a insertado un nuevo registro en banco agencia confronta...");
+			log.debug( "Se a insertado un nuevo registro en banco agencia confronta...");
+			//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
+					//"Se a insertado un nuevo registro en banco agencia confronta...");
 		} catch (Exception e) {
-			Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertaAsociacionConfronta() - Error ", e);
+			//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertaAsociacionConfronta() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("insertaAsociacionConfronta() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return resultado;
@@ -145,16 +164,19 @@ public class CBBancoAgenciaConfrontaDAO extends ControladorBase {
 	public int actualizaConfronta(CBConfiguracionConfrontaModel objModel) {
 		String updateAsociacionSQL = ConsultasSQ.ACTUALIZA_BANCO_AGE_CONF;
 		int i = 0;
-		Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
-				"id conexion: " + objModel.getIdConexionConf());
+		log.debug( "id conexion: " + objModel.getIdConexionConf());
+		//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
+				//"id conexion: " + objModel.getIdConexionConf());
 		PreparedStatement cmd = null;
 		Connection con = null;
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
-					"Valor objModel = " + objModel.toString());
-			Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
-					"Update banco agencia confronta = " + updateAsociacionSQL);
+			log.debug( "Valor objModel = " + objModel.toString());
+			//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
+				//	"Valor objModel = " + objModel.toString());
+			log.debug( "Update banco agencia confronta = " + updateAsociacionSQL);
+			//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
+					//"Update banco agencia confronta = " + updateAsociacionSQL);
 			cmd = con.prepareStatement(updateAsociacionSQL);
 			cmd.setString(1, objModel.getcBConfiguracionConfrontaId()); // confronta
 			cmd.setInt(2, objModel.getEstado()); // estado
@@ -173,19 +195,22 @@ public class CBBancoAgenciaConfrontaDAO extends ControladorBase {
 			cmd.setString(13, objModel.getCbBancoAgenciaConfrontaId()); // idConfronta
 			i = cmd.executeUpdate();
 		} catch (SQLException e) {
-			Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("actualizaConfronta() - Error ", e);
+			//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("actualizaConfronta() - Error ", e1);
+					//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("actualizaConfronta() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return i;
@@ -197,20 +222,24 @@ public class CBBancoAgenciaConfrontaDAO extends ControladorBase {
 		int i = 0;
 		Connection con = null;
 		try {
-			Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO, "Valor idFila = " + idFila);
-			Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
-					"Delete banco agencia confronta = " + deleteAsociacion);
+			log.debug( "Valor idFila = " + idFila);
+			//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO, "Valor idFila = " + idFila);
+			log.debug( "Delete banco agencia confronta = " + deleteAsociacion);
+			//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
+					//"Delete banco agencia confronta = " + deleteAsociacion);
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			QueryRunner qr = new QueryRunner();
 			i = qr.update(con, deleteAsociacion, idFila);
 		} catch (Exception e) {
-			Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("eliminaAsociacionConfronta() - Error ", e);
+		//	Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("eliminaAsociacionConfronta() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return i;
@@ -230,8 +259,9 @@ public class CBBancoAgenciaConfrontaDAO extends ControladorBase {
 		Connection con = null;
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
-					"Consulta estados comision = " + estadosComisionSQL);
+			log.debug( "Consulta estados comision = " + estadosComisionSQL);
+			//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
+					//"Consulta estados comision = " + estadosComisionSQL);
 			ps = con.prepareStatement(estadosComisionSQL);
 			rs = ps.executeQuery();
 			CBParametrosGeneralesModel obj = null;
@@ -242,25 +272,29 @@ public class CBBancoAgenciaConfrontaDAO extends ControladorBase {
 				lista.add(obj);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerEstadoComisionCmb() - Error ", e);
+			//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerEstadoComisionCmb() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerEstadoComisionCmb() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerEstadoComisionCmb() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		} 
 		return lista;
@@ -283,38 +317,45 @@ public class CBBancoAgenciaConfrontaDAO extends ControladorBase {
 		int cantRegistros = 0;
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
-					"cbbancoagenciaconfrontaid = : " + cbBancoAgenciaConfrontaId);
-			Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
-					"Count SQL registros de conciliacion = " + countConciliacionesSQL);
+			log.debug( "cbbancoagenciaconfrontaid = : " + cbBancoAgenciaConfrontaId);
+			//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
+					//"cbbancoagenciaconfrontaid = : " + cbBancoAgenciaConfrontaId);
+			log.debug( "Count SQL registros de conciliacion = " + countConciliacionesSQL);
+		//	Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
+				//	"Count SQL registros de conciliacion = " + countConciliacionesSQL);
 			ps = con.prepareStatement(countConciliacionesSQL);
 			ps.setInt(1, cbBancoAgenciaConfrontaId); 
 			rs = ps.executeQuery();
 			if(rs.next()){
 				cantRegistros = rs.getInt(1);
-				Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
-						"Registros de conciliacion encontrados = " + cantRegistros);
+				log.debug( "Registros de conciliacion encontrados = " + cantRegistros);
+				//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.INFO,
+						//"Registros de conciliacion encontrados = " + cantRegistros);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("cantidadRegistrosConciliacion() - Error ", e);
+			//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("cantidadRegistrosConciliacion() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("cantidadRegistrosConciliacion() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("cantidadRegistrosConciliacion() - Error ", e);
+					//Logger.getLogger(CBBancoAgenciaConfrontaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		} 
 		return cantRegistros;

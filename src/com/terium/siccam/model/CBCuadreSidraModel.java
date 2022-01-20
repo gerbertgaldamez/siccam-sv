@@ -1,6 +1,7 @@
 package com.terium.siccam.model;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 
 public class CBCuadreSidraModel {
 	
@@ -16,12 +17,50 @@ public class CBCuadreSidraModel {
 	private String fechaBoleta;
 	private BigDecimal montoBoleta;
 	private String jornada;
-	private String fechaInicioJ;
+	private Date fechaInicioJ;
 	private String fechaLiquidacionJ;
 	private String estadoJornada;
 	private String tipoRutaPanel;
 	private String nombrerutaP;
 	private String nombreVendedor;
+	private String fechaInicio;
+	private String fechaFin;
+	private String nombre;
+	private String existe;
+	private BigDecimal totalArbor;
+	private BigDecimal totalPagado;
+	private String fechaFactura;
+	private BigDecimal montoPagadoBmf;
+	public String getFechaFactura() {
+		return fechaFactura;
+	}
+	public void setFechaFactura(String fechaFactura) {
+		this.fechaFactura = fechaFactura;
+	}
+	public BigDecimal getMontoPagadoBmf() {
+		return montoPagadoBmf;
+	}
+	public void setMontoPagadoBmf(BigDecimal montoPagadoBmf) {
+		this.montoPagadoBmf = montoPagadoBmf;
+	}
+	public String getExiste() {
+		return existe;
+	}
+	public void setExiste(String existe) {
+		this.existe = existe;
+	}
+	public BigDecimal getTotalArbor() {
+		return totalArbor;
+	}
+	public void setTotalArbor(BigDecimal totalArbor) {
+		this.totalArbor = totalArbor;
+	}
+	public BigDecimal getTotalPagado() {
+		return totalPagado;
+	}
+	public void setTotalPagado(BigDecimal totalPagado) {
+		this.totalPagado = totalPagado;
+	}
 	public String getSerie() {
 		return serie;
 	}
@@ -94,10 +133,10 @@ public class CBCuadreSidraModel {
 	public void setJornada(String jornada) {
 		this.jornada = jornada;
 	}
-	public String getFechaInicioJ() {
+	public Date getFechaInicioJ() {
 		return fechaInicioJ;
 	}
-	public void setFechaInicioJ(String fechaInicioJ) {
+	public void setFechaInicioJ(Date fechaInicioJ) {
 		this.fechaInicioJ = fechaInicioJ;
 	}
 	public String getFechaLiquidacionJ() {
@@ -130,6 +169,26 @@ public class CBCuadreSidraModel {
 	public void setNombreVendedor(String nombreVendedor) {
 		this.nombreVendedor = nombreVendedor;
 	}
+	public String getFechaInicio() {
+		return fechaInicio;
+	}
+	public void setFechaInicio(String fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+	public String getFechaFin() {
+		return fechaFin;
+	}
+	public void setFechaFin(String fechaFin) {
+		this.fechaFin = fechaFin;
+	}
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	
+	
 	
 
 }

@@ -7,8 +7,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.zkoss.zul.Messagebox;
 
 import com.terium.siccam.composer.ControladorBase;
@@ -16,6 +17,7 @@ import com.terium.siccam.model.CBConciliacionCajasModel;
 
 @SuppressWarnings("serial")
 public class CBConciliacionCajasDAO extends ControladorBase{
+	private static Logger log = Logger.getLogger(CBConciliacionCajasDAO.class);
 	
 	//Editado ultima vez por Carlos Godinez - Qitcorp - 22/05/2017
 	/*
@@ -45,7 +47,8 @@ public class CBConciliacionCajasDAO extends ControladorBase{
 		String where = "";
 		where += " AND fecha  >= to_date('"+fechaini+"', 'dd/MM/yyyy') " + 
 				" AND fecha  <= to_date('"+fechafin+"', 'dd/MM/yyyy') ";
-		System.out.println("fecha:" + where);
+		log.debug( "fecha:" + where);
+		
 		if(entidad != 0) {
 			where += "AND CBCATALOGOBANCOID = '"+entidad+"'";
 		}
@@ -62,7 +65,8 @@ public class CBConciliacionCajasDAO extends ControladorBase{
 			stm = con.createStatement();
 			//Messagebox.show("query." + CONSULTA_CAJEROS+where, "ATENCION", Messagebox.OK,
 			//		Messagebox.INFORMATION);
-			System.out.println("consulta: "+CONSULTA_CAJEROS+where);
+			log.debug( "consulta: "+ CONSULTA_CAJEROS + where);
+			
 			rs = stm.executeQuery(CONSULTA_CAJEROS+where+" ORDER BY 1, 2, 3, 4, 5 ");
 			//Messagebox.show("query despues." + CONSULTA_CAJEROS+where, "ATENCION", Messagebox.OK,
 			//		Messagebox.INFORMATION);
@@ -106,27 +110,32 @@ public class CBConciliacionCajasDAO extends ControladorBase{
 				 list.add(obj);
 			}
 		}catch(SQLException e){
-			Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaPrincipal() - Error ", e);
+			//Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 		}catch(Exception e){
-			Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaPrincipal() - Error ", e);
+			//Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 				if(rs != null)
 					try {
 						rs.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaPrincipal() - Error ", e);
+						//Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(stm != null)
 					try {
 						stm.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaPrincipal() - Error ", e);
+						//Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(con != null)
 					try {
 						con.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaPrincipal() - Error ", e);
+						//Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 		}
 		
@@ -147,7 +156,8 @@ public class CBConciliacionCajasDAO extends ControladorBase{
 			con = obtenerDtsPromo().getConnection();
 			stm = con.createStatement();
 			rs = stm.executeQuery(OBTIENE_ENTIDAD_SQ);
-			System.out.println("query combo " + OBTIENE_ENTIDAD_SQ);
+			log.debug( "query combo " + OBTIENE_ENTIDAD_SQ);
+			
 			CBConciliacionCajasModel obj = null;
 			while(rs.next()) {
 				obj = new CBConciliacionCajasModel();
@@ -156,27 +166,32 @@ public class CBConciliacionCajasDAO extends ControladorBase{
 				list.add(obj);
 			}
 		}catch(SQLException e) {
-			Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaEntidad() - Error ", e);
+			//Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 		}catch(Exception e){
-			Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaEntidad() - Error ", e);
+			//Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 				if(rs != null)
 					try {
 						rs.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaEntidad() - Error ", e);
+						//Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(stm != null)
 					try {
 						stm.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaEntidad() - Error ", e);
+					//	Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(con != null)
 					try {
 						con.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaEntidad() - Error ", e);
+						//Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 		}
 		return list;
@@ -204,7 +219,8 @@ public class CBConciliacionCajasDAO extends ControladorBase{
 			String query = OBTIENE_AGENCIA_SQ;
 			query += " and b.cbcatalogobancoid = "+idBanco;
 			query += " ORDER BY TO_NUMBER(b.codigo_colector) ASC ";
-			System.out.println("query combo entidades " + query);
+			log.debug( "query combo entidades " + query);
+			
 			rs = stm.executeQuery(query);
 			CBConciliacionCajasModel obj = null;
 			while(rs.next()) {
@@ -214,27 +230,32 @@ public class CBConciliacionCajasDAO extends ControladorBase{
 				list.add(obj);
 			}
 		}catch(SQLException e) {
-			Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaAgencia() - Error ", e);
+			//Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 		}catch(Exception e){
-			Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaAgencia() - Error ", e);
+			//Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 				if(rs != null)
 					try {
 						rs.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaAgencia() - Error ", e);
+						//Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(stm != null)
 					try {
 						stm.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaAgencia() - Error ", e);
+						//Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(con != null)
 					try {
 						con.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaAgencia() - Error ", e);
+						//Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 		}
 		return list;
@@ -257,6 +278,7 @@ public class CBConciliacionCajasDAO extends ControladorBase{
 			con = obtenerDtsPromo().getConnection();
 			stm = con.createStatement();
 			rs = stm.executeQuery(OBTIENE_BANCO_SQ);
+			log.debug( "query  " + OBTIENE_BANCO_SQ);
 			CBConciliacionCajasModel obj = null;
 			while(rs.next()) {
 				obj = new CBConciliacionCajasModel();
@@ -265,27 +287,32 @@ public class CBConciliacionCajasDAO extends ControladorBase{
 				list.add(obj);
 			}
 		}catch(SQLException e) {
-			Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaBanco() - Error ", e);
+			//Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 		}catch(Exception e){
-			Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaBanco() - Error ", e);
+			//Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 				if(rs != null)
 					try {
 						rs.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaBanco() - Error ", e);
+						//Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(stm != null)
 					try {
 						stm.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaBanco() - Error ", e);
+						//Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(con != null)
 					try {
 						con.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaBanco() - Error ", e);
+						//Logger.getLogger(CBConciliacionCajasDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 		}
 		return list;

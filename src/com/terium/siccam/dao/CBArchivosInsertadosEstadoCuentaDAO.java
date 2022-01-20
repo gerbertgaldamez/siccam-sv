@@ -4,6 +4,9 @@
 package com.terium.siccam.dao;
 
 import java.sql.Connection;
+
+import org.apache.log4j.Logger;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +14,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
+
 
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBArchivosInsertadosEstadoCuentaDAO;
@@ -22,6 +26,8 @@ import com.terium.siccam.sql.ConsultasSQ;
  * @author lab
  */
 public class CBArchivosInsertadosEstadoCuentaDAO extends ControladorBase{
+	
+	private static Logger log = Logger.getLogger(CBArchivosInsertadosEstadoCuentaDAO.class);
 
 
 	
@@ -48,8 +54,9 @@ public class CBArchivosInsertadosEstadoCuentaDAO extends ControladorBase{
 							+ " AND TO_DATE('" + fechaHasta + " 23:59:59" + "', 'dd/MM/yyyy HH24:mi:ss') ";
 				}
 				
-				Logger.getLogger(CBArchivosInsertadosEstadoCuentaDAO.class.getName())
-					.log(Level.INFO,"Query general consulta cargas estado cuentas = " + archivosCargadosSQL + where + " ORDER BY CBESTADOCUENTAARCHIVOSID");
+				log.debug( "Query general consulta cargas estado cuentas = " + archivosCargadosSQL + where + " ORDER BY CBESTADOCUENTAARCHIVOSID");
+				//Logger.getLogger(CBArchivosInsertadosEstadoCuentaDAO.class.getName())
+				//	.log(Level.INFO,"Query general consulta cargas estado cuentas = " + archivosCargadosSQL + where + " ORDER BY CBESTADOCUENTAARCHIVOSID");
 				
 				ps = con.createStatement();
 				rs = ps.executeQuery(archivosCargadosSQL + where + " ORDER BY CBESTADOCUENTAARCHIVOSID");
@@ -64,25 +71,29 @@ public class CBArchivosInsertadosEstadoCuentaDAO extends ControladorBase{
 					lista.add(obj);
 				}
 		}catch (Exception e) {
-			Logger.getLogger(CBArchivosInsertadosEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtieneListaArchivosCargados() - Error ", e);
+			//Logger.getLogger(CBArchivosInsertadosEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBArchivosInsertadosEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneListaArchivosCargados() - Error ", e);
+					//Logger.getLogger(CBArchivosInsertadosEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBArchivosInsertadosEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneListaArchivosCargados() - Error ", e);
+					//Logger.getLogger(CBArchivosInsertadosEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBArchivosInsertadosEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneListaArchivosCargados() - Error ", e);
+					//Logger.getLogger(CBArchivosInsertadosEstadoCuentaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 	}
 		return lista;
@@ -133,24 +144,28 @@ public class CBArchivosInsertadosEstadoCuentaDAO extends ControladorBase{
 		Connection conn = null;
 		PreparedStatement cmd = null;
 		String deleteArchivoMaestroSQL = ConsultasSQ.DELETE_ARCHIVO_MAESTRO_ESTADO_CUENTA;
-		Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
-		.log(Level.INFO,"\n*** QUERY ELIMINAR: ***\n" + deleteArchivoMaestroSQL);
+		log.debug( "\n*** QUERY ELIMINAR: ***\n" + deleteArchivoMaestroSQL);
+	//	Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
+		//.log(Level.INFO,"\n*** QUERY ELIMINAR: ***\n" + deleteArchivoMaestroSQL);
 			try {
 				conn = obtenerDtsPromo().getConnection();
 				cmd = conn.prepareStatement(deleteArchivoMaestroSQL);
 				cmd.setString(1, idMaestroCarga);
 			if(cmd.executeUpdate() > 0)
 				result = true;
-				Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
-					.log(Level.INFO,"\n*** Registro eliminado con exito ***\n");
+			log.debug( "\n*** Registro eliminado con exito ***\n");
+			//	Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
+					//.log(Level.INFO,"\n*** Registro eliminado con exito ***\n");
 		}catch (Exception e) {
-			Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("borraFilaGrabadaMaestro() - Error ", e);
+			//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			try {
 				if(cmd != null)cmd.close();
 				if(conn != null)conn.close();
 			}catch (Exception e) {
-				Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("borraFilaGrabadaMaestro() - Error ", e);
+				//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -162,24 +177,28 @@ public class CBArchivosInsertadosEstadoCuentaDAO extends ControladorBase{
 		Connection conn = null;
 		PreparedStatement cmd = null;
 		String deleteArchivoMaestroSQL = ConsultasSQ.DELETE_REGISTROS_SOCIEDAD_ESTADO_CUENTA;
-		Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
-		.log(Level.INFO,"\n*** QUERY ELIMINAR: ***\n" + deleteArchivoMaestroSQL );
+		log.debug( "\n*** QUERY ELIMINAR: ***\n" + deleteArchivoMaestroSQL );
+		//Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
+		//.log(Level.INFO,"\n*** QUERY ELIMINAR: ***\n" + deleteArchivoMaestroSQL );
 			try {
 				conn = obtenerDtsPromo().getConnection();
 				cmd = conn.prepareStatement(deleteArchivoMaestroSQL);
 				cmd.setString(1, idMaestroCarga);
 			if(cmd.executeUpdate() > 0)
 				result = true;
-				Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
-					.log(Level.INFO,"\n*** Registro eliminado con exito ***\n");
+			log.debug( "\n*** Registro eliminado con exito ***\n");
+				//Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
+					//.log(Level.INFO,"\n*** Registro eliminado con exito ***\n");
 		}catch (Exception e) {
-			Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("borraRegistrosSociedad() - Error ", e);
+			//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			try {
 				if(cmd != null)cmd.close();
 				if(conn != null)conn.close();
 			}catch (Exception e) {
-				Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("borraRegistrosSociedad() - Error ", e);
+				//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -191,24 +210,28 @@ public class CBArchivosInsertadosEstadoCuentaDAO extends ControladorBase{
 		Connection conn = null;
 		PreparedStatement cmd = null;
 		String deleteArchivoMaestroSQL = ConsultasSQ.DELETE_REGISTROS_CREDOMATIC_ESTADO_CUENTA;
-		Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
-		.log(Level.INFO,"\n*** QUERY ELIMINAR: ***\n" + deleteArchivoMaestroSQL );
+		log.debug( "\n*** QUERY ELIMINAR: ***\n" + deleteArchivoMaestroSQL );
+		//Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
+		//.log(Level.INFO,"\n*** QUERY ELIMINAR: ***\n" + deleteArchivoMaestroSQL );
 			try {
 				conn = obtenerDtsPromo().getConnection();
 				cmd = conn.prepareStatement(deleteArchivoMaestroSQL);
 				cmd.setString(1, idMaestroCarga);
 			if(cmd.executeUpdate() > 0)
 				result = true;
-				Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
-					.log(Level.INFO,"\n*** Registro eliminado con exito ***\n");
+			log.debug( "\n*** Registro eliminado con exito ***\n");
+				//Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
+				//	.log(Level.INFO,"\n*** Registro eliminado con exito ***\n");
 		}catch (Exception e) {
-			Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("borraRegistrosCredomatic() - Error ", e);
+			//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			try {
 				if(cmd != null)cmd.close();
 				if(conn != null)conn.close();
 			}catch (Exception e) {
-				Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("borraRegistrosCredomatic() - Error ", e);
+				//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -219,24 +242,28 @@ public class CBArchivosInsertadosEstadoCuentaDAO extends ControladorBase{
 		Connection conn = null;
 		PreparedStatement cmd = null;
 		String deleteArchivoMaestroSQL = ConsultasSQ.DELETE_REGISTROS_OTRAS_ESTADO_CUENTA;
-		Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
-		.log(Level.INFO,"\n*** QUERY ELIMINAR: ***\n" + deleteArchivoMaestroSQL );
+		log.debug( "\n*** QUERY ELIMINAR: ***\n" + deleteArchivoMaestroSQL );
+	//	Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
+		//.log(Level.INFO,"\n*** QUERY ELIMINAR: ***\n" + deleteArchivoMaestroSQL );
 			try {
 				conn = obtenerDtsPromo().getConnection();
 				cmd = conn.prepareStatement(deleteArchivoMaestroSQL);
 				cmd.setString(1, idMaestroCarga);
 			if(cmd.executeUpdate() > 0)
 				result = true;
-				Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
-					.log(Level.INFO,"\n*** Registro eliminado con exito ***\n");
+			log.debug( "\n*** Registro eliminado con exito ***\n");
+				//Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
+					//.log(Level.INFO,"\n*** Registro eliminado con exito ***\n");
 		}catch (Exception e) {
-			Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("borraRegistrosOtras() - Error ", e);
+			//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			try {
 				if(cmd != null)cmd.close();
 				if(conn != null)conn.close();
 			}catch (Exception e) {
-				Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("borraRegistrosOtras() - Error ", e);
+				//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;

@@ -3,41 +3,66 @@ package com.terium.siccam.controller;
 
 
 import java.math.BigDecimal;
+
+import org.apache.log4j.Logger;
+
+
+
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
 
+
+
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Textbox;
 
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.dao.CBCuadreSidraDAO;
 import com.terium.siccam.model.CBCuadreSidraModel;
+import com.terium.siccam.utils.Constantes;
 
 
 
 public class CBCuadreFacturaController extends ControladorBase{
+	private static Logger log = Logger.getLogger(CBCuadreFacturaController.class);
 	private static final long serialVersionUID = 1L;
 	Listbox lbxCuadreSidra;
+	private Datebox dtbDesde;
+	private Datebox dtbHasta;
+	private Textbox tbxNombre;
+	Datebox dtbDia;
+	DateFormat fechaFormato = new SimpleDateFormat("dd/MM/yyyy");
 	
 	CBCuadreSidraDAO cuadreSidra = new CBCuadreSidraDAO();
 	List<CBCuadreSidraModel> lst;
 	
 	public void doAfterCompose(Component comp) {
 		
-
+		try {
+			super.doAfterCompose(comp);
+		} catch (Exception e) {
+			log.error("doAfterCompose() - Error: ", e);
+			Messagebox.show("Ha ocurrido un error", "ATENCION", Messagebox.OK, Messagebox.ERROR);
+		}
 }
-	public void listarConciliaciones() {
-		CBCuadreSidraModel objModel = new CBCuadreSidraModel();
+	public void listarConciliaciones(CBCuadreSidraModel objModel, int banderaMensaje) {
+		//CBCuadreSidraDAO objDao = new CBCuadreSidraDAO();
 		lst = cuadreSidra.obtenerCuadreSidra(objModel);
 
 		try {
 			limpiarListboxYPaginas(lbxCuadreSidra);
 
-			// lstToda = new ArrayList<CBResumenDiarioConciliacionModel>();
-			try {
+			
+			
 				if (lst.size() > 0) {
 					Iterator<CBCuadreSidraModel> ilst = lst.iterator();
 					CBCuadreSidraModel adr = null;
@@ -47,134 +72,153 @@ public class CBCuadreFacturaController extends ControladorBase{
 						adr = ilst.next();
 						fila = new Listitem();
 
-						/** Agrupacion principal **/
+						cell = new Listcell();
+						cell.setLabel(adr.getFechaFactura());
+						cell.setParent(fila);
 						// Serie
 						cell = new Listcell();
 						cell.setLabel(adr.getSerie());
 						cell.setParent(fila);
+						
 
-						// NOMBRE
+						// NOMBRE CLIENTE
 						cell = new Listcell();
 						cell.setLabel(adr.getNombreCliente());
 						cell.setParent(fila);
-
-						// CODIGO COLECTOR
-						// CarlosGodinez -> 07/08/2018
+						
+						// NOMBRE CLIENTE FINAL
+						
 						cell = new Listcell();
 						cell.setLabel(adr.getNombreClienteFinal());
 						cell.setParent(fila);
-
-						// TIPO
+						
+						// BILL REF NO
 						cell = new Listcell();
 						cell.setLabel(adr.getBillRefNo());
 						cell.setParent(fila);
-
-						/** Agrupacion BANCO **/
-						// TRANAS BANCO
-						cell = new Listcell();
 						
+						
+						// FECHA PAGO
+						cell = new Listcell();
 						cell.setLabel(adr.getFechaPago());
 						cell.setParent(fila);
-
-						// PAGOS BANCO
+						
+						// MONTO PAGO
 						cell = new Listcell();
 						cell.setStyle("text-align: right");
 						cell.setLabel(convertirADecimal(adr.getMontoPago()).toString());
 						cell.setParent(fila);
-
-						// MANUAL BANCO
+						
+						// ESTADO FACTURA
 						cell = new Listcell();
 						cell.setStyle("text-align: right");
 						cell.setLabel(adr.getEstadoFactura());
 						cell.setParent(fila);
-
-						// REAL BANCO
+						
+						// FECHA SINCRONIZACION
 						cell = new Listcell();
 						cell.setStyle("text-align: right");
 						cell.setLabel(adr.getFechaSincronizacion());
 						cell.setParent(fila);
-
-						// Pendiente Banco
+					
+						// NO BOLETA
 						cell = new Listcell();
 						cell.setStyle("text-align: right");
 						cell.setLabel(adr.getNoBoleta());
 						cell.setParent(fila);
 
-						/** Agrupacion SISTEMA COMERCIAL **/
-						// TRANS TELEFONICA
+						
+						// FECHA BOLETA
 						cell = new Listcell();
 						cell.setStyle("text-align: right");
 						cell.setLabel(adr.getFechaBoleta());
 						cell.setParent(fila);
-
-						// PAGOS TELEFONICA
+						
+						// NOMTO BOLETA
 						cell = new Listcell();
 						cell.setStyle("text-align: right");
 						cell.setLabel(convertirADecimal(adr.getMontoBoleta()));
 						cell.setParent(fila);
-
-						// MANUAL TELEFONICA
-						cell = new Listcell();
 						
+						// JORNADA
+						cell = new Listcell();
 						cell.setLabel(adr.getJornada());
 						cell.setParent(fila);
-
-						// REAL TELEFONICA
+						
+						// FECHA INICIO JORNADA
 						cell = new Listcell();
-						
-						cell.setLabel(adr.getFechaInicioJ());
+						cell.setStyle("text-align: right");
+						cell.setLabel(fechaFormato.format(adr.getFechaInicioJ()));
 						cell.setParent(fila);
-
-						
+					
+						//FECHA LIQUIDACION JORNADA
+						cell = new Listcell();
 						cell.setLabel(adr.getFechaLiquidacionJ());
 						cell.setParent(fila);
 
-						/** Agrupacion RESULTADOS **/
-
-						// estaba comentariada
-						// Transacciones Telca
-						cell = new Listcell();
 						
+						
+						// ESTADO JORNADA
+						cell = new Listcell();
 						cell.setLabel(adr.getEstadoJornada());
 						cell.setParent(fila);
-
-						// CONCILIADAS
-						cell = new Listcell();
 						
+						// TIPO RUTA PANEL
+						cell = new Listcell();
 						cell.setLabel(adr.getTipoRutaPanel());
 						cell.setParent(fila);
-
-						// DIFERENCIA TRANSACCION
-						cell = new Listcell();
 						
+						// NOMBRE RUTA PANEL
+						cell = new Listcell();
 						cell.setLabel(adr.getNombrerutaP());
 						cell.setParent(fila);
-
-						// AUTOMATICA
-						cell = new Listcell();
 						
+						// NOMBRE VENDEDOR
+						cell = new Listcell();
 						cell.setLabel(adr.getNombreVendedor());
 						cell.setParent(fila);
-
 						
-
+						cell = new Listcell();
+						cell.setLabel(adr.getExiste());
+						cell.setParent(fila);
+						
+						cell = new Listcell();
+						cell.setStyle("text-align: right");
+						cell.setLabel(convertirADecimal(adr.getTotalArbor()).toString());
+						cell.setParent(fila);
+						
+						cell = new Listcell();
+						cell.setStyle("text-align: right");
+						cell.setLabel(convertirADecimal(adr.getTotalPagado()).toString());
+						cell.setParent(fila);
+						
+						cell = new Listcell();
+						cell.setStyle("text-align: right");
+						cell.setLabel(convertirADecimal(adr.getMontoPagadoBmf()).toString());
+						cell.setParent(fila);
+						
+						
 						cell.setParent(fila);
 
 						fila.setValue(adr);
 						// lstToda.add(adr);
 
-					
-
-						fila.setParent(lbxCuadreSidra);
+					fila.setParent(lbxCuadreSidra);
 
 					}
+				}else {
+					//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, 
+							//"Bandera mensaje = " + banderaMensaje);
+					if(banderaMensaje == 0) { //Ejecucion de metodo desde pantalla principal
+						Messagebox.show("No existen registros para los filtros aplicados", 
+								"ATENCION", Messagebox.OK, Messagebox.EXCLAMATION);
+					} 
 				}
+				
 			} catch (Exception e) {
-				//log.error("listarConciliaciones() - Error: ", e);
+				log.error("listarConciliaciones() - Error: ", e);
 			}
-		} catch (Exception e) {
-			//log.error("listarConciliaciones() - Error limpiar lista : ", e);
-		}
+		
 
 	}
 	public String convertirADecimal(BigDecimal num) {
@@ -203,5 +247,70 @@ public class CBCuadreFacturaController extends ControladorBase{
 			}
 		}
 	}
+	public void onClick$btnConsulta() {
+		log.debug("onClick$btnConsulta() - entra al metodo de consulta : ");
+		realizaBusqueda(0);
+		log.debug("onClick$btnConsulta() - entra al metodo de consulta : ");
+	}
+	public void realizaBusqueda(int banderaMensaje) {
+		log.debug("realizaBusqueda() - entra al metodo realiza busqueda : ");
+		try { 
+			
+			
+			limpiarListbox(lbxCuadreSidra);
+			DateFormat fechaFormato = new SimpleDateFormat("dd/MM/yy");
+			
+			if(dtbDesde.getValue() == null) {
+				Messagebox.show("Debe ingresar la fecha de inicio antes de consultar datos.",
+						Constantes.ATENCION, Messagebox.OK, Messagebox.EXCLAMATION);
+				return;
+			}else if(dtbHasta.getValue() == null){
+				Messagebox.show("Debe ingresar la fecha fin antes de consultar datos.",
+						Constantes.ATENCION, Messagebox.OK, Messagebox.EXCLAMATION);
+				return;
+			} else if(dtbDesde.getValue().after(dtbHasta.getValue())){
+				Messagebox.show("La fecha desde debe ser menor a la fecha hasta.",
+						Constantes.ATENCION, Messagebox.OK, Messagebox.EXCLAMATION);
+				return;
+			}else {
+				String nombre = "";
+				
+				if(tbxNombre.getValue() == null || "".equals(tbxNombre.getText())) {
+					nombre = "";
+				} else {
+					nombre = tbxNombre.getText().trim();
+					
+					
+				}
+				log.debug("realizaBusqueda() - nombre : " + nombre);
+				
+				CBCuadreSidraModel objModel = new CBCuadreSidraModel();
+				objModel.setNombreCliente(nombre);
+				objModel.setFechaInicio(dtbDesde.getText());
+				objModel.setFechaFin(dtbHasta.getText());
+				listarConciliaciones( objModel,  banderaMensaje);
+				
+			}
+			
+		
+		
+		
+		
+		} catch (Exception e) {
+			log.error("realizaBusqueda() - Error ", e);
+			
+			Messagebox.show("Ha ocurrido un error", Constantes.ATENCION, Messagebox.OK, Messagebox.ERROR);
+		}
+		
 
+}
+	public void limpiarListbox(Listbox componente) {
+		if (componente != null) {
+			componente.getItems().removeAll(componente.getItems());
+			if (!"paging".equals(componente.getMold())) {
+				componente.setMold("paging");
+				componente.setAutopaging(true);
+			}
+		}
+	}
 }

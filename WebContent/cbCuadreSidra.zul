@@ -1,8 +1,9 @@
 <?page title="Cuadre Sidra" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:h="native" xmlns="http://www.zkoss.org/2005/zul">
-<window id="cuadreSidra" width="100%" title="" vflex="true"
-		border="normal" apply="com.terium.siccam.controller.CBCuadreFacturaController">
-<borderlayout id="blyPrincipal">
+	<window id="cuadreSidra" width="100%" title="" vflex="true"
+		border="normal"
+		apply="com.terium.siccam.controller.CBCuadreFacturaController">
+		<borderlayout id="blyPrincipal">
 
 
 			<center autoscroll="true">
@@ -29,23 +30,25 @@
 										<datebox id="dtbHasta"
 											format="dd/MM/yyyy" />
 									</hbox>
-									
+
 								</row>
 								<row>
 									<hbox>
-										<label value="Texto: " />
+										<label value="Nombre: " />
 										<separator width="29px" />
-										<textbox id="tbxTexto" width="190px" />
+										<textbox id="tbxNombre"
+											width="190px" />
 									</hbox>
 									<hbox>
-										<label value="Observaciones: " />
+										<label value="Monto Pagado: " />
 										<separator width="5px" />
-										<textbox id="tbxObservaciones" width="150px"/>
+										<textbox id="tbxMontoPagado"
+											width="150px" />
 									</hbox>
-									
+
 								</row>
-								
-								
+
+
 
 
 							</rows>
@@ -54,49 +57,61 @@
 					</groupbox>
 
 
-					<button id="btnConsuta" label="Consultar"
+					<button id="btnConsulta" label="Consultar"
 						image="img/globales/16x16/consulta.png" />
 					<separator height="5px" />
 
-					<groupbox mold="3d" width="100%" height="400px">
+					<groupbox mold="3d" width="100%" height="300px">
 						<caption label="Detalle de registros" />
 
 
-						<listbox id="lbxCuadreSidra" height="300px"
+						<listbox id="lbxCuadreSidra" height="230xp"
 							mold="paging" pageSize="10" sizedByContent="true" vflex="true"
 							emptyMessage="No hay registros consultados">
 							<frozen columns="4"></frozen>
 							<listhead>
-								<listheader label="Serie"
+							<listheader label="Fecha Factura" sort="auto" />
+								<listheader label="Serie" sort="auto" />
+								<listheader label="Nombre Cliente"
 									sort="auto" />
-								<listheader label="Nombre Cliente" sort="auto" />
-								<listheader label="Nombre Cliente Final" sort="auto" />
+								<listheader label="Nombre Cliente Final"
+									sort="auto" />
 								<listheader label="Rill Ref No"
-									sort="auto" /><!-- CarlosGodinez -> 07/07/2017 -->
-								<listheader label="Fecha Pago" sort="auto" />
-								<listheader label="Monto Pago" sort="auto" />
-								<listheader label="Estado Factura" sort="auto" />
-								<listheader label="Fecha Sincronizacion" sort="auto" />
+									sort="auto" />
+								<listheader label="Fecha Pago"
+									sort="auto" />
+								<listheader label="Monto Pago"
+									sort="auto" />
+								<listheader label="Estado Factura"
+									sort="auto" />
+								<listheader label="Fecha Sincronizacion"
+									sort="auto" />
 								<listheader label="No Boleta"
 									sort="auto" />
-								<!-- Agregado por CarlosGodinez 01/03/2017 -->
 								<listheader label="Fecha Boleta"
 									sort="auto" />
 								<listheader label="Monto Boleta"
 									sort="auto" />
-								<listheader label="Jornada"
-									sort="auto" /><!-- CarlosGodinez -> 07/07/2017 -->
+								<listheader label="Jornada" sort="auto" />
 								<listheader label="Fecha Inicio Jornada"
 									sort="auto" />
-								<listheader label="Fecha LIquidacion Jornada"
-									sort="auto" />
+								<listheader
+									label="Fecha LIquidacion Jornada" sort="auto" />
 								<listheader label="Estado Jornada"
 									sort="auto" />
-									<listheader label="Tipo Ruta Panel"
+								<listheader label="Tipo Ruta Panel"
 									sort="auto" />
 								<listheader label="Nombre Ruta Panel"
 									sort="auto" />
-									<listheader label="Nombre Vendedor"
+								<listheader label="Nombre Vendedor"
+									sort="auto" />
+									<listheader label="Existe"
+									sort="auto" />
+									<listheader label="Total Arbor"
+									sort="auto" />
+									<listheader label="Total Pagado"
+									sort="auto" />
+									<listheader label="Monto Pagado BMF"
 									sort="auto" />
 							</listhead>
 						</listbox>
@@ -106,6 +121,6 @@
 				</groupbox>
 			</center>
 		</borderlayout>
-		
-</window>
+
+	</window>
 </zk>

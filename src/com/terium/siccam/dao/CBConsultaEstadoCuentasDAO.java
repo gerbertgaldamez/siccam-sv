@@ -13,7 +13,9 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 
@@ -29,6 +31,7 @@ import com.terium.siccam.utils.ConsultasSQ;
 
 @SuppressWarnings("serial")
 public class CBConsultaEstadoCuentasDAO extends ControladorBase {
+	private static Logger log = Logger.getLogger(CBConsultaEstadoCuentasDAO.class);
 
 	/**
 	 * @author Juankrlos - 11/01/2017 - Obtenemos los bancos configurados para los
@@ -55,8 +58,9 @@ public class CBConsultaEstadoCuentasDAO extends ControladorBase {
 		Connection con = null;
 		try {
 			con = obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.INFO, 
-					"Query llenado combo Agrupacion = " + BANCO_SQ);
+			log.debug( "Query llenado combo Agrupacion = " + BANCO_SQ);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.INFO, 
+				//	"Query llenado combo Agrupacion = " + BANCO_SQ);
 			ps = con.prepareStatement(BANCO_SQ);
 			rs = ps.executeQuery();
 			CBConsultaEstadoCuentasModel obj = null;
@@ -68,25 +72,29 @@ public class CBConsultaEstadoCuentasDAO extends ControladorBase {
 			}
 
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("btenerBanco() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e2) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e2);
+					log.error("btenerBanco() - Error ", e2);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e2);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("btenerBanco() - Error ", e1);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("btenerBanco() - Error ", e);
+				//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 
@@ -107,37 +115,43 @@ public class CBConsultaEstadoCuentasDAO extends ControladorBase {
 		ResultSet rs = null;
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.INFO,
-					"Consulta para obtener agrupacion predefinida = " + QRY_VALOR_DEFECTO);
+			log.debug( "Consulta para obtener agrupacion predefinida = " + QRY_VALOR_DEFECTO);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.INFO,
+					//"Consulta para obtener agrupacion predefinida = " + QRY_VALOR_DEFECTO);
 			cmd = conn.prepareStatement(QRY_VALOR_DEFECTO);
 			rs = cmd.executeQuery();
 			while (rs.next()) {
 				valor = Integer.parseInt(rs.getString(1));
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerOpcionPorDefecto() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerOpcionPorDefecto() - Error ", e);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerOpcionPorDefecto() - Error ", e);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerOpcionPorDefecto() - Error ", e);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
-		Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.INFO, 
-				"Valor predefinido: " + valor);
+		log.debug( "Valor predefinido: " + valor);
+		//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.INFO, 
+			//	"Valor predefinido: " + valor);
 		return valor;
 	}
 
@@ -166,8 +180,9 @@ public class CBConsultaEstadoCuentasDAO extends ControladorBase {
 		Connection con = null;
 		try {
 			con = obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.INFO,
-					"Query llenado de combo de Entidades = " + AGENCIA_SQ);
+			log.debug( "Query llenado de combo de Entidades = " + AGENCIA_SQ);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.INFO,
+				//	"Query llenado de combo de Entidades = " + AGENCIA_SQ);
 			ps = con.prepareStatement(AGENCIA_SQ);
 			ps.setInt(1, agrupacionSeleccionada);
 			rs = ps.executeQuery();
@@ -180,25 +195,29 @@ public class CBConsultaEstadoCuentasDAO extends ControladorBase {
 			}
 
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerAgencia() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e2) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e2);
+					log.error("obtenerAgencia() - Error ", e2);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e2);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtenerAgencia() - Error ", e1);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerAgencia() - Error ", e);
+				//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 
@@ -256,8 +275,9 @@ public class CBConsultaEstadoCuentasDAO extends ControladorBase {
 			}
 
 			ps = con.createStatement();
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.INFO, 
-					"Query consulta estados de cuenta: " + ConsultasSQ.CONSULTA_ESTADO_CUENTAS_SQ + where);
+			log.debug( "Query consulta estados de cuenta: " + ConsultasSQ.CONSULTA_ESTADO_CUENTAS_SQ + where);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.INFO, 
+					//"Query consulta estados de cuenta: " + ConsultasSQ.CONSULTA_ESTADO_CUENTAS_SQ + where);
 			rs = ps.executeQuery(ConsultasSQ.CONSULTA_ESTADO_CUENTAS_SQ  + where);
 			CBConsultaEstadoCuentasModel obj = null;
 			while (rs.next()) {
@@ -288,25 +308,29 @@ public class CBConsultaEstadoCuentasDAO extends ControladorBase {
 				result.add(obj);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("consultaEstadosCuenta() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e2) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e2);
+					log.error("consultaEstadosCuenta() - Error ", e2);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e2);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("consultaEstadosCuenta() - Error ", e1);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("consultaEstadosCuenta() - Error ", e);
+				//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -320,8 +344,9 @@ public class CBConsultaEstadoCuentasDAO extends ControladorBase {
 		List<CBTipologiasPolizaModel> list = new ArrayList<CBTipologiasPolizaModel>();
 		try {
 			con = obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.INFO,
-					"Query llenado de combo de Tipologias = " + ConsultasSQ.QRY_CMB_TIPOLOGIA_ENTIDADES);
+			log.debug( "Query llenado de combo de Tipologias = " + ConsultasSQ.QRY_CMB_TIPOLOGIA_ENTIDADES);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.INFO,
+				//	"Query llenado de combo de Tipologias = " + ConsultasSQ.QRY_CMB_TIPOLOGIA_ENTIDADES);
 			cmd = con.prepareStatement(ConsultasSQ.QRY_CMB_TIPOLOGIA_ENTIDADES);
 			rs = cmd.executeQuery();
 			CBTipologiasPolizaModel objeBean;
@@ -337,25 +362,29 @@ public class CBConsultaEstadoCuentasDAO extends ControladorBase {
 				list.add(objeBean);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerTipologias() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e2) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e2);
+					log.error("obtenerTipologias() - Error ", e2);
+				//	Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e2);
 				}
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtenerTipologias() - Error ", e1);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerTipologias() - Error ", e);
+				//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return list;
@@ -373,8 +402,9 @@ public class CBConsultaEstadoCuentasDAO extends ControladorBase {
 		List<CBCatalogoAgenciaModel> list = new ArrayList<CBCatalogoAgenciaModel>();
 		try {
 			con = obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.INFO,
-					"Query llenado de combo de Entidad Tipologia = " + QRY_AGENCIA_TIPOLOGIAS);
+			log.debug( "Query llenado de combo de Entidad Tipologia = " + QRY_AGENCIA_TIPOLOGIAS);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.INFO,
+				//	"Query llenado de combo de Entidad Tipologia = " + QRY_AGENCIA_TIPOLOGIAS);
 			cmd = con.prepareStatement(QRY_AGENCIA_TIPOLOGIAS);
 			rs = cmd.executeQuery();
 			CBCatalogoAgenciaModel objeBean;
@@ -385,25 +415,29 @@ public class CBConsultaEstadoCuentasDAO extends ControladorBase {
 				list.add(objeBean);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerAgenciasCmb() - Error ", e);
+		//	Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e2) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e2);
+					log.error("obtenerAgenciasCmb() - Error ", e2);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e2);
 				}
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtenerAgenciasCmb() - Error ", e1);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerAgenciasCmb() - Error ", e);
+				//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return list;
@@ -423,8 +457,9 @@ public class CBConsultaEstadoCuentasDAO extends ControladorBase {
 			con = obtenerDtsPromo().getConnection();
 			cmd = con.prepareStatement(ConsultasSQ.QRY_CMB_ENTIDADES_TIPOLOGIA);
 			cmd.setInt(1, tipologiaRecuperada); //CarlosGodinez -> 17/08/2018
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.INFO, 
-					ConsultasSQ.QRY_CMB_ENTIDADES_TIPOLOGIA );
+			log.debug( "Query  = " + ConsultasSQ.QRY_CMB_ENTIDADES_TIPOLOGIA );
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.INFO, 
+				//	ConsultasSQ.QRY_CMB_ENTIDADES_TIPOLOGIA );
 			rs = cmd.executeQuery();
 			CBCatalogoAgenciaModel objeBean;
 			while (rs.next()) {
@@ -434,25 +469,29 @@ public class CBConsultaEstadoCuentasDAO extends ControladorBase {
 				list.add(objeBean);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerEntidadesAsociadasCmb() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e2) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e2);
+					log.error("obtenerEntidadesAsociadasCmb() - Error ", e2);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e2);
 				}
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtenerEntidadesAsociadasCmb() - Error ", e1);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerEntidadesAsociadasCmb() - Error ", e);
+				//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return list;
@@ -470,6 +509,7 @@ public class CBConsultaEstadoCuentasDAO extends ControladorBase {
 		try {
 			con = obtenerDtsPromo().getConnection();
 			cmd = con.prepareStatement(QRY_ENTIDADES_ESTADOS_TARJETA);
+			log.debug( "Query  = " + QRY_ENTIDADES_ESTADOS_TARJETA);
 			rs = cmd.executeQuery();
 			CBCatalogoAgenciaModel objeBean;
 			while (rs.next()) {
@@ -479,25 +519,29 @@ public class CBConsultaEstadoCuentasDAO extends ControladorBase {
 				list.add(objeBean);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerAgenciasEstCuentTarjCmb() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e2) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e2);
+					log.error("obtenerAgenciasEstCuentTarjCmb() - Error ", e2);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e2);
 				}
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtenerAgenciasEstCuentTarjCmb() - Error ", e1);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerAgenciasEstCuentTarjCmb() - Error ", e);
+			//	Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return list;
@@ -513,7 +557,8 @@ public class CBConsultaEstadoCuentasDAO extends ControladorBase {
 	public int asignarTipologia(int tipologia, int entidad, String fechaIngresos, String observaciones,
 			int idEstadoCuenta, List<Integer> listID, List<CBCatalogoAgenciaModel> listDepositos,
 			String usuario, int check_tipologia /* , int fechaRegularizacion */) {
-		System.out.println("====== ENTRA A ASIGNACION DE TIPOLOGIA POLIZA ======");
+		log.debug( "====== ENTRA A ASIGNACION DE TIPOLOGIA POLIZA ======");
+		
 		int resultado = 0;
 		Statement ps = null;
 		Connection con = null;
@@ -543,44 +588,52 @@ public class CBConsultaEstadoCuentasDAO extends ControladorBase {
 					// Asignar tipologia individual
 					query += " WHERE CBESTADOCUENTASOCIEDADID = " + idEstadoCuenta;
 					
-					System.out.println("Query asignar tipologia poliza (individual) = " + query);
+					log.debug( "Query asignar tipologia poliza (individual) = " + query);
+					
 					ps = con.createStatement();
 					resultado = ps.executeUpdate(query);
 				} else {
 					// Asignar tipologia masiva
 					String where = "";
-					System.out.println("Query asignar tipologia poliza (masiva) = " + query
+					log.debug( "Query asignar tipologia poliza (masiva) = " + query
 							+ " WHERE CBESTADOCUENTASOCIEDADID = ?; -- Total de valores enviados = " + listID.size());
+					
 					ps = con.createStatement();
 					for (int pk : listID) {
 						where = " WHERE CBESTADOCUENTASOCIEDADID = " + pk;
-						System.out.println("check_tipologia: " + check_tipologia);
+						log.debug( "check_tipologia: " + check_tipologia);
+						
 						if (check_tipologia == 1) {
 							where = where + " AND CBTIPOLOGIASPOLIZAID IS NULL ";						
 						}
 
-						System.out.println("query masivo : " + query + where);
+						log.debug( "query masivo : " + query + where);
+						
 						ps.addBatch(query + where);
 					}
 					int contExitosasMasiva = 0;
 					int resultadosMasiva[] = ps.executeBatch();
 					contExitosasMasiva = resultadosMasiva.length;
 					if (contExitosasMasiva > 0) {
-						System.out.println("Tipología asignada con éxito.");
-						System.out.println("Registros modificados = " + contExitosasMasiva);
+						log.debug( "Tipología asignada con éxito.");
+						log.debug( "Registros modificados = " + contExitosasMasiva);
+						
 					} else if (contExitosasMasiva == 0) {
-						System.out.println("No se pudo modificar ningun registro.");
-						System.out.println("Registros modificados = " + contExitosasMasiva);
+						log.debug( "No se pudo modificar ningun registro.");
+						log.debug( "Registros modificados = " + contExitosasMasiva);
+						
 					}
 					resultado = contExitosasMasiva;
 				}
 			} else {
 				// String fecIngr = null; //CarlosGodinez -> 30/10/2017
 				// String queryFecha = "";
-				System.out.println("Asignacion de tipologia se hara por depositos");
+				log.debug( "Asignacion de tipologia se hara por depositos");
+				
 				String where = "";
-				System.out.println("Update asignar tipologia poliza (masiva) = " + query
+				log.debug( "Update asignar tipologia poliza (masiva) = " + query
 						+ "-- Total de valores enviados = " + listDepositos.size());
+				
 				ps = con.createStatement();
 
 				for (CBCatalogoAgenciaModel objDepositos : listDepositos) {
@@ -603,34 +656,40 @@ public class CBConsultaEstadoCuentasDAO extends ControladorBase {
 					ps.addBatch(query + where);
 					// System.out.println("Query update archivo depositos = " + query + queryFecha +
 					// where);
-					System.out.println(query + where);
+					log.debug( query + where);
+					
 				}
 				int contExitosasDep = 0;
 				int resultadosDep[] = ps.executeBatch();
 				contExitosasDep = resultadosDep.length;
 				if (contExitosasDep > 0) {
-					System.out.println("Tipología asignada con éxito.");
-					System.out.println("Registros modificados = " + contExitosasDep);
+					log.debug( "Tipología asignada con éxito.");
+					log.debug( "Registros modificados = " + contExitosasDep);
+					
 				} else if (contExitosasDep == 0) {
-					System.out.println("No se pudo modificar ningun registro.");
-					System.out.println("n/** Registros modificados = " + contExitosasDep);
+					log.debug( "No se pudo modificar ningun registro.");
+					log.debug( "n/** Registros modificados = " + contExitosasDep);
+					
 				}
 				resultado = contExitosasDep;
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("asignarTipologia() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("asignarTipologia() - Error ", e1);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("asignarTipologia() - Error ", e);
+				//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return resultado;
@@ -645,7 +704,8 @@ public class CBConsultaEstadoCuentasDAO extends ControladorBase {
 	public int asignarTipologiaGT(int tipologia, int entidad, String fechaIngresos, String observaciones,
 			int idEstadoCuenta, List<Integer> listID, List<CBCatalogoAgenciaModel> listDepositos, String usuario,
 			int fechaRegularizacion, int check_tipologia, CBEstadoCuentasModel objModel) {
-		System.out.println("====== ENTRA A ASIGNACION DE TIPOLOGIA POLIZA ======");
+		log.debug( "====== ENTRA A ASIGNACION DE TIPOLOGIA POLIZA ======");
+		
 		int resultado = 0;
 		Statement ps = null;
 		Connection con = null;
@@ -681,18 +741,19 @@ public class CBConsultaEstadoCuentasDAO extends ControladorBase {
 				} else {
 					// Asignar tipologia masiva
 					String where = "";
-					System.out.println("Query asignar tipologia poliza (masiva) = " + query
-							+ " WHERE CBESTADOCUENTASOCIEDADID = ?; -- Total de valores enviados = " + listID.size());
+					log.debug( "Query asignar tipologia poliza (masiva) = " + query
+					+ " WHERE CBESTADOCUENTASOCIEDADID = ?; -- Total de valores enviados = " + listID.size());
 					ps = con.createStatement();
 					for (int pk : listID) {
 						where = " WHERE CBESTADOCUENTASOCIEDADID = " + pk;
+						log.debug( "check_tipologia: " + check_tipologia);
 						
-						System.out.println("check_tipologia: " + check_tipologia);
 						if (check_tipologia == 1) {
 							where = where + " AND CBTIPOLOGIASPOLIZAID IS NULL ";						
 						}
 
-						System.out.println("query masivo : " + query + where);
+						log.debug( "query masivo : " + query + where);
+						
 
 						ps.addBatch(query + where);
 					}
@@ -700,21 +761,25 @@ public class CBConsultaEstadoCuentasDAO extends ControladorBase {
 					int resultadosMasiva[] = ps.executeBatch();
 					contExitosasMasiva = resultadosMasiva.length;
 					if (contExitosasMasiva > 0) {
-						System.out.println("Tipología asignada con éxito.");
-						System.out.println("Registros modificados = " + contExitosasMasiva);
+						log.debug( "Tipología asignada con éxito.");
+						log.debug( "Registros modificados = " + contExitosasMasiva);
+						
 					} else if (contExitosasMasiva == 0) {
-						System.out.println("No se pudo modificar ningun registro.");
-						System.out.println("Registros modificados = " + contExitosasMasiva);
+						log.debug( "No se pudo modificar ningun registro.");
+						log.debug( "Registros modificados = " + contExitosasMasiva);
+						
 					}
 					resultado = contExitosasMasiva;
 				}
 			} else {
 				String fecIngr = null; // CarlosGodinez -> 30/10/2017
 				String queryFecha = "";
-				System.out.println("Asignacion de tipologia se hara por depositos");
+				log.debug( "Asignacion de tipologia se hara por depositos");
+				
 				String where = "";
-				System.out.println("Update asignar tipologia poliza (masiva) = " + query
+				log.debug( "Update asignar tipologia poliza (masiva) = " + query
 						+ "-- Total de valores enviados = " + listDepositos.size());
+				
 				ps = con.createStatement();
 				if (fechaIngresos.equals("")) {
 					fecIngr = "FECHAVALOR";
@@ -737,7 +802,8 @@ public class CBConsultaEstadoCuentasDAO extends ControladorBase {
 					/**
 					 * CarlosGodinez -> 30/10/2017 Cambia Juankrlos --> 23/11/2017
 					 */
-System.out.println("deposito GT:" + objDepositos.getDeposito());
+					log.debug( "deposito GT:" + objDepositos.getDeposito());
+
 
 					where = " WHERE (TRIM(ASIGNACION) LIKE '%" + objDepositos.getDeposito() + "%' "
 							+ "OR TRIM(TEXTO) LIKE '%" + objDepositos.getDeposito() + "%' "
@@ -768,23 +834,27 @@ System.out.println("deposito GT:" + objDepositos.getDeposito());
 					}
 
 					ps.addBatch(query + queryFecha + where);
-					System.out.println("Query update archivo depositos 1 = " + query + queryFecha + where);
+					log.debug( "Query update archivo depositos 1 = " + query + queryFecha + where);
+					
 				}
 				int contExitosasDep = 0;
 				int resultadosDep[] = ps.executeBatch();
 				contExitosasDep = resultadosDep.length;
 				if (contExitosasDep > 0) {
-					System.out.println("Tipología asignada con éxito.");
-					System.out.println("Registros modificados = " + contExitosasDep);
+					log.debug( "Tipología asignada con éxito.");
+					log.debug( "Registros modificados = " + contExitosasDep);
+					
 				} else if (contExitosasDep == 0) {
-					System.out.println("No se pudo modificar ningun registro.");
-					System.out.println("n/** Registros modificados = " + contExitosasDep);
+					log.debug( "No se pudo modificar ningun registro.");
+					log.debug( "n/** Registros modificados = " + contExitosasDep);
+					
 				}
 				resultado = contExitosasDep;
 			}
 
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("asignarTipologiaGT() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (ps != null)
@@ -792,7 +862,8 @@ System.out.println("deposito GT:" + objDepositos.getDeposito());
 				if (con != null)
 					con.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("asignarTipologiaGT() - Error ", e);
+				//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return resultado;
@@ -805,25 +876,29 @@ System.out.println("deposito GT:" + objDepositos.getDeposito());
 		try {
 			con = obtenerDtsPromo().getConnection();
 			cmd = con.prepareStatement(ConsultasSQ.ASOCIACION_MANUAL);
+			log.debug( "query" + ConsultasSQ.ASOCIACION_MANUAL);
 			cmd.setInt(1, entidad);
 			cmd.setString(2, observaciones);
 			cmd.setInt(3, pk);
 			if (cmd.executeUpdate() > 0)
 				result = true;
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("asignarManual() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("asignarManual() - Error ", e1);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("asignarManual() - Error ", e);
+				//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -836,25 +911,29 @@ System.out.println("deposito GT:" + objDepositos.getDeposito());
 		try {
 			con = obtenerDtsPromo().getConnection();
 			cmd = con.prepareStatement(ConsultasSQ.DESASOCIACION_TIPOLOGIA);
+			log.debug( "query" + ConsultasSQ.DESASOCIACION_TIPOLOGIA);
 			cmd.setString(1, usuario); // CarlosGodinez -> 10/10/2017
 			cmd.setString(2, observaciones); // CarlosGodinez -> 10/10/2017
 			cmd.setInt(3, pk);
 			if (cmd.executeUpdate() > 0)
 				result = true;
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("desasociarTipologia() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("desasociarTipologia() - Error ", e1);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("desasociarTipologia() - Error ", e);
+				//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -866,10 +945,11 @@ System.out.println("deposito GT:" + objDepositos.getDeposito());
 		PreparedStatement cmd = null;
 		try {
 			con = obtenerDtsPromo().getConnection();
-			System.out
-					.println("Update masivo para desasociar tipologias: " + ConsultasSQ.DESASOCIACION_TIPOLOGIA_MASIVA);
+			log.debug( "Update masivo para desasociar tipologias: " + ConsultasSQ.DESASOCIACION_TIPOLOGIA_MASIVA);
+			
 			cmd = con.prepareStatement(ConsultasSQ.DESASOCIACION_TIPOLOGIA_MASIVA);
-			System.out.println("Registros antes de actualizar en CB_ESTADO_CUENTA_SOCIEDAD: " + pkList.size());
+			log.debug( "Registros antes de actualizar en CB_ESTADO_CUENTA_SOCIEDAD: " + pkList.size());
+			
 			int exitosas = 0;
 			for (int pk : pkList) {
 				cmd.setString(1, usuario); // CarlosGodinez -> 10/10/2017
@@ -880,23 +960,27 @@ System.out.println("deposito GT:" + objDepositos.getDeposito());
 			}
 			if (exitosas > 0) {
 				cmd.executeBatch();
-				System.out.println("Registros modificados con éxito: " + exitosas);
+				log.debug( "Registros modificados con éxito: " + exitosas);
+				
 				result = true;
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("desasociarTipologiaMasiva() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("desasociarTipologiaMasiva() - Error ", e1);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("desasociarTipologiaMasiva() - Error ", e);
+				//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -909,23 +993,27 @@ System.out.println("deposito GT:" + objDepositos.getDeposito());
 		try {
 			con = obtenerDtsPromo().getConnection();
 			cmd = con.prepareStatement(ConsultasSQ.DESASOCIACION_MANUAL);
+			log.debug( "query " + ConsultasSQ.DESASOCIACION_MANUAL);
 			cmd.setInt(1, pk);
 			if (cmd.executeUpdate() > 0)
 				result = true;
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("desasociarManual() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("desasociarManual() - Error ", e1);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("desasociarManual() - Error ", e);
+				//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -937,9 +1025,11 @@ System.out.println("deposito GT:" + objDepositos.getDeposito());
 		PreparedStatement cmd = null;
 		try {
 			con = obtenerDtsPromo().getConnection();
-			System.out.println("Update masivo para desasociar entidades: " + ConsultasSQ.DESASOCIACION_MANUAL);
+			log.debug( "Update masivo para desasociar entidades: " + ConsultasSQ.DESASOCIACION_MANUAL);
+			
 			cmd = con.prepareStatement(ConsultasSQ.DESASOCIACION_MANUAL);
-			System.out.println("Registros antes de actualizar en CB_ESTADO_CUENTA: " + pkList.size());
+			log.debug( "Registros antes de actualizar en CB_ESTADO_CUENTA: " + pkList.size());
+			
 			int exitosas = 0;
 			for (int pk : pkList) {
 				cmd.setInt(1, pk);
@@ -949,23 +1039,27 @@ System.out.println("deposito GT:" + objDepositos.getDeposito());
 			if (exitosas > 0) {
 				cmd.executeBatch();
 				cmd.close();
-				System.out.println("Registros modificados con éxito: " + exitosas);
+				log.debug( "Registros modificados con éxito: " + exitosas);
+				
 				result = true;
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("desasociarAsociacionManualMasiva() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("desasociarAsociacionManualMasiva() - Error ", e1);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("desasociarAsociacionManualMasiva() - Error ", e);
+				//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -977,9 +1071,11 @@ System.out.println("deposito GT:" + objDepositos.getDeposito());
 		PreparedStatement cmd = null;
 		try {
 			con = obtenerDtsPromo().getConnection();
-			System.out.println("Update masivo de asociacion manual: " + ConsultasSQ.ASOCIACION_MANUAL);
+			log.debug( "Update masivo de asociacion manual: " + ConsultasSQ.ASOCIACION_MANUAL);
+			
 			cmd = con.prepareStatement(ConsultasSQ.ASOCIACION_MANUAL);
-			System.out.println("Registros antes de actualizar en CB_ESTADO_CUENTA: " + pkList.size());
+			log.debug( "Registros antes de actualizar en CB_ESTADO_CUENTA: " + pkList.size());
+			
 			int exitosas = 0;
 			for (int pk : pkList) {
 				cmd.setInt(1, entidad);
@@ -991,23 +1087,27 @@ System.out.println("deposito GT:" + objDepositos.getDeposito());
 			if (exitosas > 0) {
 				cmd.executeBatch();
 				cmd.close();
-				System.out.println("Registros modificados con éxito: " + exitosas);
+				log.debug( "Registros modificados con éxito: " + exitosas);
+				
 				result = true;
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("asignarManualMasiva() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("asignarManualMasiva() - Error ", e1);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("asignarManualMasiva() - Error ", e);
+				//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -1043,7 +1143,8 @@ System.out.println("deposito GT:" + objDepositos.getDeposito());
 				where += "AND AFILIACION LIKE '%" + afiliacion + "%' ";
 			}
 			cmd = con.createStatement();
-			System.out.println("Query consulta estado cuenta tarjetas: " + query + where);
+			log.debug( "Query consulta estado cuenta tarjetas: " + query + where);
+			
 			rs = cmd.executeQuery(query + where);
 			CBConsultaEstadoCuentasModel objeBean;
 			while (rs.next()) {
@@ -1064,25 +1165,29 @@ System.out.println("deposito GT:" + objDepositos.getDeposito());
 				list.add(objeBean);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("consultaEstadoCuentasTarjeta() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("consultaEstadoCuentasTarjeta() - Error ", e1);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("consultaEstadoCuentasTarjeta() - Error ", e1);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("consultaEstadoCuentasTarjeta() - Error ", e);
+				//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return list;
@@ -1106,7 +1211,8 @@ System.out.println("deposito GT:" + objDepositos.getDeposito());
 			String usuario) {
 		objSesionDepositos = (CBCatalogoAgenciaModel) misession.getAttribute("sesionDepositosMasivos");
 
-		System.out.println("====== ENTRA A ASIGNACION DE TIPOLOGIA POLIZA ======");
+		log.debug( "====== ENTRA A ASIGNACION DE TIPOLOGIA POLIZA ======");
+		
 		int resultado = 0;
 		Statement ps = null;
 		Connection con = null;
@@ -1141,12 +1247,14 @@ System.out.println("deposito GT:" + objDepositos.getDeposito());
 					 */
 					query += ", SWMODIFYBY = '" + usuario + "', SWDATEMODIFIED = sysdate ";
 
-					System.out.println("query 1 " + query);
+					log.debug( "query 1 " + query);
 					
-					System.out.println("Asignacion de tipologia se hara por depositos");
+					log.debug( "Asignacion de tipologia se hara por depositos");
+					
 					String where = "";
-					System.out.println("Update asignar tipologia poliza (masiva) = " + query
+					log.debug( "Update asignar tipologia poliza (masiva) = " + query
 							+ "-- Total de valores enviados = " + listDepositos.size());
+					
 					
 					where = "";
 
@@ -1161,28 +1269,33 @@ System.out.println("deposito GT:" + objDepositos.getDeposito());
 				int resultadosDep[] = ps.executeBatch();
 				contExitosasDep = resultadosDep.length;
 				if (contExitosasDep > 0) {
-					System.out.println("Tipología asignada con éxito.");
-					System.out.println("Registros modificados = " + contExitosasDep);
+					log.debug( "Tipología asignada con éxito.");
+					log.debug( "Registros modificados = " + contExitosasDep);
+					
 				} else if (contExitosasDep == 0) {
-					System.out.println("No se pudo modificar ningun registro.");
-					System.out.println("n/** Registros modificados = " + contExitosasDep);
+					log.debug( "No se pudo modificar ningun registro.");
+					log.debug( "n/** Registros modificados = " + contExitosasDep);
+					
 				}
 				resultado = contExitosasDep;
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("asignarTipologiaMasivaDepositos() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("asignarTipologiaMasivaDepositos() - Error ", e);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("asignarTipologiaMasivaDepositos() - Error ", e);
+				//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return resultado;
@@ -1193,7 +1306,8 @@ System.out.println("deposito GT:" + objDepositos.getDeposito());
 	public int asignarTipologiaMasivaDepositos2(String observaciones, int idEstadoCuenta, List<Integer> listID,
 			List<CBCatalogoAgenciaModel> listDepositos, String usuario /* , int fechaRegularizacion */) {
 
-		System.out.println("====== ENTRA A ASIGNACION DE TIPOLOGIA POLIZA ======");
+		log.debug( "====== ENTRA A ASIGNACION DE TIPOLOGIA POLIZA ======");
+		
 		int resultado = 0;
 		Statement ps = null;
 		String idagencia;
@@ -1251,7 +1365,8 @@ System.out.println("deposito GT:" + objDepositos.getDeposito());
 					        + " AND FECHACONTAB >= SYSDATE - (SELECT TO_NUMBER (valor_objeto1) FROM cb_modulo_conciliacion_conf  WHERE     modulo = 'DIAS_REVISION' AND OBJETO = 'DIAS') " ;
 					query = query + where;	
 					ps.addBatch(query);
-					System.out.println(query);
+					log.debug(query);
+					
 					contador++;
 					int resultadosDep[] = ps.executeBatch();
 					contExitosasDep = resultadosDep.length;
@@ -1259,29 +1374,34 @@ System.out.println("deposito GT:" + objDepositos.getDeposito());
 				}
 				contExitosasDep = contador;
 				if (contExitosasDep > 0) {
-					System.out.println("Tipología asignada con éxito.");
-					System.out.println("Registros modificados = " + contExitosasDep);
+					log.debug( "Tipología asignada con éxito.");
+					log.debug( "Registros modificados = " + contExitosasDep);
+					
 				} else if (contExitosasDep == 0) {
-					System.out.println("No se pudo modificar ningun registro.");
-					System.out.println("n/** Registros modificados = " + contExitosasDep);
+					log.debug( "No se pudo modificar ningun registro.");
+					log.debug( "n/** Registros modificados = " + contExitosasDep);
+					
 				}
 
 				resultado = contExitosasDep;
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("asignarTipologiaMasivaDepositos2() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("asignarTipologiaMasivaDepositos2() - Error ", e1);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("asignarTipologiaMasivaDepositos2() - Error ", e);
+			//	Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return resultado;
@@ -1297,7 +1417,8 @@ System.out.println("deposito GT:" + objDepositos.getDeposito());
 		ResultSet rs = null;
 		try {
 			conn = obtenerDtsPromo().getConnection();
-			System.out.println("Consulta para obtener IDAGENCIA= " + QRY_OBTIENE_ID_AGENCIA);
+			log.debug( "Consulta para obtener IDAGENCIA= " + QRY_OBTIENE_ID_AGENCIA);
+			
 			cmd = conn.prepareStatement(QRY_OBTIENE_ID_AGENCIA);
 			cmd.setString(1, entidad);
 			rs = cmd.executeQuery();
@@ -1305,28 +1426,33 @@ System.out.println("deposito GT:" + objDepositos.getDeposito());
 				valor = rs.getString(1);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerIdAgencia() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e2) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e2);
+					log.error("obtenerIdAgencia() - Error ", e2);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e2);
 				}
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtenerIdAgencia() - Error ", e1);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerIdAgencia() - Error ", e);
+					//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
-		System.out.println("Valor devuelto idagencia: " + valor);
+		log.debug( "Valor devuelto idagencia: " + valor);
+		
 		return valor;
 	}
 
@@ -1341,10 +1467,12 @@ System.out.println("deposito GT:" + objDepositos.getDeposito());
 			fec = format.parse(fecha);
 			return true;
 		} catch (ParseException e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("isDate() - Error ", e);
+		//	Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 			return false;
 		} catch (NullPointerException e) {
-			Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("isDate() - Error ", e);
+			//Logger.getLogger(CBConsultaEstadoCuentasDAO.class.getName()).log(Level.SEVERE, null, e);
 			return false;
 		}
 	}

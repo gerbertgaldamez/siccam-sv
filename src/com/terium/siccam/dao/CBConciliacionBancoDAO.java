@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.model.CBConciliacionBancoModel;
@@ -17,6 +19,7 @@ import com.terium.siccam.utils.ConsultasSQ;
 import com.terium.siccam.utils.Tools;;
 
 public class CBConciliacionBancoDAO extends ControladorBase {
+	private static Logger log = Logger.getLogger(CBConciliacionBancoDAO.class);
 	
 	private static final long serialVersionUID = 1L;
 	/**
@@ -46,8 +49,9 @@ public class CBConciliacionBancoDAO extends ControladorBase {
 		try{
 			con = obtenerDtsPromo().getConnection();
 			stm = con.createStatement();
-			System.out.println("consulta: "+ConsultasSQ.CONSULTA_CONCILIACION_BANCO+where+
+			log.debug( "consulta: "+ConsultasSQ.CONSULTA_CONCILIACION_BANCO+where+
 																" order by 1, 2");
+			
 			rs = stm.executeQuery(ConsultasSQ.CONSULTA_CONCILIACION_BANCO+where+ 
 																" order by 1, 2");
 			CBConciliacionBancoModel obj = null;
@@ -80,7 +84,7 @@ public class CBConciliacionBancoDAO extends ControladorBase {
 				 obj.setCbbancoagenciaconfrontaid(rs.getInt(25));
 				 obj.setFormapago(rs.getString(26));
 				 obj.setComisionReal(rs.getBigDecimal(27));
-				 System.out.println("la comision real es: "+ obj.getComisionReal());
+				
 				 
 				 list.add(obj);
 			}
@@ -88,25 +92,29 @@ public class CBConciliacionBancoDAO extends ControladorBase {
 		}catch(SQLException e){		
 			Tools.ingresaLog(e, "Modulo consulta conciliacion bancos", 
 					"Error al consultar la conciliacion de bancos", "CBConciliacionBancoDAO.java");
-			Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaPrincipal() - Error ", e);
+			//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 				if(rs != null)
 					try {
 						rs.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaPrincipal() - Error ", e);
+						//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(stm != null)
 					try {
 						stm.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaPrincipal() - Error ", e);
+						//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(con != null)
 					try {
 						con.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaPrincipal() - Error ", e);
+						//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 		}
 		
@@ -128,6 +136,7 @@ public class CBConciliacionBancoDAO extends ControladorBase {
 			con = obtenerDtsPromo().getConnection();
 			stm = con.createStatement();
 			rs = stm.executeQuery(OBTIENE_ENTIDAD_SQ);
+			log.debug("query -  "+ OBTIENE_ENTIDAD_SQ);
 			CBConciliacionBancoModel obj = null;
 			while(rs.next()) {
 				obj = new CBConciliacionBancoModel();
@@ -136,25 +145,29 @@ public class CBConciliacionBancoDAO extends ControladorBase {
 				list.add(obj);
 			}
 		}catch(SQLException e){
-			Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaEntidad() - Error ", e);
+			//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 				if(rs != null)
 					try {
 						rs.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaEntidad() - Error ", e);
+						//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(stm != null)
 					try {
 						stm.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaEntidad() - Error ", e);
+						//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(con != null)
 					try {
 						con.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaEntidad() - Error ", e);
+						//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 		}
 		return list;
@@ -180,7 +193,8 @@ public class CBConciliacionBancoDAO extends ControladorBase {
 		try {
 			con = obtenerDtsPromo().getConnection();
 			stm = con.createStatement();
-			System.out.println("query agencias:" + OBTIENE_AGENCIA_SQ);
+			log.debug("query agencias:" + OBTIENE_AGENCIA_SQ);
+			
 			rs = stm.executeQuery(OBTIENE_AGENCIA_SQ);
 			CBConciliacionBancoModel obj = null;
 			while(rs.next()) {
@@ -190,25 +204,29 @@ public class CBConciliacionBancoDAO extends ControladorBase {
 				list.add(obj);
 			}
 		}catch(SQLException e){
-			Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaAgencia() - Error ", e);
+			//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 				if(rs != null)
 					try {
 						rs.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaAgencia() - Error ", e);
+						//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(stm != null)
 					try {
 						stm.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaAgencia() - Error ", e);
+						//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(con != null)
 					try {
 						con.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaAgencia() - Error ", e);
+						//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 		}
 		return list;
@@ -232,6 +250,7 @@ public class CBConciliacionBancoDAO extends ControladorBase {
 			con = obtenerDtsPromo().getConnection();
 			stm = con.createStatement();
 			rs = stm.executeQuery(OBTIENE_BANCO_SQ);
+			log.debug("query banco:" + OBTIENE_BANCO_SQ);
 			CBConciliacionBancoModel obj = null;
 			while(rs.next()) {
 				obj = new CBConciliacionBancoModel();
@@ -240,25 +259,29 @@ public class CBConciliacionBancoDAO extends ControladorBase {
 				list.add(obj);
 			}
 		}catch(SQLException e){
-			Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaBanco() - Error ", e);
+			//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 				if(rs != null)
 					try {
 						rs.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaBanco() - Error ", e);
+						//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(stm != null)
 					try {
 						stm.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaBanco() - Error ", e);
+						//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(con != null)
 					try {
 						con.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("generaConsultaBanco() - Error ", e);
+						//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 		}
 		return list;
@@ -276,23 +299,27 @@ public class CBConciliacionBancoDAO extends ControladorBase {
 		CallableStatement cst = null;
 		try{
 			//SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			System.out.println("fecha inicio en el dao sp " + fechainicio);
-			System.out.println("fecha inicio en el dao sp " + fechafin);
-			Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.INFO,
-					"Fecha inicio" + fechainicio);			
-			Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.INFO,
-					"Fecha fin" + fechafin);
+			log.debug("fecha inicio en el dao sp " + fechainicio);
+			log.debug("echa fin en el dao sp " + fechafin);
+			
+			//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.INFO,
+				//	"Fecha inicio" + fechainicio);			
+			//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.INFO,
+				//	"Fecha fin" + fechafin);
 			con = obtenerDtsPromo().getConnection();
 			cst = con.prepareCall(CARGA_COMISIONES_SP);
-			System.out.println("SP EN EL DAO CONTA " + CARGA_COMISIONES_SP);
+			log.debug("SP EN EL DAO CONTA " + CARGA_COMISIONES_SP);
+			
 			
 			java.sql.Date sqlDate1 = new java.sql.Date(fechainicio.getTime()); 
 			java.sql.Date sqlDate2 = new java.sql.Date(fechafin.getTime()); 
 			
-			Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.INFO,
-					"fecha inicio en el dao sp" + sqlDate1);
-			Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.INFO,
-					"fecha fin en el dao sp" + sqlDate2);
+			log.debug("fecha inicio en el dao sp" + sqlDate1);
+			//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.INFO,
+					//"fecha inicio en el dao sp" + sqlDate1);
+			log.debug("fecha fin en el dao sp" + sqlDate2);
+			//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.INFO,
+					//"fecha fin en el dao sp" + sqlDate2);
 			
 			
 			cst.setDate(1, (java.sql.Date) sqlDate1);
@@ -306,19 +333,22 @@ public class CBConciliacionBancoDAO extends ControladorBase {
 				result = true;
 			}
 		}catch (Exception e) {
-			Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("ejecutaSPComisiones() - Error ", e);
+			//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(cst != null)
 				try {
 					cst.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("ejecutaSPComisiones() - Error ", e1);
+					//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(con != null)
 					con.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("ejecutaSPComisiones() - Error ", e);
+				//Logger.getLogger(CBConciliacionBancoDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;

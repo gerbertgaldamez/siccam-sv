@@ -8,9 +8,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import com.terium.siccam.composer.ControladorBase;
+import com.terium.siccam.controller.CBConciliacionBancoController;
 import com.terium.siccam.model.CBAplicaDesaplicaModel;
 import com.terium.siccam.model.CBCatalogoAgenciaModel;
 import com.terium.siccam.model.CBConciliacionCajasModel;
@@ -22,6 +25,7 @@ import com.terium.siccam.sql.ConsultasSQ;
  * @author Ovidio Santos
  */
 public class CBAplicaDesaplicaPagosDAO {
+	private static Logger log = Logger.getLogger(CBAplicaDesaplicaPagosDAO.class);
 
 	public List<CBConciliacionCajasModel> generaConsultaBanco() {
 		String obtieneBancoSQ = ConsultasSQ.OBTIENE_BANCO_SQ;
@@ -31,8 +35,9 @@ public class CBAplicaDesaplicaPagosDAO {
 		Connection con = null;
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
-					"Query obtiene banco SQ = " + obtieneBancoSQ);
+			log.debug( "Query obtiene banco SQ = " + obtieneBancoSQ);
+			//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
+				//	"Query obtiene banco SQ = " + obtieneBancoSQ);
 			stm = con.createStatement();
 			rs = stm.executeQuery(obtieneBancoSQ);
 			CBConciliacionCajasModel obj = null;
@@ -43,25 +48,29 @@ public class CBAplicaDesaplicaPagosDAO {
 				list.add(obj);
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaBanco() - Error ", e);
+			//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("generaConsultaBanco() - Error ", e);
+					//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (stm != null)
 				try {
 					stm.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("generaConsultaBanco() - Error ", e);
+					//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("generaConsultaBanco() - Error ", e);
+					//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return list;
@@ -78,10 +87,12 @@ public class CBAplicaDesaplicaPagosDAO {
 			
 			String where = "and b.cbcatalogobancoid = " + idBanco + "";
 			obtieneAgenciaSQ += where;
-			Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
-					"Valor idBanco = " + idBanco);
-			Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
-					"Query obtiene agencia SQ = " + obtieneAgenciaSQ);
+			log.debug( "Valor idBanco = " + idBanco);
+			//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
+					//"Valor idBanco = " + idBanco);
+			log.debug( "Query obtiene agencia SQ = " + obtieneAgenciaSQ);
+			//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
+				//	"Query obtiene agencia SQ = " + obtieneAgenciaSQ);
 				stm = con.createStatement();
 				rs = stm.executeQuery(obtieneAgenciaSQ + where);
 			CBCatalogoAgenciaModel obj = null;
@@ -92,25 +103,29 @@ public class CBAplicaDesaplicaPagosDAO {
 				list.add(obj);
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaAgencia() - Error ", e);
+			//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally{
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("generaConsultaAgencia() - Error ", e);
+					//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(stm != null)
 				try {
 					stm.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("generaConsultaAgencia() - Error ", e);
+					//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("generaConsultaAgencia() - Error ", e);
+					//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return list;
@@ -124,8 +139,9 @@ public class CBAplicaDesaplicaPagosDAO {
 		Connection con = null;
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
-					"Query obtiene tipo SQ = " + obtieneTipoSQ);
+			log.debug( "Query obtiene tipo SQ = " + obtieneTipoSQ);
+			//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
+					//"Query obtiene tipo SQ = " + obtieneTipoSQ);
 			stm = con.createStatement();
 			rs = stm.executeQuery(obtieneTipoSQ);
 			CBPagosModel obj = null;
@@ -136,25 +152,29 @@ public class CBAplicaDesaplicaPagosDAO {
 				list.add(obj);
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaTipo() - Error ", e);
+			//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("generaConsultaTipo() - Error ", e);
+					//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (stm != null)
 				try {
 					stm.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("generaConsultaTipo() - Error ", e);
+					//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("generaConsultaTipo() - Error ", e);
+					//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return list;
@@ -178,9 +198,11 @@ public class CBAplicaDesaplicaPagosDAO {
 		where += " and dia >= to_date('" + fechaDesde + "','dd/MM/yyyy') " + " and dia <= to_date('" + fechaHasta
 				+ "','dd/MM/yyyy') ";
 		archivosCargadosSQL += where;
-		Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO, "Datos en combo = " + estado);
-		Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
-				"Consulta archivos cargados = " + archivosCargadosSQL);
+		log.debug( "Datos en combo = " + estado);
+		//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO, "Datos en combo = " + estado);
+		log.debug( "Consulta archivos cargados = " + archivosCargadosSQL);
+	//	Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
+		//		"Consulta archivos cargados = " + archivosCargadosSQL);
 		Statement cmd = null;
 		ResultSet rs = null;
 		Connection con = null;
@@ -217,25 +239,29 @@ public class CBAplicaDesaplicaPagosDAO {
 				list.add(objModel);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtieneListaArchivosCargados() - Error ", e);
+			//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneListaArchivosCargados() - Error ", e);
+					//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneListaArchivosCargados() - Error ", e);
+					//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtieneListaArchivosCargados() - Error ", e);
+				//	Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return list;
@@ -249,10 +275,12 @@ public class CBAplicaDesaplicaPagosDAO {
 		Connection con = null;
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
-					"Valor tipoObjeto= " + tipoObjeto);
-			Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
-					"Consulta obtiene estados = " + obtieneEstadosSQL);
+			log.debug( "Valor tipoObjeto= " + tipoObjeto);
+			//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
+				//	"Valor tipoObjeto= " + tipoObjeto);
+			log.debug( "Consulta obtiene estados = " + obtieneEstadosSQL);
+			//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
+				//	"Consulta obtiene estados = " + obtieneEstadosSQL);
 			ps = con.prepareStatement(obtieneEstadosSQL);
 			ps.setString(1, tipoObjeto);
 			rs = ps.executeQuery();
@@ -264,25 +292,29 @@ public class CBAplicaDesaplicaPagosDAO {
 				lista.add(obj);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerEstadoCmb() - Error ", e);
+			//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerEstadoCmb() - Error ", e);
+					//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerEstadoCmb() - Error ", e);
+					//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerEstadoCmb() - Error ", e);
+					//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return lista;
@@ -297,10 +329,12 @@ public class CBAplicaDesaplicaPagosDAO {
 		Connection con = null;
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
-					"Valor tipoObjeto= " + tipoObjeto);
-			Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
-					"Consulta obtiene tipo = " + obtieneTipoSQL);
+			log.debug( "Valor tipoObjeto= " + tipoObjeto);
+			//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
+				//	"Valor tipoObjeto= " + tipoObjeto);
+			log.debug( "Consulta obtiene tipo = " + obtieneTipoSQL);
+			//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
+				//	"Consulta obtiene tipo = " + obtieneTipoSQL);
 			ps = con.prepareStatement(obtieneTipoSQL);
 			ps.setString(1, tipoObjeto);
 			rs = ps.executeQuery();
@@ -312,25 +346,29 @@ public class CBAplicaDesaplicaPagosDAO {
 				lista.add(obj);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerTipoCmb() - Error ", e);
+			//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerTipoCmb() - Error ", e);
+					//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerTipoCmb() - Error ", e);
+					//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerTipoCmb() - Error ", e);
+					//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return lista;
@@ -364,12 +402,15 @@ public class CBAplicaDesaplicaPagosDAO {
 			obtieneDatosSAP3 += where;
 			cmd.setFetchSize(1024);
 			rs = cmd.executeQuery(obtieneDatosSAP3);
-			Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
-					"Valor fechaDesde = " + fechaDesde);
-			Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
-					"Valor fechaHasta = " + fechaHasta);
-			Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
-					"Query generacion obtienDatosSAP2= " + obtieneDatosSAP3);
+			log.debug( "Valor fechaDesde = " + fechaDesde);
+			//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
+				//	"Valor fechaDesde = " + fechaDesde);
+			log.debug( "Valor fechaHasta = " + fechaHasta);
+			//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
+				//	"Valor fechaHasta = " + fechaHasta);
+			log.debug( "Query generacion obtienDatosSAP2= " + obtieneDatosSAP3);
+			//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
+				//	"Query generacion obtienDatosSAP2= " + obtieneDatosSAP3);
 			CBAplicaDesaplicaModel obj = null;
 			while (rs.next()) {
 				obj = new CBAplicaDesaplicaModel();
@@ -377,28 +418,33 @@ public class CBAplicaDesaplicaPagosDAO {
 				obj.setLineaSAP(rs.getString(2));
 				list.add(obj);
 			}
-			Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
-					"Tamano de lista obtiene datos SAP = " + list.size());
+			log.debug( "Tamano de lista obtiene datos SAP = " + list.size());
+			//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.INFO,
+				//	"Tamano de lista obtiene datos SAP = " + list.size());
 		} catch (SQLException e) {
-			Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtienDatosSAP2() - Error ", e);
+			//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtienDatosSAP2() - Error ", e);
+					//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtienDatosSAP2() - Error ", e);
+				//	Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtienDatosSAP2() - Error ", e);
+					//Logger.getLogger(CBAplicaDesaplicaPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return list;
