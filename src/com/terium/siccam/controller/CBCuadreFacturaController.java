@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 
 
 
+
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -17,7 +18,9 @@ import java.util.List;
 
 
 
+
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
@@ -38,7 +41,7 @@ public class CBCuadreFacturaController extends ControladorBase{
 	Listbox lbxCuadreSidra;
 	private Datebox dtbDesde;
 	private Datebox dtbHasta;
-	private Textbox tbxNombre;
+	private Combobox cmbxExiste;
 	Datebox dtbDia;
 	DateFormat fechaFormato = new SimpleDateFormat("dd/MM/yyyy");
 	
@@ -191,29 +194,15 @@ public class CBCuadreFacturaController extends ControladorBase{
 						cell.setLabel(adr.getExiste());
 						cell.setParent(fila);
 						
-					/*	cell = new Listcell();
+						
+						cell = new Listcell();
 						cell.setStyle("text-align: right");
-						cell.setLabel(adr.getTotalArbor());
+						cell.setLabel(adr.getTotalArbor()!=null?convertirADecimal(adr.getTotalArbor()).toString():"0");
 						cell.setParent(fila);
 						
 						cell = new Listcell();
 						cell.setStyle("text-align: right");
-						cell.setLabel(adr.getTotalPagado());
-						cell.setParent(fila);
-						
-						cell = new Listcell();
-						cell.setStyle("text-align: right");
-						cell.setLabel(adr.getMontoPagadoBmf());
-						cell.setParent(fila);*/
-						
-						cell = new Listcell();
-						cell.setStyle("text-align: right");
-						cell.setLabel(convertirADecimal(adr.getTotalArbor()).toString());
-						cell.setParent(fila);
-						
-						cell = new Listcell();
-						cell.setStyle("text-align: right");
-						cell.setLabel(convertirADecimal(adr.getTotalPagado()).toString());
+						cell.setLabel(adr.getTotalPagado()!=null?convertirADecimal(adr.getTotalPagado()).toString():"0");
 						cell.setParent(fila);
 						
 						cell = new Listcell();
@@ -225,15 +214,14 @@ public class CBCuadreFacturaController extends ControladorBase{
 						cell.setParent(fila);
 
 						fila.setValue(adr);
-						// lstToda.add(adr);
+						
 
 					fila.setParent(lbxCuadreSidra);
 
 					}
 				}else {
-					//Logger.getLogger(CBRecaReguDAO.class.getName()).log(Level.INFO, 
-							//"Bandera mensaje = " + banderaMensaje);
-					if(banderaMensaje == 0) { //Ejecucion de metodo desde pantalla principal
+					
+					if(banderaMensaje == 0) { 
 						Messagebox.show("No existen registros para los filtros aplicados", 
 								"ATENCION", Messagebox.OK, Messagebox.EXCLAMATION);
 					} 
@@ -256,7 +244,7 @@ public class CBCuadreFacturaController extends ControladorBase{
 		}
 		numero = df.format(numConv);
 		if (numConv.compareTo(BigDecimal.ZERO) == -1) {
-			// si es numero negativo lo pasamos a positivo
+			
 			numConv = numConv.negate();
 		}
 		return numero;
@@ -297,21 +285,23 @@ public class CBCuadreFacturaController extends ControladorBase{
 						Constantes.ATENCION, Messagebox.OK, Messagebox.EXCLAMATION);
 				return;
 			}else {
-				String nombre = "";
+				String existe = "2";
+				//objModel = lbxCuadreSidra.getSelectedItem().getValue();
 				
-				if(tbxNombre.getValue() == null || "".equals(tbxNombre.getText())) {
-				
-					nombre = "";
+				/*if(cmbxExiste.getValue() != null) {
+					existe = String.valueOf(cmbxExiste.getItems());
+					
 					
 				} else {
-					nombre = tbxNombre.getText().trim();
+					existe = "";
 					
 					
+				}*/
+				log.debug("realizaBusqueda() - nombre : " + existe);
+				if(cmbxExiste.getSelectedItem()!= null){
+				existe = cmbxExiste.getSelectedItem().getValue();
 				}
-				log.debug("realizaBusqueda() - nombre : " + nombre);
-				
-				
-				objModel.setNombreCliente(nombre);
+				objModel.setExiste(existe);
 				objModel.setFechaInicio(dtbDesde.getText());
 				objModel.setFechaFin(dtbHasta.getText());
 				listarConciliaciones( objModel,  banderaMensaje);

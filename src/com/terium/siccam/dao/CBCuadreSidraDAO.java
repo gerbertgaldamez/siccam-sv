@@ -38,8 +38,11 @@ public class CBCuadreSidraDAO extends ControladorBase {
 			String where = "";
 			where += "AND FECHA_PAGO >= TO_CHAR(TO_DATE ('" + objModel.getFechaInicio() + "', 'dd/MM/yyyy')) "
 					+ "AND FECHA_PAGO <= TO_CHAR(TO_DATE ('" + objModel.getFechaFin() + "', 'dd/MM/yyyy')) ";
-			if (!"".equals(objModel.getNombreCliente())) {
-				where += "AND UPPER (NOMBRE_CLIENTE_PDV) = '"   + objModel.getNombreCliente().toUpperCase() + "' ";
+			//if (!"".equals(objModel.getExiste())) {
+			log.debug(
+					"obtenerCuadreSidra() - " + "valor del get existe en la dao " + objModel.getExiste());
+			if (Integer.parseInt(objModel.getExiste()) != 2) {
+				where += "AND EXISTE = "   + objModel.getExiste().toUpperCase() + " ";
 				//where += "AND NOMBRE_CLIENTE_PDV = '"   + objModel.getNombreCliente() + "' ";
 			}
 			conn = obtenerDtsPromo().getConnection();

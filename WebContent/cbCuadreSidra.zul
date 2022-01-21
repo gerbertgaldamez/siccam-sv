@@ -34,10 +34,15 @@
 								</row>
 								<row>
 									<hbox>
-										<label value="Existe: " />
-										<separator width="29px" />
-										<textbox id="tbxNombre"
-											width="190px" />
+										<label value="Existe Factura:" />
+										<combobox id="cmbxExiste"
+											width="190px" readonly="true"
+											style="color:#2B547E;font-weight: bold;">
+											<comboitem label="Todas" value="2"/>
+											<comboitem label="Existe Factura" value="1"/>
+											<comboitem label="No Existe Factura" value="0"/>
+											
+										</combobox>
 									</hbox>
 									<hbox>
 										<label value="Monto Pagado: " />
