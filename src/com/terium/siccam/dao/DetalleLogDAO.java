@@ -4,13 +4,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import com.terium.siccam.composer.ControladorBase;
+import com.terium.siccam.controller.CBConsultaContabilizacionController;
 import com.terium.siccam.model.DetalleLogModel;
 import com.terium.siccam.utils.ConsultasSQ;
 
 public class DetalleLogDAO  extends ControladorBase {
+	private static Logger log = Logger.getLogger(DetalleLogDAO.class.getName());
 
 	/**
 	 * 
@@ -23,7 +27,8 @@ public class DetalleLogDAO  extends ControladorBase {
 		
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(DetalleLogDAO.class.getName()).log(Level.INFO, ConsultasSQ.INSERT_ERROR_LOG_QY);		
+			log.debug("query" + ConsultasSQ.INSERT_ERROR_LOG_QY);
+			//Logger.getLogger(DetalleLogDAO.class.getName()).log(Level.INFO, ConsultasSQ.INSERT_ERROR_LOG_QY);		
 			pstmt = conn.prepareStatement(ConsultasSQ.INSERT_ERROR_LOG_QY);
 			
 			pstmt.setInt(1, obj.getCodigoerror());
@@ -37,8 +42,9 @@ public class DetalleLogDAO  extends ControladorBase {
 				return true;
 			else
 				return false;
-		} catch (Exception e) {			
-			Logger.getLogger(DetalleLogDAO.class.getName()).log(Level.SEVERE, null, e);
+		} catch (Exception e) {	
+			log.error("insertErrorLog" + " - Error", e);
+			//Logger.getLogger(DetalleLogDAO.class.getName()).log(Level.SEVERE, null, e);
 			return false;
 		}finally {
 			try {
@@ -46,16 +52,19 @@ public class DetalleLogDAO  extends ControladorBase {
 					try {
 						pstmt.close();
 					} catch (SQLException e) {
-						Logger.getLogger(DetalleLogDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("insertErrorLog" + " - Error", e);
+						//Logger.getLogger(DetalleLogDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(conn != null)
 					try {
 						conn.close();
 					} catch (SQLException e) {
-						Logger.getLogger(DetalleLogDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("insertErrorLog" + " - Error", e);
+						//Logger.getLogger(DetalleLogDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 			}catch (Exception e) {
-				Logger.getLogger(DetalleLogDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("insertErrorLog" + " - Error", e);
+				//Logger.getLogger(DetalleLogDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 

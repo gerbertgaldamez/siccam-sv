@@ -8,11 +8,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.naming.NamingException;
 
 import com.terium.siccam.composer.ControladorBase;
+import com.terium.siccam.controller.CBConsultaContabilizacionController;
 import com.terium.siccam.model.CBLiquidacionCajeroModel;
 import com.terium.siccam.utils.ConsultasSQ;
 
@@ -20,6 +23,7 @@ import com.terium.siccam.utils.ConsultasSQ;
  * @author CarlosGodinez - QitCorp
  * */
 public class CBLiquidacionCajeroDAO {
+	private static Logger log = Logger.getLogger(CBLiquidacionCajeroDAO.class.getName());
 	
 	public int obtenerPK(){
 		int pk = 0;
@@ -28,37 +32,43 @@ public class CBLiquidacionCajeroDAO {
 		ResultSet rs = null;
 		try{
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
-			.log(Level.INFO,"Consulta para obtener PK liquidación = " + ConsultasSQ.OBTENER_PK_LIQUIDACION);
+			log.debug("Consulta para obtener PK liquidación = " + ConsultasSQ.OBTENER_PK_LIQUIDACION);
+			//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
+			//.log(Level.INFO,"Consulta para obtener PK liquidación = " + ConsultasSQ.OBTENER_PK_LIQUIDACION);
 			ps = conn.prepareStatement(ConsultasSQ.OBTENER_PK_LIQUIDACION);
 			rs = ps.executeQuery();
 			while(rs.next()){
 				pk = rs.getInt(1);
 			}
 		}catch (Exception e) {
-			Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerPK" + " - Error",e);
+			//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 				if(rs != null)
 					try {
 						rs.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("obtenerPK" + " - Error",e);
+						//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(ps != null)
 					try {
 						ps.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("obtenerPK" + " - Error",e);
+						//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(conn != null)
 					try {
 						conn.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("obtenerPK" + " - Error",e);
+						//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 		}
-		Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
-		.log(Level.INFO,"Llave primaria obtenida: " + pk);
+		log.debug("Llave primaria obtenida: " + pk);
+		//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
+		//.log(Level.INFO,"Llave primaria obtenida: " + pk);
 		return pk;
 	}
 	
@@ -68,12 +78,14 @@ public class CBLiquidacionCajeroDAO {
 		PreparedStatement ps = null;
 		try{
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
-			.log(Level.INFO,"Insert liquidación = " + ConsultasSQ.INSERT_LIQUIDACION);
+			log.debug("Insert liquidación = " + ConsultasSQ.INSERT_LIQUIDACION);
+			//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
+			//.log(Level.INFO,"Insert liquidación = " + ConsultasSQ.INSERT_LIQUIDACION);
 			ps = conn.prepareStatement(ConsultasSQ.INSERT_LIQUIDACION);
 			
-			Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
-			.log(Level.INFO,"Llave primaria envíada = " + pk);
+			log.debug("Llave primaria envíada = " + pk);
+			//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
+			//.log(Level.INFO,"Llave primaria envíada = " + pk);
 			ps.setInt(1, pk);
 			ps.setString(2, param.getNombtransaccion());
 			ps.setString(3, param.getFechatransaccion());
@@ -82,16 +94,19 @@ public class CBLiquidacionCajeroDAO {
 			ps.setString(6, param.getCreador());
 			result = ps.executeUpdate();
 			if(result > 0)
-				Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
-				.log(Level.INFO,"Liquidación registrada con éxito...");
+				log.debug("Liquidación registrada con éxito...");
+			//	Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
+				//.log(Level.INFO,"Liquidación registrada con éxito...");
 		}catch (Exception e) {
-			Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("guar" + " - Error",e);
+			//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			try {
 				if(ps != null)ps.close();
 				if(conn != null)conn.close();
 			}catch (Exception e) {
-				Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("guar" + " - Error",e);
+				//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -103,25 +118,30 @@ public class CBLiquidacionCajeroDAO {
 		PreparedStatement ps = null;
 		try{
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
-			.log(Level.INFO,"Delete liquidación = " + ConsultasSQ.DELETE_LIQUIDACION);
+			log.debug("Delete liquidación = " + ConsultasSQ.DELETE_LIQUIDACION);
+			//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
+			//.log(Level.INFO,"Delete liquidación = " + ConsultasSQ.DELETE_LIQUIDACION);
 			ps = conn.prepareStatement(ConsultasSQ.DELETE_LIQUIDACION);
-			Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
-			.log(Level.INFO,"Llave primaria envíada = " + pk);
+			log.debug("Llave primaria envíada = " + pk);
+			//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
+			//.log(Level.INFO,"Llave primaria envíada = " + pk);
 			ps.setInt(1, pk);
 			result = ps.executeUpdate();
 			if(result > 0)
-				Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
-				.log(Level.INFO,"Liquidación eliminada con éxito...");
+				log.debug("Liquidación eliminada con éxito...");
+				//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
+				//.log(Level.INFO,"Liquidación eliminada con éxito...");
 		}
 		catch(Exception e){
-			Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("elim" + " - Error",e);
+			//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			try {
 				if(ps != null)ps.close();
 				if(conn != null)conn.close();
 			}catch (Exception e) {
-				Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("elim" + " - Error",e);
+				//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -137,15 +157,18 @@ public class CBLiquidacionCajeroDAO {
 		try{
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 
-			Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
-				.log(Level.INFO,"Consulta valida liquidación = " + ConsultasSQ.VALIDA_LIQUIDACION);
+			log.debug("Consulta valida liquidación = " + ConsultasSQ.VALIDA_LIQUIDACION);
+			//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
+			//	.log(Level.INFO,"Consulta valida liquidación = " + ConsultasSQ.VALIDA_LIQUIDACION);
 			
 			ps = con.prepareStatement(ConsultasSQ.VALIDA_LIQUIDACION);
 			
-			Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
-				.log(Level.INFO,"Nombre de usuario envíado = " + nomb);
-			Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
-				.log(Level.INFO,"Fecha de transacción envíada = " + fecha);
+			log.debug("Nombre de usuario envíado = " + nomb);
+			//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
+				//.log(Level.INFO,"Nombre de usuario envíado = " + nomb);
+			log.debug("Fecha de transacción envíada = " + fecha);
+			//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
+				//.log(Level.INFO,"Fecha de transacción envíada = " + fecha);
 			
 			ps.setString(1, nomb);
 			ps.setString(2, fecha);
@@ -155,29 +178,35 @@ public class CBLiquidacionCajeroDAO {
 			}
 			String resultStr = (result ? "Liquidación válida" : "Liquidación inválida");
 
-			Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
-				.log(Level.INFO,resultStr);
+			log.debug(resultStr);
+			//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
+				//.log(Level.INFO,resultStr);
+			
 
 		}catch (Exception e) {
-			Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("transaccionValida" + " - Error",e);
+			//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("transaccionValida" + " - Error",e);
+					//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("transaccionValida" + " - Error",e);
+					//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("transaccionValida" + " - Error",e);
+					//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return result;
@@ -196,16 +225,21 @@ public class CBLiquidacionCajeroDAO {
 		try{
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
 			String query = ConsultasSQ.CONSULTAR_LIQUIDACIONES;
-			Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
-				.log(Level.INFO,"Consulta liquidaciones = " + query);
-			Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
-				.log(Level.INFO,"Filtros enviados...");
-			Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
-				.log(Level.INFO,"User = " + objModel.getNombtransaccion());
-			Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
-				.log(Level.INFO,"Fecha de inicio = " + objModel.getFechatransaccion());
-			Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
-				.log(Level.INFO,"Fecha fin = " + objModel.getFechatransaccion());
+			log.debug("Consulta liquidaciones = " + query);
+			//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
+				//.log(Level.INFO,"Consulta liquidaciones = " + query);
+			log.debug("Filtros enviados...");
+			//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
+				//.log(Level.INFO,"Filtros enviados...");
+			log.debug("User = " + objModel.getNombtransaccion());
+			//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
+				//.log(Level.INFO,"User = " + objModel.getNombtransaccion());
+			log.debug("Fecha de inicio = " + objModel.getFechatransaccion());
+			//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
+				//.log(Level.INFO,"Fecha de inicio = " + objModel.getFechatransaccion());
+			log.debug("Fecha fin = " + objModel.getFechatransaccion());
+			//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
+				//.log(Level.INFO,"Fecha fin = " + objModel.getFechatransaccion());
 			String where = "";
 			
 			if(!objModel.getNombtransaccion().equals("") && !objModel.getFechatransaccion().equals("") && !objModel.getFechatransaccion().equals("")){
@@ -231,8 +265,9 @@ public class CBLiquidacionCajeroDAO {
 				cmd = conn.prepareStatement(query + where + "ORDER BY cbliquidacionid");
 				rs = cmd.executeQuery();
 			}
-			Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
-				.log(Level.INFO,"Where consulta = " + where);
+			log.debug("Where consulta = " + where);
+			//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName())
+				//.log(Level.INFO,"Where consulta = " + where);
 			CBLiquidacionCajeroModel objeBean;
 			while(rs.next()){
 				objeBean = new CBLiquidacionCajeroModel();
@@ -258,25 +293,29 @@ public class CBLiquidacionCajeroDAO {
 				list.add(objeBean);
 			}
 		}catch (Exception e) {
-			Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("consTodo" + " - Error",e);
+			//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consTodo" + " - Error",e);
+					//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consTodo" + " - Error",e);
+					//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consTodo" + " - Error",e);
+					//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 	}
 		return list;
@@ -301,13 +340,15 @@ public class CBLiquidacionCajeroDAO {
 			if(cmd.execute())
 				result = 1;
 		}catch (Exception e) {
-			Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("guarMasivo" + " - Error",e);
+			//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			try {
 				if(cmd != null)cmd.close();
 				if(conn != null)conn.close();
 			}catch (Exception e) {
-				Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("guarMasivo" + " - Error",e);
+				//Logger.getLogger(CBLiquidacionCajeroDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;

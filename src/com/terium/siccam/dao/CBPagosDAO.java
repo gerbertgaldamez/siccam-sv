@@ -3,12 +3,14 @@ package com.terium.siccam.dao;
 import java.sql.Connection;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import com.terium.siccam.composer.ControladorBase;
+import com.terium.siccam.controller.CBConsultaContabilizacionController;
 import com.terium.siccam.model.CBPagosModel;
 import com.terium.siccam.utils.Filtro;
 import com.terium.siccam.utils.FiltroQuery;
@@ -19,7 +21,8 @@ import com.terium.siccam.utils.Orden;
  *
  * @author rSianB for terium.com 
  */ 
-public class  CBPagosDAO {  
+public class  CBPagosDAO { 
+	private static Logger log = Logger.getLogger(CBPagosDAO.class.getName());
     private int totalRegistros;
 	/**
 	  * This method should insert a new record in the DB
@@ -54,12 +57,14 @@ public class  CBPagosDAO {
             ret= qry.update(conn, queInsert, param);
 		
 		} catch (Exception e) {
-			Logger.getLogger(CBPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertar" + " - Error", e);
+			//Logger.getLogger(CBPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			try {
 				if(conn != null)conn.close();
 			}catch (Exception e) {
-				Logger.getLogger(CBPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("insertar" + " - Error", e);
+				//Logger.getLogger(CBPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
                
@@ -107,12 +112,14 @@ public class  CBPagosDAO {
 
 
         } catch (Exception e) {
-			Logger.getLogger(CBPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+        	log.error("actualiza" + " - Error", e);
+			//Logger.getLogger(CBPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			try {
 				if(conn != null)conn.close();
 			}catch (Exception e) {
-				Logger.getLogger(CBPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("actualiza" + " - Error", e);
+				//Logger.getLogger(CBPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
                
@@ -143,16 +150,19 @@ public List<CBPagosModel> Listado(Connection conn, List<Filtro> filtro, List<Ord
 			ret =  (List<CBPagosModel>) qry.query(conn,  query + sqlFiltros + filtroQuery.getSql(), blh);		
 }
 		this.totalRegistros = ret.size();
-			Logger.getLogger(CBPagosDAO.class.getName())
-				.log(Level.INFO,"resultado: " + ret.size());
+		log.debug("resultado: " + ret.size());
+			//Logger.getLogger(CBPagosDAO.class.getName())
+			//	.log(Level.INFO,"resultado: " + ret.size());
 			
         }  catch (Exception e) {
-			Logger.getLogger(CBPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+        	log.error("Listado" + " - Error", e);
+			//Logger.getLogger(CBPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			try {
 				if(conn != null)conn.close();
 			}catch (Exception e) {
-				Logger.getLogger(CBPagosDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("Listado" + " - Error", e);
+				//Logger.getLogger(CBPagosDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		

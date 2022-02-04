@@ -10,7 +10,7 @@ public class CBCuadreSidraModel {
 	private String nombreClienteFinal;
 	private String billRefNo;
 	private String fechaPago;
-	private BigDecimal montoPago;
+	private String montoPago;
 	private String estadoFactura;
 	private String fechaSincronizacion;
 	private String noBoleta;
@@ -34,6 +34,13 @@ public class CBCuadreSidraModel {
 	private String montoPagadoBmf;
 	private String numFactura;
 	private String codFactura;
+	private String cuadre;
+	public String getCuadre() {
+		return cuadre;
+	}
+	public void setCuadre(String cuadre) {
+		this.cuadre = cuadre;
+	}
 	public String getFechaFactura() {
 		return fechaFactura;
 	}
@@ -94,10 +101,10 @@ public class CBCuadreSidraModel {
 	public void setFechaPago(String fechaPago) {
 		this.fechaPago = fechaPago;
 	}
-	public BigDecimal getMontoPago() {
+	public String getMontoPago() {
 		return montoPago;
 	}
-	public void setMontoPago(BigDecimal montoPago) {
+	public void setMontoPago(String montoPago) {
 		this.montoPago = montoPago;
 	}
 	public String getEstadoFactura() {

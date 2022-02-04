@@ -42,6 +42,9 @@ public class CBCuadreFacturaController extends ControladorBase{
 	private Datebox dtbDesde;
 	private Datebox dtbHasta;
 	private Combobox cmbxExiste;
+	private Combobox cmbxCuadreMonto;
+	private Textbox tbxNombre;
+	private Textbox tbxNumeroFactura;
 	Datebox dtbDia;
 	DateFormat fechaFormato = new SimpleDateFormat("dd/MM/yyyy");
 	
@@ -75,21 +78,20 @@ public class CBCuadreFacturaController extends ControladorBase{
 						adr = ilst.next();
 						fila = new Listitem();
 
-					/*	cell = new Listcell();
+						cell = new Listcell();
 						cell.setLabel(adr.getNumFactura());
 						cell.setParent(fila);
 						
-						cell = new Listcell();
-						cell.setLabel(adr.getFechaFactura());
-						cell.setParent(fila);*/
-						// Serie
+						
+						// SERIE
 						cell = new Listcell();
 						cell.setLabel(adr.getSerie());
 						cell.setParent(fila);
 						
-						/*cell = new Listcell();
-						cell.setLabel(adr.getCodFactura());
-						cell.setParent(fila);*/
+						//FECHA FACTURA
+						cell = new Listcell();
+						cell.setLabel(adr.getFechaFactura());
+						cell.setParent(fila);
 						
 
 						// NOMBRE CLIENTE
@@ -115,9 +117,13 @@ public class CBCuadreFacturaController extends ControladorBase{
 						cell.setParent(fila);
 						
 						// MONTO PAGO
-						cell = new Listcell();
+						/*cell = new Listcell();
 						cell.setStyle("text-align: right");
 						cell.setLabel(convertirADecimal(adr.getMontoPago()).toString());
+						cell.setParent(fila);*/
+						cell = new Listcell();
+						cell.setStyle("text-align: right");
+						cell.setLabel(adr.getMontoPago());
 						cell.setParent(fila);
 						
 						// ESTADO FACTURA
@@ -190,28 +196,30 @@ public class CBCuadreFacturaController extends ControladorBase{
 						cell.setLabel(adr.getNombreVendedor());
 						cell.setParent(fila);
 						
+						//EXISTE
 						cell = new Listcell();
 						cell.setLabel(adr.getExiste());
 						cell.setParent(fila);
 						
-						
+						//TOTAL ARBOR
 						cell = new Listcell();
 						cell.setStyle("text-align: right");
 						cell.setLabel(adr.getTotalArbor()!=null?convertirADecimal(adr.getTotalArbor()).toString():"0");
 						cell.setParent(fila);
 						
+						//TOTAL PAGADO
 						cell = new Listcell();
 						cell.setStyle("text-align: right");
 						cell.setLabel(adr.getTotalPagado()!=null?convertirADecimal(adr.getTotalPagado()).toString():"0");
 						cell.setParent(fila);
 						
+						//MONTO PAGADO BMF
 						cell = new Listcell();
 						cell.setStyle("text-align: right");
 						cell.setLabel(adr.getMontoPagadoBmf());
 						cell.setParent(fila);
 						
 						
-						cell.setParent(fila);
 
 						fila.setValue(adr);
 						
@@ -286,24 +294,48 @@ public class CBCuadreFacturaController extends ControladorBase{
 				return;
 			}else {
 				String existe = "2";
+				String cuadre ="2";
+				String nombre ="";
+				
 				//objModel = lbxCuadreSidra.getSelectedItem().getValue();
 				
-				/*if(cmbxExiste.getValue() != null) {
-					existe = String.valueOf(cmbxExiste.getItems());
+			/*	if(tbxNombre.getValue() == null || "".equals(tbxNombre.getText())) {
+					nombre = "";
 					
 					
 				} else {
-					existe = "";
+					nombre = tbxNombre.getText().trim();
+					
 					
 					
 				}*/
-				log.debug("realizaBusqueda() - nombre : " + existe);
+				String codigo = "";
+				/*if(tbxNumeroFactura.getValue() == null || "".equals(tbxNumeroFactura.getText())){
+					
+					codigo = "";
+					
+				}else {
+					codigo = tbxNumeroFactura.getText().trim();
+				}*/
+				
 				if(cmbxExiste.getSelectedItem()!= null){
 				existe = cmbxExiste.getSelectedItem().getValue();
+				
+				
 				}
+				if(cmbxCuadreMonto.getSelectedItem() != null){
+				cuadre = cmbxCuadreMonto.getSelectedItem().getValue();
+				}
+				
+				
 				objModel.setExiste(existe);
 				objModel.setFechaInicio(dtbDesde.getText());
 				objModel.setFechaFin(dtbHasta.getText());
+				objModel.setCuadre(cuadre);
+				objModel.setNombreCliente(nombre);
+				objModel.setNumFactura(codigo);
+				
+				
 				listarConciliaciones( objModel,  banderaMensaje);
 				
 			}

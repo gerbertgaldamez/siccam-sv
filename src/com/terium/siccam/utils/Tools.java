@@ -132,7 +132,8 @@ public class Tools {
 
 	/* Permite obtener una cookie por medio del nombre */
 	public static String getCookie(String name) {
-		System.out.println("GetCookie");
+		logger.debug("getCookie() - " + "GetCookie");
+		
 
 		// java.lang.Object getNativeRequest()
 		
@@ -147,11 +148,12 @@ public class Tools {
 			// HttpServletRequest hsr = (HttpServletRequest)execution.getNativeRequest();
 			if(Executions.getCurrent() != null) {
 				Cookie[] cookies = ((HttpServletRequest) Executions.getCurrent().getNativeRequest()).getCookies();
-				System.out.println("es la validacion");
+				
 				if (cookies != null) {
 					for (Cookie cookie : cookies) {
 						if (cookie.getName().equals(name)) {
-							System.out.println(cookie.getValue());
+							logger.debug(cookie.getValue());
+							
 							return cookie.getValue();
 						}
 					}
@@ -227,7 +229,8 @@ public class Tools {
 	public static String eliminaLetras(String cadena){
         String result = cadena.replaceAll("[a-z|A-Z]", "");
 		// String result = cadena.replaceAll("[a-zA-Z_0-9]", "");
-        System.out.println("Cadena: " + result);
+        logger.debug("eliminaLetras() - Cadena: " + result);
+       
         return result;
     }
 	/* public static boolean validarTelefono(String telefono) {

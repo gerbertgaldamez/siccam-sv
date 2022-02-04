@@ -8,13 +8,17 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import com.terium.siccam.composer.ControladorBase;
+import com.terium.siccam.controller.CBConsultaContabilizacionController;
 import com.terium.siccam.model.CBParametrosGeneralesModel;
 
 @SuppressWarnings("serial")
 public class CBParametrosGeneralesDAO extends ControladorBase{
+	private static Logger log = Logger.getLogger(CBConsultaContabilizacionController.class.getName());
 	
 	private String QRY_OBTIENE_ESTADOS = "SELECT OBJETO, VALOR_OBJETO1 FROM CB_MODULO_CONCILIACION_CONF "
 			+ "WHERE MODULO = 'PARAMETROS_GENERALES_CONF' AND TIPO_OBJETO =  'ESTADO'";
@@ -39,25 +43,29 @@ public class CBParametrosGeneralesDAO extends ControladorBase{
 				}
 			
 		} catch (Exception e) {
-			Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerEstadoCmb" + " - Error", e);
+			//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 				if(rs != null)
 					try {
 						rs.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("obtenerEstadoCmb" + " - Error", e);
+						//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(ps != null)
 					try {
 						ps.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("obtenerEstadoCmb" + " - Error", e);
+						//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(con != null)
 					try {
 						con.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("obtenerEstadoCmb" + " - Error", e);
+						//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 		}
 		return lista;
@@ -100,8 +108,9 @@ public class CBParametrosGeneralesDAO extends ControladorBase{
 				if(!estado.equals("")){
 					where += " AND UPPER(ESTADO) = '" + estado.toUpperCase() + "' ";
 				}
-				Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
-					.log(Level.INFO,"Query general parametros generales = " + QRY_GENERAL + where + " ORDER BY CBMODULOCONCILIACIONCONFID");
+				log.debug("Query general parametros generales = " + QRY_GENERAL + where + " ORDER BY CBMODULOCONCILIACIONCONFID");
+				//Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
+					//.log(Level.INFO,"Query general parametros generales = " + QRY_GENERAL + where + " ORDER BY CBMODULOCONCILIACIONCONFID");
 				
 				ps = con.createStatement();
 				rs = ps.executeQuery(QRY_GENERAL + where + " ORDER BY CBMODULOCONCILIACIONCONFID");
@@ -120,25 +129,29 @@ public class CBParametrosGeneralesDAO extends ControladorBase{
 					lista.add(obj);
 				}
 		}catch (Exception e) {
-			Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("consultaGeneral" + " - Error", e);
+			//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consultaGeneral" + " - Error", e);
+					//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consultaGeneral" + " - Error", e);
+					//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consultaGeneral" + " - Error", e);
+					//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 	}
 		return lista;
@@ -169,16 +182,20 @@ public class CBParametrosGeneralesDAO extends ControladorBase{
 				cmd.setString(9, obj.getCreador());
 			if(cmd.executeUpdate() > 0)
 				result = true;
-				Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
-					.log(Level.INFO,"\n*** Registro insertado con exito ***\n");
+			log.debug("\n*** Registro insertado con exito ***\n");
+				//Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
+					//.log(Level.INFO,"\n*** Registro insertado con exito ***\n");
 		}catch (Exception e) {
-			Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertar" + " - Error", e);
+			//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			try {
 				if(cmd != null)cmd.close();
 				if(conn != null)conn.close();
 			}catch (Exception e) {
-				Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+				
+				log.error("insertar" + " - Error", e);
+				//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -206,16 +223,19 @@ public class CBParametrosGeneralesDAO extends ControladorBase{
 				cmd.setInt(9, obj.getCbmoduloconciliacionconfid());
 			if(cmd.executeUpdate() > 0)
 				result = true;
-				Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
-					.log(Level.INFO,"\n*** Registro insertado con exito ***\n");
+			log.debug("\n*** Registro insertado con exito ***\n");
+				//Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
+					//.log(Level.INFO,"\n*** Registro insertado con exito ***\n");
 		}catch (Exception e) {
-			Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("modificar" + " - Error", e);
+			//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			try {
 				if(cmd != null)cmd.close();
 				if(conn != null)conn.close();
 			}catch (Exception e) {
-				Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("modificar" + " - Error", e);
+				//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -234,16 +254,19 @@ public class CBParametrosGeneralesDAO extends ControladorBase{
 				cmd.setInt(1, pk);
 			if(cmd.executeUpdate() > 0)
 				result = true;
-				Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
-					.log(Level.INFO,"\n*** Registro eliminado con exito ***\n");
+			log.debug("\n*** Registro eliminado con exito ***\n");
+				//Logger.getLogger(CBParametrosGeneralesDAO.class.getName())
+				//	.log(Level.INFO,"\n*** Registro eliminado con exito ***\n");
 		}catch (Exception e) {
-			Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("eliminar" + " - Error", e);
+			//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			try {
 				if(cmd != null)cmd.close();
 				if(conn != null)conn.close();
 			}catch (Exception e) {
-				Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("eliminar" + " - Error", e);
+				//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -287,26 +310,30 @@ public class CBParametrosGeneralesDAO extends ControladorBase{
 					con.close();
 			}
 		} catch (Exception e) {
-			System.out.println("Error al obtener lista de convenios: " + e.getMessage());
-			Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerParamConvenios" + " - Error", e);
+			
+			//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerParamConvenios" + " - Error", e);
+					//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerParamConvenios" + " - Error", e);
+					//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerParamConvenios" + " - Error", e);
+					//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return lista;
@@ -340,25 +367,29 @@ public class CBParametrosGeneralesDAO extends ControladorBase{
 				lista.add(obj);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerParamCuentasTipo" + " - Error", e);
+			//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerParamCuentasTipo" + " - Error", e);
+					//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerParamCuentasTipo" + " - Error", e);
+					//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerParamCuentasTipo" + " - Error", e);
+					//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return lista;
@@ -383,9 +414,11 @@ public class CBParametrosGeneralesDAO extends ControladorBase{
 			try {
 				con = obtenerDtsPromo().getConnection();
 				ps = con.prepareStatement(OBTIENE_CUENTAS_ESTADO_QRY);
-				System.out.println("query combo estado " + OBTIENE_CUENTAS_ESTADO_QRY);
+				log.debug("query combo estado " + OBTIENE_CUENTAS_ESTADO_QRY);
+				
 				rs = ps.executeQuery();
-				System.out.println("lista dao " + lista.size());
+				log.debug("lista dao " + lista.size());
+				
 				CBParametrosGeneralesModel obj = null;
 				while(rs.next()){
 					System.out.println("entra al while en dao");
@@ -396,25 +429,29 @@ public class CBParametrosGeneralesDAO extends ControladorBase{
 					lista.add(obj);
 				}
 		}catch (Exception e) {
-			Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerParamCuentasEstado" + " - Error", e);
+			//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerParamCuentasEstado" + " - Error", e);
+					//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerParamCuentasEstado" + " - Error", e);
+					//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerParamCuentasEstado" + " - Error", e);
+					//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 	}
 		return lista;
@@ -441,7 +478,8 @@ public class CBParametrosGeneralesDAO extends ControladorBase{
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			try {
 				ps = con.prepareStatement(OBTIENE_TIPO_QRY);
-				System.out.println("query tipo de tarjeta " + OBTIENE_TIPO_QRY);
+				log.debug("query tipo de tarjeta " + OBTIENE_TIPO_QRY);
+				
 				rs = ps.executeQuery();
 				CBParametrosGeneralesModel obj = null;
 				while(rs.next()){
@@ -460,8 +498,9 @@ public class CBParametrosGeneralesDAO extends ControladorBase{
 					con.close();
 			}
 		} catch (Exception e) {
-			System.out.println("Error al obtener lista de estado en pantalla de parametros generales: "+ e.getMessage());
-			Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerTipoTarjeta" + " - Error", e);
+			
+			//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 		} 
 		return lista;
 	}
@@ -549,12 +588,14 @@ public class CBParametrosGeneralesDAO extends ControladorBase{
 		ResultSet rs = null;
 		CBParametrosGeneralesModel model = null;
 		try {
-			System.out.println("Query : " + query);
+			log.debug("query : " + query);
+			
 			con = obtenerDtsPromo().getConnection();
 			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();
 			while (rs.next()) {
-				System.out.println("nombre " + rs.getString(4));
+				log.debug("nombre " + rs.getString(4));
+				
 				model = new CBParametrosGeneralesModel();
 				model.setCbmoduloconciliacionconfid(rs.getInt(1));
 				model.setModulo(rs.getString(2));
@@ -569,32 +610,38 @@ public class CBParametrosGeneralesDAO extends ControladorBase{
 				listResult.add(model);
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerListaTipoAgrupacion" + " - Error", e);
+			//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 		} catch (Exception e) {
-			Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerListaTipoAgrupacion" + " - Error", e);
+			//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerListaTipoAgrupacion" + " - Error", e);
+					//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerListaTipoAgrupacion" + " - Error", e);
+					//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerListaTipoAgrupacion" + " - Error", e);
+					//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		if (listResult != null)
-			Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.INFO,
-					"Lista tipo agrupacion Quantity: " + listResult.size());
+			log.debug("Lista tipo agrupacion Quantity: " + listResult.size());
+			//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.INFO,
+					//"Lista tipo agrupacion Quantity: " + listResult.size());
 		return listResult;
 	}
 	
@@ -632,27 +679,32 @@ public class CBParametrosGeneralesDAO extends ControladorBase{
 				listResult.add(model);
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerParametrosWS" + " - Error", e);
+			//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 		} catch (Exception e) {
-			Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerParametrosWS" + " - Error", e);
+			//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerParametrosWS" + " - Error", e);
+					//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerParametrosWS" + " - Error", e);
+					//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerParametrosWS" + " - Error", e);
+					//Logger.getLogger(CBParametrosGeneralesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 

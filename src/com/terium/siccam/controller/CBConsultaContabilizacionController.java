@@ -1,8 +1,6 @@
 package com.terium.siccam.controller;
 
 import java.io.BufferedWriter;
-
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -11,23 +9,19 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
 import java.net.InetAddress;
-import java.nio.charset.Charset;
+
 import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+
+
 import java.util.UUID;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
+
 //import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 
@@ -40,10 +34,9 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.lang.StringUtils;
 import org.zkoss.util.media.Media;
-import org.zkoss.zhtml.Thead;
+
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Desktop;
-import org.zkoss.zk.ui.DesktopUnavailableException;
+
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.Event;

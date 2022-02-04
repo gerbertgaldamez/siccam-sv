@@ -8,11 +8,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 
 import javax.naming.NamingException;
 
 import com.terium.siccam.composer.ControladorBase;
+import com.terium.siccam.controller.CBConsultaContabilizacionController;
 import com.terium.siccam.model.CBLiquidacionDetalleModel;
 import com.terium.siccam.utils.ConsultasSQ;
 
@@ -20,6 +25,7 @@ import com.terium.siccam.utils.ConsultasSQ;
  * @author CarlosGodinez - QitCorp
  * */
 public class CBLiquidacionDetalleDAO {
+	private static Logger log = Logger.getLogger(CBLiquidacionDetalleDAO.class.getName());
 	
 	public int obtenerPK(){
 		int pk = 0;
@@ -28,37 +34,43 @@ public class CBLiquidacionDetalleDAO {
 		ResultSet rs = null;
 		try{
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-				.log(Level.INFO,"Consulta para obtener PK liquidación detalle: " + ConsultasSQ.OBTENER_PK_LIQUIDACION_DETALLE);
+			Log.debug("Consulta para obtener PK liquidación detalle: " + ConsultasSQ.OBTENER_PK_LIQUIDACION_DETALLE);
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+				//.log(Level.INFO,"Consulta para obtener PK liquidación detalle: " + ConsultasSQ.OBTENER_PK_LIQUIDACION_DETALLE);
 			cmd = conn.prepareStatement(ConsultasSQ.OBTENER_PK_LIQUIDACION_DETALLE);
 			rs = cmd.executeQuery();
 			while(rs.next()){
 				pk = rs.getInt(1);
 			}
 		}catch (Exception e) {
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerPK" + " - Error", e);
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 				if(rs != null)
 					try {
 						rs.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("obtenerPK" + " - Error", e);
+					//	Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(cmd != null)
 					try {
 						cmd.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("obtenerPK" + " - Error", e);
+						//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(conn != null)
 					try {
 						conn.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("obtenerPK" + " - Error", e);
+						//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 		}
-		Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-			.log(Level.INFO,"Llave primaria obtenida: " + pk);
+		Log.debug("Llave primaria obtenida: " + pk);
+		//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+			//.log(Level.INFO,"Llave primaria obtenida: " + pk);
 		return pk;
 	}
 	
@@ -68,18 +80,20 @@ public class CBLiquidacionDetalleDAO {
 		PreparedStatement cmd = null;
 		try{
 			 conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-				.log(Level.INFO,"Insert masivo de Liquidaci�n detalle: " + ConsultasSQ.INSERT_MASIVO_LIQUIDACION_DETALLE);
+			 Log.debug("Insert masivo de Liquidaci�n detalle: " + ConsultasSQ.INSERT_MASIVO_LIQUIDACION_DETALLE);
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+				//.log(Level.INFO,"Insert masivo de Liquidaci�n detalle: " + ConsultasSQ.INSERT_MASIVO_LIQUIDACION_DETALLE);
 			 cmd = conn.prepareStatement(ConsultasSQ.INSERT_MASIVO_LIQUIDACION_DETALLE);
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-				.log(Level.INFO,"Registros antes de guardar en CB_LIQUIDACION_DETALLE: " + list.size());
+			 Log.debug("Registros antes de guardar en CB_LIQUIDACION_DETALLE: " + list.size());
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+				//.log(Level.INFO,"Registros antes de guardar en CB_LIQUIDACION_DETALLE: " + list.size());
 			int exitosas = 0;
 			for (CBLiquidacionDetalleModel d : list) {  
 				cmd.setInt(1, fk);
-	            cmd.setInt(2, d.getTipo_valo());   
-	            System.out.println("tipo valor " + d.getTipo_valo());
+	            cmd.setInt(2, d.getTipo_valo()); 
+	            Log.debug("tipo valor " + d.getTipo_valo());
 	            cmd.setString(3,d.getTipo_pago());
-	            System.out.println("tipo pago " + d.getTipo_pago());
+	            Log.debug("tipo pago " + d.getTipo_pago());
 	            cmd.setString(4, d.getCod_tipotarjeta());
 	            cmd.setString(5, d.getDesc());
 	            cmd.setString(6,d.getTotal()); 
@@ -89,18 +103,21 @@ public class CBLiquidacionDetalleDAO {
 	        }  
 			if(exitosas > 0){	
 		        cmd.executeBatch(); 
-		        Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-					.log(Level.INFO,"Registros de detalle liquidaci�n guardados con �xito: " + exitosas);
+		        Log.debug("Registros de detalle liquidaci�n guardados con �xito: " + exitosas);
+		      //  Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+					//.log(Level.INFO,"Registros de detalle liquidaci�n guardados con �xito: " + exitosas);
 		        result = true;
 			}
 		}catch(Exception e){
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("guar" + " - Error", e);
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			try {
 				if(cmd != null)cmd.close();
 				if(conn != null)conn.close();
 			}catch (Exception e) {
-				Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("guar" + " - Error", e);
+				//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -112,7 +129,8 @@ public class CBLiquidacionDetalleDAO {
 		PreparedStatement cmd = null;
 		try{
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			System.out.println("Insert tipo valor 19: " + ConsultasSQ.INSERT_TIPO_VALOR_X);
+			 Log.debug("Insert tipo valor 19: " + ConsultasSQ.INSERT_TIPO_VALOR_X);
+			
 			cmd = conn.prepareStatement(ConsultasSQ.INSERT_TIPO_VALOR_X);
 			int exitosas = 0;
 			for (CBLiquidacionDetalleModel d : list) {  
@@ -129,19 +147,22 @@ public class CBLiquidacionDetalleDAO {
 	        }  
 			if(exitosas > 0){	
 		        cmd.executeBatch(); 
-		        Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-					.log(Level.INFO,"Registro de detalle liquidaci�n de tipo valor 19 guardado con �xito.");
+		        Log.debug("Registro de detalle liquidaci�n de tipo valor 19 guardado con �xito.");
+		       // Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+					//.log(Level.INFO,"Registro de detalle liquidaci�n de tipo valor 19 guardado con �xito.");
 		        cmd.close();
 		        result = true;
 		    }
 		}catch(Exception e){
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("guarDetalleTipoValor19" + " - Error", e);
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			try {
 				if(cmd != null)cmd.close();
 				if(conn != null)conn.close();
 			}catch (Exception e) {
-				Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("guarDetalleTipoValor19" + " - Error", e);
+				//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -153,25 +174,30 @@ public class CBLiquidacionDetalleDAO {
 		PreparedStatement cmd = null;
 		try{
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			 Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-				.log(Level.INFO,"Update detalle liquidaci�n: " + ConsultasSQ.UPDATE_TIPO_VALOR_X);
-			 Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-				.log(Level.INFO,"Detalle liquidacion id = " + pk);
+			 Log.debug("Update detalle liquidaci�n: " + ConsultasSQ.UPDATE_TIPO_VALOR_X);
+			// Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+				//.log(Level.INFO,"Update detalle liquidaci�n: " + ConsultasSQ.UPDATE_TIPO_VALOR_X);
+			 Log.debug("Detalle liquidacion id = " + pk);
+			// Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+				//.log(Level.INFO,"Detalle liquidacion id = " + pk);
 			 cmd = conn.prepareStatement(ConsultasSQ.UPDATE_TIPO_VALOR_X);
 			cmd.setString(1, param.getDesc());
 			cmd.setInt(2, pk);
 			if(cmd.executeUpdate() > 0)
-				Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-					.log(Level.INFO,"Registro de detalle liquidaci�n modificado con �xito.");
+				 Log.debug("Registro de detalle liquidaci�n modificado con �xito.");
+				//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+					//.log(Level.INFO,"Registro de detalle liquidaci�n modificado con �xito.");
 				result = true;
 		}catch(Exception e){
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("modiDetalleTipoValorX" + " - Error", e);
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			try {
 				if(cmd != null)cmd.close();
 				if(conn != null)conn.close();
 			}catch (Exception e) {
-				Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("modiDetalleTipoValorX" + " - Error", e);
+				//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 		}
 		}
 		return result;
@@ -183,24 +209,30 @@ public class CBLiquidacionDetalleDAO {
 		CallableStatement cmd = null;
 		try{
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-				.log(Level.INFO,"Store procedure CB_DEPOSITOS_DETALLE_SP: " + ConsultasSQ.EXEC_CONCILIA_DEPOSITO_PRC);
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-				.log(Level.INFO,"Detalle liquidacion id = " + idDetalle);
+			 Log.debug("Store procedure CB_DEPOSITOS_DETALLE_SP: " + ConsultasSQ.EXEC_CONCILIA_DEPOSITO_PRC);
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+				//.log(Level.INFO,"Store procedure CB_DEPOSITOS_DETALLE_SP: " + ConsultasSQ.EXEC_CONCILIA_DEPOSITO_PRC);
+			 Log.debug("Detalle liquidacion id = " + idDetalle);
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+				//.log(Level.INFO,"Detalle liquidacion id = " + idDetalle);
 			 cmd = conn.prepareCall(ConsultasSQ.EXEC_CONCILIA_DEPOSITO_PRC);
 			cmd.setInt(1, idDetalle);
 			if(cmd.executeUpdate()>0)
 				result = true;
-				Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-					.log(Level.INFO,"Store procedure CB_DEPOSITOS_DETALLE_SP ejecutado con �xito.");
+			
+			 Log.debug("Store procedure CB_DEPOSITOS_DETALLE_SP ejecutado con �xito.");
+				//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+					//.log(Level.INFO,"Store procedure CB_DEPOSITOS_DETALLE_SP ejecutado con �xito.");
 		}catch(Exception e){
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("execConciliaDepositoPrc" + " - Error", e);
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			try {
 				if(cmd != null)cmd.close();
 				if(conn != null)conn.close();
 			}catch (Exception e) {
-				Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("execConciliaDepositoPrc" + " - Error", e);
+				//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -212,24 +244,29 @@ public class CBLiquidacionDetalleDAO {
 		CallableStatement cmd = null;
 		try{
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-				.log(Level.INFO,"Store procedure CB_CONCILIA_CRED_UNICO_SP: " + ConsultasSQ.EXEC_CONCILIA_CRED_UNICO_SP);
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-				.log(Level.INFO,"Detalle liquidacion id = " + idDetalle);
+			 Log.debug("Store procedure CB_CONCILIA_CRED_UNICO_SP: " + ConsultasSQ.EXEC_CONCILIA_CRED_UNICO_SP);
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+				//.log(Level.INFO,"Store procedure CB_CONCILIA_CRED_UNICO_SP: " + ConsultasSQ.EXEC_CONCILIA_CRED_UNICO_SP);
+			 Log.debug("Detalle liquidacion id = " + idDetalle);
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+				//.log(Level.INFO,"Detalle liquidacion id = " + idDetalle);
 			 cmd = conn.prepareCall(ConsultasSQ.EXEC_CONCILIA_CRED_UNICO_SP);
 			cmd.setInt(1, idDetalle);
 			if(cmd.executeUpdate()>0)
 				result = true;
-				Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-					.log(Level.INFO,"Store procedure CB_CONCILIA_CRED_UNICO_SP para el tipo valor 12 ejecutado con �xito.");
+			 Log.debug("Store procedure CB_CONCILIA_CRED_UNICO_SP para el tipo valor 12 ejecutado con �xito.");
+				//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+					//.log(Level.INFO,"Store procedure CB_CONCILIA_CRED_UNICO_SP para el tipo valor 12 ejecutado con �xito.");
 		}catch(Exception e){
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("execConciliaCredUnico" + " - Error", e);
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			try {
 				if(cmd != null)cmd.close();
 				if(conn != null)conn.close();
 			}catch (Exception e) {
-				Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("execConciliaCredUnico" + " - Error", e);
+				//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -243,14 +280,19 @@ public class CBLiquidacionDetalleDAO {
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
 			
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-				.log(Level.INFO,"M�dulo liquidaciones...ejecuci�n de query");
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-				.log(Level.INFO,"Usuario consulta: " + objModel.getNombtransaccion());
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-				.log(Level.INFO,"Fecha consulta: " + objModel.getFec_efectividad());
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-				.log(Level.INFO,"Query consulta previa a registro de liquidaci�n: " + ConsultasSQ.CONSULTA_QUERY_NUEVA_LIQUIDACION);
+			 Log.debug("M�dulo liquidaciones...ejecuci�n de query");
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+				//.log(Level.INFO,"M�dulo liquidaciones...ejecuci�n de query");
+			 Log.debug("Usuario consulta: " + objModel.getNombtransaccion());
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+			// Log.debug("Usuario consulta: " + objModel.getNombtransaccion());
+				//.log(Level.INFO,"Usuario consulta: " + objModel.getNombtransaccion());
+			 Log.debug("Fecha consulta: " + objModel.getFec_efectividad());
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+				//.log(Level.INFO,"Fecha consulta: " + objModel.getFec_efectividad());
+			 Log.debug("Query consulta previa a registro de liquidaci�n: " + ConsultasSQ.CONSULTA_QUERY_NUEVA_LIQUIDACION);
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+				//.log(Level.INFO,"Query consulta previa a registro de liquidaci�n: " + ConsultasSQ.CONSULTA_QUERY_NUEVA_LIQUIDACION);
 			
 			 cmd = conn.prepareStatement(ConsultasSQ.CONSULTA_QUERY_NUEVA_LIQUIDACION);
 			cmd.setString(1, objModel.getFec_efectividad());
@@ -267,25 +309,29 @@ public class CBLiquidacionDetalleDAO {
 				list.add(objeBean);
 			}
 		}catch(Exception e){
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("execQuery" + " - Error", e);
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("execQuery" + " - Error", e);
+					//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("execQuery" + " - Error", e);
+					//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("execQuery" + " - Error", e);
+					//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 	}
 		return list;
@@ -299,10 +345,12 @@ public class CBLiquidacionDetalleDAO {
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
 			
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-				.log(Level.INFO,"Consulta de detalle liquidaci�n por ID = " + ConsultasSQ.CONS_DETALLE_LIQUIDACION_BY_ID);
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-				.log(Level.INFO,"ID de liquidaci�n seleccionado = " + id);
+			 Log.debug("Consulta de detalle liquidaci�n por ID = " + ConsultasSQ.CONS_DETALLE_LIQUIDACION_BY_ID);
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+				//.log(Level.INFO,"Consulta de detalle liquidaci�n por ID = " + ConsultasSQ.CONS_DETALLE_LIQUIDACION_BY_ID);
+			 Log.debug("ID de liquidaci�n seleccionado = " + id);
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+				//.log(Level.INFO,"ID de liquidaci�n seleccionado = " + id);
 			 cmd = conn.prepareStatement(ConsultasSQ.CONS_DETALLE_LIQUIDACION_BY_ID);
 			cmd.setInt(1, id);
 			rs = cmd.executeQuery();
@@ -318,25 +366,29 @@ public class CBLiquidacionDetalleDAO {
 				list.add(objeBean);
 			}
 		}catch(Exception e){
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("consByID" + " - Error", e);
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consByID" + " - Error", e);
+					//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consByID" + " - Error", e);
+					//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consByID" + " - Error", e);
+					//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 	}
 		return list;
@@ -350,16 +402,21 @@ public class CBLiquidacionDetalleDAO {
 		try{
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
 			String query = ConsultasSQ.CONSULTA_REPORTE_LIQUIDACIONES;
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-				.log(Level.INFO,"Consulta de reportes de liquidaciones = " + query);
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-				.log(Level.INFO,"Par�metros env�ados: ");
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-				.log(Level.INFO,"User = " + user);
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-				.log(Level.INFO,"Fecha inicio = " + fechaInicio);
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
-				.log(Level.INFO,"Fecha fin = " + fechaFin);
+			 Log.debug("Consulta de reportes de liquidaciones = " + query);
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+				//.log(Level.INFO,"Consulta de reportes de liquidaciones = " + query);
+			 Log.debug("Par�metros env�ados: ");
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+				//.log(Level.INFO,"Par�metros env�ados: ");
+			 Log.debug("User = " + user);
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+				//.log(Level.INFO,"User = " + user);
+			 Log.debug("Fecha inicio = " + fechaInicio);
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+				//.log(Level.INFO,"Fecha inicio = " + fechaInicio);
+			 Log.debug("Fecha fin = " + fechaFin);
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName())
+				//.log(Level.INFO,"Fecha fin = " + fechaFin);
 			String where = "";
 			
 			if(!user.equals("") && !fechaInicio.equals("") && !fechaFin.equals("")){
@@ -385,7 +442,8 @@ public class CBLiquidacionDetalleDAO {
 				cmd = conn.prepareStatement(query + where);
 				rs = cmd.executeQuery();
 			}
-			System.out.println("Where consulta = " + where);
+			 Log.debug("Where consulta = " + where);
+			
 			CBLiquidacionDetalleModel objeBean;
 			while(rs.next()){
 				objeBean = new CBLiquidacionDetalleModel();
@@ -404,25 +462,29 @@ public class CBLiquidacionDetalleDAO {
 				list.add(objeBean);
 			}
 		}catch(Exception e){
-			Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("consultaReporte" + " - Error", e);
+			//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consultaReporte" + " - Error", e);
+					//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consultaReporte" + " - Error", e);
+					//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consultaReporte" + " - Error", e);
+					//Logger.getLogger(CBLiquidacionDetalleDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 	}
 		return list;

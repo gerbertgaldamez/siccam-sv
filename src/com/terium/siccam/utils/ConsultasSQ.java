@@ -720,25 +720,9 @@ public class ConsultasSQ {
 			+ "JORNADA, TO_DATE(FECHA_INICIO_JORNADA,'dd/MM/yyyy hh24:mi:ss'), FECHA_LIQUIDACION_JORNADA, ESTADO_JORNADA, TIPO_RUTA_PANEL, "
 			+ "NOMBRE_RUTA_PANEL, NOMBRE_VENDEDOR FROM CB_SIDRA_FACTURAS WHERE 1 = 1 ";*/
 	
-	/*public static final String CONSULTA_CUADRE_SIDRA_QR = "select a.*, (SELECT count(1) FROM BILL_INVOICE x "
-			+ "                WHERE x.bill_ref_no = a.bill_ref_no ) existe,"
-			+ "                 (SELECT r.NEW_CHARGES /100 "
-			+ "             FROM cmf_balance  r "
-			+ "            WHERE  r.bill_ref_no =  a.bill_ref_no "
-			+ "            and r.bill_ref_resets = 0) total_arbor, "
-			+ "            (SELECT m.TOTAL_PAID "
-			+ "             FROM cmf_balance m "
-			+ "            WHERE     m.bill_ref_no =  a.bill_ref_no "
-			+ "                    and m.bill_ref_resets = 0) total_pagado, "
-			+ "                   ( SELECT  sum(l.TRANS_AMOUNT) "
-			+ "             FROM bmf l, bill_invoice k "
-			+ "             where k.bill_ref_no = a.bill_ref_no "
-			+ "             and l.orig_bill_ref_no = k.bill_ref_no "
-			+ "             and l.account_no = k.bill_ref_no ) monto_pagado_bmf "
-			+ " from cb_sidra_facturas a "
-			+ " where rownum < 10 ";*/
-	public static final String CONSULTA_CUADRE_SIDRA_QR = "SELECT SERIE, NOMBRE_CLIENTE_PDV, NOMBRE_CLIENTE_FINAL, BILL_REF_NO, "
+	
+	public static final String CONSULTA_CUADRE_SIDRA_QR = "SELECT NUMERO_FACTURA,SERIE,FECHA_FACTURA, NOMBRE_CLIENTE_PDV, NOMBRE_CLIENTE_FINAL, BILL_REF_NO, "
 			+ "FECHA_PAGO, MONTO_PAGADO, ESTADO_FACTURA, FECHA_SINCRONIZACION, NO_BOLETA, FECHA_BOLETA, MONTO_BOLETA, "
 			+ "JORNADA, TO_DATE(FECHA_INICIO_JORNADA,'dd/MM/yyyy hh24:mi:ss'), FECHA_LIQUIDACION_JORNADA, ESTADO_JORNADA, TIPO_RUTA_PANEL, "
-			+ "NOMBRE_RUTA_PANEL, NOMBRE_VENDEDOR, DECODE(EXISTE,1,'Existe Factura', 0, 'No Existe Factura'), TOTAL_ARBOR, TOTAL_PAGADO, MONTO_PAGADO_BMF FROM cb_sidra_facturas_vw WHERE 1 = 1 ";
+			+ "NOMBRE_RUTA_PANEL, NOMBRE_VENDEDOR, EXISTE, TOTAL_ARBOR, TOTAL_PAGADO, MONTO_PAGADO_BMF,CUADRE FROM cb_sidra_facturas_vw WHERE 1 = 1 ";
 }

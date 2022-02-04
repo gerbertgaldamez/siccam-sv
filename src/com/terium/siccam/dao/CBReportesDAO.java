@@ -8,7 +8,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
@@ -18,6 +20,7 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.zkoss.zk.ui.Sessions;
 
 import com.terium.siccam.composer.ControladorBase;
+import com.terium.siccam.controller.CBConsultaContabilizacionController;
 import com.terium.siccam.model.CBResumenDiarioConciliacionModel;
 import com.terium.siccam.model.CBConciliacionCajasModel;
 import com.terium.siccam.model.CBConciliacionDetallada;
@@ -27,6 +30,7 @@ import com.terium.siccam.model.CBPagosModel;
 import com.terium.siccam.model.CBParametrosGeneralesModel;
 
 public class CBReportesDAO extends ControladorBase {
+	private static Logger log = Logger.getLogger(CBReportesDAO.class.getName());
 
 	/**
 	 * 
@@ -46,36 +50,42 @@ public class CBReportesDAO extends ControladorBase {
 		ResultSet rs = null;
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO,
-					"Consulta para obtener tipo de reporte predefinido = " + QRY_VALOR_DEFECTO);
+			log.debug("Consulta para obtener tipo de reporte predefinido = " + QRY_VALOR_DEFECTO);
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO,
+				//	"Consulta para obtener tipo de reporte predefinido = " + QRY_VALOR_DEFECTO);
 			cmd = conn.prepareStatement(QRY_VALOR_DEFECTO);
 			rs = cmd.executeQuery();
 			while (rs.next()) {
 				valor = rs.getString(1);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerOpcionPorDefecto" + "Error", e);
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerOpcionPorDefecto" + "Error", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (cmd != null)
 				try {
 					cmd.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerOpcionPorDefecto" + "Error", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerOpcionPorDefecto" + "Error", e);
+				//	Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
-		Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "Valor predefinido: " + valor);
+		log.debug("Valor predefinido: " + valor);
+		//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "Valor predefinido: " + valor);
 		return valor;
 	}
 
@@ -93,8 +103,9 @@ public class CBReportesDAO extends ControladorBase {
 		Connection con = null;
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO,
-					"Query combo tipo reporte = " + QRY_OBTIENE_TIPO_OBJETO_X);
+			log.debug("Query combo tipo reporte = " + QRY_OBTIENE_TIPO_OBJETO_X);
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO,
+					//"Query combo tipo reporte = " + QRY_OBTIENE_TIPO_OBJETO_X);
 			ps = con.prepareStatement(QRY_OBTIENE_TIPO_OBJETO_X);
 			ps.setString(1, tipoObjeto);
 			rs = ps.executeQuery();
@@ -106,25 +117,29 @@ public class CBReportesDAO extends ControladorBase {
 				lista.add(obj);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerTipoObjetoX" + "Error", e);
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerTipoObjetoX" + "Error", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerTipoObjetoX" + "Error", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerTipoObjetoX" + "Error", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return lista;
@@ -165,35 +180,44 @@ public class CBReportesDAO extends ControladorBase {
 					+ fechaHasta + "', 'dd/MM/yyyy') ";
 
 			if (idBanco == 0) {
-				Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "Null banco");
+				log.debug("Null banco");
+				//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "Null banco");
 			} else {
-				Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "ID banco" + idBanco);
+				log.debug("ID banco" + idBanco);
+				//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "ID banco" + idBanco);
 				Where += " and b.cbcatalogobancoid = " + idBanco + "";
 			}
 			if (idAgencia == 0) {
-				Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "Null AGENCIA");
+				log.debug("Null AGENCIA");
+				//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "Null AGENCIA");
 			} else {
-				Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "IDAGENCIA" + idAgencia);
+				log.debug("IDAGENCIA" + idAgencia);
+				//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "IDAGENCIA" + idAgencia);
 				Where += " and a.cbcatalogoagenciaid = " + idAgencia + "";
 			}
 			if ("".equals(tipoRecarga)) {
-				Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "Null tipoRecarga");
+				log.debug("Null TipoRecarga");
+				//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "Null tipoRecarga");
 			} else {
-				Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "tipoRecarga" + tipoRecarga);
+				log.debug("tipoRecarga" + tipoRecarga);
+				//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "tipoRecarga" + tipoRecarga);
 				Where += " and a.tipo = '" + tipoRecarga + "'";
 			}
 			if (tipoEntidad.equals("")) {
-				System.out.println("Null tipo entidad");
-				Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "NULL tipO ENTIDAD");
+				log.debug("Null tipo entidad");
+				
+				//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "NULL tipO ENTIDAD");
 			} else {
-				Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "TIPO ENTIDAD" + tipoEntidad);
+				log.debug("TIPO ENTIDAD" + tipoEntidad);
+				//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "TIPO ENTIDAD" + tipoEntidad);
 				Where += " and d.tipo = '" + tipoEntidad + "'";
 			}
 			// con.setAutoCommit(false);
 
 			stm = con.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY, java.sql.ResultSet.CONCUR_READ_ONLY);
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO,
-					"QUERY REPORTE POR ENTIDAD = " + CONSULTA_REPORTE_X_ENTIDAD + Where);
+			log.debug("QUERY REPORTE POR ENTIDAD = " + CONSULTA_REPORTE_X_ENTIDAD + Where);
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO,
+				//	"QUERY REPORTE POR ENTIDAD = " + CONSULTA_REPORTE_X_ENTIDAD + Where);
 			rs = stm.executeQuery(CONSULTA_REPORTE_X_ENTIDAD + Where);
 			rs.setFetchSize(1024);
 			CBEntidad obj = null;
@@ -221,33 +245,40 @@ public class CBReportesDAO extends ControladorBase {
 				listado.add(obj);
 			}
 
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO,
-					"pasa de obtener el listado: " + listado.size());
+			log.debug("pasa de obtener el listado: " + listado.size());
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO,
+					//"pasa de obtener el listado: " + listado.size());
 			long t22 = System.currentTimeMillis();
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO,
-					"Round  completed " + (t22 - t11) / 1000 + " seconds");
+			log.debug("Round  completed " + (t22 - t11) / 1000 + " seconds");
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO,
+					//"Round  completed " + (t22 - t11) / 1000 + " seconds");
 			long t2 = System.currentTimeMillis();
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, " Took " + (t2 - t1) / 1000 + " seconds");
+			log.debug("Took " + (t2 - t1) / 1000 + " seconds");
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, " Took " + (t2 - t1) / 1000 + " seconds");
 		} catch (Exception e) {
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaReporte2" + "Error", e);
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("generaConsultaReporte2" + "Error", e);
+				//	Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (stm != null)
 				try {
 					stm.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("generaConsultaReporte2" + "Error", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("generaConsultaReporte2" + "Error", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return listado;
@@ -277,7 +308,8 @@ public class CBReportesDAO extends ControladorBase {
 			if (idAgencia == 0) {
 
 			} else {
-				Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "ID AGENCIA = " + idAgencia);
+				log.debug("ID AGENCIA = " + idAgencia);
+				//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "ID AGENCIA = " + idAgencia);
 				Where += " and cbcatalogoagenciaid  = " + idAgencia + "";
 			}
 			if (tipoRecarga == null || tipoRecarga.equals("")) {
@@ -313,17 +345,20 @@ public class CBReportesDAO extends ControladorBase {
 			BeanListHandler<CBResumenDiarioConciliacionModel> bhl = new BeanListHandler<CBResumenDiarioConciliacionModel>(
 					CBResumenDiarioConciliacionModel.class);
 			listado = qr.query(con, CONSULTA_REPORTE_X_ESTADO + Where, bhl, new Object[] {});
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO,
-					"QUERY REPORTE POR ESTADO = " + CONSULTA_REPORTE_X_ESTADO + Where);
+			log.debug("QUERY REPORTE POR ESTADO = " + CONSULTA_REPORTE_X_ESTADO + Where);
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO,
+				//	"QUERY REPORTE POR ESTADO = " + CONSULTA_REPORTE_X_ESTADO + Where);
 		} catch (Exception e) {
-			System.out.println("error al cosultar las conciliaciones: " + e.getMessage());
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaReporte" + " - Error", e);
+			
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (con != null)
 					con.close();
 			} catch (Exception e) {
-				Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("generaConsultaReporte" + " - Error", e);
+				//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 
 		}
@@ -362,15 +397,19 @@ public class CBReportesDAO extends ControladorBase {
 					+ "', 'dd/MM/yyyy') ";
 
 			if (idAgencia == 0) {
-				System.out.println("Null agencia");
+				log.debug("Null agencia");
+				
 			} else {
-				System.out.println("idAgencia: " + idAgencia);
+				log.debug("idAgencia: " + idAgencia);
+				
 				Where += " and b.cbcatalogoagenciaid  = " + idAgencia + "";
 			}
 			if (idBanco == 0) {
-				System.out.println("Null Banco");
+				log.debug("Null Banco");
+				
 			} else {
-				System.out.println("idBanco: " + idBanco);
+				log.debug("idBanco: " + idBanco);
+				
 				Where += " and b.cbcatalogobancoid  = " + idBanco + "";
 			}
 			if (tipoRecarga == null || tipoRecarga.equals("")) {
@@ -412,8 +451,9 @@ public class CBReportesDAO extends ControladorBase {
 
 			}
 
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO,
-					"QUERY REPORTE POR detalle = " + QRY3 + Where);
+			log.debug("QUERY REPORTE POR DETALLE = " + QRY3 + Where);
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO,
+					//"QUERY REPORTE POR detalle = " + QRY3 + Where);
 
 			CBConciliacionDetallada obj = null;
 
@@ -447,27 +487,31 @@ public class CBReportesDAO extends ControladorBase {
 				listado.add(obj);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaReporte3" + " - Error", e);
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("generaConsultaReporte3" + " - Error", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 
 			if (st != null)
 				try {
 					st.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("generaConsultaReporte3" + " - Error", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("generaConsultaReporte3" + " - Error", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 
@@ -502,22 +546,27 @@ public class CBReportesDAO extends ControladorBase {
 					+ fechaHasta + "', 'dd/MM/yyyy') ";
 
 			if (idAgencia == 0) {
-				System.out.println("Null agencia");
+				log.debug("Null agencia");
+				
 			} else {
-				System.out.println("idAgencia: " + idAgencia);
+				log.debug("idAgencia: " + idAgencia);
+				
 				Where += " and cbcatalogoagenciaid  = " + idAgencia + "";
 			}
 			if (idBanco == 0) {
-				System.out.println("Null banco");
+				log.debug("Null banco");
+				
 			} else {
-				System.out.println("idBanco: " + idBanco);
+				log.debug("idBanco: " + idBanco);
+				
 				Where += " and CBCATALOGOBANCOID  = " + idBanco + "";
 			}
 
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			stm = con.createStatement();
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO,
-					"consulta: " + CONSULTA_CAJEROS + Where + " ORDER BY 1, 2, 3, 4, 5 ");
+			log.debug("consulta: " + CONSULTA_CAJEROS + Where + " ORDER BY 1, 2, 3, 4, 5 ");
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO,
+					//"consulta: " + CONSULTA_CAJEROS + Where + " ORDER BY 1, 2, 3, 4, 5 ");
 			CONSULTA_CAJEROS = CONSULTA_CAJEROS + Where + " ORDER BY 1, 2, 3, 4, 5 ";
 			rs = stm.executeQuery(CONSULTA_CAJEROS);
 			rs.setFetchSize(1024);
@@ -557,26 +606,30 @@ public class CBReportesDAO extends ControladorBase {
 			}
 
 		} catch (SQLException e) {
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("generaConsultaPrincipal" + " - Error", e);
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("generaConsultaPrincipal" + " - Error", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (stm != null)
 				try {
 					stm.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("generaConsultaPrincipal" + " - Error", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("generaConsultaPrincipal" + " - Error", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 
 				}
 		}
@@ -606,20 +659,26 @@ public class CBReportesDAO extends ControladorBase {
 			}
 
 			String query = CONSULTA_REPORTE_LIQUIDACIONES;
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO,
-					"Consulta de reportes de liquidaciones = " + query);
+			log.debug("Consulta de reportes de liquidaciones = " + query);
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO,
+					//"Consulta de reportes de liquidaciones = " + query);
 
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "Parámetros envíados: ");
+			log.debug("Parametros enviados");
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "Parámetros envíados: ");
 
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "User = " + user);
+			log.debug("User = " + user);
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "User = " + user);
 
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "Fecha inicio = " + fechaInicio);
+			log.debug("Fecha inicio" + fechaInicio);
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "Fecha inicio = " + fechaInicio);
 
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "Fecha fin = " + fechaFin);
+			log.debug("fecha fin = " + fechaFin );
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "Fecha fin = " + fechaFin);
 
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			stm = con.createStatement();
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "consulta: " + query + Where);
+			log.debug("consulta: " + query + Where);
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "consulta: " + query + Where);
 			query = query + Where;
 			rs = stm.executeQuery(query);
 			rs.setFetchSize(1024);
@@ -643,25 +702,29 @@ public class CBReportesDAO extends ControladorBase {
 			}
 
 		} catch (SQLException e) {
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("consultaReporte" + " - Error", e);
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consultaReporte" + " - Error", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (stm != null)
 				try {
 					stm.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consultaReporte" + " - Error", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("consultaReporte" + " - Error", e);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return list;
@@ -688,10 +751,13 @@ public class CBReportesDAO extends ControladorBase {
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
 			
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, 
-					"Query reporte recaudacion = " + CONSULTA_REPORTE_RECAUDACION);
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "Fecha inicio = " + fechaInicio);
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "Fecha fin = " + fechaFin);
+			log.debug("Query reporte recaudacion = " + CONSULTA_REPORTE_RECAUDACION);
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, 
+					//"Query reporte recaudacion = " + CONSULTA_REPORTE_RECAUDACION);
+			log.debug("fecha inicio = " + fechaInicio);
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "Fecha inicio = " + fechaInicio);
+			log.debug("fecha fin = " + fechaFin);
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.INFO, "Fecha fin = " + fechaFin);
 			pstmt = conn.prepareStatement(CONSULTA_REPORTE_RECAUDACION);
 			pstmt.setString(1, fechaInicio); 
 			pstmt.setString(2, fechaFin); 
@@ -722,25 +788,29 @@ public class CBReportesDAO extends ControladorBase {
 				list.add(objeBean);
 			}
 		}catch (Exception e) {
-			Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("consultaReporteRecaudacion" + " - Error", e);
+			//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e2) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e2);
+					log.error("consultaReporteRecaudacion" + " - Error", e2);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e2);
 				}
 			if(pstmt != null)
 				try {
 					pstmt.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("consultaReporteRecaudacion" + " - Error", e1);
+					//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("consultaReporteRecaudacion" + " - Error", e);
+				//Logger.getLogger(CBReportesDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return list;

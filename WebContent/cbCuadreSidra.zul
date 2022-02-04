@@ -20,13 +20,13 @@
 								<row>
 									<hbox>
 										<label value="Desde:" />
-										<separator width="44px" />
+										<separator width="40px" />
 										<datebox id="dtbDesde"
 											format="dd/MM/yyyy" />
 									</hbox>
 									<hbox>
 										<label value="Hasta: " />
-										<separator width="46px" />
+										<separator width="60px" />
 										<datebox id="dtbHasta"
 											format="dd/MM/yyyy" />
 									</hbox>
@@ -45,13 +45,35 @@
 										</combobox>
 									</hbox>
 									<hbox>
-										<label value="Monto Pagado: " />
-										<separator width="5px" />
-										<textbox id="tbxMontoPagado"
-											width="150px" />
+										<label value=" Comparar Monto : " />
+										<combobox id="cmbxCuadreMonto"
+										width="190px" readonly="true"
+										style="color:#2B547E;font-weight: bols;">
+										<comboitem label="Todas" value="2"/>
+										<comboitem label="Cuadra Factura" value="1"/>
+										<comboitem label="No Cuadra Factura" value="0"/>
+										</combobox>
+										
 									</hbox>
+									<!-- <hbox>
+									<label value="Nombre: " />
+										<separator width="29px" />
+										<textbox id="tbxNombre" width="190px" />
+									</hbox> -->
 
 								</row>
+							<!-- 	<row>
+								<hbox>
+									<label value="Nombre: " />
+										<separator width="29px" />
+										<textbox id="tbxNombre" width="190px" />
+									</hbox>
+									<hbox>
+									<label value="Numero Factura: " />
+										<separator width="2px" />
+										<textbox id="tbxNumeroFactura" width="190px" />
+									</hbox>
+								</row> -->
 
 
 
@@ -75,8 +97,9 @@
 							emptyMessage="No hay registros consultados">
 							<frozen columns="4"></frozen>
 							<listhead>
-							
+							<listheader label="Numero Factura" sort="auto" />
 								<listheader label="Serie" sort="auto" />
+								<listheader label="Fecha Factura" sort="auto" />
 								<listheader label="Nombre Cliente"
 									sort="auto" />
 								<listheader label="Nombre Cliente Final"
@@ -118,6 +141,8 @@
 									sort="auto" />
 									<listheader label="Monto Pagado BMF"
 									sort="auto" />
+									
+									
 							</listhead>
 						</listbox>
 					</groupbox>

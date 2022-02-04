@@ -8,9 +8,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import com.terium.siccam.composer.ControladorBase;
+import com.terium.siccam.controller.CBConsultaContabilizacionController;
 import com.terium.siccam.model.CBCatalogoAgenciaModel;
 import com.terium.siccam.model.CBCatalogoBancoModel;
 import com.terium.siccam.model.CBMantenimientoPolizaModel;
@@ -20,6 +23,7 @@ import com.terium.siccam.utils.ConsultasSQ;
 
 @SuppressWarnings("serial")
 public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
+	private static Logger log = Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName());
 
 	/**
 	 * Inserta los registros para mantenimiento poliza Agregado por Ovidio Santos -
@@ -79,13 +83,15 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 
 
 		} catch (Exception e) {
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("insertTipologiasPoliza" + " - Error", e);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			try {
 				if(cmd != null)cmd.close();
 				if(con != null)con.close();
 			}catch (Exception e) {
-				Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("insertTipologiasPoliza" + " - Error", e);
+				//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -223,8 +229,9 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 
 			// ps =
 			// con.prepareStatement(ConsultasSQ.CONSULTA_TIPOLOGIAS_POLIZA_SQ);
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
-				.log(Level.INFO,"consulta " + query + where);
+			log.debug("consulta " + query + where);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
+				//.log(Level.INFO,"consulta " + query + where);
 
 			cmd = con.createStatement();
 			where = where + " order by CBTIPOLOGIASPOLIZAID asc";
@@ -310,25 +317,29 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 				list.add(objModel);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerTipologias" + " - Error", e);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 				if(rs != null)
 					try {
 						rs.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("obtenerTipologias" + " - Error", e);
+						//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(cmd != null)
 					try {
 						cmd.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("obtenerTipologias" + " - Error", e);
+					//	Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(con != null)
 					try {
 						con.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("obtenerTipologias" + " - Error", e);
+						//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 		}
 		return list;
@@ -428,8 +439,9 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 
 				// ps =
 				// con.prepareStatement(ConsultasSQ.CONSULTA_TIPOLOGIAS_POLIZA_SQ);
-				Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
-					.log(Level.INFO,"consulta " + query + where);
+				log.debug("consulta " + query + where);
+				//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
+				//	.log(Level.INFO,"consulta " + query + where);
 
 				cmd = con.createStatement();
 				where = where + " order by cbtipologiaspolizaid asc ";
@@ -467,25 +479,29 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 					list.add(objModel);
 				}
 			} catch (Exception e) {
-				Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerTipologiasModal" + " - Error", e);
+				//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}finally {
 					if(rs != null)
 						try {
 							rs.close();
 						} catch (SQLException e) {
-							Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+							log.error("obtenerTipologiasModal" + " - Error", e);
+							//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 						}
 					if(cmd != null)
 						try {
 							cmd.close();
 						} catch (SQLException e) {
-							Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+							log.error("obtenerTipologiasModal" + " - Error", e);
+							//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 						}
 					if(con != null)
 						try {
 							con.close();
 						} catch (SQLException e) {
-							Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+							log.error("obtenerTipologiasModal" + " - Error", e);
+						//	Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 						}
 			}
 			return list;
@@ -502,14 +518,16 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 			try {
 				con = obtenerDtsPromo().getConnection();
 				cmd = con.prepareStatement(ConsultasSQ.MODIFICAR_POLIZA_MODAL_SQ);
-				Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
-					.log(Level.INFO,"update  " + ConsultasSQ.MODIFICAR_POLIZA_MODAL_SQ);
+				log.debug("update  " + ConsultasSQ.MODIFICAR_POLIZA_MODAL_SQ);
+			//	Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
+					//.log(Level.INFO,"update  " + ConsultasSQ.MODIFICAR_POLIZA_MODAL_SQ);
 
 				cmd.setString(1, objModel.getCentrodebeneficio());
 				cmd.setString(2, objModel.getDivision());
 				cmd.setString(3, objModel.getOrdendeproyecto());
-				Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
-					.log(Level.INFO,"clave contabilizacion " + objModel.getClaveContabilizacion());
+				log.debug("clave contabilizacion " + objModel.getClaveContabilizacion());
+				//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
+					//.log(Level.INFO,"clave contabilizacion " + objModel.getClaveContabilizacion());
 				
 				cmd.setString(4, objModel.getTipodecambio());
 				cmd.setString(5, objModel.getFechadecomversion());
@@ -547,21 +565,25 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 				
 				cmd.setString(32, objModel.getUsuario());
 				cmd.setInt(33, objModel.getCbtipologiaspolizaid());
-				Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
-					.log(Level.INFO,"idseleccionado en el dao" + objModel.getCbtipologiaspolizaid());
+				log.debug("idseleccionado en el dao" + objModel.getCbtipologiaspolizaid());
+				//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
+					//.log(Level.INFO,"idseleccionado en el dao" + objModel.getCbtipologiaspolizaid());
 
-				System.out.println("fecha en el controlador de modificar " + objModel.getFecha_valor());
+				log.debug("fecha en el controlador de modificar " + objModel.getFecha_valor());
+				
 				if (cmd.executeUpdate() > 0) {
 					result = true;
 				}
 			}catch (Exception e) {
-				Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("modificaTipologiasModal" + " - Error", e);
+				//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}finally {
 				try {
 					if(cmd != null)cmd.close();
 					if(con != null)con.close();
 				}catch (Exception e) {
-					Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("modificaTipologiasModal" + " - Error", e);
+					//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			}
 			return result;
@@ -569,14 +591,16 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 
 	public double changeString(String cadena) {
 		double result = 0.00;
-		Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
-			.log(Level.INFO,"string: " + cadena);
+		log.debug("string: " + cadena);
+	//	Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
+			//.log(Level.INFO,"string: " + cadena);
 		try {
 			if (cadena != null && !"".equals(cadena)) {
 				result = Double.parseDouble(cadena.replace(",", ""));
 			}
 		} catch (NumberFormatException e) {
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("changeString" + " - Error", e);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 		}
 		return result;
 	}
@@ -595,13 +619,15 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 					result = true;
 				}
 		}catch (Exception e) {
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("delete" + " - Error", e);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			try {
 				if(ps != null)ps.close();
 				if(con != null)con.close();
 			}catch (Exception e) {
-				Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("delete" + " - Error", e);
+				//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 
@@ -617,14 +643,16 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 			try {
 				con = obtenerDtsPromo().getConnection();
 				cmd = con.prepareStatement(ConsultasSQ.MODIFICAR_POLIZA_SQ);
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
-				.log(Level.INFO,"update  " + ConsultasSQ.MODIFICAR_POLIZA_SQ);
+				log.debug("update  " + ConsultasSQ.MODIFICAR_POLIZA_SQ);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
+				//.log(Level.INFO,"update  " + ConsultasSQ.MODIFICAR_POLIZA_SQ);
 
 				cmd.setString(1, objModel.getCentroCosto());
 				cmd.setString(2, objModel.getCuentaContrapartida());
 				cmd.setString(3, objModel.getClaveContabilizacion());
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
-				.log(Level.INFO,"clave contabilizacion " + objModel.getClaveContabilizacion());
+				log.debug("clave contabilizacion " + objModel.getClaveContabilizacion());
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
+				//.log(Level.INFO,"clave contabilizacion " + objModel.getClaveContabilizacion());
 				cmd.setString(4, objModel.getIndicadorIva());
 				cmd.setString(5, objModel.getTerminacion());
 				cmd.setString(6, objModel.getActividad());
@@ -646,39 +674,45 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 			cmd.setString(20, objModel.getIndicadorivacp());
 			cmd.setString(21, objModel.getActividadcp());
 
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
-				.log(Level.INFO,"convenio en dao " + objModel.getConvenio());
+			log.debug("convenio en dao " + objModel.getConvenio());
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
+				//.log(Level.INFO,"convenio en dao " + objModel.getConvenio());
 			
 			cmd.setString(22, objModel.getConvenio());
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
-				.log(Level.INFO,"pide entidad en dao " + objModel.getPide_Entidad());
+			log.debug("pide entidad en dao " + objModel.getPide_Entidad());
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
+				//.log(Level.INFO,"pide entidad en dao " + objModel.getPide_Entidad());
 			
 			cmd.setString(23, objModel.getPide_Entidad());
 			cmd.setString(24, objModel.getSecuencia());
 			cmd.setString(25, objModel.getTipodocumento());
 			cmd.setString(26, objModel.getIdentificacion());
 			
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
-			.log(Level.INFO,"tipo en dao " + objModel.getTipo());
+			log.debug("tipo en dao " + objModel.getTipo());
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
+			//.log(Level.INFO,"tipo en dao " + objModel.getTipo());
 		
 		cmd.setString(27, objModel.getTipo());
 
 			cmd.setString(28, objModel.getUsuario());
 			cmd.setInt(29, idseleccionado);
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
-				.log(Level.INFO,"idseleccionado en el dao" + idseleccionado);
+			log.debug("idseleccionado en el dao" + idseleccionado);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName())
+				//.log(Level.INFO,"idseleccionado en el dao" + idseleccionado);
 
 			if (cmd.executeUpdate() > 0) {
 				result = true;
 			}
 		}catch (Exception e) {
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("update" + " - Error", e);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			try {
 				if(cmd != null)cmd.close();
 				if(con != null)con.close();
 			}catch (Exception e) {
-				Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("update" + " - Error", e);
+				//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return result;
@@ -697,7 +731,8 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 			Connection con = null;
 			try {
 				con = obtenerDtsPromo().getConnection();
-				System.out.println("query combo tipo:" + QRY_OBTIENE_TIPOS);
+				log.debug("query combo tipo:" + QRY_OBTIENE_TIPOS);
+				
 				ps = con.prepareStatement(QRY_OBTIENE_TIPOS);
 				ps.setString(1, tipoObjeto);
 				rs = ps.executeQuery();
@@ -709,25 +744,29 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 					lista.add(obj);
 				}
 		} catch (Exception e) {
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerTipo" + " - Error", e);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerTipo" + " - Error", e);
+					//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerTipo" + " - Error", e);
+					//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerTipo" + " - Error", e);
+					//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return lista;
@@ -758,25 +797,29 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 					lista.add(obj);
 				}
 		} catch (Exception e) {
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerPideEntidad" + " - Error", e);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerPideEntidad" + " - Error", e);
+					//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerPideEntidad" + " - Error", e);
+					//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerPideEntidad" + " - Error", e);
+					//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return lista;
@@ -805,25 +848,29 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 					lista.add(obj);
 				}
 		} catch (Exception e) {
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerFechaValor" + " - Error", e);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerFechaValor" + " - Error", e);
+				//	Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(ps != null)
 				try {
 					ps.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerFechaValor" + " - Error", e);
+					//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if(con != null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("obtenerFechaValor" + " - Error", e);
+					//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return lista;
@@ -844,8 +891,9 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
 			pstmt = conn.prepareStatement(ConsultasSQ.AGRUPACIONES_TIPOL_ENTIDAD_QRY);
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
-					ConsultasSQ.AGRUPACIONES_TIPOL_ENTIDAD_QRY);
+			log.debug("query" + ConsultasSQ.AGRUPACIONES_TIPOL_ENTIDAD_QRY);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
+				//	ConsultasSQ.AGRUPACIONES_TIPOL_ENTIDAD_QRY);
 			rs = pstmt.executeQuery();
 			CBCatalogoBancoModel objeBean;
 			while (rs.next()) {
@@ -855,25 +903,29 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 				list.add(objeBean);
 			}
 		}catch (Exception e) {
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerAgrupaciones" + " - Error", e);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e2) {
-					Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e2);
+					log.error("obtenerAgrupaciones" + " - Error", e2);
+					//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e2);
 				}
 			if(pstmt != null)
 				try {
 					pstmt.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtenerAgrupaciones" + " - Error", e1);
+					//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerAgrupaciones" + " - Error", e);
+				//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return list;
@@ -888,9 +940,10 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
 			pstmt = conn.prepareStatement(ConsultasSQ.ENTIDADES_TIPOL_ENTIDAD_QRY );
-			pstmt.setInt(1, idagrupacion); 
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
-					ConsultasSQ.ENTIDADES_TIPOL_ENTIDAD_QRY );
+			pstmt.setInt(1, idagrupacion);
+			log.debug("query " + ConsultasSQ.ENTIDADES_TIPOL_ENTIDAD_QRY );
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
+				//	ConsultasSQ.ENTIDADES_TIPOL_ENTIDAD_QRY );
 			rs = pstmt.executeQuery();
 			CBCatalogoAgenciaModel objeBean;
 			while (rs.next()) {
@@ -900,25 +953,29 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 				list.add(objeBean);
 			}
 		}catch (Exception e) {
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("obtenerEntidades" + " - Error", e);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if(rs != null)
 				try {
 					rs.close();
 				} catch (SQLException e2) {
-					Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e2);
+					log.error("obtenerEntidades" + " - Error", e2);
+					//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e2);
 				}
 			if(pstmt != null)
 				try {
 					pstmt.close();
 				} catch (SQLException e1) {
-					Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e1);
+					log.error("obtenerEntidades" + " - Error", e1);
+					//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e1);
 				}
 			try {
 				if(conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("obtenerEntidades" + " - Error", e);
+				//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 		return list;
@@ -951,8 +1008,9 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 			if(objModel.getCbTipologiasPolizaId() != 0) { 
 				where += "and x.count_tipologias > 0";
 			}
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
-					"Consulta entidades asociadas = " + query1 + where_subquery + query2 + where);
+			log.debug("Consulta entidades asociadas = " + query1 + where_subquery + query2 + where);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
+					//"Consulta entidades asociadas = " + query1 + where_subquery + query2 + where);
 			
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
 			stmt = conn.createStatement();
@@ -967,25 +1025,29 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 				lst.add(obj);
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("consultaEntidadesAsociadas" + " - Error", e);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 		}finally {
 				if(rst != null)
 					try {
 						rst.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("consultaEntidadesAsociadas" + " - Error", e);
+						//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(stmt != null)
 					try {
 						stmt.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("consultaEntidadesAsociadas" + " - Error", e);
+						//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(conn != null)
 					try {
 						conn.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("consultaEntidadesAsociadas" + " - Error", e);
+						//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 		}
 		return lst;
@@ -1006,8 +1068,9 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 		PreparedStatement pstmt = null;
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
-					"Insert masivo para tabla CB_TIPOLOGIAS_AGENCIA: " + ConsultasSQ.INSERT_MASIVO_ENTIDAD_TIPOLOGIA);
+			log.debug("Insert masivo para tabla CB_TIPOLOGIAS_AGENCIA: " + ConsultasSQ.INSERT_MASIVO_ENTIDAD_TIPOLOGIA);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
+					//"Insert masivo para tabla CB_TIPOLOGIAS_AGENCIA: " + ConsultasSQ.INSERT_MASIVO_ENTIDAD_TIPOLOGIA);
 			pstmt = conn.prepareStatement(ConsultasSQ.INSERT_MASIVO_ENTIDAD_TIPOLOGIA);
 			int exitosas = 0;
 			for(CBTipologiasEntidadesModel obj : listaEntidades) {
@@ -1019,24 +1082,28 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 			}
 			if(exitosas > 0){	
 				pstmt.executeBatch(); 
-		        Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO,
-		        		"Registros de CB_TIPOLOGIAS_AGENCIA insertados con exito: " + exitosas);
+				log.debug("Registros de CB_TIPOLOGIAS_AGENCIA insertados con exito: " + exitosas);
+		       // Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO,
+		        		//"Registros de CB_TIPOLOGIAS_AGENCIA insertados con exito: " + exitosas);
 		        result = true;
 			}
 		} catch (Exception e) {
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+			log.error("asociacionEntidadesTipologia" + " - Error", e);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			if (pstmt != null)
 				try {
 					pstmt.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("asociacionEntidadesTipologia" + " - Error", e);
+					//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+					log.error("asociacionEntidadesTipologia" + " - Error", e);
+					//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 				}
 		}
 		return result;
@@ -1052,12 +1119,15 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 		Connection conn = null;
 		try {
 			conn = ControladorBase.obtenerDtsPromo().getConnection();
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
-					ConsultasSQ.DELETE_ASOCIACION_ENTIDAD);	
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
-					"Tipologia recuperada = " + tipologiaRecuperada);	
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
-					"Entidad asociada = " + entidadAsociada);
+			log.debug(ConsultasSQ.DELETE_ASOCIACION_ENTIDAD);	
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
+					//ConsultasSQ.DELETE_ASOCIACION_ENTIDAD);
+			log.debug("Tipologia recuperada = " + tipologiaRecuperada);	
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
+					//"Tipologia recuperada = " + tipologiaRecuperada);	
+			log.debug("Entidad asociada = " + entidadAsociada);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.INFO, 
+					//"Entidad asociada = " + entidadAsociada);
 			pstmt = conn.prepareStatement(ConsultasSQ.DELETE_ASOCIACION_ENTIDAD);
 			
 			pstmt.setInt(1, tipologiaRecuperada);
@@ -1068,8 +1138,9 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 			} else {
 				return false;
 			}
-		} catch (Exception ex) {			
-			Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (Exception ex) {
+			log.error("eliminaAsociacion" + " - Error", ex);
+			//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, ex);
 			return false;
 		}finally {
 			try {
@@ -1077,16 +1148,19 @@ public class CBMantenimientoTipologiasPolizaDAO extends ControladorBase {
 					try {
 						pstmt.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("eliminaAsociacion" + " - Error", e);
+						//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 				if(conn != null)
 					try {
 						conn.close();
 					} catch (SQLException e) {
-						Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+						log.error("eliminaAsociacion" + " - Error", e);
+						//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 					}
 			}catch (Exception e) {
-				Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
+				log.error("eliminaAsociacion" + " - Error", e);
+				//Logger.getLogger(CBMantenimientoTipologiasPolizaDAO.class.getName()).log(Level.SEVERE, null, e);
 			}
 		}
 	}
