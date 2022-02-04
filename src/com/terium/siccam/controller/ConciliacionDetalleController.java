@@ -1200,6 +1200,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 		CBConciliacionDetalleDAO objDao = new CBConciliacionDetalleDAO();
 		String methodName = "procesaWSPagosCreaCasos()";
 		CBCausasConciliacion obj = null;
+		String cbpagosid = CBConciliacionDetalleDAO.obtenerCbPagosid(detalle.getConciliacionId());
 		
 		if (reenvio) {
 			obj = new CBCausasConciliacion();
@@ -1217,7 +1218,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 			try {
 				response = requestWsEjecutaPago(parametros, detalle);
 				
-				String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
+				String trackingid = CBConciliacionDetalleDAO.obtenerTrackingIddepagosid(String.valueOf(cbpagosid));
 				//se obtiene el trackingid que se le mandara al metodo actualizarTransDate
 				//String trackingid = String.valueOf(getClienteTelefono(detalle));
 				log.debug(methodName + " el tracking id : " + trackingid);
