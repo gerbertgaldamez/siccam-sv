@@ -33,8 +33,10 @@ public class CBCuadreSidraDAO extends ControladorBase {
 			conn = obtenerDtsPromo().getConnection();
 			query = ConsultasSQ.CONSULTA_CUADRE_SIDRA_QR;
 			String where = "";
-			where += "AND FECHA_FACTURA >= TO_CHAR(TO_DATE ('" + objModel.getFechaInicio() + "', 'dd/MM/yyyy')) "
-					+ "AND FECHA_FACTURA <= TO_CHAR(TO_DATE ('" + objModel.getFechaFin() + "', 'dd/MM/yyyy')) ";
+			/*where += "AND FECHA_FACTURA >= TO_CHAR(TO_DATE ('" + objModel.getFechaInicio() + "', 'dd/MM/yyyy')) "
+					+ "AND FECHA_FACTURA <= TO_CHAR(TO_DATE ('" + objModel.getFechaFin() + "', 'dd/MM/yyyy')) ";*/
+			where += "AND FECHA_FACTURA >= '" + objModel.getFechaInicio() + "' " + 
+					 "AND FECHA_FACTURA <= '" + objModel.getFechaFin() + "' " ;
 			
 			log.debug(
 					"obtenerCuadreSidra() - " + "valor del get existe en la dao " + objModel.getExiste());

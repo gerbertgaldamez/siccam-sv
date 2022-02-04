@@ -329,8 +329,8 @@ public class CBCuadreFacturaController extends ControladorBase{
 				
 				
 				objModel.setExiste(existe);
-				objModel.setFechaInicio(dtbDesde.getText());
-				objModel.setFechaFin(dtbHasta.getText());
+				objModel.setFechaInicio(fechaFormato.format(dtbDesde.getValue()));
+				objModel.setFechaFin(fechaFormato.format(dtbHasta.getValue()));
 				objModel.setCuadre(cuadre);
 				objModel.setNombreCliente(nombre);
 				objModel.setNumFactura(codigo);
