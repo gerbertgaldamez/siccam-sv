@@ -138,7 +138,7 @@ public class CBConsultaContabilizacionDAO extends ControladorBase{
 			log.debug( "fecha inicio " + objModel.getFechafin());
 			
 
-			where += " and fecha >= to_date('" + objModel.getFechaini() + "','dd/MM/yyyy') " + " and fecha <= to_date('"
+			where += " and FECHA_INGRESOS >= to_date('" + objModel.getFechaini() + "','dd/MM/yyyy') " + " and FECHA_INGRESOS <= to_date('"
 					+ objModel.getFechafin() + "','dd/MM/yyyy') ";
 
 			if (idAgencia != 0) {
@@ -510,11 +510,12 @@ public class CBConsultaContabilizacionDAO extends ControladorBase{
 			
 			if(tipo == 1) {
 				query = ConsultasSQ.OBTIENE_DATOS_SAP;
-				Logger.getLogger("Sap ");
+				log.debug("Sap ");
+				
 			}
 			if(tipo == 2) {
 				query = ConsultasSQ.OBTIENE_DATOS_SAP2;
-				Logger.getLogger("Sap2 "+ ConsultasSQ.OBTIENE_DATOS_SAP2);
+				log.debug("Sap2 "+ ConsultasSQ.OBTIENE_DATOS_SAP2);
 			}
 			log.debug( "query: " + query);
 			

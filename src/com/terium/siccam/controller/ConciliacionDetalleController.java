@@ -1218,7 +1218,8 @@ public class ConciliacionDetalleController extends ControladorBase {
 			try {
 				response = requestWsEjecutaPago(parametros, detalle);
 				
-				String trackingid = CBConciliacionDetalleDAO.obtenerTrackingIddepagosid(String.valueOf(cbpagosid));
+				String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
+				
 				//se obtiene el trackingid que se le mandara al metodo actualizarTransDate
 				//String trackingid = String.valueOf(getClienteTelefono(detalle));
 				log.debug(methodName + " el tracking id : " + trackingid);
@@ -1290,7 +1291,8 @@ public class ConciliacionDetalleController extends ControladorBase {
 				log.debug(methodName + " - ejecuta Reversa Pago ");
 				responseReversa = requestWsReversaPago(parametros, detalle);
 				log.debug(methodName + " - Reversa Ejecutada");
-				String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
+				String trackingid = CBConciliacionDetalleDAO.obtenerTrackingIddepagosid(cbpagosid);
+				//String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
 				//se obtiene el trackingid que se le mandara al metodo actualizarTransDate
 				//String trackingid = String.valueOf(getClienteTelefono(detalle));
 				log.debug(methodName + " el tracking id : " + trackingid);
@@ -1430,7 +1432,9 @@ public class ConciliacionDetalleController extends ControladorBase {
 		// String idpago = CBParametrosGeneralesModel.FIELD_CBPAGOSID;
 		String conciliacionid = detalle.getConciliacionId();
 		//String codigoColector = conciliacion.getCodigoColector();
-		String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
+		String cbpagosid = CBConciliacionDetalleDAO.obtenerCbPagosid(detalle.getConciliacionId());
+		//String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
+		String trackingid = CBConciliacionDetalleDAO.obtenerTrackingIddepagosid(cbpagosid);
 		log.debug(methodName + " -  el trackingid es = " + trackingid);
 		String referencia = CBConciliacionDetalleDAO.obtenerReferencia(trackingid);
 		log.debug(methodName + " -  la referencia es = " + referencia);
@@ -1438,7 +1442,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 
 		log.debug(methodName + " - ctn obtenido = " + ctn);
 		
-		String cbpagosid = CBConciliacionDetalleDAO.obtenerCbPagosid(detalle.getConciliacionId());
+		
 		
 		log.debug(methodName + " -  cbpagosid = " + cbpagosid);
 		

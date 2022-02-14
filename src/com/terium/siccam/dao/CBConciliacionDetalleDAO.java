@@ -435,9 +435,9 @@ public static String obtenerTrackingId ( String cod_num){
 	Connection con = null;
 	try{
 		con = ControladorBase.obtenerDtsPromo().getConnection();
-		ptmt = con.prepareStatement(ConsultasSQ.OBTENER_TRACKING_ID_SQ);
+		ptmt = con.prepareStatement(ConsultasSQ.OBTENER_TRACKING_ID_SQ2);
 		
-		logger.debug("query para obtener el tracking id ->" + ConsultasSQ.OBTENER_TRACKING_ID_SQ );
+		logger.debug("query para obtener el tracking id ->" + ConsultasSQ.OBTENER_TRACKING_ID_SQ2 );
 		ptmt.setString(1, cod_num);
 		rst = ptmt.executeQuery();
 		
