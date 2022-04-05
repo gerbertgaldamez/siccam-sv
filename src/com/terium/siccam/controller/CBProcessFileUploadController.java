@@ -241,7 +241,7 @@ public class CBProcessFileUploadController extends ControladorBase {
 							cbprocesPA.mapeoCargaConfrontasPA();
 						} else if (misession.getAttribute("conexion").equals(Tools.SESSION_CR)) {
 							cbprocesCR.mapeoCargaConfrontasCR();
-						} else {
+						} else if(misession.getAttribute("conexion").equals(Tools.SESSION_SV)) {
 							logger.debug("onClick$btnCargaConfrontas() - ingresa mapeoCargaConfrontasSV");
 							cbprocesSV.mapeoCargaConfrontasSV();
 						}

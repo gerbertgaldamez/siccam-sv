@@ -261,5 +261,25 @@ public class Tools {
 	public static String OBTENER_REFERENCIA ="Select REFERENCIA,CTN from bellintlog@LINK_MGINTER_ARBOR where r_tracking_id = ?";
 	public static String OBTENER_CTN ="Select CTN from bellintlog@LINK_MGINTER_ARBOR where r_tracking_id = ?";
 	
+	public static String getValor(String texto){
+		 texto = "";
+	    if(texto.contains(" ")){
+		 return texto.replace(" ", "0").trim();
+			
+	    }
+	    return texto.trim();
+	}
+	
+	public static String obtenerValor(String texto){
+		
+	  
+		 if(texto == null || texto.isEmpty()){
+	       
+			 return texto ="0";
+	    }
+	    return texto.trim();
+		 
+	}
+	
 	
 }

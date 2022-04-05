@@ -1322,7 +1322,8 @@ public class CBEstadoCuentaUtils extends ControladorBase {
 								objCredo.setNeto(Double.parseDouble(registro.trim()));
 								break;
 							case 5:
-								objCredo.setComisionIva(Double.parseDouble(registro.trim()));
+								//si viene null se le pondra cero con el metodo obtenerValor()
+								objCredo.setComisionIva(Double.parseDouble(Tools.obtenerValor(registro.trim())));
 								log.debug("valor del comision iva  "+ registro);
 								break;
 							case 6:

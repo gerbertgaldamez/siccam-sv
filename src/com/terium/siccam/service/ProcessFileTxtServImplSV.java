@@ -1002,12 +1002,17 @@ public class ProcessFileTxtServImplSV extends ControladorBase implements
 						} else if (telefonoEspecial.contains("TAPFI")) {
 							try {
 
-								telefonoE = (telefonoEspecial.substring(
+								/*telefonoE = (telefonoEspecial.substring(
 										telefonoEspecial.length() - 9,
 										telefonoEspecial.length()));
 								telefonoEspecial = telefonoE;
 								int telefonoSinCero = Integer.parseInt(telefonoEspecial);
-								bancoModel.setTelefono(String.valueOf(telefonoSinCero));
+								bancoModel.setTelefono(String.valueOf(telefonoSinCero));*/
+								telefonoE = (telefonoEspecial.substring(
+										telefonoEspecial.length() - 9,
+										telefonoEspecial.length()));
+								telefonoEspecial = telefonoE;
+								bancoModel.setTelefono(telefonoEspecial);
 
 								logger.debug(methodName
 										+ " - el Telefono Especial con el subString: "

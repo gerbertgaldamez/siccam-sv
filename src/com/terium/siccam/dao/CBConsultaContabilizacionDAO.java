@@ -468,7 +468,7 @@ public class CBConsultaContabilizacionDAO extends ControladorBase{
 		try {
 			conn = obtenerDtsPromo().getConnection();
 
-			where += " and fecha >= to_date('" + objModel.getFechaini() + "','dd/MM/yyyy') " + " and fecha <= to_date('"
+			where += " and fecha_ingresos >= to_date('" + objModel.getFechaini() + "','dd/MM/yyyy') " + " and fecha_ingresos <= to_date('"
 					+ objModel.getFechafin() + "','dd/MM/yyyy') ";
 			if (idAgencia != 0) {
 				where += "and cbcatalogoagenciaid = '" + idAgencia + "' ";
@@ -516,6 +516,7 @@ public class CBConsultaContabilizacionDAO extends ControladorBase{
 			if(tipo == 2) {
 				query = ConsultasSQ.OBTIENE_DATOS_SAP2;
 				log.debug("Sap2 "+ ConsultasSQ.OBTIENE_DATOS_SAP2);
+				log.debug(" el tipo es " + tipo);
 			}
 			log.debug( "query: " + query);
 			
