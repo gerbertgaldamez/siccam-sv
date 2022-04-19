@@ -707,6 +707,10 @@ public class ConsultasSQ {
 	
 	public static final String ACTUALIZA_TRANS_DATE_SQ = "UPDATE BMF SET TRANS_DATE = to_date(?,'dd-MM-yyyy') WHERE TRACKING_ID = ? AND TRACKING_ID_SERV = 3 ";
 	
+public static final String ACTUALIZAR_TRANS_DATE_SQ = "UPDATE BMF SET TRANS_DATE = to_date(?,'dd-MM-yyyy') WHERE  ACCOUNT_NO = ? AND ORIG_TRACKING_ID = ? ";
+	
+	public static final String OBTENER_ACCOUNT_NO_SQ = "select account_no from bmf where tracking_id = ? ";
+
 	public static final String OBTENER_ETH = " select VALOR_OBJETO1 FROM CB_MODULO_CONCILIACION_CONF where valor_objeto1 = 'ETH' ";
 	
 	public static final String OBTENER_II = " select VALOR_OBJETO1 FROM CB_MODULO_CONCILIACION_CONF where valor_objeto1 = 'II' ";

@@ -1303,8 +1303,8 @@ public class ConciliacionDetalleController extends ControladorBase {
 				//para actualizar fecha trans_date
 				//if(Constantes.STATUS.equalsIgnoreCase(responseReversa[0].getStatus())){
 				if(Constantes.STATUS.equalsIgnoreCase(responseReversa[0].getStatus())){
-				boolean resul = objDao.actualizarTransDate(fecha,Integer.parseInt(trackingid));
-				
+				//boolean resul = objDao.actualizarTransDate(fecha,Integer.parseInt(trackingid));
+					boolean resul = objDao.actualizarTransDateReversa(fecha,Integer.parseInt(accountNo),Integer.parseInt(trackingid));
 				
 				log.debug(methodName + " Actualizar Fecha  : " + resul);
 				}else{

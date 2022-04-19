@@ -683,4 +683,75 @@ public static String ontenerCTN(int trackingId){
 	}
 	return null;
 }
+public boolean actualizarTransDateReversa( String fecha, int accountNo, int trackingId){
+
+	boolean result = false;
+	Connection con = null;
+	PreparedStatement ptmt = null;
+	
+	try{
+		con = ControladorBase.obtenerDtsPromo().getConnection();
+		ptmt = con.prepareStatement(ConsultasSQ.ACTUALIZAR_TRANS_DATE_SQ);
+		logger.debug("query para actualizar la fecha trans_date ->" + ConsultasSQ.ACTUALIZAR_TRANS_DATE_SQ );
+		//logger.debug("actualizarTrackingId ->" + " la fecha " + fecha);
+		//logger.debug("actualizarTrackingId ->" + " el trackingId " + trackingId);
+		
+		ptmt.setString(1, fecha);
+		ptmt.setInt(2, accountNo);
+		ptmt.setInt(3, trackingId);
+		
+		return ptmt.executeUpdate() > 0;
+		
+	}catch(SQLException e){
+		logger.error("error1", e);
+	}catch (Exception e) {
+		logger.error("error2", e);
+	} finally {
+		try {
+			if (ptmt != null)
+				ptmt.close();
+			if (con != null)
+				con.close();
+		} catch (Exception e) {
+			logger.error("error3", e);
+		}
+	}
+
+	return result;
+}
+
+
+public static String obtenerAccountno ( String acount_no){
+	CBConciliacionDetallada detalle = new CBConciliacionDetallada();
+	PreparedStatement ptmt = null;
+	ResultSet rst = null;
+	Connection con = null;
+	try{
+		con = ControladorBase.obtenerDtsPromo().getConnection();
+		ptmt = con.prepareStatement(ConsultasSQ.OBTENER_ACCOUNT_NO_SQ);
+		logger.debug("query para obtener el telefono ->" + ConsultasSQ.OBTENER_ACCOUNT_NO_SQ );
+		ptmt.setString(1, acount_no);
+		rst = ptmt.executeQuery();
+		
+		if(rst.next()){
+			return rst.getString(1);
+			
+		}
+		
+		
+	}catch(Exception e){
+		logger.error( e);
+	}
+	finally {
+		try {
+			if (con != null)
+				con.close();
+		} catch (SQLException e) {
+			logger.error( e);
+		}
+	}
+	//logger.debug("obtenerCodAgenciaReversa ->" + " el cod agencia es null " );
+	return null;
+	
+}
 }
