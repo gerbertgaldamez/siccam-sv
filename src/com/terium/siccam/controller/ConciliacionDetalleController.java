@@ -1292,6 +1292,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 				responseReversa = requestWsReversaPago(parametros, detalle);
 				log.debug(methodName + " - Reversa Ejecutada");
 				String trackingid = CBConciliacionDetalleDAO.obtenerTrackingIddepagosid(cbpagosid);
+				String accountNo = CBConciliacionDetalleDAO.obtenerAccountno(trackingid);
 				//String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
 				//se obtiene el trackingid que se le mandara al metodo actualizarTransDate
 				//String trackingid = String.valueOf(getClienteTelefono(detalle));
