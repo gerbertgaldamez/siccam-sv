@@ -5,7 +5,8 @@ package com.terium.siccam.utils;
  **/
 public class ConsultasSQ {
 
-	// Este query se manda a llamar desde la clase CBConciliacionBancoDAO por el metodo generaConsultaPrincipal()
+	// Este query se manda a llamar desde la clase CBConciliacionBancoDAO por el
+	// metodo generaConsultaPrincipal()
 	// Se utiliza de forma general el query de GT para que todos los paises
 	// realize la consulta a la vista cb_conciliacion_banco_vs_vw
 
@@ -197,8 +198,8 @@ public class ConsultasSQ {
 
 	// este query es utilizado para consultar tipologias poliza
 	public static final String CONSULTA_TIPOLOGIAS_POLIZA_SQ = "SELECT CBTIPOLOGIASPOLIZAID, CENTRO_COSTO,CLAVE_CONTABILIZACION, DESCRIPCION,  TERMINACION, CUENTA_INGRESO, NOMBRE,  "
-			+ "  CENTRO_COSTO_CP,CLAVE_CONTABILIZACION_CP, DESCRIPCION_CP, TERMINACION_CP, CUENTA_CONTRAPARTIDA,INDICADOR_IVA, ACTIVIDAD, CENTRO_COSTO_DF, CLAVE_CONTABILIZACION_DF, DESCRIPCION_DF, TERMINACION_DF, CUENTA_INGRESO_DF, CLAVE_CONTABILIZACION_NEG,INDICADOR_IVA_CP, ACTIVIDAD_CP, (SELECT objeto FROM cb_modulo_conciliacion_conf  WHERE     UPPER (modulo) = 'CONFIGURACION_TIPO_CLIENTE' AND UPPER (tipo_objeto) = 'CONVENIOS' " + 
-			" AND UPPER (estado) = 'S' AND valor_objeto1 = a.tipo) tipo, DECODE (PIDE_ENTIDAD ,  '1', 'SI',  '0', 'NO') PIDE_ENTIDAD,  "
+			+ "  CENTRO_COSTO_CP,CLAVE_CONTABILIZACION_CP, DESCRIPCION_CP, TERMINACION_CP, CUENTA_CONTRAPARTIDA,INDICADOR_IVA, ACTIVIDAD, CENTRO_COSTO_DF, CLAVE_CONTABILIZACION_DF, DESCRIPCION_DF, TERMINACION_DF, CUENTA_INGRESO_DF, CLAVE_CONTABILIZACION_NEG,INDICADOR_IVA_CP, ACTIVIDAD_CP, (SELECT objeto FROM cb_modulo_conciliacion_conf  WHERE     UPPER (modulo) = 'CONFIGURACION_TIPO_CLIENTE' AND UPPER (tipo_objeto) = 'CONVENIOS' "
+			+ " AND UPPER (estado) = 'S' AND valor_objeto1 = a.tipo) tipo, DECODE (PIDE_ENTIDAD ,  '1', 'SI',  '0', 'NO') PIDE_ENTIDAD,  "
 			+ " CENTRO_DE_BENEFICIO,DIVISION, ORDEN_DE_PROYECTO,  TIPO_DE_CAMBIO, FECHA_DE_CONVERSION, INDICADOR_CME,  "
 			+ "  CAR_PA_SEGMENTO,CAR_PA_SERVICIO, CAR_PA_TIPO_TRAFICO, CAR_PA_AMBITO, CAR_PA_LICENCIA,CAR_PA_REGION, SUBTIPO_LINEA, CANAL, BUNDLE, PRODUCTO, EMPRESA_GRUPO, SECUENCIA , TIPO_DOCUMENTO, identificacion , (SELECT objeto FROM cb_modulo_conciliacion_conf WHERE UPPER (modulo) = 'TIPOLOGIAS_POLIZA_TIPO_IMPUESTO' AND UPPER (tipo_objeto) = 'TIPO_IMPUESTO' AND valor_objeto1 = a.tipo_impuesto) tipo_impuesto , proyecto, sociedad_asociada, grafo1, grafo2, subsegmento, ref1, ref2, tcode, proc, llave, calc_auto_iva, ref3, sociedad, fecha_valor  "
 			+ " FROM CB_TIPOLOGIAS_POLIZA a WHERE 1=1 ";
@@ -226,25 +227,34 @@ public class ConsultasSQ {
 
 	// Se obtienen los datos que seran ingresados al archivo SAP para subir por
 	// FTP
-	/*public static final String OBTIENE_DATOS_SAP = "SELECT (SELECT valor_objeto1 "
-			+ "          FROM cb_modulo_conciliacion_conf " + "         WHERE modulo = 'CONSULTA_CONTABILIZACION' "
-			+ "           AND cbmoduloconciliacionconfid = 38) sociedad, "
-			+ "       '000006' secuencia, '001' numero_de_asiento, "
-			+ "       TO_CHAR (fecha_contabilizacion, 'YYYYMMDD') fecha_contabilizacion, "
-			+ "       TO_CHAR (fecha, 'YYYYMMDD') fecha, texto, referencia, "
-			+ "       '40' clave_contabilizacion, cuenta, centro_costo, ' ' centro_beneficio, "
-			+ "       ' ' division, ' ' orden_de_proyecto, " + "       (SELECT valor_objeto1 "
-			+ "          FROM cb_modulo_conciliacion_conf " + "         WHERE modulo = 'CONSULTA_CONTABILIZACION' "
-			+ "           AND cbmoduloconciliacionconfid = 39) moneda, "
-			+ "       ' ' tipo_de_cambio, ' ' fecha_conversion, debe importe, "
-			+ "       texto2 texto_posicion, 'No' indicador_iva, ' ' indicador_cmd, "
-			+ "       ' ' car_pa_segmento, ' ' car_pa_servicio, ' ' car_pa_tipo_trafico, "
-			+ "       ' ' car_pa_ambito, ' ' car_pa_licencia, ' ' car_pa_region, " + "       (SELECT valor_objeto1 "
-			+ "          FROM cb_modulo_conciliacion_conf " + "         WHERE modulo = 'CONSULTA_CONTABILIZACION' "
-			+ "           AND cbmoduloconciliacionconfid = 40) clase_docto, "
-			+ "       '96200040' actividad, ' ' subtipo_linea, ' ' canal, ' ' bundle, "
-			+ "       ' ' producto, ' ' empresa_grupo " + "  FROM cb_poliza_contable_vw " + " WHERE 1 = 1 "
-			+ "   AND fecha >= TO_DATE (?, 'dd/MM/yyyy') " + "   AND fecha <= TO_DATE (?, 'dd/MM/yyyy') ";*/
+	/*
+	 * public static final String OBTIENE_DATOS_SAP =
+	 * "SELECT (SELECT valor_objeto1 " +
+	 * "          FROM cb_modulo_conciliacion_conf " +
+	 * "         WHERE modulo = 'CONSULTA_CONTABILIZACION' " +
+	 * "           AND cbmoduloconciliacionconfid = 38) sociedad, " +
+	 * "       '000006' secuencia, '001' numero_de_asiento, " +
+	 * "       TO_CHAR (fecha_contabilizacion, 'YYYYMMDD') fecha_contabilizacion, "
+	 * + "       TO_CHAR (fecha, 'YYYYMMDD') fecha, texto, referencia, " +
+	 * "       '40' clave_contabilizacion, cuenta, centro_costo, ' ' centro_beneficio, "
+	 * + "       ' ' division, ' ' orden_de_proyecto, " +
+	 * "       (SELECT valor_objeto1 " +
+	 * "          FROM cb_modulo_conciliacion_conf " +
+	 * "         WHERE modulo = 'CONSULTA_CONTABILIZACION' " +
+	 * "           AND cbmoduloconciliacionconfid = 39) moneda, " +
+	 * "       ' ' tipo_de_cambio, ' ' fecha_conversion, debe importe, " +
+	 * "       texto2 texto_posicion, 'No' indicador_iva, ' ' indicador_cmd, " +
+	 * "       ' ' car_pa_segmento, ' ' car_pa_servicio, ' ' car_pa_tipo_trafico, "
+	 * + "       ' ' car_pa_ambito, ' ' car_pa_licencia, ' ' car_pa_region, " +
+	 * "       (SELECT valor_objeto1 " +
+	 * "          FROM cb_modulo_conciliacion_conf " +
+	 * "         WHERE modulo = 'CONSULTA_CONTABILIZACION' " +
+	 * "           AND cbmoduloconciliacionconfid = 40) clase_docto, " +
+	 * "       '96200040' actividad, ' ' subtipo_linea, ' ' canal, ' ' bundle, " +
+	 * "       ' ' producto, ' ' empresa_grupo " + "  FROM cb_poliza_contable_vw " +
+	 * " WHERE 1 = 1 " + "   AND fecha >= TO_DATE (?, 'dd/MM/yyyy') " +
+	 * "   AND fecha <= TO_DATE (?, 'dd/MM/yyyy') ";
+	 */
 
 	//
 	public static final String OBTIENE_DATOS_SAP = "SELECT CBCONTABILIZACIONID, cbestadocuentaid, (SELECT valor_objeto1 "
@@ -272,123 +282,99 @@ public class ConsultasSQ {
 			+ "       || RPAD (NVL (car_pa_tipo_trafico, ' '), 2, ' ')    "
 			+ "       || RPAD (NVL (car_pa_ambito, ' '), 2, ' ')   "
 			+ "       || RPAD (NVL (car_pa_licencia, ' '), 2, ' ')  "
-			+ "       || RPAD (NVL (car_pa_region, ' '), 2, ' ')   " + "       || RPAD (NVL (TIPO_DOCUMENTO, ' '), 2, ' ') " + "       || (RPAD (nvl(actividad, ' '), 10, ' ')) "
+			+ "       || RPAD (NVL (car_pa_region, ' '), 2, ' ')   "
+			+ "       || RPAD (NVL (TIPO_DOCUMENTO, ' '), 2, ' ') " + "       || (RPAD (nvl(actividad, ' '), 10, ' ')) "
 			+ "       || RPAD (NVL (subtipo_linea, ' '), 2, ' ')    " + "       || RPAD (NVL (canal, ' '), 2, ' ')    "
 			+ "       || RPAD (NVL (bundle, ' '), 2, ' ')   " + "       || RPAD (NVL (producto, ' '), 4, ' ')    "
 			+ "       || RPAD (NVL (empresa_grupo, ' '), 4, ' ')sap " + "  FROM cb_poliza_contable_vw "
 			+ " WHERE 1 = 1 ";
-	//para prueba
-	public static final String OBTIENE_DATOS_SAP2 = "SELECT CBCONTABILIZACIONID, \r\n + " +
-			"	cbestadocuentaid,\r\n" + 
-			"	nvl(clave_contabilizacion, '/') || chr(9)\r\n" + 
-			"	|| nvl(indicador_cme,'/') || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(TO_CHAR (haber/100, 'fm99999999990.00'),'/'),0,16) || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(TO_CHAR (haber/100, 'fm99999999990.00'),'/'),0,16) || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(indicador_iva,'/'),0,2) || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(centro_costo,'/'),0,10) || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(orden_de_proyecto, '/'),0,12) || chr(9)\r\n" + 
-			"	|| '/' || chr(9) \r\n" + 
-			"	|| SUBSTR(nvl(asignacion,'/'),0,18) ||chr(9) \r\n" + 
-			"	|| SUBSTR(nvl(texto2,'/'),0,50) || chr(9)\r\n" + 
-			"	|| '/' || chr(9) \r\n" + 
-			"	|| '/' || chr(9) \r\n" + 
-			"	|| '/' || chr(9) \r\n" + 
-			"	|| SUBSTR(nvl(banco_propio,'/'),0,5) || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(cuenta,'/'),0,17) || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(ref1,'/'),0,12) || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(referenciasap,'/'),0,15) || chr(9)\r\n" + 
-			"	|| '/' || chr(9)\r\n" + 
-			"	|| '/' || chr(9)\r\n" + 
-			"	|| '/' || chr(9)\r\n" + 
-			"	|| '/' || chr(9)\r\n" + 
-			"	|| nvl((sociedad),'/') || chr(9)\r\n" + 
-			"	|| '/' || chr(9)\r\n" + 
-			"	|| '/' || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(car_pa_region,'/'),0,3) || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(car_pa_licencia,'/'),0,2) || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(car_pa_tipo_trafico,'/'),0,2) || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(car_pa_ambito,'/'),0,2) || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(producto,'/'),0,4) || chr(9)\r\n" + 
-			"	|| '/' || chr(9)\r\n" + 
-			"	|| '/' || chr(9)\r\n" + 
-			"	|| '/' || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(empresa_grupo,'/'),0,4) || chr(9)\r\n" + 
-			"	|| '/' || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(actividad,'/'),0,16) || chr(9)\r\n" + 
-			"	|| '/' || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(to_char(fecha_valor,'DDMMYYYY'),'/'),0,8) || chr(9)\r\n" + 
-			"	|| '/' || chr(9)\r\n" + 
-			"	|| '/' || chr(9)\r\n" + 
-			"	|| '/' || chr(9)\r\n" + 
-			"	|| '/' || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(proyecto,'/'),0,24) || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(sociedad_asociada,'/'),0,6) || chr(9)\r\n" + 
-			"	|| '/' || chr(9)\r\n" + 
-			"	|| '/' || chr(9)\r\n" + 
-			"	|| '/' || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(grafo1,'/'),0,12) || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(grafo2,'/'),0,12) || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(subsegmento,'/'),0,2) || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(bundle,'/'),0,2) || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(subtipo_linea,'/'),0,2) || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(canal,'/'),0,2) || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(car_pa_servicio,'/'),0,3) || chr(9)\r\n" + 
-			"	|| SUBSTR(nvl(car_pa_segmento,'/'),0,2) || chr(9)\r\n" + 
-			"	|| '/' || chr(9) sap,\r\n" + 
-			"	(nvl(tcode,'FB01') || chr(9)\r\n" + 
-			"		||SUBSTR(nvl(tipo_documento,'/'),0,2)  || chr(9)\r\n" + 
-				"	|| nvl((SELECT valor_objeto1 \r\n" + 
-			  "           FROM cb_modulo_conciliacion_conf \r\n" + 
-			   "         WHERE modulo = 'CONSULTA_CONTABILIZACION' \r\n" + 
-			      "        AND cbmoduloconciliacionconfid = 38),'/') || chr(9)\r\n" + 
-			   "     || nvl((SELECT SUBSTR(moneda,0,3) FROM CB_CATALOGO_AGENCIA \r\n" + 
-			   "         WHERE CBCATALOGOAGENCIAID =cb_poliza_contable_vw.CBCATALOGOAGENCIAID ),'/') || chr(9)\r\n" + 
-			   "     || SUBSTR(nvl(tipo_de_cambio,'/'),0,9) || chr(9)\r\n" + 
-			   "     || SUBSTR(nvl(to_char(fecha_ingresos,'DDMMYYYY'),''),0,8) || chr(9)\r\n" + 
-			  "      || SUBSTR(nvl(to_char(fecha,'DDMMYYYY'),''),0,8) || chr(9)\r\n" + 
-			 "       || '/' || chr(9)\r\n" + 
-			   "     || SUBSTR(nvl(texto,'/'),0,25) || chr(9)\r\n" + 
-			   "     || '/' || chr(9)\r\n" + 
-			    "    || '/' || chr(9)\r\n" + 
-			     "   || SUBSTR(nvl(referencia,'/'),0,16) || chr(9)\r\n" + 
-			     "   || SUBSTR(nvl(agencia,'/'),0,16) || chr(9)\r\n" + 
-			     "   || nvl(proc,'31') || chr(9)\r\n" + 
-			     "   || 'secuencia' || chr(9)\r\n" + 
-			    "    || nvl(llave,'/') || chr(9)\r\n" + 
-			    "    || nvl(calc_auto_iva,'/') || chr(9)\r\n" + 
-			"	) lineaEncabezado, CBCATALOGOAGENCIAID\r\n "+ 
-				"FROM cb_poliza_contable_vw \r\n "+ 
-		 		"WHERE 1 = 1" ;
-	/*public static final String OBTIENE_DATOS_SAP2 = "SELECT CBCONTABILIZACIONID, cbestadocuentaid, (SELECT valor_objeto1 "
-			+ "             FROM cb_modulo_conciliacion_conf "
-			+ "            WHERE modulo = 'CONSULTA_CONTABILIZACION' "
-			+ "              AND cbmoduloconciliacionconfid = 38) "
-			+ "       || RPAD (NVL (secuencia, ' '), 6, ' ')    " + "       || '000' "
-			+ "       || RPAD (NVL (TO_CHAR (fecha, 'YYYYMMDD'), ' '), 8, ' ') "
-			+ "       || RPAD (NVL (TO_CHAR (fecha_ingresos, 'YYYYMMDD'), ' '), 8, ' ') "
-			+ "       || RPAD (NVL (texto, ' '), 25, ' ') " + "       || RPAD (NVL (referencia, ' '), 16, ' ') "
-			+ "       || RPAD (nvl(clave_contabilizacion, ' '), 2, ' ') " + "       || RPAD (nvl(cuenta,' '), 20, ' ') "
-			+ "       || RPAD (nvl(centro_costo,' '), 10, ' ') "
-			+ "       || RPAD (NVL (CENTRO_DE_BENEFICIO, ' '), 10, ' ')    "
-			+ "       || RPAD (NVL (division, ' '), 4, ' ') "
-			+ "       || RPAD (NVL (orden_de_proyecto, ' '), 12, ' ') "
-			+ "       || (SELECT RPAD (NVL(moneda,' '),5,' ') FROM CB_CATALOGO_AGENCIA "
-			+ "            WHERE CBCATALOGOAGENCIAID =cb_poliza_contable_vw.CBCATALOGOAGENCIAID ) "
-			+ "       || RPAD (NVL (tipo_de_cambio, ' '), 9, ' ')    "
-			+ "       || RPAD (NVL (TO_CHAR(fecha_de_conversion,'DD/MM/YYYY'), ' '), 8, ' ') "
-			+ " 	|| RPAD (NVL (TO_CHAR (haber), ' '), 12, ' ') " + "       || RPAD (NVL (texto2, ' '), 50, ' ') "
-			+ "       || RPAD (nvl(indicador_iva, ' '), 2, ' ') "
-			+ "       || RPAD (NVL (indicador_cme, ' '), 2, ' ')   "
-			+ "       || RPAD (NVL (car_pa_segmento, ' '), 2, ' ')   "
-			+ "       || RPAD (NVL (car_pa_servicio, ' '), 3, ' ')    "
-			+ "       || RPAD (NVL (car_pa_tipo_trafico, ' '), 2, ' ')    "
-			+ "       || RPAD (NVL (car_pa_ambito, ' '), 2, ' ')   "
-			+ "       || RPAD (NVL (car_pa_licencia, ' '), 2, ' ')  "
-			+ "       || RPAD (NVL (car_pa_region, ' '), 2, ' ')   " + "       || RPAD (NVL (TIPO_DOCUMENTO, ' '), 2, ' ') " + "       || (RPAD (nvl(actividad, ' '), 10, ' ')) "
-			+ "       || RPAD (NVL (subtipo_linea, ' '), 2, ' ')    " + "       || RPAD (NVL (canal, ' '), 2, ' ')    "
-			+ "       || RPAD (NVL (bundle, ' '), 2, ' ')   " + "       || RPAD (NVL (producto, ' '), 4, ' ')    "
-			+ "       || RPAD (NVL (empresa_grupo, ' '), 4, ' ')sap, CBCATALOGOAGENCIAID " + "   FROM cb_poliza_contable_vw "
-			+ " WHERE 1 = 1 ";*/
+	// para prueba
+	public static final String OBTIENE_DATOS_SAP2 = "SELECT CBCONTABILIZACIONID, \r\n + " + "	cbestadocuentaid,\r\n"
+			+ "	nvl(clave_contabilizacion, '/') || chr(9)\r\n" + "	|| nvl(indicador_cme,'/') || chr(9)\r\n"
+			+ "	|| SUBSTR(nvl(TO_CHAR (haber/100, 'fm99999999990.00'),'/'),0,16) || chr(9)\r\n"
+			+ "	|| SUBSTR(nvl(TO_CHAR (haber/100, 'fm99999999990.00'),'/'),0,16) || chr(9)\r\n"
+			+ "	|| SUBSTR(nvl(indicador_iva,'/'),0,2) || chr(9)\r\n"
+			+ "	|| SUBSTR(nvl(centro_costo,'/'),0,10) || chr(9)\r\n"
+			+ "	|| SUBSTR(nvl(orden_de_proyecto, '/'),0,12) || chr(9)\r\n" + "	|| '/' || chr(9) \r\n"
+			+ "	|| SUBSTR(nvl(asignacion,'/'),0,18) ||chr(9) \r\n" + "	|| SUBSTR(nvl(texto2,'/'),0,50) || chr(9)\r\n"
+			+ "	|| '/' || chr(9) \r\n" + "	|| '/' || chr(9) \r\n" + "	|| '/' || chr(9) \r\n"
+			+ "	|| SUBSTR(nvl(banco_propio,'/'),0,5) || chr(9)\r\n" + "	|| SUBSTR(nvl(cuenta,'/'),0,17) || chr(9)\r\n"
+			+ "	|| SUBSTR(nvl(ref1,'/'),0,12) || chr(9)\r\n"
+			+ "	|| SUBSTR(nvl(referenciasap,'/'),0,15) || chr(9)\r\n" + "	|| '/' || chr(9)\r\n"
+			+ "	|| '/' || chr(9)\r\n" + "	|| '/' || chr(9)\r\n" + "	|| '/' || chr(9)\r\n"
+			+ "	|| nvl((sociedad),'/') || chr(9)\r\n" + "	|| '/' || chr(9)\r\n" + "	|| '/' || chr(9)\r\n"
+			+ "	|| SUBSTR(nvl(car_pa_region,'/'),0,3) || chr(9)\r\n"
+			+ "	|| SUBSTR(nvl(car_pa_licencia,'/'),0,2) || chr(9)\r\n"
+			+ "	|| SUBSTR(nvl(car_pa_tipo_trafico,'/'),0,2) || chr(9)\r\n"
+			+ "	|| SUBSTR(nvl(car_pa_ambito,'/'),0,2) || chr(9)\r\n"
+			+ "	|| SUBSTR(nvl(producto,'/'),0,4) || chr(9)\r\n" + "	|| '/' || chr(9)\r\n" + "	|| '/' || chr(9)\r\n"
+			+ "	|| '/' || chr(9)\r\n" + "	|| SUBSTR(nvl(empresa_grupo,'/'),0,4) || chr(9)\r\n"
+			+ "	|| '/' || chr(9)\r\n" + "	|| SUBSTR(nvl(actividad,'/'),0,16) || chr(9)\r\n"
+			+ "	|| '/' || chr(9)\r\n" + "	|| SUBSTR(nvl(to_char(fecha_valor,'DDMMYYYY'),'/'),0,8) || chr(9)\r\n"
+			+ "	|| '/' || chr(9)\r\n" + "	|| '/' || chr(9)\r\n" + "	|| '/' || chr(9)\r\n"
+			+ "	|| '/' || chr(9)\r\n" + "	|| SUBSTR(nvl(proyecto,'/'),0,24) || chr(9)\r\n"
+			+ "	|| SUBSTR(nvl(sociedad_asociada,'/'),0,6) || chr(9)\r\n" + "	|| '/' || chr(9)\r\n"
+			+ "	|| '/' || chr(9)\r\n" + "	|| '/' || chr(9)\r\n" + "	|| SUBSTR(nvl(grafo1,'/'),0,12) || chr(9)\r\n"
+			+ "	|| SUBSTR(nvl(grafo2,'/'),0,12) || chr(9)\r\n" + "	|| SUBSTR(nvl(subsegmento,'/'),0,2) || chr(9)\r\n"
+			+ "	|| SUBSTR(nvl(bundle,'/'),0,2) || chr(9)\r\n" + "	|| SUBSTR(nvl(subtipo_linea,'/'),0,2) || chr(9)\r\n"
+			+ "	|| SUBSTR(nvl(canal,'/'),0,2) || chr(9)\r\n"
+			+ "	|| SUBSTR(nvl(car_pa_servicio,'/'),0,3) || chr(9)\r\n"
+			+ "	|| SUBSTR(nvl(car_pa_segmento,'/'),0,2) || chr(9)\r\n" + "	|| '/' || chr(9) sap,\r\n"
+			+ "	(nvl(tcode,'FB01') || chr(9)\r\n" + "		||SUBSTR(nvl(tipo_documento,'/'),0,2)  || chr(9)\r\n"
+			+ "	|| nvl((SELECT valor_objeto1 \r\n" + "           FROM cb_modulo_conciliacion_conf \r\n"
+			+ "         WHERE modulo = 'CONSULTA_CONTABILIZACION' \r\n"
+			+ "        AND cbmoduloconciliacionconfid = 38),'/') || chr(9)\r\n"
+			+ "     || nvl((SELECT SUBSTR(moneda,0,3) FROM CB_CATALOGO_AGENCIA \r\n"
+			+ "         WHERE CBCATALOGOAGENCIAID =cb_poliza_contable_vw.CBCATALOGOAGENCIAID ),'/') || chr(9)\r\n"
+			+ "     || SUBSTR(nvl(tipo_de_cambio,'/'),0,9) || chr(9)\r\n"
+			+ "     || SUBSTR(nvl(to_char(fecha_ingresos,'DDMMYYYY'),''),0,8) || chr(9)\r\n"
+			+ "      || SUBSTR(nvl(to_char(fecha,'DDMMYYYY'),''),0,8) || chr(9)\r\n" + "       || '/' || chr(9)\r\n"
+			+ "     || SUBSTR(nvl(texto,'/'),0,25) || chr(9)\r\n" + "     || '/' || chr(9)\r\n"
+			+ "    || '/' || chr(9)\r\n" + "   || SUBSTR(nvl(referencia,'/'),0,16) || chr(9)\r\n"
+			+ "   || SUBSTR(nvl(agencia,'/'),0,16) || chr(9)\r\n" + "   || nvl(proc,'31') || chr(9)\r\n"
+			+ "   || 'secuencia' || chr(9)\r\n" + "    || nvl(llave,'/') || chr(9)\r\n"
+			+ "    || nvl(calc_auto_iva,'/') || chr(9)\r\n" + "	) lineaEncabezado, CBCATALOGOAGENCIAID\r\n "
+			+ "FROM cb_poliza_contable_vw \r\n " + "WHERE 1 = 1";
+	/*
+	 * public static final String OBTIENE_DATOS_SAP2 =
+	 * "SELECT CBCONTABILIZACIONID, cbestadocuentaid, (SELECT valor_objeto1 " +
+	 * "             FROM cb_modulo_conciliacion_conf " +
+	 * "            WHERE modulo = 'CONSULTA_CONTABILIZACION' " +
+	 * "              AND cbmoduloconciliacionconfid = 38) " +
+	 * "       || RPAD (NVL (secuencia, ' '), 6, ' ')    " + "       || '000' " +
+	 * "       || RPAD (NVL (TO_CHAR (fecha, 'YYYYMMDD'), ' '), 8, ' ') " +
+	 * "       || RPAD (NVL (TO_CHAR (fecha_ingresos, 'YYYYMMDD'), ' '), 8, ' ') " +
+	 * "       || RPAD (NVL (texto, ' '), 25, ' ') " +
+	 * "       || RPAD (NVL (referencia, ' '), 16, ' ') " +
+	 * "       || RPAD (nvl(clave_contabilizacion, ' '), 2, ' ') " +
+	 * "       || RPAD (nvl(cuenta,' '), 20, ' ') " +
+	 * "       || RPAD (nvl(centro_costo,' '), 10, ' ') " +
+	 * "       || RPAD (NVL (CENTRO_DE_BENEFICIO, ' '), 10, ' ')    " +
+	 * "       || RPAD (NVL (division, ' '), 4, ' ') " +
+	 * "       || RPAD (NVL (orden_de_proyecto, ' '), 12, ' ') " +
+	 * "       || (SELECT RPAD (NVL(moneda,' '),5,' ') FROM CB_CATALOGO_AGENCIA " +
+	 * "            WHERE CBCATALOGOAGENCIAID =cb_poliza_contable_vw.CBCATALOGOAGENCIAID ) "
+	 * + "       || RPAD (NVL (tipo_de_cambio, ' '), 9, ' ')    " +
+	 * "       || RPAD (NVL (TO_CHAR(fecha_de_conversion,'DD/MM/YYYY'), ' '), 8, ' ') "
+	 * + " 	|| RPAD (NVL (TO_CHAR (haber), ' '), 12, ' ') " +
+	 * "       || RPAD (NVL (texto2, ' '), 50, ' ') " +
+	 * "       || RPAD (nvl(indicador_iva, ' '), 2, ' ') " +
+	 * "       || RPAD (NVL (indicador_cme, ' '), 2, ' ')   " +
+	 * "       || RPAD (NVL (car_pa_segmento, ' '), 2, ' ')   " +
+	 * "       || RPAD (NVL (car_pa_servicio, ' '), 3, ' ')    " +
+	 * "       || RPAD (NVL (car_pa_tipo_trafico, ' '), 2, ' ')    " +
+	 * "       || RPAD (NVL (car_pa_ambito, ' '), 2, ' ')   " +
+	 * "       || RPAD (NVL (car_pa_licencia, ' '), 2, ' ')  " +
+	 * "       || RPAD (NVL (car_pa_region, ' '), 2, ' ')   " +
+	 * "       || RPAD (NVL (TIPO_DOCUMENTO, ' '), 2, ' ') " +
+	 * "       || (RPAD (nvl(actividad, ' '), 10, ' ')) " +
+	 * "       || RPAD (NVL (subtipo_linea, ' '), 2, ' ')    " +
+	 * "       || RPAD (NVL (canal, ' '), 2, ' ')    " +
+	 * "       || RPAD (NVL (bundle, ' '), 2, ' ')   " +
+	 * "       || RPAD (NVL (producto, ' '), 4, ' ')    " +
+	 * "       || RPAD (NVL (empresa_grupo, ' '), 4, ' ')sap, CBCATALOGOAGENCIAID "
+	 * + "   FROM cb_poliza_contable_vw " + " WHERE 1 = 1 ";
+	 */
 
 	public static final String OBTIENE_DATOS_SAP3 = "SELECT CBCONCILIACIONID, (SELECT RPAD (valor_objeto1, 21, '0') FROM cb_modulo_conciliacion_conf\r\n"
 			+ "WHERE modulo = 'APLICA_DESAPLICA_PAGOS' AND TIPO_OBJETO = 'PARAMETRO_APLICA') "
@@ -458,11 +444,10 @@ public class ConsultasSQ {
 			+ " VALUES(CB_COMISIONES_CONFIGURACION_SQ.NEXTVAL,?,?,?,?,?,?,?,?,?, sysdate) ";
 
 	// este query es utilizado para insertar impuestos
-		public static final String INSERT_IMPUESTOS_TIENDAS_PROPIAS_TIENDAS_SQ = "INSERT INTO cb_comisiones_configuracion(cbcomisionesconfiguracionid,cbbancoagenciaafiliacionesid, "
-				+ "  CBMODULOCONCILIACIONCONFID, TIPO,MEDIO_PAGO, TIPOLOGIA,FORMA_PAGO, VALOR , COMISION_USO ,CREATEDBY, DATECREATED) "
-				+ " VALUES(CB_COMISIONES_CONFIGURACION_SQ.NEXTVAL,?,?,?,?,?,?,?,?,?, sysdate) ";
+	public static final String INSERT_IMPUESTOS_TIENDAS_PROPIAS_TIENDAS_SQ = "INSERT INTO cb_comisiones_configuracion(cbcomisionesconfiguracionid,cbbancoagenciaafiliacionesid, "
+			+ "  CBMODULOCONCILIACIONCONFID, TIPO,MEDIO_PAGO, TIPOLOGIA,FORMA_PAGO, VALOR , COMISION_USO ,CREATEDBY, DATECREATED) "
+			+ " VALUES(CB_COMISIONES_CONFIGURACION_SQ.NEXTVAL,?,?,?,?,?,?,?,?,?, sysdate) ";
 
-	
 	// este query es utilizado para modificar impuesto
 	public static final String MODIFICAR_IMPUESTOS_TIENDAS_PROPIAS_SQ = "UPDATE cb_comisiones_configuracion SET "
 			+ "  CBMODULOCONCILIACIONCONFID = ?, TIPO = ?,MEDIO_PAGO = ?,TIPOLOGIA=?, FORMA_PAGO=?, VALOR=? , COMISION_USO =? ,  CREATEDBY =?, DATECREATED = SYSDATE WHERE cbcomisionesconfiguracionid = ?";
@@ -472,7 +457,7 @@ public class ConsultasSQ {
 
 	// metodo para eliminar impuesto
 	public static final String DELETE_IMPUESTOS_TIENDAS_PROPIAS_TIENDAS_SQ = "DELETE FROM cb_comisiones_configuracion WHERE cbbancoagenciaafiliacionesid = ?";
-	
+
 	// metodo para modificar
 	// este query es utilizado para modificar tipologias poliza modal
 	public static final String MODIFICAR_depositos_masivos_SQ = "UPDATE CB_TIPOLOGIAS_POLIZA SET CENTRO_DE_BENEFICIO = ?, "
@@ -495,61 +480,46 @@ public class ConsultasSQ {
 	 * VARIABLES PARA USO EN CLASE: CBHistorialSCECDAO
 	 * 
 	 **/
-	//public static final String OBTIENE_DETALLE_COMISION_SQ = "SELECT TIPO, NVL(SUM(MONTO), 0) FROM cb_comisiones WHERE "
+	// public static final String OBTIENE_DETALLE_COMISION_SQ = "SELECT TIPO,
+	// NVL(SUM(MONTO), 0) FROM cb_comisiones WHERE "
 //			+ " CBBANCOAGENCIACONFRONTAID = ? AND FECHA = TO_DATE(?,'dd/MM/yyyy') GROUP BY tipo";
-	
+
 	public static final String OBTIENE_DETALLE_COMISION_SQ = "SELECT a.CBCOMISIONESID CBCOMISIONESID,"
-			+ "(SELECT OBJETO " + 
-			"            FROM CB_MODULO_CONCILIACION_CONF " + 
-			"           WHERE     MODULO = 'CALCULO_COMISION' " + 
-			"                 AND TIPO_OBJETO = 'FORMA_PAGO' " + 
-			"                 AND VALOR_OBJETO1 = c.FORMA_PAGO) FORMA_PAGO, " + 
-			"            (SELECT OBJETO " + 
-			"            FROM CB_MODULO_CONCILIACION_CONF " + 
-			"           WHERE     MODULO = 'CALCULO_COMISION' " + 
-			"                 AND TIPO_OBJETO = 'TIPO' " + 
-			"                 AND VALOR_OBJETO1 = a.TIPO)" + 
-			"            TIPO," + 
-			"            (SELECT nombre " + 
-			"            FROM CB_Tipologias_poliza " + 
-			"           WHERE    " + 
-			"                 CBTIPOLOGIASPOLIZAID  = c.TIPOLOGIA)" + 
-			"            TIPOlogia, " + 
-			"            (SELECT OBJETO " + 
-			"            FROM CB_MODULO_CONCILIACION_CONF " + 
-			"           WHERE     MODULO = 'CALCULO_COMISION' " + 
-			"                 AND TIPO_OBJETO = 'CARGO' " + 
-			"                 AND CBMODULOCONCILIACIONCONFID = A.CBMODULOCONCILIACIONCONFID) CARGO, " + 
-			"                 (SELECT OBJETO " + 
-			"            FROM CB_MODULO_CONCILIACION_CONF " + 
-			"           WHERE     MODULO = 'CALCULO_COMISION' " + 
-			"                 AND TIPO_OBJETO = 'MEDIO_PAGO' " + 
-			"                 AND VALOR_OBJETO1 = c.MEDIO_PAGO) MEDIO_PAGO, " + 
-			"         NVL (SUM (a.MONTO), 0), " + 
-			"  nvl(a.COMISION_REAL,0) comision_real " +
-			//" from cb_comisiones " +
-			//"  where COMISION_REAL is not null and rownum  = 1 )" +
-			"    FROM cb_comisiones a, CB_MODULO_CONCILIACION_CONF b, CB_COMISIONES_CONFIGURACION c " + 
-			"   WHERE     1 = 1 " + 
-			"         AND a.CBMODULOCONCILIACIONCONFID = b.CBMODULOCONCILIACIONCONFID" + 
-			"         and a.CBMODULOCONCILIACIONCONFID = c.CBMODULOCONCILIACIONCONFID" + 
-			"         and c.CBMODULOCONCILIACIONCONFID = b.CBMODULOCONCILIACIONCONFID" + 
-			"         and c.CBBANCOAGENCIACONFRONTAID = a.CBBANCOAGENCIACONFRONTAID   AND  A.CBPAGOSID is not null  AND a.TIPO = C.TIPO  " + 
-			"          AND  A.CBBANCOAGENCIACONFRONTAID =? " + 
-			"          AND A.FECHA = TO_DATE(?,'dd/MM/yyyy') " + 
-			"GROUP BY a.CBCOMISIONESID, a.tipo, c.FORMA_PAGO, c.TIPOLOGIA, A.CBMODULOCONCILIACIONCONFID, c.MEDIO_PAGO,  a.COMISION_REAL ";
-	
+			+ "(SELECT OBJETO " + "            FROM CB_MODULO_CONCILIACION_CONF "
+			+ "           WHERE     MODULO = 'CALCULO_COMISION' " + "                 AND TIPO_OBJETO = 'FORMA_PAGO' "
+			+ "                 AND VALOR_OBJETO1 = c.FORMA_PAGO) FORMA_PAGO, " + "            (SELECT OBJETO "
+			+ "            FROM CB_MODULO_CONCILIACION_CONF " + "           WHERE     MODULO = 'CALCULO_COMISION' "
+			+ "                 AND TIPO_OBJETO = 'TIPO' " + "                 AND VALOR_OBJETO1 = a.TIPO)"
+			+ "            TIPO," + "            (SELECT nombre " + "            FROM CB_Tipologias_poliza "
+			+ "           WHERE    " + "                 CBTIPOLOGIASPOLIZAID  = c.TIPOLOGIA)"
+			+ "            TIPOlogia, " + "            (SELECT OBJETO "
+			+ "            FROM CB_MODULO_CONCILIACION_CONF " + "           WHERE     MODULO = 'CALCULO_COMISION' "
+			+ "                 AND TIPO_OBJETO = 'CARGO' "
+			+ "                 AND CBMODULOCONCILIACIONCONFID = A.CBMODULOCONCILIACIONCONFID) CARGO, "
+			+ "                 (SELECT OBJETO " + "            FROM CB_MODULO_CONCILIACION_CONF "
+			+ "           WHERE     MODULO = 'CALCULO_COMISION' " + "                 AND TIPO_OBJETO = 'MEDIO_PAGO' "
+			+ "                 AND VALOR_OBJETO1 = c.MEDIO_PAGO) MEDIO_PAGO, " + "         NVL (SUM (a.MONTO), 0), "
+			+ "  nvl(a.COMISION_REAL,0) comision_real " +
+			// " from cb_comisiones " +
+			// " where COMISION_REAL is not null and rownum = 1 )" +
+			"    FROM cb_comisiones a, CB_MODULO_CONCILIACION_CONF b, CB_COMISIONES_CONFIGURACION c "
+			+ "   WHERE     1 = 1 " + "         AND a.CBMODULOCONCILIACIONCONFID = b.CBMODULOCONCILIACIONCONFID"
+			+ "         and a.CBMODULOCONCILIACIONCONFID = c.CBMODULOCONCILIACIONCONFID"
+			+ "         and c.CBMODULOCONCILIACIONCONFID = b.CBMODULOCONCILIACIONCONFID"
+			+ "         and c.CBBANCOAGENCIACONFRONTAID = a.CBBANCOAGENCIACONFRONTAID   AND  A.CBPAGOSID is not null  AND a.TIPO = C.TIPO  "
+			+ "          AND  A.CBBANCOAGENCIACONFRONTAID =? " + "          AND A.FECHA = TO_DATE(?,'dd/MM/yyyy') "
+			+ "GROUP BY a.CBCOMISIONESID, a.tipo, c.FORMA_PAGO, c.TIPOLOGIA, A.CBMODULOCONCILIACIONCONFID, c.MEDIO_PAGO,  a.COMISION_REAL ";
+
 	public static final String OBTIENE_CAUSAS_CONCILIACION_SQ = "SELECT ID_CAUSAS_CONCILIACION,CAUSAS,CREADO_POR,FECHA_CREACION,"
 			+ "	CODIGO_CONCILIACION,TIPO " + "FROM cb_causas_conciliacion " + "ORDER BY CAUSAS ASC";
 
-	
 	public static final String OBTIENE_CAUSAS_CONCILIACION_BANCOS_SQ = "SELECT ID_CAUSAS_CONCILIACION,CAUSAS,CREADO_POR,FECHA_CREACION,"
 			+ "	CODIGO_CONCILIACION,TIPO " + "FROM cb_causas_conciliacion  WHERE TIPO = 2 " + "ORDER BY CAUSAS ASC";
 
-	
 	public static final String OBTIENE_CAUSAS_CONCILIACION_DETALLADA_SQ = "SELECT ID_CAUSAS_CONCILIACION,CAUSAS,CREADO_POR,FECHA_CREACION,"
-			+ "	CODIGO_CONCILIACION,TIPO,SISTEMA " + "FROM cb_causas_conciliacion  WHERE CONVENIO = ? AND TIPO = 1 " + "ORDER BY CAUSAS ASC";
-	
+			+ "	CODIGO_CONCILIACION,TIPO,SISTEMA " + "FROM cb_causas_conciliacion  WHERE CONVENIO = ? AND TIPO = 1 "
+			+ "ORDER BY CAUSAS ASC";
+
 	public static final String INSERT_CAUSA_TIPIFICACION_QY = "INSERT INTO CB_HISTORIAL_SCEC(CBHISTORIALSCECID,CBBANCOAGENCIACONFRONTAID,CBCAUSASCONCILIACIONID,\n"
 			+ "	MONTO,FECHA,OBSERVACION,CREADO_POR,FECHA_CREACION) VALUES\n"
 			+ "( CB_HISTORIAL_SCEC_SQ.NEXTVAL,?,?,?,TO_DATE(?,'dd/MM/yyyy'),?,?,sysdate)";
@@ -562,10 +532,12 @@ public class ConsultasSQ {
 	/**
 	 * VARIABLES PARA USO EN CLASE: CBRecaReguDAO
 	 */
-	//public static final String CONSULTA_RECAREGU_PAGOS_SQ = " SELECT * FROM (SELECT a.*, ROWNUM rnum "
-	//		+ "FROM (  SELECT CBPAGOSID, COD_CLIENTE, FECHA, NOM_CLIENTE, TRANSACCION, NOM_USUARORA, IMP_PAGO "
-	//		+ "FROM cb_pagos ";
-	
+	// public static final String CONSULTA_RECAREGU_PAGOS_SQ = " SELECT * FROM
+	// (SELECT a.*, ROWNUM rnum "
+	// + "FROM ( SELECT CBPAGOSID, COD_CLIENTE, FECHA, NOM_CLIENTE, TRANSACCION,
+	// NOM_USUARORA, IMP_PAGO "
+	// + "FROM cb_pagos ";
+
 	public static final String CONSULTA_RECAREGU_PAGOS_SQ = "SELECT cbpagosid, to_char(fecha_efectiva,'dd/MM/yyyy'), "
 			+ "to_char(fecha_pago,'dd/MM/yyyy'), cod_cliente, "
 			+ "nom_cliente, num_secuenci, imp_pago, transaccion, tipo_transaccion, cod_oficina, des_oficina, "
@@ -584,24 +556,21 @@ public class ConsultasSQ {
 	public static final String UPDATE_PAGO_RECAREGU_QR2 = "UPDATE CB_PAGOS SET COD_OFICINA = 'NT', "
 			+ "COD_CAJA = ? WHERE CBPAGOSID = ?";
 
-	
 	public static final String BANCOS_RECAREGU_QRY = "SELECT b.cbcatalogoagenciaid, b.nombre , MIN(c.cod_agencia) cod_agencia "
 			+ "FROM cb_banco_agencia_confronta a, cb_catalogo_agencia b, cb_agencias_confronta c "
 			+ "WHERE a.cbbancoagenciaconfrontaid = c.cbbancoagenciaconfrontaid "
-			+ "AND a.cbcatalogoagenciaid = b.cbcatalogoagenciaid "
-			+ "GROUP BY b.cbcatalogoagenciaid, b.nombre "
+			+ "AND a.cbcatalogoagenciaid = b.cbcatalogoagenciaid " + "GROUP BY b.cbcatalogoagenciaid, b.nombre "
 			+ "ORDER BY 2";
-	
+
 	/**
-	 * Consulta resumen diario de conciliaciones 
-	 * Agregado -> 10/08/2018
+	 * Consulta resumen diario de conciliaciones Agregado -> 10/08/2018
 	 */
 	public static final String RESUMEN_DIARIO_CONCILIACION_QRY = "SELECT dia, nombre, codigo_colector codigoColector, tipo, "
 			+ "trans_telefonica transTelefonica, trans_banco transBanco, conciliadas, "
 			+ "dif_trans difTransaccion, pagos_telefonica pagosTelefonica, confronta_banco confrontaBanco, "
 			+ "automatica, manual_t manualTelefonica, manual_b manualBanco, "
 			+ "pendiente, cbcatalogoagenciaid idAgencia, real_t, real_b FROM cb_conciliacion_vw where 1 = 1 ";
-	
+
 	/**
 	 * VARIABLES PARA USO EN CLASE: DetalleLogDAO.java
 	 */
@@ -609,50 +578,48 @@ public class ConsultasSQ {
 	public static final String INSERT_ERROR_LOG_QY = "INSERT INTO CB_ERROR_LOG "
 			+ " (CBERRORLOGID, CODIGO_ERROR, MENSAJE_ERROR, CREADO_POR, FECHA_CREACION, MODULO, DESCRIPCION, OBJETO) "
 			+ " VALUES(cb_error_log_sq.NEXTVAL, ?,?,?,SYSDATE,?,?,?)";
-		
+
 	/**
 	 * VARIABLES PARA USO EN CLASE CBMantenimientoTipologiasPolizaDAO
-	 * */
+	 */
 	public static final String AGRUPACIONES_TIPOL_ENTIDAD_QRY = "select cbcatalogobancoid, nombre from "
 			+ "cb_catalogo_banco where estado = 1 order by cbcatalogobancoid";
-	
+
 	public static final String ENTIDADES_TIPOL_ENTIDAD_QRY = "select cbcatalogoagenciaid, (codigo_colector || ' - ' || nombre)  from "
 			+ "cb_catalogo_agencia where estado = 1 and cbcatalogobancoid = ? order by nombre";
-	
+
 	public static final String CONSULTA_TIPOL_ENTIDAD_QRY1 = "SELECT x.cbcatalogobancoid, x.nombre_banco, x.cbcatalogoagenciaid, "
 			+ "x.nombre_agencia, x.count_tipologias FROM (  SELECT b.cbcatalogobancoid, b.nombre nombre_banco, a.cbcatalogoagenciaid, "
 			+ "(a.codigo_colector || ' - ' || a.nombre) nombre_agencia, (SELECT COUNT (*) FROM cb_tipologias_agencia ta "
 			+ "WHERE ta.cbcatalogoagenciaid = a.cbcatalogoagenciaid ";
-	
+
 	public static final String CONSULTA_TIPOL_ENTIDAD_QRY2 = ") count_tipologias FROM cb_catalogo_banco b, cb_catalogo_agencia a "
-			+ "WHERE b.cbcatalogobancoid = a.cbcatalogobancoid "
-			+ "AND a.estado = 1 AND a.cuenta_contable is null "
+			+ "WHERE b.cbcatalogobancoid = a.cbcatalogobancoid " + "AND a.estado = 1 AND a.cuenta_contable is null "
 			+ "ORDER BY 2) x WHERE 1 = 1 ";
-	
+
 	public static final String INSERT_MASIVO_ENTIDAD_TIPOLOGIA = "INSERT INTO CB_TIPOLOGIAS_AGENCIA(CBTIPOLOGIASAGENCIAID, "
 			+ "CBCATALOGOAGENCIAID, CBTIPOLOGIASPOLIZAID, CREATEBY, DATECREATED) VALUES(CB_TIPOLOGIAS_AGENCIA_SQ.nextval, ?, ?, ?, sysdate)";
-	
+
 	public static final String DELETE_ASOCIACION_ENTIDAD = "DELETE FROM CB_TIPOLOGIAS_AGENCIA WHERE CBTIPOLOGIASPOLIZAID = ? AND CBCATALOGOAGENCIAID = ?";
-	
+
 	/**
 	 * Query para llenado de combo de TIPOLOGIAS en tipificacion en Estado de Cuenta
-	 * */
+	 */
 	public static final String QRY_CMB_TIPOLOGIA_ENTIDADES = "SELECT CBTIPOLOGIASPOLIZAID, (CBTIPOLOGIASPOLIZAID || ' - ' || NOMBRE), "
 			+ "DESCRIPCION, CREADO_POR, FECHA_CREACION, "
 			+ "TIPO, PIDE_ENTIDAD FROM CB_TIPOLOGIAS_POLIZA ORDER BY CBTIPOLOGIASPOLIZAID";
-	
+
 	/**
 	 * Query para llenado de combo de ENTIDADES en tipificacion en Estado de Cuenta
-	 * */
+	 */
 	public static final String QRY_CMB_ENTIDADES_TIPOLOGIA = "select a.cbcatalogoagenciaid, (a.codigo_colector || ' - ' || a.nombre)  "
 			+ "from cb_catalogo_agencia a, cb_tipologias_agencia ta "
-			+ "where ta.cbcatalogoagenciaid = a.cbcatalogoagenciaid "
-			+ "and ta.cbtipologiaspolizaid = ? "
+			+ "where ta.cbcatalogoagenciaid = a.cbcatalogoagenciaid " + "and ta.cbtipologiaspolizaid = ? "
 			+ "and a.estado = 1 and a.cuenta_contable is null ORDER BY TO_NUMBER(a.codigo_colector) ASC ";
-	
+
 	/**
 	 * Query general para Consultas de Estados de Cuenta
-	 * */
+	 */
 	public static final String CONSULTA_ESTADO_CUENTAS_SQ = " select cbestadocuentasociedadid, banco, agencia, trim(cuenta) cuenta, asignacion, "
 			+ "to_char(fecha,'DD/MM/YYYY') fecha, texto, debe, haber, identificador, "
 			+ "CASE WHEN tipologia IS NULL THEN '(No asignada)' ELSE (CBTIPOLOGIASPOLIZAID || ' - ' || tipologia) END tipologia, "
@@ -661,75 +628,78 @@ public class ConsultasSQ {
 			+ "observaciones, to_char(fecha_ingresos, 'DD/MM/YYYY') fecha_ingresos,numdocumento , USUARIO_MODIFICA ,"
 			+ " to_char(FECHA_MODIFICA, 'DD/MM/YYYY') FECHA_MODIFICA , CBTIPOLOGIASPOLIZAID , codigo_colector, IDAGENCIA_INGRESO "
 			+ " from cb_estado_cuenta_vw " + " where 1 = 1 ";
-	
+
 	/**
-	 * Added by CarlosGodinez
-	 * Auditar cualquier accion realizada en SICCAM
-	 * */
+	 * Added by CarlosGodinez Auditar cualquier accion realizada en SICCAM
+	 */
 	public static final String INSERT_BITACORA_LOG = "INSERT INTO CB_BITACORA (CBBITACORAID, MODULO, TIPO_CARGA, "
 			+ "NOMBRE_ARCHIVO, ACCION, CREATEDBY, DATECREATED) VALUES (CB_BITACORA_SQ.nextval, ?, ?, ?, ?, ?, sysdate)";
-	
+
 	public static final String UPDATE_LOG_THREAD = "UPDATE CB_BITACORA SET TIPO_CARGA = ? WHERE NOMBRE_ARCHIVO = ?";
 
 	public static final String COUNT_LOG_THREAD = "SELECT COUNT(*) FROM CB_BITACORA WHERE MODULO = ? AND TIPO_CARGA >= '1'";
-	
+
 	public static final String DELETE_LOG_THREAD = "DELETE FROM CB_BITACORA WHERE CREATEDBY = ?";
-	
+
 	public static final String OBTIENE_DETALLE_CONTABILIZACION_SQ = "SELECT TIPO_CARGA, ACCION FROM CB_BITACORA  WHERE 1=1 ";
-	
+
 	/**
 	 * @author juankrlos
 	 * 
-	 * */
+	 */
 	public static final String CB_APLDES_RECARGA_SP = "{CALL CONCILBANCARIA.CB_APLDES_RECARGA_SP(?)}";
-	
-	public static final String ACTUALIZA_HISTORIAL_ACCION = "UPDATE CB_HISTORIAL_ACCION "
-			+ "SET ESTADO_ACCION = ?,"
-			+ "    TIPOLOGIAGACID = ?,"
-			+ "    RESPONSE_GAC = ?,"
-			+ "    UNIDADID = ?,"
-			+ "    SOLUCION = ?,"
-			+ "    TIPO_CIERRE = ?,"
-			+"     NOMBRE_CLIENTE = ?,"
-			+ "    MODIFICADO_POR = USER,"
-			+ "    FECHA_MODIFICACION = SYSDATE,"
-			+"     RESPUESTA_SCL = ?"
-			+ "	WHERE CBHISTORIALACCIONID = ?";
-	
+
+	public static final String ACTUALIZA_HISTORIAL_ACCION = "UPDATE CB_HISTORIAL_ACCION " + "SET ESTADO_ACCION = ?,"
+			+ "    TIPOLOGIAGACID = ?," + "    RESPONSE_GAC = ?," + "    UNIDADID = ?," + "    SOLUCION = ?,"
+			+ "    TIPO_CIERRE = ?," + "     NOMBRE_CLIENTE = ?," + "    MODIFICADO_POR = USER,"
+			+ "    FECHA_MODIFICACION = SYSDATE," + "     RESPUESTA_SCL = ?" + "	WHERE CBHISTORIALACCIONID = ?";
+	// desaplicacion
+
 	public static final String OBTENER_TRACKING_ID_SQ = "select p.NUM_SECUENCI "
 			+ " from cb_conciliacion c, cb_historial_accion h, cb_pagos p  "
-			+ " where h.CBCONCILIACIONID = c.CBCONCILIACIONID "
-			+ " and c.cbpagosid = p.cbpagosid "
+			+ " where h.CBCONCILIACIONID = c.CBCONCILIACIONID " + " and c.cbpagosid = p.cbpagosid "
 			+ "and p.CBPAGOSID = ?  ";
+
+	// aplicacion
 	public static final String OBTENER_TRACKING_ID_SQ2 = "SELECT MAX(TRACKING_ID) FROM BMF WHERE ACCOUNT_NO = ? ORDER BY TRACKING_ID, TRACKING_ID_SERV ";
-	//public static final String OBTENER_TELEFONO_SQ = "select num_cuentarbor from te_numeros_contrato a, te_numeros b, te_contrato c, te_cuenta d where a.cod_numeroid = b.cod_numeroid and a.tecontratoid = c.tecontratoid and c.tecuentaid = d.tecuentaid and b.cod_num = ? and a.fec_baja is null ";
+	// public static final String OBTENER_TELEFONO_SQ = "select num_cuentarbor from
+	// te_numeros_contrato a, te_numeros b, te_contrato c, te_cuenta d where
+	// a.cod_numeroid = b.cod_numeroid and a.tecontratoid = c.tecontratoid and
+	// c.tecuentaid = d.tecuentaid and b.cod_num = ? and a.fec_baja is null ";
 	public static final String OBTENER_TELEFONO_SQ = " SELECT NUM_CUENTARBOR FROM TE_CUENTA A, TCG_CONTRATO B,TCG_INSTANCIA_CONTRATO C,TCG_INSTANCIA D  WHERE A.TECUENTAID = B.TECUENTAID  AND B.TCGCONTRATOID = C.TCGCONTRATOID AND C.TCGINSTANCIAID = D.TCGINSTANCIAID AND D.CODIGO = ? ";
-	
-	public static final String ACTUALIZA_TRANS_DATE_SQ = "UPDATE BMF SET TRANS_DATE = to_date(?,'dd-MM-yyyy') WHERE TRACKING_ID = ? AND TRACKING_ID_SERV = 3 ";
-	
-public static final String ACTUALIZAR_TRANS_DATE_SQ = "UPDATE BMF SET TRANS_DATE = to_date(?,'dd-MM-yyyy') WHERE  ACCOUNT_NO = ? AND ORIG_TRACKING_ID = ? ";
-	
+
+	public static final String ACTUALIZA_TRANS_DATE_SQ = "UPDATE BMF SET TRANS_DATE = to_date(?,'dd-MM-yyyy') WHERE TRACKING_ID = ? AND TRACKING_ID_SERV = 3 "; // Aplicacion
+
+	public static final String ACTUALIZAR_TRANS_DATE_SQ = "UPDATE BMF SET TRANS_DATE = to_date(?,'dd-MM-yyyy') WHERE  ACCOUNT_NO = ? AND ORIG_TRACKING_ID = ? "; // desaplicacion
+
 	public static final String OBTENER_ACCOUNT_NO_SQ = "select account_no from bmf where tracking_id = ? ";
 
 	public static final String OBTENER_ETH = " select VALOR_OBJETO1 FROM CB_MODULO_CONCILIACION_CONF where valor_objeto1 = 'ETH' ";
-	
+
 	public static final String OBTENER_II = " select VALOR_OBJETO1 FROM CB_MODULO_CONCILIACION_CONF where valor_objeto1 = 'II' ";
-	
+
 	public static final String OBTENER_TAPFI = " select VALOR_OBJETO1 FROM CB_MODULO_CONCILIACION_CONF where valor_objeto1 = 'TAPFI' ";
-	
+
 	public static final String OBTENER_WG = " select VALOR_OBJETO1 FROM CB_MODULO_CONCILIACION_CONF where valor_objeto1 = 'WG' ";
-	
+
 	public static final String INSERT_COMISIONES_QY = "INSERT INTO CB_COMISIONES(CBCOMISIONESID,CBBANCOAGENCIACONFRONTAID,\n"
 			+ " FECHA,CREATEDBY,DATECREATED,COMISION_REAL) VALUES\n"
 			+ "( cb_comisiones_SQ.NEXTVAL,?,TO_DATE(?,'dd/MM/yyyy'),?,sysdate,?)";
 	public static final String ACTUALIZA_COMISION_REAL = "update CB_COMISIONES set COMISION_REAL = ? where CBCOMISIONESID = ?";
-	
-	/*public static final String CONSULTA_CUADRE_SIDRA_QR = "SELECT SERIE, NOMBRE_CLIENTE_PDV, NOMBRE_CLIENTE_FINAL, BILL_REF_NO, "
-			+ "FECHA_PAGO, MONTO_PAGADO, ESTADO_FACTURA, FECHA_SINCRONIZACION, NO_BOLETA, FECHA_BOLETA, MONTO_BOLETA, "
-			+ "JORNADA, TO_DATE(FECHA_INICIO_JORNADA,'dd/MM/yyyy hh24:mi:ss'), FECHA_LIQUIDACION_JORNADA, ESTADO_JORNADA, TIPO_RUTA_PANEL, "
-			+ "NOMBRE_RUTA_PANEL, NOMBRE_VENDEDOR FROM CB_SIDRA_FACTURAS WHERE 1 = 1 ";*/
+
+	public static final String OBTENER_BMF_DESAPLICACION = " SELECT ACCOUNT_NO,TRANS_DATE , TRACKING_ID,ORIG_TRACKING_ID from BMF WHERE  ACCOUNT_NO = ? AND ORIG_TRACKING_ID = ?";
+
 	
 	
+	/*
+	 * public static final String CONSULTA_CUADRE_SIDRA_QR =
+	 * "SELECT SERIE, NOMBRE_CLIENTE_PDV, NOMBRE_CLIENTE_FINAL, BILL_REF_NO, " +
+	 * "FECHA_PAGO, MONTO_PAGADO, ESTADO_FACTURA, FECHA_SINCRONIZACION, NO_BOLETA, FECHA_BOLETA, MONTO_BOLETA, "
+	 * +
+	 * "JORNADA, TO_DATE(FECHA_INICIO_JORNADA,'dd/MM/yyyy hh24:mi:ss'), FECHA_LIQUIDACION_JORNADA, ESTADO_JORNADA, TIPO_RUTA_PANEL, "
+	 * + "NOMBRE_RUTA_PANEL, NOMBRE_VENDEDOR FROM CB_SIDRA_FACTURAS WHERE 1 = 1 ";
+	 */
+
 	public static final String CONSULTA_CUADRE_SIDRA_QR = "SELECT NUMERO_FACTURA,SERIE,FECHA_FACTURA, NOMBRE_CLIENTE_PDV, NOMBRE_CLIENTE_FINAL, BILL_REF_NO, "
 			+ "FECHA_PAGO, MONTO_PAGADO, ESTADO_FACTURA, FECHA_SINCRONIZACION, NO_BOLETA, FECHA_BOLETA, MONTO_BOLETA, "
 			+ "JORNADA, TO_DATE(FECHA_INICIO_JORNADA,'dd/MM/yyyy hh24:mi:ss'), FECHA_LIQUIDACION_JORNADA, ESTADO_JORNADA, TIPO_RUTA_PANEL, "

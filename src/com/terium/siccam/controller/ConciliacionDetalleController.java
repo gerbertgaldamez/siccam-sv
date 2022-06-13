@@ -27,6 +27,7 @@ import javax.naming.NamingException;
 
 import org.apache.axis.AxisFault;
 import org.apache.log4j.Logger;
+import org.codehaus.groovy.reflection.CachedClass.CachedMethodComparatorByName;
 import org.example.www.Pagos.EjecutarPagoDetalle;
 import org.example.www.Pagos.EjecutarPagoFault;
 import org.example.www.Pagos.EjecutarPagoRequest;
@@ -1201,7 +1202,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 		String methodName = "procesaWSPagosCreaCasos()";
 		CBCausasConciliacion obj = null;
 		String cbpagosid = CBConciliacionDetalleDAO.obtenerCbPagosid(detalle.getConciliacionId());
-		
+
 		if (reenvio) {
 			obj = new CBCausasConciliacion();
 			obj.setSistema(detalle.getSistema());
@@ -1211,31 +1212,34 @@ public class ConciliacionDetalleController extends ControladorBase {
 		log.debug("procesaWSPagosCreaCasos()" + " - Valor para pendiente Telefonica: "
 				+ detalle.getPendienteTelefonica());
 		log.debug("procesaWSPagosCreaCasos()" + " - obj.getSistema() : " + obj.getSistema());
+
+		// APLICACION PAGOS pendiente telefonica
 		if (obj.getSistema() == 2 && detalle.getPendienteTelefonica().intValue() > 0) {
 			// ejecuta request Pago
 			PagoDetalle[] response = null;
 			EjecutarPagoFault pagoFault = new EjecutarPagoFault();
 			try {
 				response = requestWsEjecutaPago(parametros, detalle);
-				
-				String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
-				
-				//se obtiene el trackingid que se le mandara al metodo actualizarTransDate
-				//String trackingid = String.valueOf(getClienteTelefono(detalle));
+
+				String trackingid = CBConciliacionDetalleDAO
+						.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
+
+				// se obtiene el trackingid que se le mandara al metodo actualizarTransDate
+				// String trackingid = String.valueOf(getClienteTelefono(detalle));
 				log.debug(methodName + " el tracking id : " + trackingid);
-				//Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				// Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Format formatter = new SimpleDateFormat("dd-MM-yyyy");
 				String fecha = formatter.format(detalle.getDia());
 				log.debug(methodName + " la fecha es : " + fecha);
-				//para actualizar fecha trans_date
-				if(Constantes.STATUS.equalsIgnoreCase(response[0].getStatus())){
-				boolean resul = objDao.actualizarTransDate(fecha,Integer.parseInt(trackingid));
-				
-				log.debug(methodName + " Actualizar Fecha  : " + resul);
-				}else{
+				// para actualizar fecha trans_date
+				if (Constantes.STATUS.equalsIgnoreCase(response[0].getStatus())) {
+					boolean resul = objDao.actualizarTransDate(fecha, Integer.parseInt(trackingid));
+
+					log.debug(methodName + " Actualizar Fecha  : " + resul);
+				} else {
 					log.debug(methodName + " Fecha trans no fue Actualizada  : ");
 				}
-				
+
 			} catch (EjecutarPagoFault e) {
 				log.debug(methodName + " EjecutarPagoFault : ", e);
 				pagoFault.setErrorCode(e.getErrorCode());
@@ -1265,9 +1269,6 @@ public class ConciliacionDetalleController extends ControladorBase {
 					historial.setRespuestascl("Pago Ejecutado Correctamente");
 					log.debug(methodName + " -  Cliente : " + historial.getNombreCliente());
 					log.debug(methodName + " - Pago Ejecutado Correctamente");
-					
-					
-					
 
 				} else {
 					historial.setEstado(4);// Estado 2 = error por parte de WS Pagos
@@ -1282,6 +1283,8 @@ public class ConciliacionDetalleController extends ControladorBase {
 
 			// ejecuta request crearCasoCerrado
 			// requestWsCrearCasoCerrado(parametros, detalle);
+
+			// INICIA DESPALICACION PAGOS
 		} else if (obj.getSistema() == 2 && detalle.getPendienteBanco().intValue() > 0) {
 			log.debug(methodName + " - Pendiente banco = " + detalle.getPendienteBanco().intValue());
 			// implementa la reversa llamada a ws reversa
@@ -1289,26 +1292,32 @@ public class ConciliacionDetalleController extends ControladorBase {
 			ReversaPagoDetalle[] responseReversa = null;
 			try {
 				log.debug(methodName + " - ejecuta Reversa Pago ");
-				responseReversa = requestWsReversaPago(parametros, detalle);
+				responseReversa = requestWsReversaPago(parametros, detalle); // reversa ws
 				log.debug(methodName + " - Reversa Ejecutada");
-				String trackingid = CBConciliacionDetalleDAO.obtenerTrackingIddepagosid(cbpagosid);
+				String trackingid = CBConciliacionDetalleDAO.obtenerTrackingIddepagosid(cbpagosid);// max
 				String accountNo = CBConciliacionDetalleDAO.obtenerAccountno(trackingid);
-				//String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
-				//se obtiene el trackingid que se le mandara al metodo actualizarTransDate
-				//String trackingid = String.valueOf(getClienteTelefono(detalle));
-				log.debug(methodName + " el tracking id : " + trackingid);
-				//Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				// String trackingid =
+				// CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
+				// se obtiene el trackingid que se le mandara al metodo actualizarTransDate
+				// String trackingid = String.valueOf(getClienteTelefono(detalle));
+				log.debug(methodName + " tracking id : " + trackingid);
+				log.debug(methodName + " accountNo : " + accountNo);
+				// Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Format formatter = new SimpleDateFormat("dd-MM-yyyy");
 				String fecha = formatter.format(detalle.getDia());
-				log.debug(methodName + " la fecha es : " + fecha);
-				//para actualizar fecha trans_date
-				//if(Constantes.STATUS.equalsIgnoreCase(responseReversa[0].getStatus())){
-				if(Constantes.STATUS.equalsIgnoreCase(responseReversa[0].getStatus())){
-				//boolean resul = objDao.actualizarTransDate(fecha,Integer.parseInt(trackingid));
-					boolean resul = objDao.actualizarTransDateReversa(fecha,Integer.parseInt(accountNo),Integer.parseInt(trackingid));
-				
-				log.debug(methodName + " Actualizar Fecha  : " + resul);
-				}else{
+				log.debug(methodName + " fecha obtenida : " + fecha);
+				// para actualizar fecha trans_date
+				// if(Constantes.STATUS.equalsIgnoreCase(responseReversa[0].getStatus())){
+				if (Constantes.STATUS.equalsIgnoreCase(responseReversa[0].getStatus())) {
+					// boolean resul =
+					// objDao.actualizarTransDate(fecha,Integer.parseInt(trackingid));
+					log.debug(methodName + " Obtiene la fila a actualizar : ");
+					imprimirFilaActualizar(
+							objDao.obtenerBMF(Integer.parseInt(accountNo), Integer.parseInt(trackingid)));
+					boolean resul = objDao.actualizarTransDateReversa(fecha, Integer.parseInt(accountNo),
+							Integer.parseInt(trackingid));
+					log.debug(methodName + " Actualizar Fecha  : " + resul);
+				} else {
 					log.debug(methodName + " Fecha trans no fue Actualizada  : ");
 				}
 			} catch (ReversaPagoFault e) {
@@ -1375,8 +1384,20 @@ public class ConciliacionDetalleController extends ControladorBase {
 		boolean resultado = historialDao.actualizaHistorialAcciones(historial);
 		log.debug("procesaWSPagosCreaCasos()" + " - [CB_HISTORIAL_ACCION] Finaliza update para registro => "
 				+ historial.getcBHistorialAccionId() + " Resultado => " + resultado);
-		
-		
+
+	}
+
+	private void imprimirFilaActualizar(Map<String, String> obtenerBMF) {
+		if (obtenerBMF == null || obtenerBMF.isEmpty()) {
+			log.debug("imprimirFilaActualizar() - return map is null o empty");
+			return;
+		}
+		log.debug("imprimirFilaActualizar() - imprimir valores :");
+		Iterator<String> it = obtenerBMF.keySet().iterator();
+		while (it.hasNext()) {
+			String key = (String) it.next();
+			log.debug("Clave: " + key + " -> Valor: " + obtenerBMF.get(key));
+		}
 
 	}
 
@@ -1401,17 +1422,21 @@ public class ConciliacionDetalleController extends ControladorBase {
 				response[0].getMsg_response()));
 		log.debug(methodName + " - ResponseXML : "
 				+ ws._getCall().getMessageContext().getResponseMessage().getSOAPPartAsString());
-		
-		/*String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
-		
-		log.debug(methodName + " el tracking id : " + trackingid);
-		
-		Format formatter = new SimpleDateFormat("dd-MM-yyyy");
-		String fecha1 = formatter.format(detalle.getDia());
-		log.debug(methodName + " la fecha es : " + fecha1);
-		boolean resul = objDao.actualizarTransDate(fecha1,Integer.parseInt(trackingid));
-		log.debug(methodName + " Actualizar Fecha  : " + resul);*/
-		
+
+		/*
+		 * String trackingid =
+		 * CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(
+		 * detalle)));
+		 * 
+		 * log.debug(methodName + " el tracking id : " + trackingid);
+		 * 
+		 * Format formatter = new SimpleDateFormat("dd-MM-yyyy"); String fecha1 =
+		 * formatter.format(detalle.getDia()); log.debug(methodName + " la fecha es : "
+		 * + fecha1); boolean resul =
+		 * objDao.actualizarTransDate(fecha1,Integer.parseInt(trackingid));
+		 * log.debug(methodName + " Actualizar Fecha  : " + resul);
+		 */
+
 		return response;
 	}
 
@@ -1420,11 +1445,11 @@ public class ConciliacionDetalleController extends ControladorBase {
 		CBConciliacionDetalleDAO objDao = new CBConciliacionDetalleDAO();
 		String methodName = "setParamsReversaPago()";
 		Date objFecha = new Date();
-		//DateFormat fechaFormato = new SimpleDateFormat("ddMMyyyy");
+		// DateFormat fechaFormato = new SimpleDateFormat("ddMMyyyy");
 		Format formatter = new SimpleDateFormat("yyyyMMdd");
 		String fecha = formatter.format(detalle.getDia());
-		//DateFormat fechaFormato = new SimpleDateFormat("yyyyMMdd");
-		//String fecha = fechaFormato.format(objFecha);
+		// DateFormat fechaFormato = new SimpleDateFormat("yyyyMMdd");
+		// String fecha = fechaFormato.format(objFecha);
 		log.debug(methodName + " -  inicia ");
 		int cliente = getClienteTelefono(detalle);
 		log.debug(methodName + " -  codigo cliente a enviar : " + cliente);
@@ -1432,9 +1457,10 @@ public class ConciliacionDetalleController extends ControladorBase {
 		// request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
 		// String idpago = CBParametrosGeneralesModel.FIELD_CBPAGOSID;
 		String conciliacionid = detalle.getConciliacionId();
-		//String codigoColector = conciliacion.getCodigoColector();
+		// String codigoColector = conciliacion.getCodigoColector();
 		String cbpagosid = CBConciliacionDetalleDAO.obtenerCbPagosid(detalle.getConciliacionId());
-		//String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
+		// String trackingid =
+		// CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
 		String trackingid = CBConciliacionDetalleDAO.obtenerTrackingIddepagosid(cbpagosid);
 		log.debug(methodName + " -  el trackingid es = " + trackingid);
 		String referencia = CBConciliacionDetalleDAO.obtenerReferencia(trackingid);
@@ -1442,18 +1468,15 @@ public class ConciliacionDetalleController extends ControladorBase {
 		String ctn = CBConciliacionDetalleDAO.ontenerCTN(Integer.parseInt(trackingid));
 
 		log.debug(methodName + " - ctn obtenido = " + ctn);
-		
-		
-		
+
 		log.debug(methodName + " -  cbpagosid = " + cbpagosid);
-		
-		//String num_secuenci = CBConciliacionDetalleDAO.obtenerNum_Secuenci(cbpagosid);
-		//log.debug(methodName + " -  num_secuenci = " + num_secuenci);
+
+		// String num_secuenci =
+		// CBConciliacionDetalleDAO.obtenerNum_Secuenci(cbpagosid);
+		// log.debug(methodName + " - num_secuenci = " + num_secuenci);
 
 		log.debug(methodName + " -  el concilacionid = " + conciliacionid);
 		request.setBank_id(CBConciliacionDetalleDAO.obtenerCodAgenciaReversa(conciliacionid));
-		
-		
 
 		// request.setBank_id(CBConciliacionDetalleDAO.obtenerCodAgencia(Constantes.OBTENER_COD_AGENCIA));
 		// log.debug(methodName + " - Codigo Agencia desaplicacion " +
@@ -1463,15 +1486,13 @@ public class ConciliacionDetalleController extends ControladorBase {
 		// request.setMonto(detalle.getMonto().doubleValue());
 		request.setMonto(detalle.getPendienteBanco().doubleValue());
 		log.debug(methodName + " - el monto es = " + detalle.getPendienteBanco());
-		//request.setReferencia(Constantes.REVERSA_PAGO_WS_REFERENCIA);
+		// request.setReferencia(Constantes.REVERSA_PAGO_WS_REFERENCIA);
 		request.setReferencia(referencia);
 		request.setTelefono(Integer.parseInt(ctn));
 		log.debug(MessageFormat.format(methodName
 				+ "\nRequest Reversa Pago : \nBank_id= {0}\nFecha_Pago = {1}\nMonto = {2}\nRefererencia = {3}\nCliente = {4}",
 				request.getBank_id(), request.getFecha_pago(), request.getMonto(), request.getReferencia(),
 				request.getTelefono()));
-		
-		
 
 		return request;
 	}
@@ -1501,7 +1522,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 
 	private PagoDetalle[] requestWsEjecutaPago(List<CBParametrosGeneralesModel> parametros,
 			CBConciliacionDetallada detalle) throws EjecutarPagoFault, RemoteException, MalformedURLException {
-		//CBConciliacionDetalleDAO objDao = null;
+		// CBConciliacionDetalleDAO objDao = null;
 		CBConciliacionDetalleDAO objDao = new CBConciliacionDetalleDAO();
 		String methodName = "requestWsEjecutaPago()";
 		log.debug(methodName + " - inicia ");
@@ -1525,20 +1546,23 @@ public class ConciliacionDetalleController extends ControladorBase {
 				response[0].getNum_referencia()));
 		log.debug(methodName + " - ResponseXML : "
 				+ ws._getCall().getMessageContext().getResponseMessage().getSOAPPartAsString());
-		
-		/*String trackingid = CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
-		//se obtiene el trackingid que se le mandara al metodo actualizarTransDate
-		//String trackingid = String.valueOf(getClienteTelefono(detalle));
-		log.debug(methodName + " el tracking id : " + trackingid);
-		//Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Format formatter = new SimpleDateFormat("dd-MM-yyyy");
-		String fecha1 = formatter.format(detalle.getDia());
-		log.debug(methodName + " la fecha es : " + fecha1);
-		//para actualizar fecha trans_date
-		boolean resul = objDao.actualizarTransDate(fecha1,Integer.parseInt(trackingid));
-		
-		log.debug(methodName + " Actualizar Fecha  : " + resul);*/
-		
+
+		/*
+		 * String trackingid =
+		 * CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(
+		 * detalle))); //se obtiene el trackingid que se le mandara al metodo
+		 * actualizarTransDate //String trackingid =
+		 * String.valueOf(getClienteTelefono(detalle)); log.debug(methodName +
+		 * " el tracking id : " + trackingid); //Format formatter = new
+		 * SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); Format formatter = new
+		 * SimpleDateFormat("dd-MM-yyyy"); String fecha1 =
+		 * formatter.format(detalle.getDia()); log.debug(methodName + " la fecha es : "
+		 * + fecha1); //para actualizar fecha trans_date boolean resul =
+		 * objDao.actualizarTransDate(fecha1,Integer.parseInt(trackingid));
+		 * 
+		 * log.debug(methodName + " Actualizar Fecha  : " + resul);
+		 */
+
 		return response;
 	}
 
@@ -1556,12 +1580,10 @@ public class ConciliacionDetalleController extends ControladorBase {
 		log.debug(methodName + " -  Codigo Cliente  = " + cliente);
 		// request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
 		String conciliacionid = detalle.getConciliacionId();
-		//String codagencia = conciliacion.getCodigoColector();
+		// String codagencia = conciliacion.getCodigoColector();
 
 		log.debug(methodName + " -  el cogigo de conciliacion es = " + conciliacionid);
 		request.setBank_id(CBConciliacionDetalleDAO.obtenerCodAgencia(conciliacionid));
-		
-		
 
 		log.debug(methodName + " -  Codigo Agencia Aplicacion ");
 		request.setBill_ref_no(Constantes.BILL_REF_NO);
@@ -1591,18 +1613,18 @@ public class ConciliacionDetalleController extends ControladorBase {
 		int codCliente = 0;
 		if (detalle.getCliente() != null && detalle.getTelefono() == null) {
 			codCliente = Integer.parseInt(detalle.getCliente());
-			log.debug("getClienteTelefono() - obteniendo codigo cliente : " +codCliente);
+			log.debug("getClienteTelefono() - obteniendo codigo cliente : " + codCliente);
 		}
 		if (detalle.getTelefono() != null && detalle.getCliente() == null) {
 			codCliente = Integer.parseInt(detalle.getTelefono());
-			log.debug("getClienteTelefono() - obteniendo numero de telefono : " +codCliente);
+			log.debug("getClienteTelefono() - obteniendo numero de telefono : " + codCliente);
 		}
-		if (detalle.getCliente() != null && detalle.getTelefono() != null){
+		if (detalle.getCliente() != null && detalle.getTelefono() != null) {
 			codCliente = Integer.parseInt(detalle.getCliente());
 		}
-		if (detalle.getCliente() == null){
-			codCliente  = Integer.parseInt(CBConciliacionDetalleDAO.obtenerTelefono(detalle.getTelefono()));
-			log.debug("getClienteTelefono() - obteniendo codigo cliente 2 : " +codCliente);
+		if (detalle.getCliente() == null) {
+			codCliente = Integer.parseInt(CBConciliacionDetalleDAO.obtenerTelefono(detalle.getTelefono()));
+			log.debug("getClienteTelefono() - obteniendo codigo cliente 2 : " + codCliente);
 		}
 
 		return codCliente;
@@ -1694,7 +1716,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 		obj.setAgencia(Tools.obtenerParametro(Constantes.AGENCIA, parametros));
 		obj.setBancoTarjetaDebito("");
 		obj.setCajero(Tools.obtenerParametro(Constantes.CAJERO, parametros));
-		 //obj.setCodBanco(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
+		// obj.setCodBanco(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
 		String codagencia = conciliacion.getIdAgencia();
 		String conciliacionid = detalle.getConciliacionId();
 		// obj.setCodBanco(conciliacionid);
@@ -1756,8 +1778,8 @@ public class ConciliacionDetalleController extends ControladorBase {
 						if (Double.parseDouble(txtMonto.getText()) <= Double.parseDouble(txtPendiente.getText())) {
 							cbHistorial.setMonto(txtMonto.getText());
 						} else {
-							// throw new WrongValueException(txtMonto, 
-							// Labels.getLabel("El monto no puede sobrepasar lo pendiente")); 
+							// throw new WrongValueException(txtMonto,
+							// Labels.getLabel("El monto no puede sobrepasar lo pendiente"));
 							Messagebox.show("El  valor del monto no puede ser mayor al valor pendiente", "ERROR",
 									Messagebox.OK, Messagebox.EXCLAMATION);
 							return;

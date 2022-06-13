@@ -8,11 +8,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
-
-
 
 import com.terium.siccam.composer.ControladorBase;
 import com.terium.siccam.controller.ConciliacionController;
@@ -296,25 +296,25 @@ public class CBConciliacionDetalleDAO {
 			}
 
 		} catch (Exception e) {
-			logger.error( e);
+			logger.error(e);
 		} finally {
 			if (rst != null)
 				try {
 					rst.close();
 				} catch (SQLException e) {
-					logger.error( e);
+					logger.error(e);
 				}
 			if (stmt != null)
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					logger.error( e);
+					logger.error(e);
 				}
 			if (conn != null)
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					logger.error( e);
+					logger.error(e);
 				}
 		}
 		return lst;
@@ -338,7 +338,7 @@ public class CBConciliacionDetalleDAO {
 
 			}
 		} catch (Exception e) {
-			logger.error( e);
+			logger.error(e);
 		} finally {
 			if (ps != null)
 				try {
@@ -350,408 +350,456 @@ public class CBConciliacionDetalleDAO {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException e) {
-				logger.error( e);
+				logger.error(e);
 			}
 		}
 	}
-	
-public static String obtenerCodAgencia(String cbBancoAgenciaConfrontaID){
-		
+
+	public static String obtenerCodAgencia(String cbBancoAgenciaConfrontaID) {
+
 		PreparedStatement ptmt = null;
 		ResultSet rst = null;
 		Connection con = null;
-		//CBParametrosGeneralesModel parametros = null;
-		try{
+		// CBParametrosGeneralesModel parametros = null;
+		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			ptmt = con.prepareStatement(Constantes.OBTENER_COD_AGENCIA);
-			logger.debug("obtenerCod Agencia ->" + Constantes.OBTENER_COD_AGENCIA );
+			logger.debug("obtenerCod Agencia ->" + Constantes.OBTENER_COD_AGENCIA);
 			ptmt.setString(1, cbBancoAgenciaConfrontaID);
-			
-			//logger.debug("obtenerCodAgencia() " + " - Query obtener cod agencia en la dao => : " + Constantes.OBTENER_COD_AGENCIA);
+
+			// logger.debug("obtenerCodAgencia() " + " - Query obtener cod agencia en la dao
+			// => : " + Constantes.OBTENER_COD_AGENCIA);
 			rst = ptmt.executeQuery();
-			if(rst.next()){
-				//return rst.getString(1);
-				return rst.getString(Constantes.FIELD_COD_AGENCIA );
-				
+			if (rst.next()) {
+				// return rst.getString(1);
+				return rst.getString(Constantes.FIELD_COD_AGENCIA);
+
 			}
-			
-		}catch(Exception e){
-			logger.error( e);
+
+		} catch (Exception e) {
+			logger.error(e);
 		} finally {
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				logger.error( e);
+				logger.error(e);
 			}
 		}
 		return null;
 	}
-	
-public static String obtenerCodAgenciaReversa(String conciliacionid){
-		
+
+	public static String obtenerCodAgenciaReversa(String conciliacionid) {
+
 		PreparedStatement ptmt = null;
 		ResultSet rst = null;
 		Connection con = null;
-		//CBParametrosGeneralesModel parametros = null;
+		// CBParametrosGeneralesModel parametros = null;
 		CBResumenDiarioConciliacionModel resumen = null;
-		
-		
-		
-		try{
+
+		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			ptmt = con.prepareStatement(Constantes.OBTENER_COD_AGENCIA_REVERSA);
-			logger.debug("obtenerCodAgenciaReversa ->" + Constantes.OBTENER_COD_AGENCIA_REVERSA );
+			logger.debug("obtenerCodAgenciaReversa ->" + Constantes.OBTENER_COD_AGENCIA_REVERSA);
 			ptmt.setString(1, conciliacionid);
-			
+
 			rst = ptmt.executeQuery();
-			
-			if(rst.next()){
-				//return rst.getString(1);
-				//logger.debug("obtenerCodAgenciaReversa ->" + "se obtiene el cod agencia " + resumen.getIdAgencia());
+
+			if (rst.next()) {
+				// return rst.getString(1);
+				// logger.debug("obtenerCodAgenciaReversa ->" + "se obtiene el cod agencia " +
+				// resumen.getIdAgencia());
 				return rst.getString(Constantes.FIELD_COD_AGENCIA);
-				
+
 			}
-			
-		}catch(Exception e){
-			logger.error( e);
+
+		} catch (Exception e) {
+			logger.error(e);
 		} finally {
 			try {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				logger.error( e);
+				logger.error(e);
 			}
 		}
-		logger.debug("obtenerCodAgenciaReversa ->" + " el cod agencia es null " );
+		logger.debug("obtenerCodAgenciaReversa ->" + " el cod agencia es null ");
 		return null;
-		
+
 	}
 
-public static String obtenerTrackingId ( String cod_num){
-	CBConciliacionDetallada detalle = new CBConciliacionDetallada();
-	PreparedStatement ptmt = null;
-	ResultSet rst = null;
-	Connection con = null;
-	try{
-		con = ControladorBase.obtenerDtsPromo().getConnection();
-		ptmt = con.prepareStatement(ConsultasSQ.OBTENER_TRACKING_ID_SQ2);
-		
-		logger.debug("query para obtener el tracking id ->" + ConsultasSQ.OBTENER_TRACKING_ID_SQ2 );
-		ptmt.setString(1, cod_num);
-		rst = ptmt.executeQuery();
-		
-		if(rst.next()){
-			return rst.getString(1);
-		}
-		
-	}catch(Exception e){
-		logger.error( e);
-	}
-	finally {
+	public static String obtenerTrackingId(String cod_num) {
+		CBConciliacionDetallada detalle = new CBConciliacionDetallada();
+		PreparedStatement ptmt = null;
+		ResultSet rst = null;
+		Connection con = null;
 		try {
-			if (con != null)
-				con.close();
-		} catch (SQLException e) {
-			logger.error( e);
-		}
-	}
-	//logger.debug("obtenerCodAgenciaReversa ->" + " el cod agencia es null " );
-	return null;
-	
-}
+			con = ControladorBase.obtenerDtsPromo().getConnection();
+			ptmt = con.prepareStatement(ConsultasSQ.OBTENER_TRACKING_ID_SQ2);
 
-public static String obtenerTrackingIddepagosid ( String pagosid){
-	CBConciliacionDetallada detalle = new CBConciliacionDetallada();
-	PreparedStatement ptmt = null;
-	ResultSet rst = null;
-	Connection con = null;
-	try{
-		con = ControladorBase.obtenerDtsPromo().getConnection();
-		ptmt = con.prepareStatement(ConsultasSQ.OBTENER_TRACKING_ID_SQ);
-		
-		logger.debug("query para obtener el tracking id ->" + ConsultasSQ.OBTENER_TRACKING_ID_SQ );
-		ptmt.setString(1, pagosid);
-		rst = ptmt.executeQuery();
-		
-		if(rst.next()){
-			return rst.getString(1);
-		}
-		
-	}catch(Exception e){
-		logger.error( e);
-	}
-	finally {
-		try {
-			if (con != null)
-				con.close();
-		} catch (SQLException e) {
-			logger.error( e);
-		}
-	}
-	//logger.debug("obtenerCodAgenciaReversa ->" + " el cod agencia es null " );
-	return null;
-	
-}
-public static String obtenerTelefono ( String acount_no){
-	CBConciliacionDetallada detalle = new CBConciliacionDetallada();
-	PreparedStatement ptmt = null;
-	ResultSet rst = null;
-	Connection con = null;
-	try{
-		con = ControladorBase.obtenerDtsPromo().getConnection();
-		ptmt = con.prepareStatement(ConsultasSQ.OBTENER_TELEFONO_SQ);
-		logger.debug("query para obtener el telefono ->" + ConsultasSQ.OBTENER_TELEFONO_SQ );
-		ptmt.setString(1, acount_no);
-		rst = ptmt.executeQuery();
-		
-		if(rst.next()){
-			return rst.getString(1);
-			
-		}
-		
-		
-	}catch(Exception e){
-		logger.error( e);
-	}
-	finally {
-		try {
-			if (con != null)
-				con.close();
-		} catch (SQLException e) {
-			logger.error( e);
-		}
-	}
-	//logger.debug("obtenerCodAgenciaReversa ->" + " el cod agencia es null " );
-	return null;
-	
-}
-public boolean actualizarTransDate( String fecha, int trackingId){
+			logger.debug("query para obtener el tracking id ->" + ConsultasSQ.OBTENER_TRACKING_ID_SQ2);
+			ptmt.setString(1, cod_num);
+			rst = ptmt.executeQuery();
 
-	boolean result = false;
-	Connection con = null;
-	PreparedStatement ptmt = null;
-	
-	try{
-		con = ControladorBase.obtenerDtsPromo().getConnection();
-		ptmt = con.prepareStatement(ConsultasSQ.ACTUALIZA_TRANS_DATE_SQ);
-		logger.debug("query para actualizar la fecha trans_date ->" + ConsultasSQ.ACTUALIZA_TRANS_DATE_SQ );
-		//logger.debug("actualizarTrackingId ->" + " la fecha " + fecha);
-		//logger.debug("actualizarTrackingId ->" + " el trackingId " + trackingId);
-		
-		ptmt.setString(1, fecha);
-		ptmt.setInt(2, trackingId);
-		
-		return ptmt.executeUpdate() > 0;
-		
-	}catch(SQLException e){
-		logger.error("error1", e);
-	}catch (Exception e) {
-		logger.error("error2", e);
-	} finally {
-		try {
-			if (ptmt != null)
-				ptmt.close();
-			if (con != null)
-				con.close();
-		} catch (Exception e) {
-			logger.error("error3", e);
-		}
-	}
-
-	return result;
-}
-public static String obtenerCbPagosid ( String conciliacionid){
-	CBConciliacionDetallada detalle = new CBConciliacionDetallada();
-	PreparedStatement ptmt = null;
-	ResultSet rst = null;
-	Connection con = null;
-	try{
-		con = ControladorBase.obtenerDtsPromo().getConnection();
-		ptmt = con.prepareStatement(Tools.OBTENER_CBPAGOSID);
-		logger.debug("query para obtener el id del pago ->" + Tools.OBTENER_CBPAGOSID );
-		ptmt.setString(1, conciliacionid);
-		rst = ptmt.executeQuery();
-		
-		if(rst.next()){
-			//return rst.getString(1);
-			return rst.getString(Constantes.CB_PAGOS_ID);
-			
-		}
-		
-		
-	}catch(Exception e){
-		logger.error( e);
-	}
-	finally {
-		try {
-			if (con != null)
-				con.close();
-		} catch (SQLException e) {
-			logger.error( e);
-		}
-	}
-	return null;
-}
-public static String obtenerNum_Secuenci ( String cbpagosid){
-	CBConciliacionDetallada detalle = new CBConciliacionDetallada();
-	PreparedStatement ptmt = null;
-	ResultSet rst = null;
-	Connection con = null;
-	try{
-		con = ControladorBase.obtenerDtsPromo().getConnection();
-		ptmt = con.prepareStatement(Tools.OBTENER_NUM_SECUENCI);
-		logger.debug("query para obtener el num secuenci ->" + Tools.OBTENER_NUM_SECUENCI );
-		ptmt.setString(1, cbpagosid);
-		rst = ptmt.executeQuery();
-		
-		if(rst.next()){
-			return rst.getString(1);
-			
-		}
-		
-		
-	}catch(Exception e){
-		logger.error( e);
-	}
-	finally {
-		try {
-			if (con != null)
-				con.close();
-		} catch (SQLException e) {
-			logger.error( e);
-		}
-	}
-	return null;
-}
-public static String obtenerReferencia(String trackingid){
-	PreparedStatement ptmt = null;
-	ResultSet rst = null;
-	Connection con = null;
-	try{
-		con = ControladorBase.obtenerDtsPromo().getConnection();
-		ptmt = con.prepareStatement(Tools.OBTENER_REFERENCIA);
-		logger.debug("query para obtener la referencia " + Tools.OBTENER_REFERENCIA);
-		ptmt.setString(1, trackingid);
-		rst = ptmt.executeQuery();
-		if(rst.next()){
-			return rst.getString(1);
-		}
-		
-	}catch(Exception e){
-		logger.error(e);
-		
-	}
-	finally{
-		try{
-			if(con != null)
-				con.close();
-			}catch(SQLException e){
-				
+			if (rst.next()) {
+				return rst.getString(1);
 			}
-		
-	}
-	return null;
-}
-public static String ontenerCTN(int trackingId){
-	PreparedStatement  ptmt = null;
-	ResultSet rst = null;
-	Connection con = null;
-	
-	try {
-		con = ControladorBase.obtenerDtsPromo().getConnection();
-		ptmt = con.prepareStatement(Tools.OBTENER_CTN);
-		logger.debug("query para obtener CTN " + Tools.OBTENER_CTN);
-		ptmt.setInt(1, trackingId);
-		rst = ptmt.executeQuery();
-		
-		while(rst.next()){
-			return  rst.getString(1);
-		}
-		
-	}catch(Exception e){
-		logger.error(e);
-	}
-	finally{
-		try{
-			if(con != null)
-				con.close();
-			}catch(SQLException e){
-				
-			}
-		
-	}
-	return null;
-}
-public boolean actualizarTransDateReversa( String fecha, int accountNo, int trackingId){
 
-	boolean result = false;
-	Connection con = null;
-	PreparedStatement ptmt = null;
-	
-	try{
-		con = ControladorBase.obtenerDtsPromo().getConnection();
-		ptmt = con.prepareStatement(ConsultasSQ.ACTUALIZAR_TRANS_DATE_SQ);
-		logger.debug("query para actualizar la fecha trans_date ->" + ConsultasSQ.ACTUALIZAR_TRANS_DATE_SQ );
-		//logger.debug("actualizarTrackingId ->" + " la fecha " + fecha);
-		//logger.debug("actualizarTrackingId ->" + " el trackingId " + trackingId);
-		
-		ptmt.setString(1, fecha);
-		ptmt.setInt(2, accountNo);
-		ptmt.setInt(3, trackingId);
-		
-		return ptmt.executeUpdate() > 0;
-		
-	}catch(SQLException e){
-		logger.error("error1", e);
-	}catch (Exception e) {
-		logger.error("error2", e);
-	} finally {
-		try {
-			if (ptmt != null)
-				ptmt.close();
-			if (con != null)
-				con.close();
 		} catch (Exception e) {
-			logger.error("error3", e);
+			logger.error(e);
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				logger.error(e);
+			}
 		}
+		// logger.debug("obtenerCodAgenciaReversa ->" + " el cod agencia es null " );
+		return null;
+
 	}
 
-	return result;
-}
-
-
-public static String obtenerAccountno ( String acount_no){
-	CBConciliacionDetallada detalle = new CBConciliacionDetallada();
-	PreparedStatement ptmt = null;
-	ResultSet rst = null;
-	Connection con = null;
-	try{
-		con = ControladorBase.obtenerDtsPromo().getConnection();
-		ptmt = con.prepareStatement(ConsultasSQ.OBTENER_ACCOUNT_NO_SQ);
-		logger.debug("query para obtener el telefono ->" + ConsultasSQ.OBTENER_ACCOUNT_NO_SQ );
-		ptmt.setString(1, acount_no);
-		rst = ptmt.executeQuery();
-		
-		if(rst.next()){
-			return rst.getString(1);
-			
-		}
-		
-		
-	}catch(Exception e){
-		logger.error( e);
-	}
-	finally {
+	public static String obtenerTrackingIddepagosid(String pagosid) {
+		CBConciliacionDetallada detalle = new CBConciliacionDetallada();
+		PreparedStatement ptmt = null;
+		ResultSet rst = null;
+		Connection con = null;
 		try {
-			if (con != null)
-				con.close();
-		} catch (SQLException e) {
-			logger.error( e);
+			con = ControladorBase.obtenerDtsPromo().getConnection();
+			ptmt = con.prepareStatement(ConsultasSQ.OBTENER_TRACKING_ID_SQ);
+
+			logger.debug("query para obtener el tracking id ->" + ConsultasSQ.OBTENER_TRACKING_ID_SQ);
+			ptmt.setString(1, pagosid);
+			rst = ptmt.executeQuery();
+
+			if (rst.next()) {
+				return rst.getString(1);
+			}
+
+		} catch (Exception e) {
+			logger.error(e);
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				logger.error(e);
+			}
 		}
+		// logger.debug("obtenerCodAgenciaReversa ->" + " el cod agencia es null " );
+		return null;
+
 	}
-	//logger.debug("obtenerCodAgenciaReversa ->" + " el cod agencia es null " );
-	return null;
-	
-}
+
+	public static String obtenerTelefono(String acount_no) {
+		CBConciliacionDetallada detalle = new CBConciliacionDetallada();
+		PreparedStatement ptmt = null;
+		ResultSet rst = null;
+		Connection con = null;
+		try {
+			con = ControladorBase.obtenerDtsPromo().getConnection();
+			ptmt = con.prepareStatement(ConsultasSQ.OBTENER_TELEFONO_SQ);
+			logger.debug("query para obtener el telefono ->" + ConsultasSQ.OBTENER_TELEFONO_SQ);
+			ptmt.setString(1, acount_no);
+			rst = ptmt.executeQuery();
+
+			if (rst.next()) {
+				return rst.getString(1);
+
+			}
+
+		} catch (Exception e) {
+			logger.error(e);
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				logger.error(e);
+			}
+		}
+		// logger.debug("obtenerCodAgenciaReversa ->" + " el cod agencia es null " );
+		return null;
+
+	}
+
+	public boolean actualizarTransDate(String fecha, int trackingId) {
+
+		boolean result = false;
+		Connection con = null;
+		PreparedStatement ptmt = null;
+
+		try {
+			con = ControladorBase.obtenerDtsPromo().getConnection();
+			ptmt = con.prepareStatement(ConsultasSQ.ACTUALIZA_TRANS_DATE_SQ);
+			logger.debug("query para actualizar la fecha trans_date ->" + ConsultasSQ.ACTUALIZA_TRANS_DATE_SQ);
+			// logger.debug("actualizarTrackingId ->" + " la fecha " + fecha);
+			// logger.debug("actualizarTrackingId ->" + " el trackingId " + trackingId);
+
+			ptmt.setString(1, fecha);
+			ptmt.setInt(2, trackingId);
+
+			return ptmt.executeUpdate() > 0;
+
+		} catch (SQLException e) {
+			logger.error("error1", e);
+		} catch (Exception e) {
+			logger.error("error2", e);
+		} finally {
+			try {
+				if (ptmt != null)
+					ptmt.close();
+				if (con != null)
+					con.close();
+			} catch (Exception e) {
+				logger.error("error3", e);
+			}
+		}
+
+		return result;
+	}
+
+	public static String obtenerCbPagosid(String conciliacionid) {
+		CBConciliacionDetallada detalle = new CBConciliacionDetallada();
+		PreparedStatement ptmt = null;
+		ResultSet rst = null;
+		Connection con = null;
+		try {
+			con = ControladorBase.obtenerDtsPromo().getConnection();
+			ptmt = con.prepareStatement(Tools.OBTENER_CBPAGOSID);
+			logger.debug("query para obtener el id del pago ->" + Tools.OBTENER_CBPAGOSID);
+			ptmt.setString(1, conciliacionid);
+			rst = ptmt.executeQuery();
+
+			if (rst.next()) {
+				// return rst.getString(1);
+				return rst.getString(Constantes.CB_PAGOS_ID);
+
+			}
+
+		} catch (Exception e) {
+			logger.error(e);
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				logger.error(e);
+			}
+		}
+		return null;
+	}
+
+	public static String obtenerNum_Secuenci(String cbpagosid) {
+		CBConciliacionDetallada detalle = new CBConciliacionDetallada();
+		PreparedStatement ptmt = null;
+		ResultSet rst = null;
+		Connection con = null;
+		try {
+			con = ControladorBase.obtenerDtsPromo().getConnection();
+			ptmt = con.prepareStatement(Tools.OBTENER_NUM_SECUENCI);
+			logger.debug("query para obtener el num secuenci ->" + Tools.OBTENER_NUM_SECUENCI);
+			ptmt.setString(1, cbpagosid);
+			rst = ptmt.executeQuery();
+
+			if (rst.next()) {
+				return rst.getString(1);
+
+			}
+
+		} catch (Exception e) {
+			logger.error(e);
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				logger.error(e);
+			}
+		}
+		return null;
+	}
+
+	public static String obtenerReferencia(String trackingid) {
+		PreparedStatement ptmt = null;
+		ResultSet rst = null;
+		Connection con = null;
+		try {
+			con = ControladorBase.obtenerDtsPromo().getConnection();
+			ptmt = con.prepareStatement(Tools.OBTENER_REFERENCIA);
+			logger.debug("query para obtener la referencia " + Tools.OBTENER_REFERENCIA);
+			ptmt.setString(1, trackingid);
+			rst = ptmt.executeQuery();
+			if (rst.next()) {
+				return rst.getString(1);
+			}
+
+		} catch (Exception e) {
+			logger.error(e);
+
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+
+			}
+
+		}
+		return null;
+	}
+
+	public static String ontenerCTN(int trackingId) {
+		PreparedStatement ptmt = null;
+		ResultSet rst = null;
+		Connection con = null;
+
+		try {
+			con = ControladorBase.obtenerDtsPromo().getConnection();
+			ptmt = con.prepareStatement(Tools.OBTENER_CTN);
+			logger.debug("query para obtener CTN " + Tools.OBTENER_CTN);
+			ptmt.setInt(1, trackingId);
+			rst = ptmt.executeQuery();
+
+			while (rst.next()) {
+				return rst.getString(1);
+			}
+
+		} catch (Exception e) {
+			logger.error(e);
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+
+			}
+
+		}
+		return null;
+	}
+
+	public Map<String, String> obtenerBMF(int accountNo, int trackingId) {
+		String methodName = "obtenerBMF()";
+
+		Map<String, String> map = new HashMap<String, String>();
+		PreparedStatement ptmt = null;
+		ResultSet rst = null;
+		Connection con = null;
+		try {
+			con = ControladorBase.obtenerDtsPromo().getConnection();
+			ptmt = con.prepareStatement(ConsultasSQ.OBTENER_BMF_DESAPLICACION);
+			logger.debug("query para obtener BMF antes de actualizar ->" + ConsultasSQ.OBTENER_BMF_DESAPLICACION);
+
+			logger.debug(methodName + " Parametros  accountNo : " + accountNo);
+			logger.debug(methodName + " Parametros  trackingId : " + trackingId);
+			ptmt.setInt(1, accountNo);
+			ptmt.setInt(2, trackingId);
+			rst = ptmt.executeQuery();
+			logger.debug(methodName + " Obtiene select result : " + rst);
+			if (rst.next()) {
+				logger.debug(methodName+" llena map!!");
+				map.put("ACCOUNT_NO", rst.getString(1));
+				map.put("TRANS_DATE", rst.getString(2));
+				map.put("TRACKING_ID", rst.getString(3));
+				map.put("ORIG_TRACKING_ID", rst.getString(4));
+			}
+
+		} catch (Exception e) {
+			logger.error(e);
+		} finally {
+			try {
+				if (ptmt != null)
+					ptmt.close();
+
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				logger.error(e);
+			}
+		}
+		
+		logger.debug(methodName+" retorna map!!");
+		return map;
+	}
+
+	public boolean actualizarTransDateReversa(String fecha, int accountNo, int trackingId) {
+		String methodName = "actualizarTransDateReversa()";
+
+		boolean result = false;
+		Connection con = null;
+		PreparedStatement ptmt = null;
+
+		try {
+			con = ControladorBase.obtenerDtsPromo().getConnection();
+			ptmt = con.prepareStatement(ConsultasSQ.ACTUALIZAR_TRANS_DATE_SQ);
+			logger.debug(methodName + " - query para actualizar la fecha trans_date ->"
+					+ ConsultasSQ.ACTUALIZAR_TRANS_DATE_SQ);
+			logger.debug(methodName + " - fecha " + fecha);
+			logger.debug(methodName + " - accountNo " + accountNo);
+			logger.debug(methodName + " - trackingId " + trackingId);
+
+			ptmt.setString(1, fecha);
+			ptmt.setInt(2, accountNo);
+			ptmt.setInt(3, trackingId);
+
+			return ptmt.executeUpdate() > 0;
+
+		} catch (SQLException e) {
+			logger.error(methodName + " SQLException : ", e);
+		} catch (Exception e) {
+			logger.error(methodName + " Exception : ", e);
+		} finally {
+			try {
+				if (ptmt != null) {
+					logger.debug(methodName + " close PreparedStatement ");
+					ptmt.close();
+				}
+
+				if (con != null) {
+					logger.debug(methodName + " close Connection ");
+					con.close();
+				}
+				logger.debug(methodName + " close connections successful!!");
+			} catch (Exception e) {
+				logger.error(methodName + " Exception close connection : ", e);
+			}
+		}
+
+		logger.debug(methodName + " Se actualiza correctamente ?  result = " + result);
+		return result;
+	}
+
+	public static String obtenerAccountno(String acount_no) {
+		CBConciliacionDetallada detalle = new CBConciliacionDetallada();
+		PreparedStatement ptmt = null;
+		ResultSet rst = null;
+		Connection con = null;
+		try {
+			con = ControladorBase.obtenerDtsPromo().getConnection();
+			ptmt = con.prepareStatement(ConsultasSQ.OBTENER_ACCOUNT_NO_SQ);
+			logger.debug("query para obtener el telefono ->" + ConsultasSQ.OBTENER_ACCOUNT_NO_SQ);
+			ptmt.setString(1, acount_no);
+			rst = ptmt.executeQuery();
+
+			if (rst.next()) {
+				return rst.getString(1);
+
+			}
+
+		} catch (Exception e) {
+			logger.error(e);
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				logger.error(e);
+			}
+		}
+		// logger.debug("obtenerCodAgenciaReversa ->" + " el cod agencia es null " );
+		return null;
+
+	}
 }
