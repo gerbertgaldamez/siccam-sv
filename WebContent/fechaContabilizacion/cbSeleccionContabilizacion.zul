@@ -1,0 +1,25 @@
+<window id="ventanaFiltroContabilizacion" border="normal" width="480px"
+	apply="com.terium.siccam.controller.CBConsultaContabilizacionController"
+	position="center,center" closable="true"
+    action="show: slideDown;hide: slideUp">
+		
+	
+	<caption label="Filtro fecha de contabilizacion" />
+	<grid>
+		<columns>
+			<column />
+		</columns>
+		<rows>
+			<row>
+				<label value="Fecha de contabilizacion:" />
+				<separator width="47px" />
+				<datebox id="dateContabilizacion"
+					format="dd/MM/yyyy" />
+			</row>
+			<row>
+				<button id="btnAceptarFiltroFecha" label="Aceptar filtro" hflex="1" width="125px"/>
+			</row>
+		</rows>
+	</grid>
+	
+</window>

@@ -161,7 +161,8 @@
 					<button id="btnDescargarSAP2" label="SAP2"
 						image="img/globales/16x16/down_plus.png" />
 					<button id="btnFTPSAP" label="Subir SAP por FTP"
-						image="img/globales/16x16/alta_16.png" />
+						image="img/globales/16x16/alta_16.png">
+					</button>
 					<separator bar="true" orient="vertical" />
 					<button id="btnExcel" label="Reporte"
 						image="/img/globales/16x16/xlsx.png" disabled="self" />
@@ -236,5 +237,25 @@
 					style="font-weight: bold" />
 			</hbox>
 		</popup>
+		<popup id="popFiltroFechaContabilizacion" width="470px">
+			<label value="la fecha que debe seleccionar es desde" />
+			<grid>
+				<columns>
+					<column />
+				</columns>
+					<rows>
+					<row>
+						<label value="Fecha de contabilizacion:" />
+						<separator width="47px" />
+						<datebox id="dateContabilizacion"
+							format="dd/MM/yyyy" />
+					</row>
+					<row>
+						<button id="btnAceptarFiltroFecha" label="Aceptar filtro" hflex="1" width="125px"/>
+					</row>
+				</rows>
+			</grid>
+		</popup>
 	</window>
+
 </zk>
