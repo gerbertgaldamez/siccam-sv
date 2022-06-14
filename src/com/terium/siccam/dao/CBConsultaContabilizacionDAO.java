@@ -457,7 +457,7 @@ public class CBConsultaContabilizacionDAO extends ControladorBase{
 	 * 
 	 * Modificado ultima vez por Carlos Godinez - 14/09/2017
 	 */
-	public List<CBParametrosSAPModel> obtieneDatosSAP(CBConsultaContabilizacionModel objModel, int idAgencia, int idAgenciaIngreso, int tipo) {
+	public List<CBParametrosSAPModel> obtieneDatosSAP(CBConsultaContabilizacionModel objModel, int idAgencia, int idAgenciaIngreso, int tipo, String fecha_filtro_contabilizacion) {
 		List<CBParametrosSAPModel> list = new ArrayList<CBParametrosSAPModel>();
 		log.debug( "Prueba ");
 		
@@ -505,20 +505,25 @@ public class CBConsultaContabilizacionDAO extends ControladorBase{
 			if (objModel.getObservaciones() != null && !objModel.getObservaciones().equals("")) {
 				where += "AND UPPER (OBSERVACIONES) LIKE '%" + objModel.getObservaciones().toUpperCase() + "%' ";
 			}
-
+			
 			String query = "";
 			
 			if(tipo == 1) {
-				query = ConsultasSQ.OBTIENE_DATOS_SAP;
+				query = ConsultasSQ.OBTIENE_DATOS_SAP; 
 				log.debug("Sap ");
 				
 			}
 			if(tipo == 2) {
 				query = ConsultasSQ.OBTIENE_DATOS_SAP2;
-				log.debug("Sap2 "+ ConsultasSQ.OBTIENE_DATOS_SAP2);
+				
+				// Cambio agregar where de filtro de encabezado
+				if (fecha_filtro_contabilizacion != null) {
+					query = ConsultasSQ.agregarFechaContabilizacion(fecha_filtro_contabilizacion);
+				}
+				log.debug("Sap2 "+ ConsultasSQ.OBTIENE_DATOS_SAP2);//(chris)
 				log.debug(" el tipo es " + tipo);
 			}
-			log.debug( "query: " + query);
+			log.debug( "query: " + query + where);
 			
 
 			cmd = conn.createStatement();
