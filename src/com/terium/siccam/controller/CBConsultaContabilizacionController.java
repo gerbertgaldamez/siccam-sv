@@ -112,10 +112,7 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 
 	Button btnDescargarSAP2;
 
-	// Filtrar Generacion SAP por fecha de contabilizacion
-	@Wire
-	Window ventanaFiltroContabilizacion;
-	Popup popFiltroFechaContabilizacion;
+	//Generacion SAP por fecha de contabilizacion
 	Datebox dateContabilizacion;
 	
 	HttpSession misession = (HttpSession) Sessions.getCurrent().getNativeSession();
@@ -590,20 +587,12 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 	}
 
 	public void onClick$btnSAP() {
-		// Cambio ventana de dialogo - seleccion fecha de contabilizacion (chris)
-		this.popFiltroFechaContabilizacion.open(self, "Seleccion de contabilización");
-
+		generarSAP();
 	}
 	
-	
-	public void onClick$btnAceptarFiltroFecha() {
+	public void generarSAP() {
 		String filtro_fecha = null;
 				
-		
-		if(this.dateContabilizacion.getValue() == null) {
-			Messagebox.show("No ingreso un fecha de contabilizacion para generar en el SAP, no se aplicara el valor al obtener el archivo", "ATENCION", Messagebox.OK,
-					Messagebox.EXCLAMATION);
-		}
 		DateFormat formato_filtro = new SimpleDateFormat("ddMMYYYY");
 		if (this.dateContabilizacion.getValue() != null) {
 			filtro_fecha = formato_filtro.format(this.dateContabilizacion.getValue());

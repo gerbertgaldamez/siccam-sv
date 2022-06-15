@@ -138,7 +138,14 @@
 
 
 								</row>
-
+								<row>
+									<hbox>
+										<label value="Fecha contabilizacion: " />
+										<separator width="20px" />
+										<datebox id="dateContabilizacion"
+											format="dd/MM/yyyy" width="110px" />
+									</hbox>
+								</row>
 							</rows>
 
 						</grid>
@@ -236,25 +243,6 @@
 				<label value="la fecha que debe seleccionar es desde"
 					style="font-weight: bold" />
 			</hbox>
-		</popup>
-		<popup id="popFiltroFechaContabilizacion" width="470px">
-			<label value="la fecha que debe seleccionar es desde" />
-			<grid>
-				<columns>
-					<column />
-				</columns>
-					<rows>
-					<row>
-						<label value="Fecha de contabilizacion:" />
-						<separator width="47px" />
-						<datebox id="dateContabilizacion"
-							format="dd/MM/yyyy" />
-					</row>
-					<row>
-						<button id="btnAceptarFiltroFecha" label="Aceptar filtro" hflex="1" width="125px"/>
-					</row>
-				</rows>
-			</grid>
 		</popup>
 	</window>
 
