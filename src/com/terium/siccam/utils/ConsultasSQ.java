@@ -653,8 +653,8 @@ public class ConsultasSQ {
 			+ "    TIPOLOGIAGACID = ?," + "    RESPONSE_GAC = ?," + "    UNIDADID = ?," + "    SOLUCION = ?,"
 			+ "    TIPO_CIERRE = ?," + "     NOMBRE_CLIENTE = ?," + "    MODIFICADO_POR = USER,"
 			+ "    FECHA_MODIFICACION = SYSDATE," + "     RESPUESTA_SCL = ?" + "	WHERE CBHISTORIALACCIONID = ?";
+	
 	// desaplicacion
-
 	public static final String OBTENER_TRACKING_ID_SQ = "select p.NUM_SECUENCI "
 			+ " from cb_conciliacion c, cb_historial_accion h, cb_pagos p  "
 			+ " where h.CBCONCILIACIONID = c.CBCONCILIACIONID " + " and c.cbpagosid = p.cbpagosid "
@@ -670,7 +670,7 @@ public class ConsultasSQ {
 
 	public static final String ACTUALIZA_TRANS_DATE_SQ = "UPDATE BMF SET TRANS_DATE = to_date(?,'dd-MM-yyyy') WHERE TRACKING_ID = ? AND TRACKING_ID_SERV = 3 "; // Aplicacion
 
-	public static final String ACTUALIZAR_TRANS_DATE_SQ = "UPDATE BMF SET TRANS_DATE = to_date(?,'dd-MM-yyyy') WHERE  ACCOUNT_NO = ? AND ORIG_TRACKING_ID = ? "; // desaplicacion
+	public static final String ACTUALIZAR_TRANS_DATE_SQ = "UPDATE BMF SET TRANS_DATE = to_date(?,'dd-MM-yyyy') WHERE  ACCOUNT_NO = ? AND ORIG_TRACKING_ID = ?"; // desaplicacion
 
 	public static final String OBTENER_ACCOUNT_NO_SQ = "select account_no from bmf where tracking_id = ? ";
 
@@ -687,9 +687,7 @@ public class ConsultasSQ {
 			+ "( cb_comisiones_SQ.NEXTVAL,?,TO_DATE(?,'dd/MM/yyyy'),?,sysdate,?)";
 	public static final String ACTUALIZA_COMISION_REAL = "update CB_COMISIONES set COMISION_REAL = ? where CBCOMISIONESID = ?";
 
-	public static final String OBTENER_BMF_DESAPLICACION = " SELECT ACCOUNT_NO,TRANS_DATE , TRACKING_ID,ORIG_TRACKING_ID from BMF WHERE  ACCOUNT_NO = ? AND ORIG_TRACKING_ID = ?";
-
-	
+	public static final String OBTENER_ORIG_TRACKING_ID_DES= " SELECT ORIG_TRACKING_ID from BMF WHERE  ACCOUNT_NO = ? AND ORIG_TRACKING_ID = ?";
 	
 	/*
 	 * public static final String CONSULTA_CUADRE_SIDRA_QR =

@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import javax.servlet.http.Cookie;
@@ -133,40 +134,37 @@ public class Tools {
 	/* Permite obtener una cookie por medio del nombre */
 	public static String getCookie(String name) {
 		logger.debug("getCookie() - " + "GetCookie");
-		
 
 		// java.lang.Object getNativeRequest()
-		
 
 		try {
-			//Desktop desktop = Executions.getCurrent().getDesktop();
-			//Executions.activate(desktop);
+			// Desktop desktop = Executions.getCurrent().getDesktop();
+			// Executions.activate(desktop);
 			// HttpServletRequest hsr = (HttpServletRequest) Executions.getCurrent(); //
 			// .getNativeRequest();
 			// if (hsr != null) {
 
 			// HttpServletRequest hsr = (HttpServletRequest)execution.getNativeRequest();
-			if(Executions.getCurrent() != null) {
+			if (Executions.getCurrent() != null) {
 				Cookie[] cookies = ((HttpServletRequest) Executions.getCurrent().getNativeRequest()).getCookies();
-				
+
 				if (cookies != null) {
 					for (Cookie cookie : cookies) {
 						if (cookie.getName().equals(name)) {
 							logger.debug(cookie.getValue());
-							
+
 							return cookie.getValue();
 						}
 					}
 				}
 			}
 
-			
 			// }
 
 			// HttpServletResponse response =
 			// (HttpServletResponse)Executions.getCurrent().getNativeResponse();
 			// Cookie userCookie = new Cookie(name, "1000");
-			//Executions.deactivate(desktop);
+			// Executions.deactivate(desktop);
 		} catch (Exception e) {
 			logger.error("error", e);
 			// Cookie userCookie = new Cookie(name, "1000");
@@ -209,13 +207,13 @@ public class Tools {
 
 	// Obtener parametros para WS
 	public static String obtenerParametro(String parametro, List<CBParametrosGeneralesModel> parametros) {
-		
+
 		if (parametros != null && parametros.size() > 0) {
 			for (CBParametrosGeneralesModel item : parametros) {
 				if (item.getObjeto().equals(parametro)) {
 					logger.debug("obtenerParametro()" + " - OBJETO => " + item.getObjeto() + " - VALOR OBJETO1 => "
 							+ item.getValorObjeto1());
-					logger.debug("obtenerParametro() - valor obtenido : "+item.getValorObjeto1());
+					logger.debug("obtenerParametro() - valor obtenido : " + item.getValorObjeto1());
 					return item.getValorObjeto1();
 				}
 			}
@@ -226,60 +224,69 @@ public class Tools {
 
 		return "";
 	}
-	public static String eliminaLetras(String cadena){
-        String result = cadena.replaceAll("[a-z|A-Z]", "");
+
+	public static String eliminaLetras(String cadena) {
+		String result = cadena.replaceAll("[a-z|A-Z]", "");
 		// String result = cadena.replaceAll("[a-zA-Z_0-9]", "");
-        logger.debug("eliminaLetras() - Cadena: " + result);
-       
-        return result;
-    }
-	/* public static boolean validarTelefono(String telefono) {
-	        return telefono.matches("[a-zA-Z0-9_]");
-	    }*/
-	/*public static double getValor(){
-		String texto = "";
-	    if(texto.contains(" ")){
-	        return Double.parseDouble(texto.replace(" ", "0").trim());
-	    }
-	    return Double.parseDouble(texto.trim());
-	}*/
-	
-	public static int limpiaValorNumer(String num_param){
-		try{
+		logger.debug("eliminaLetras() - Cadena: " + result);
+
+		return result;
+	}
+	/*
+	 * public static boolean validarTelefono(String telefono) { return
+	 * telefono.matches("[a-zA-Z0-9_]"); }
+	 */
+	/*
+	 * public static double getValor(){ String texto = ""; if(texto.contains(" ")){
+	 * return Double.parseDouble(texto.replace(" ", "0").trim()); } return
+	 * Double.parseDouble(texto.trim()); }
+	 */
+
+	public static int limpiaValorNumer(String num_param) {
+		try {
 			return Integer.parseInt(num_param);
-		} catch(NumberFormatException e){
+		} catch (NumberFormatException e) {
 			return 0;
 		} catch (Exception e) {
 			return 0;
 		}
 	}
-	
-	public static String OBTENER_CBPAGOSID ="select CBPAGOSID  from cb_conciliacion where CBCONCILIACIONID = ?";
-	
-	public static String OBTENER_NUM_SECUENCI ="select NUM_SECUENCI from cb_pagos where CBPAGOSID = ?";
-	
-	public static String OBTENER_REFERENCIA ="Select REFERENCIA,CTN from bellintlog@LINK_MGINTER_ARBOR where r_tracking_id = ?";
-	public static String OBTENER_CTN ="Select CTN from bellintlog@LINK_MGINTER_ARBOR where r_tracking_id = ?";
-	
-	public static String getValor(String texto){
-		 texto = "";
-	    if(texto.contains(" ")){
-		 return texto.replace(" ", "0").trim();
-			
-	    }
-	    return texto.trim();
+
+	public static String OBTENER_CBPAGOSID = "select CBPAGOSID  from cb_conciliacion where CBCONCILIACIONID = ?";
+
+	public static String OBTENER_NUM_SECUENCI = "select NUM_SECUENCI from cb_pagos where CBPAGOSID = ?";
+
+	public static String OBTENER_REFERENCIA = "Select REFERENCIA,CTN from bellintlog@LINK_MGINTER_ARBOR where r_tracking_id = ?";
+	public static String OBTENER_CTN = "Select CTN from bellintlog@LINK_MGINTER_ARBOR where r_tracking_id = ?";
+
+	public static String getValor(String texto) {
+		texto = "";
+		if (texto.contains(" ")) {
+			return texto.replace(" ", "0").trim();
+
+		}
+		return texto.trim();
 	}
-	
-	public static String obtenerValor(String texto){
-		
-	  
-		 if(texto == null || texto.isEmpty()){
-	       
-			 return texto ="0";
-	    }
-	    return texto.trim();
-		 
+
+	public static String obtenerValor(String texto) {
+
+		if (texto == null || texto.isEmpty()) {
+
+			return texto = "0";
+		}
+		return texto.trim();
+
 	}
-	
-	
+
+	public static <K, V> boolean isEmptyMap(Map<K, V> map) {
+		if (map != null) {
+			return map.isEmpty();
+		}
+		return true;
+	}
+
+	public static boolean isEmpty(String value) {
+		return value == null || value.trim().equals("");
+	}
+
 }

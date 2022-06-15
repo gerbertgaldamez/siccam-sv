@@ -1290,7 +1290,9 @@ public class ConciliacionDetalleController extends ControladorBase {
 			// implementa la reversa llamada a ws reversa
 			ReversaPagoFault reversaPagoFault = new ReversaPagoFault();
 			ReversaPagoDetalle[] responseReversa = null;
+
 			try {
+				///// REVERSA //////////////
 				log.debug(methodName + " - ejecuta Reversa Pago ");
 				responseReversa = requestWsReversaPago(parametros, detalle); // reversa ws
 				log.debug(methodName + " - Reversa Ejecutada");
@@ -1305,18 +1307,22 @@ public class ConciliacionDetalleController extends ControladorBase {
 				// Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Format formatter = new SimpleDateFormat("dd-MM-yyyy");
 				String fecha = formatter.format(detalle.getDia());
-				log.debug(methodName + " fecha obtenida : " + fecha);
+				log.debug(methodName + " fecha a actualizar: " + fecha);
 				// para actualizar fecha trans_date
 				// if(Constantes.STATUS.equalsIgnoreCase(responseReversa[0].getStatus())){
 				if (Constantes.STATUS.equalsIgnoreCase(responseReversa[0].getStatus())) {
 					// boolean resul =
 					// objDao.actualizarTransDate(fecha,Integer.parseInt(trackingid));
-					log.debug(methodName + " Obtiene la fila a actualizar : ");
-					imprimirFilaActualizar(
-							objDao.obtenerBMF(Integer.parseInt(accountNo), Integer.parseInt(trackingid)));
-					boolean resul = objDao.actualizarTransDateReversa(fecha, Integer.parseInt(accountNo),
-							Integer.parseInt(trackingid));
-					log.debug(methodName + " Actualizar Fecha  : " + resul);
+					if (Tools.isEmpty(
+							objDao.obtenerOrigTranckingId(Integer.parseInt(accountNo), Integer.parseInt(trackingid)))) {
+						log.debug(methodName + " - No se encontro registro para actualizar fecha ");
+					}
+
+					if (objDao.actualizarTransDateReversa(fecha, Integer.parseInt(accountNo),
+							Integer.parseInt(trackingid))) {
+						log.debug(methodName + " Se ha actualizado la fecha Correctamente!!!");
+					}
+
 				} else {
 					log.debug(methodName + " Fecha trans no fue Actualizada  : ");
 				}
@@ -1387,23 +1393,8 @@ public class ConciliacionDetalleController extends ControladorBase {
 
 	}
 
-	private void imprimirFilaActualizar(Map<String, String> obtenerBMF) {
-		if (obtenerBMF == null || obtenerBMF.isEmpty()) {
-			log.debug("imprimirFilaActualizar() - return map is null o empty");
-			return;
-		}
-		log.debug("imprimirFilaActualizar() - imprimir valores :");
-		Iterator<String> it = obtenerBMF.keySet().iterator();
-		while (it.hasNext()) {
-			String key = (String) it.next();
-			log.debug("Clave: " + key + " -> Valor: " + obtenerBMF.get(key));
-		}
-
-	}
-
 	private ReversaPagoDetalle[] requestWsReversaPago(List<CBParametrosGeneralesModel> parametros,
 			CBConciliacionDetallada detalle) throws ReversaPagoFault, RemoteException, MalformedURLException {
-		CBConciliacionDetalleDAO objDao = new CBConciliacionDetalleDAO();
 		String methodName = "requestWsReversaPago()";
 		log.debug(methodName + " - inicia ");
 		// TODO Auto-generated method stub
@@ -1453,15 +1444,15 @@ public class ConciliacionDetalleController extends ControladorBase {
 		log.debug(methodName + " -  inicia ");
 		int cliente = getClienteTelefono(detalle);
 		log.debug(methodName + " -  codigo cliente a enviar : " + cliente);
-		ReversaPagoRequest request = new ReversaPagoRequest();
 		// request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
+		ReversaPagoRequest request = new ReversaPagoRequest();
 		// String idpago = CBParametrosGeneralesModel.FIELD_CBPAGOSID;
 		String conciliacionid = detalle.getConciliacionId();
 		// String codigoColector = conciliacion.getCodigoColector();
 		String cbpagosid = CBConciliacionDetalleDAO.obtenerCbPagosid(detalle.getConciliacionId());
 		// String trackingid =
 		// CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
-		String trackingid = CBConciliacionDetalleDAO.obtenerTrackingIddepagosid(cbpagosid);
+		String trackingid = CBConciliacionDetalleDAO.obtenerTrackingIddepagosid(cbpagosid); // ------>
 		log.debug(methodName + " -  el trackingid es = " + trackingid);
 		String referencia = CBConciliacionDetalleDAO.obtenerReferencia(trackingid);
 		log.debug(methodName + " -  la referencia es = " + referencia);
