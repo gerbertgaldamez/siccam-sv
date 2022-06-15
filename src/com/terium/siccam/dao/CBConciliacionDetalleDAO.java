@@ -680,30 +680,28 @@ public class CBConciliacionDetalleDAO {
 		return null;
 	}
 
-	public Map<String, String> obtenerBMF(int accountNo, int trackingId) {
-		String methodName = "obtenerBMF()";
-
-		Map<String, String> map = new HashMap<String, String>();
+	public String obtenerOrigTranckingId(int accountNo, int trackingId) {
+		String methodName = "obtenerOrigTranckingId()";
 		PreparedStatement ptmt = null;
 		ResultSet rst = null;
 		Connection con = null;
 		try {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
-			ptmt = con.prepareStatement(ConsultasSQ.OBTENER_BMF_DESAPLICACION);
-			logger.debug("query para obtener BMF antes de actualizar ->" + ConsultasSQ.OBTENER_BMF_DESAPLICACION);
+			ptmt = con.prepareStatement(ConsultasSQ.OBTENER_ORIG_TRACKING_ID_DES);
+			logger.debug("query para obtener origTrackinId antes de actualizar trans_date ->"
+					+ ConsultasSQ.OBTENER_ORIG_TRACKING_ID_DES);
 
 			logger.debug(methodName + " Parametros  accountNo : " + accountNo);
 			logger.debug(methodName + " Parametros  trackingId : " + trackingId);
 			ptmt.setInt(1, accountNo);
 			ptmt.setInt(2, trackingId);
 			rst = ptmt.executeQuery();
-			logger.debug(methodName + " Obtiene select result : " + rst);
+			logger.debug(methodName + " Obtiene select result : " + rst.toString());
+			logger.debug(methodName + " Obtiene select result 22222 : " + ptmt.toString());
+			logger.debug(methodName + " execute query : "
+					+ "SELECT ORIG_TRACKING_ID from BMF WHERE  ACCOUNT_NO ="+accountNo+" AND ORIG_TRACKING_ID = "+trackingId);
 			if (rst.next()) {
-				logger.debug(methodName+" llena map!!");
-				map.put("ACCOUNT_NO", rst.getString(1));
-				map.put("TRANS_DATE", rst.getString(2));
-				map.put("TRACKING_ID", rst.getString(3));
-				map.put("ORIG_TRACKING_ID", rst.getString(4));
+				return rst.getString(1);
 			}
 
 		} catch (Exception e) {
@@ -716,12 +714,12 @@ public class CBConciliacionDetalleDAO {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				logger.error(e);
+				logger.error("error : ", e);
 			}
 		}
-		
-		logger.debug(methodName+" retorna map!!");
-		return map;
+
+		logger.debug(methodName + " origTrackingId = null");
+		return null;
 	}
 
 	public boolean actualizarTransDateReversa(String fecha, int accountNo, int trackingId) {
@@ -739,6 +737,8 @@ public class CBConciliacionDetalleDAO {
 			logger.debug(methodName + " - fecha " + fecha);
 			logger.debug(methodName + " - accountNo " + accountNo);
 			logger.debug(methodName + " - trackingId " + trackingId);
+			logger.debug(methodName + " - execute query :  UPDATE BMF SET TRANS_DATE = to_date( " + fecha
+					+ ",'dd-MM-yyyy') WHERE  ACCOUNT_NO = " + accountNo + " AND ORIG_TRACKING_ID = " + trackingId);
 
 			ptmt.setString(1, fecha);
 			ptmt.setInt(2, accountNo);

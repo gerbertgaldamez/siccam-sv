@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import javax.servlet.http.Cookie;
@@ -281,5 +282,15 @@ public class Tools {
 		 
 	}
 	
+	public static <K, V> boolean isEmptyMap(Map<K, V> map) {
+		if (map != null) {
+			return map.isEmpty();
+		}
+		return true;
+	}
+
+	public static boolean isEmpty(String value) {
+		return value == null || value.trim().equals("");
+	}
 	
 }

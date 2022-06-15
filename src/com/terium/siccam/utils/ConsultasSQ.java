@@ -806,9 +806,7 @@ public class ConsultasSQ {
 			+ "( cb_comisiones_SQ.NEXTVAL,?,TO_DATE(?,'dd/MM/yyyy'),?,sysdate,?)";
 	public static final String ACTUALIZA_COMISION_REAL = "update CB_COMISIONES set COMISION_REAL = ? where CBCOMISIONESID = ?";
 
-	public static final String OBTENER_BMF_DESAPLICACION = " SELECT ACCOUNT_NO,TRANS_DATE , TRACKING_ID,ORIG_TRACKING_ID from BMF WHERE  ACCOUNT_NO = ? AND ORIG_TRACKING_ID = ?";
-
-	
+	public static final String OBTENER_ORIG_TRACKING_ID_DES= " SELECT ORIG_TRACKING_ID from BMF WHERE  ACCOUNT_NO = ? AND ORIG_TRACKING_ID = ?";
 	
 	/*
 	 * public static final String CONSULTA_CUADRE_SIDRA_QR =
