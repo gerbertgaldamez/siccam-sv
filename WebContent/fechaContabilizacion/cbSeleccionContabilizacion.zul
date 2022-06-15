@@ -17,7 +17,7 @@
 					format="dd/MM/yyyy" />
 			</row>
 			<row>
-				<button id="btnAceptarFiltroFecha" label="Aceptar filtro" hflex="1" width="125px"/>
+				<button id="btnAceptarFiltroFecha" label="Aceptar" hflex="1" width="125px"/>
 			</row>
 		</rows>
 	</grid>

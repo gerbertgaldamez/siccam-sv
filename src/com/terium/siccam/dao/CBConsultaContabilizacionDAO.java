@@ -516,10 +516,8 @@ public class CBConsultaContabilizacionDAO extends ControladorBase{
 			if(tipo == 2) {
 				query = ConsultasSQ.OBTIENE_DATOS_SAP2;
 				
-				// Cambio agregar where de filtro de encabezado
-				if (fecha_filtro_contabilizacion != null) {
-					query = ConsultasSQ.agregarFechaContabilizacion(fecha_filtro_contabilizacion);
-				}
+				// Cambio agregar fecha de contabilizacion y validacion de detalle
+				query = ConsultasSQ.agregarFechaContabilizacion(fecha_filtro_contabilizacion);
 				log.debug("Sap2 "+ ConsultasSQ.OBTIENE_DATOS_SAP2);//(chris)
 				log.debug(" el tipo es " + tipo);
 			}

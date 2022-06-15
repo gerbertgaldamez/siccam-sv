@@ -409,7 +409,15 @@ public class ConsultasSQ {
 				"	|| '/' || chr(9)\r\n" + 
 				"	|| SUBSTR(nvl(actividad,'/'),0,16) || chr(9)\r\n" + 
 				"	|| '/' || chr(9)\r\n" + 
-				"	|| SUBSTR(nvl(to_char(fecha_valor,'DDMMYYYY'),'/'),0,8) || chr(9)\r\n" + 
+				"	|| " +
+				"		(nvl(\r\n"
+				+ "    (\r\n"
+				+ "        SELECT SUBSTR(nvl(to_char(fecha_valor,'DDMMYYYY'),'/'),0,8)\r\n"
+				+ "        FROM cb_poliza_contable_vw b\r\n"
+				+ "        WHERE b.CBCONTABILIZACIONID = cb_poliza_contable_vw.CBCONTABILIZACIONID\r\n"
+				+ "        AND INSTR(lower(texto2),'recaudacion') <= 0\r\n"
+				+ "    \r\n"
+				+ "    ), '/') ) || chr(9)\r\n" + 
 				"	|| '/' || chr(9)\r\n" + 
 				"	|| '/' || chr(9)\r\n" + 
 				"	|| '/' || chr(9)\r\n" + 
@@ -438,7 +446,7 @@ public class ConsultasSQ {
 				   "         WHERE CBCATALOGOAGENCIAID =cb_poliza_contable_vw.CBCATALOGOAGENCIAID ),'/') || chr(9)\r\n" + 
 				   "     || SUBSTR(nvl(tipo_de_cambio,'/'),0,9) || chr(9)\r\n" + 
 				   "     || SUBSTR(nvl(to_char(fecha_ingresos,'DDMMYYYY'),''),0,8) || chr(9)\r\n" + 
-				  "      || \'%s\' || chr(9)\r\n" + 
+				  "      || %s || chr(9)\r\n" + 
 				 "       || '/' || chr(9)\r\n" + 
 				   "     || SUBSTR(nvl(texto,'/'),0,25) || chr(9)\r\n" + 
 				   "     || '/' || chr(9)\r\n" + 
@@ -452,7 +460,9 @@ public class ConsultasSQ {
 				"	) lineaEncabezado, CBCATALOGOAGENCIAID\r\n "+ 
 					"FROM cb_poliza_contable_vw \r\n "+ 
 			 		"WHERE 1 = 1";
-		return String.format(consulta, fecha);
+		
+		return String.format(consulta, 
+					(fecha != null) ? "\'"+fecha+"\'" : "SUBSTR(nvl(to_char(fecha,'DDMMYYYY'),''),0,8)");
 	}
 	/*public static final String OBTIENE_DATOS_SAP2 = "SELECT CBCONTABILIZACIONID, cbestadocuentaid, (SELECT valor_objeto1 "
 			+ "             FROM cb_modulo_conciliacion_conf "
