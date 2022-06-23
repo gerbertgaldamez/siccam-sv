@@ -284,9 +284,17 @@ public class Tools {
 		}
 		return true;
 	}
+	
+	public static <K, V> boolean isEmptyMap(Map<K, V> map) {
+		if (map != null) {
+			return map.isEmpty();
+		}
+		return true;
+	}
 
 	public static boolean isEmpty(String value) {
 		return value == null || value.trim().equals("");
 	}
 
+	
 }

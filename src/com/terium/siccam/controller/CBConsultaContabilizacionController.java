@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-
-
 import java.util.UUID;
 
 //import java.util.logging.Logger;
@@ -34,6 +32,9 @@ import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.lang.StringUtils;
+import org.zkoss.bind.annotation.Command;
+import org.zkoss.bind.annotation.ContextParam;
+import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.util.media.Media;
 
 import org.zkoss.zk.ui.Component;
@@ -42,6 +43,8 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.select.annotation.Listen;
+import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
@@ -53,7 +56,9 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Popup;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Timer;
 import org.zkoss.zul.Window;
 
 import com.terium.siccam.composer.ControladorBase;
@@ -107,6 +112,9 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 
 	Button btnDescargarSAP2;
 
+	//Generacion SAP por fecha de contabilizacion
+	Datebox dateContabilizacion;
+	
 	HttpSession misession = (HttpSession) Sessions.getCurrent().getNativeSession();
 
 	HttpSession misession1 = (HttpSession) Sessions.getCurrent().getNativeSession();
@@ -160,15 +168,15 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 
 	public void doAfterCompose(Component param) throws Exception {
 		super.doAfterCompose(param);
-		this.btnExcel.setDisabled(true);
+		if(this.btnExcel != null) this.btnExcel.setDisabled(true);
 		obtienefechaactual();
 		llenaComboBanco();
 		llenacmbAgenciaIngreso();
-		this.btnSAP.setDisabled(true);
-		btnDescargarSAP.setDisabled(true); // CarlosGodinez -> 03/11/2017
-		btnFTPSAP.setDisabled(true); // CarlosGodinez -> 03/11/2017
+		if(this.btnSAP != null)this.btnSAP.setDisabled(true);
+		if(this.btnDescargarSAP != null)btnDescargarSAP.setDisabled(true); // CarlosGodinez -> 03/11/2017
+		if(this.btnFTPSAP != null)btnFTPSAP.setDisabled(true); // CarlosGodinez -> 03/11/2017
 
-		btnDescargarSAP2.setDisabled(true);
+		if(this.btnDescargarSAP2 != null)btnDescargarSAP2.setDisabled(true);
 
 		try {
 			CBConsultaContabilizacionDAO paramConfSAP = new CBConsultaContabilizacionDAO();
@@ -579,6 +587,17 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 	}
 
 	public void onClick$btnSAP() {
+		generarSAP();
+	}
+	
+	public void generarSAP() {
+		String filtro_fecha = null;
+				
+		DateFormat formato_filtro = new SimpleDateFormat("ddMMYYYY");
+		if (this.dateContabilizacion.getValue() != null) {
+			filtro_fecha = formato_filtro.format(this.dateContabilizacion.getValue());
+		}
+
 		try {
 			if (nombreArchivo == null || "".equals(nombreArchivo)) {
 				Messagebox.show("No se ha especificado el nombre del archivo SAP a generar.\n "
@@ -655,9 +674,9 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 					/// fin filtros nuevos
 					CBConsultaContabilizacionDAO objdao = new CBConsultaContabilizacionDAO();
 					 List<CBParametrosSAPModel> listaSapModel = objdao.obtieneDatosSAP(objModel,
-					 idAgencia, idAgenciaIngreso,1);
+					 idAgencia, idAgenciaIngreso,1, null);
 					List<CBParametrosSAPModel> listaSapModel2 = objdao.obtieneDatosSAP(objModel, idAgencia,
-							idAgenciaIngreso, 2);
+							idAgenciaIngreso, 2, filtro_fecha);
 
 					/* Generar archivo formato 1 */
 					obtenerListadoSAP(listaSapModel, 1);
@@ -675,7 +694,9 @@ public class CBConsultaContabilizacionController extends ControladorBase {
 			
 			log.error(e);
 		}
+		//this.ventanaFiltroContabilizacion.detach();
 	}
+	
 
 	/*
 	 * @author Nicolas Bermudez
