@@ -1294,7 +1294,11 @@ public class ConciliacionDetalleController extends ControladorBase {
 				log.debug(methodName + " - ejecuta Reversa Pago ");
 				responseReversa = requestWsReversaPago(parametros, detalle); // reversa ws
 				log.debug(methodName + " - Reversa Ejecutada");
-				String trackingid = CBConciliacionDetalleDAO.obtenerTrackingIddepagosid(cbpagosid);// max
+				// String trackingid =
+				// CBConciliacionDetalleDAO.obtenerTrackingIddepagosid(cbpagosid);// max
+				log.debug(methodName + " -- SE OBTIENE TRACKINGID ");
+				String trackingid = CBConciliacionDetalleDAO
+						.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
 				String accountNo = CBConciliacionDetalleDAO.obtenerAccountno(trackingid);
 				// String trackingid =
 				// CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
@@ -1307,22 +1311,21 @@ public class ConciliacionDetalleController extends ControladorBase {
 				String fecha = formatter.format(detalle.getDia());
 				log.debug(methodName + " fecha a actualizar: " + fecha);
 				// para actualizar fecha trans_date
-				// if(Constantes.STATUS.equalsIgnoreCase(responseReversa[0].getStatus())){
 				if (Constantes.STATUS.equalsIgnoreCase(responseReversa[0].getStatus())) {
 					// boolean resul =
 					// objDao.actualizarTransDate(fecha,Integer.parseInt(trackingid));
-					if (Tools.isEmpty(
-							objDao.obtenerOrigTranckingId(Integer.parseInt(accountNo), Integer.parseInt(trackingid)))) {
-						log.debug(methodName + " - No se encontro registro para actualizar fecha ");
+					if (objDao.actualizarTransDate(fecha, Integer.parseInt(trackingid))) {
+						log.debug(methodName + " Fecha TRANS_DATE : " + fecha + " ACTUALIZADA CORRECTAMENTE");
+					} else {
+						log.debug(methodName + " No se ha actualizado la fecha : " + fecha);
 					}
-
-					if (objDao.actualizarTransDateReversa(fecha, Integer.parseInt(accountNo),
-							Integer.parseInt(trackingid))) {
-						log.debug(methodName + " Se ha actualizado la fecha Correctamente!!!");
-					}
+//					if (objDao.actualizarTransDateReversa(fecha, Integer.parseInt(accountNo),
+//							Integer.parseInt(trackingid))) {
+//						log.debug(methodName + " Se ha actualizado la fecha Correctamente!!!");
+//					}
 
 				} else {
-					log.debug(methodName + " Fecha trans no fue Actualizada  : ");
+					log.debug(methodName + " Reversa no fue exitosa, no ha podido actualizar TRANS_DATE ");
 				}
 			} catch (ReversaPagoFault e) {
 				reversaPagoFault.setErrorCode(e.getErrorCode());

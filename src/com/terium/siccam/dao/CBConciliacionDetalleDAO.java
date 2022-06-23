@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -471,6 +472,11 @@ public class CBConciliacionDetalleDAO {
 
 			logger.debug("query para obtener el tracking id ->" + ConsultasSQ.OBTENER_TRACKING_ID_SQ);
 			ptmt.setString(1, pagosid);
+
+			logger.debug(MessageFormat.format("obtenerTrackingIddepagosid()"
+					+ "\nObtener TrackingID : \nselect p.NUM_SECUENCI from cb_conciliacion c, cb_historial_accion h, cb_pagos p  where h.CBCONCILIACIONID = c.CBCONCILIACIONID   and c.cbpagosid = p.cbpagosid and p.CBPAGOSID ={0} ",
+					pagosid));
+
 			rst = ptmt.executeQuery();
 
 			if (rst.next()) {
@@ -534,12 +540,12 @@ public class CBConciliacionDetalleDAO {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			ptmt = con.prepareStatement(ConsultasSQ.ACTUALIZA_TRANS_DATE_SQ);
 			logger.debug("query para actualizar la fecha trans_date ->" + ConsultasSQ.ACTUALIZA_TRANS_DATE_SQ);
-			// logger.debug("actualizarTrackingId ->" + " la fecha " + fecha);
-			// logger.debug("actualizarTrackingId ->" + " el trackingId " + trackingId);
-
 			ptmt.setString(1, fecha);
 			ptmt.setInt(2, trackingId);
 
+			logger.debug(MessageFormat.format("actualizarTransDate()"
+					+ "\nObtener TrackingID : \nUPDATE BMF SET TRANS_DATE = to_date({0},'dd-MM-yyyy') WHERE TRACKING_ID = {1} AND TRACKING_ID_SERV = 3  ",
+					fecha, trackingId));
 			return ptmt.executeUpdate() > 0;
 
 		} catch (SQLException e) {
@@ -697,9 +703,9 @@ public class CBConciliacionDetalleDAO {
 			ptmt.setInt(2, trackingId);
 			rst = ptmt.executeQuery();
 			logger.debug(methodName + " Obtiene select result : " + rst.toString());
-			logger.debug(methodName + " Obtiene select result 22222 : " + ptmt.toString());
-			logger.debug(methodName + " execute query : "
-					+ "SELECT ORIG_TRACKING_ID from BMF WHERE  ACCOUNT_NO ="+accountNo+" AND ORIG_TRACKING_ID = "+trackingId);
+			logger.debug(methodName + " Obtiene select result 2 : " + ptmt.toString());
+			logger.debug(methodName + " execute query : " + "SELECT ORIG_TRACKING_ID from BMF WHERE  ACCOUNT_NO ="
+					+ accountNo + " AND ORIG_TRACKING_ID = " + trackingId);
 			if (rst.next()) {
 				return rst.getString(1);
 			}
@@ -743,6 +749,10 @@ public class CBConciliacionDetalleDAO {
 			ptmt.setString(1, fecha);
 			ptmt.setInt(2, accountNo);
 			ptmt.setInt(3, trackingId);
+
+			logger.debug(MessageFormat.format("actualizarTransDateReversa()"
+					+ "\nObtener TrackingID : \nUPDATE BMF SET TRANS_DATE = to_date(?,'dd-MM-yyyy') WHERE  ACCOUNT_NO = {0} AND ORIG_TRACKING_ID = {1}  ",
+					accountNo, trackingId));
 
 			return ptmt.executeUpdate() > 0;
 
