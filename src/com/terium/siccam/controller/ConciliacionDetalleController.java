@@ -1290,7 +1290,9 @@ public class ConciliacionDetalleController extends ControladorBase {
 			// implementa la reversa llamada a ws reversa
 			ReversaPagoFault reversaPagoFault = new ReversaPagoFault();
 			ReversaPagoDetalle[] responseReversa = null;
+
 			try {
+				///// REVERSA //////////////
 				log.debug(methodName + " - ejecuta Reversa Pago ");
 				responseReversa = requestWsReversaPago(parametros, detalle, historial); // reversa ws
 				log.debug(methodName + " - Reversa Ejecutada");
@@ -1314,6 +1316,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 				if (Constantes.STATUS.equalsIgnoreCase(responseReversa[0].getStatus())) {
 					// boolean resul =
 					// objDao.actualizarTransDate(fecha,Integer.parseInt(trackingid));
+<<<<<<< HEAD
 					if (objDao.actualizarTransDate(fecha, Integer.parseInt(trackingid))) {
 						log.debug(methodName + " Fecha TRANS_DATE : " + fecha + " ACTUALIZADA CORRECTAMENTE");
 					} else {
@@ -1323,6 +1326,17 @@ public class ConciliacionDetalleController extends ControladorBase {
 //							Integer.parseInt(trackingid))) {
 //						log.debug(methodName + " Se ha actualizado la fecha Correctamente!!!");
 //					}
+=======
+					if (Tools.isEmpty(
+							objDao.obtenerOrigTranckingId(Integer.parseInt(accountNo), Integer.parseInt(trackingid)))) {
+						log.debug(methodName + " - No se encontro registro para actualizar fecha ");
+					}
+
+					if (objDao.actualizarTransDateReversa(fecha, Integer.parseInt(accountNo),
+							Integer.parseInt(trackingid))) {
+						log.debug(methodName + " Se ha actualizado la fecha Correctamente!!!");
+					}
+>>>>>>> origin
 
 				} else {
 					log.debug(methodName + " Reversa no fue exitosa, no ha podido actualizar TRANS_DATE ");
@@ -1395,8 +1409,12 @@ public class ConciliacionDetalleController extends ControladorBase {
 	}
 
 	private ReversaPagoDetalle[] requestWsReversaPago(List<CBParametrosGeneralesModel> parametros,
+<<<<<<< HEAD
 			CBConciliacionDetallada detalle, CBHistorialAccionModel historial)
 			throws ReversaPagoFault, RemoteException, MalformedURLException {
+=======
+			CBConciliacionDetallada detalle) throws ReversaPagoFault, RemoteException, MalformedURLException {
+>>>>>>> origin
 		String methodName = "requestWsReversaPago()";
 		log.debug(methodName + " - inicia ");
 		// TODO Auto-generated method stub

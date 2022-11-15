@@ -564,6 +564,41 @@ public class CBConciliacionDetalleDAO {
 		return result;
 	}
 
+	public boolean actualizarBMFOrigTrackingId(int origTrackingId) {
+
+		boolean result = false;
+		Connection con = null;
+		PreparedStatement ptmt = null;
+
+		try {
+			con = ControladorBase.obtenerDtsPromo().getConnection();
+			ptmt = con.prepareStatement(ConsultasSQ.ACTUALIZA_TRANS_DATE_SQ);
+			logger.debug("query para actualizar BMF origTrackinId" + ConsultasSQ.ACTUALIZA_TRANS_DATE_SQ);
+			// logger.debug("actualizarTrackingId ->" + " la fecha " + fecha);
+			// logger.debug("actualizarTrackingId ->" + " el trackingId " + trackingId);
+
+			ptmt.setInt(1, origTrackingId);
+
+			return ptmt.executeUpdate() > 0;
+
+		} catch (SQLException e) {
+			logger.error("error1", e);
+		} catch (Exception e) {
+			logger.error("error2", e);
+		} finally {
+			try {
+				if (ptmt != null)
+					ptmt.close();
+				if (con != null)
+					con.close();
+			} catch (Exception e) {
+				logger.error("error3", e);
+			}
+		}
+
+		return result;
+	}
+
 	public static String obtenerCbPagosid(String conciliacionid) {
 		CBConciliacionDetallada detalle = new CBConciliacionDetallada();
 		PreparedStatement ptmt = null;
@@ -701,9 +736,15 @@ public class CBConciliacionDetalleDAO {
 			ptmt.setInt(2, trackingId);
 			rst = ptmt.executeQuery();
 			logger.debug(methodName + " Obtiene select result : " + rst.toString());
+<<<<<<< HEAD
 			logger.debug(methodName + " Obtiene select result 2 : " + ptmt.toString());
 			logger.debug(methodName + " execute query : " + "SELECT ORIG_TRACKING_ID from BMF WHERE  ACCOUNT_NO ="
 					+ accountNo + " AND ORIG_TRACKING_ID = " + trackingId);
+=======
+			logger.debug(methodName + " Obtiene select result 22222 : " + ptmt.toString());
+			logger.debug(methodName + " execute query : "
+					+ "SELECT ORIG_TRACKING_ID from BMF WHERE  ACCOUNT_NO ="+accountNo+" AND ORIG_TRACKING_ID = "+trackingId);
+>>>>>>> origin
 			if (rst.next()) {
 				return rst.getString(1);
 			}
