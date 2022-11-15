@@ -131,12 +131,14 @@ public class CBHistorialDeAccionesController extends ControladorBase {
 
 		// GUARDAR
 		public void onClick$btnGuardar() {
+			String methodName="onClick$btnGuardar()";
 			CBHistorialAccionModel cbHistorial = null;
 			String idPadre =null;
 			try {
 				idPadre = conciliacionDetalle.getConciliacionId();
 				if (lbxHistorialAcciones.getSelectedItem() != null) {
 					// ACTUALIZAR
+					log.debug(methodName+" - ACTUALIZR OBSERVACIONES");
 					cbHistorial = lbxHistorialAcciones.getSelectedItem().getValue();
 					cbHistorial.setAccion(txtAccion.getText());
 					cbHistorial.setMonto(txtMonto.getText());
@@ -145,6 +147,7 @@ public class CBHistorialDeAccionesController extends ControladorBase {
 					historialDao.updateReg(cbHistorial, idPadre);
 
 				} else {
+					log.debug(methodName+" - INSERT OBSERVACIONES");
 					// INSERTAR
 					cbHistorial = new CBHistorialAccionModel();
 					cbHistorial.setAccion(txtAccion.getText());

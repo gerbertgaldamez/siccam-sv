@@ -430,7 +430,7 @@ public class CBConciliacionDetalleDAO {
 	}
 
 	public static String obtenerTrackingId(String cod_num) {
-		CBConciliacionDetallada detalle = new CBConciliacionDetallada();
+		String methodName = "obtenerTrackingId()";
 		PreparedStatement ptmt = null;
 		ResultSet rst = null;
 		Connection con = null;
@@ -438,7 +438,7 @@ public class CBConciliacionDetalleDAO {
 			con = ControladorBase.obtenerDtsPromo().getConnection();
 			ptmt = con.prepareStatement(ConsultasSQ.OBTENER_TRACKING_ID_SQ2);
 
-			logger.debug("query para obtener el tracking id ->" + ConsultasSQ.OBTENER_TRACKING_ID_SQ2);
+			logger.debug(methodName + " - query para obtener el tracking id ->" + ConsultasSQ.OBTENER_TRACKING_ID_SQ2);
 			ptmt.setString(1, cod_num);
 			rst = ptmt.executeQuery();
 
@@ -447,7 +447,7 @@ public class CBConciliacionDetalleDAO {
 			}
 
 		} catch (Exception e) {
-			logger.error(e);
+			logger.error(methodName + " - Error : ", e);
 		} finally {
 			try {
 				if (con != null)
@@ -456,9 +456,7 @@ public class CBConciliacionDetalleDAO {
 				logger.error(e);
 			}
 		}
-		// logger.debug("obtenerCodAgenciaReversa ->" + " el cod agencia es null " );
 		return null;
-
 	}
 
 	public static String obtenerTrackingIddepagosid(String pagosid) {
