@@ -181,6 +181,10 @@ public class CBProcessFileUploadController extends ControladorBase {
 			lblMensaje.setValue("Archivo seleccionado: " + media.getName());
 			lblMensaje.setStyle("color:blue;");
 			imgEstatus.setSrc("img/azul.png");
+		}else if (format.toUpperCase().equals("csv".toUpperCase())) {
+			lblMensaje.setValue("Archivo seleccionado: " + media.getName());
+			lblMensaje.setStyle("color:blue;");
+			imgEstatus.setSrc("img/azul.png");
 		} else {
 			lblMensaje.setValue("Error en formato -- Archivo seleccionado: " + media.getName());
 			lblMensaje.setStyle("color:red;");
@@ -241,7 +245,7 @@ public class CBProcessFileUploadController extends ControladorBase {
 							cbprocesPA.mapeoCargaConfrontasPA();
 						} else if (misession.getAttribute("conexion").equals(Tools.SESSION_CR)) {
 							cbprocesCR.mapeoCargaConfrontasCR();
-						} else if(misession.getAttribute("conexion").equals(Tools.SESSION_SV)) {
+						} else if (misession.getAttribute("conexion").equals(Tools.SESSION_SV)) {
 							logger.debug("onClick$btnCargaConfrontas() - ingresa mapeoCargaConfrontasSV");
 							cbprocesSV.mapeoCargaConfrontasSV();
 						}

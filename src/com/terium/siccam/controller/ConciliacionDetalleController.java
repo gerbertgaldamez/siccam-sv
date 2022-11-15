@@ -188,7 +188,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 				// cmbAgencia.setText("Todas");
 				cmbAgencia.setText(conciliacion.getNombre());
 				cmbTipo.setText(conciliacion.getTipo());
-				System.out.println("Tipo es igual :" + conciliacion.getTipo());
+				log.debug("doAfterCompose() - Tipo es igual :" + conciliacion.getTipo());
 				// lblAgencia.setValue(conciliacion.getNombre());
 				// lblDia.setValue(fechaFormato.format(conciliacion.getDia()));
 
@@ -979,12 +979,12 @@ public class ConciliacionDetalleController extends ControladorBase {
 
 				// Request WS Pagos - Reenvio
 				detalle.eliminarRegistros(obj.getCbHistorialAccionId());
-				System.out.println("Llega anates del metodo llenar lista");
+				log.debug("Llega anates del metodo llenar lista");
 
 				listarConciliacionesDetalle();
 				onClick$btnBuscar();
 
-				System.out.println("Llega despues del metodo llenar lista");
+				log.debug("Llega despues del metodo llenar lista");
 			}
 			listarConciliacionesDetalle();
 			Messagebox.show("El Registro fue Eliminado de forma correcta!", "ATENCION", Messagebox.OK,
@@ -1219,10 +1219,10 @@ public class ConciliacionDetalleController extends ControladorBase {
 			PagoDetalle[] response = null;
 			EjecutarPagoFault pagoFault = new EjecutarPagoFault();
 			try {
-				response = requestWsEjecutaPago(parametros, detalle);
+				response = requestWsEjecutaPago(parametros, detalle,historial);
 
 				String trackingid = CBConciliacionDetalleDAO
-						.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
+						.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle, historial)));
 
 				// se obtiene el trackingid que se le mandara al metodo actualizarTransDate
 				// String trackingid = String.valueOf(getClienteTelefono(detalle));
@@ -1294,9 +1294,13 @@ public class ConciliacionDetalleController extends ControladorBase {
 			try {
 				///// REVERSA //////////////
 				log.debug(methodName + " - ejecuta Reversa Pago ");
-				responseReversa = requestWsReversaPago(parametros, detalle); // reversa ws
+				responseReversa = requestWsReversaPago(parametros, detalle, historial); // reversa ws
 				log.debug(methodName + " - Reversa Ejecutada");
-				String trackingid = CBConciliacionDetalleDAO.obtenerTrackingIddepagosid(cbpagosid);// max
+				// String trackingid =
+				// CBConciliacionDetalleDAO.obtenerTrackingIddepagosid(cbpagosid);// max
+				log.debug(methodName + " -- SE OBTIENE TRACKINGID ");
+				String trackingid = CBConciliacionDetalleDAO
+						.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle, historial)));
 				String accountNo = CBConciliacionDetalleDAO.obtenerAccountno(trackingid);
 				// String trackingid =
 				// CBConciliacionDetalleDAO.obtenerTrackingId(String.valueOf(getClienteTelefono(detalle)));
@@ -1309,22 +1313,21 @@ public class ConciliacionDetalleController extends ControladorBase {
 				String fecha = formatter.format(detalle.getDia());
 				log.debug(methodName + " fecha a actualizar: " + fecha);
 				// para actualizar fecha trans_date
-				// if(Constantes.STATUS.equalsIgnoreCase(responseReversa[0].getStatus())){
 				if (Constantes.STATUS.equalsIgnoreCase(responseReversa[0].getStatus())) {
 					// boolean resul =
 					// objDao.actualizarTransDate(fecha,Integer.parseInt(trackingid));
-					if (Tools.isEmpty(
-							objDao.obtenerOrigTranckingId(Integer.parseInt(accountNo), Integer.parseInt(trackingid)))) {
-						log.debug(methodName + " - No se encontro registro para actualizar fecha ");
+					if (objDao.actualizarTransDate(fecha, Integer.parseInt(trackingid))) {
+						log.debug(methodName + " Fecha TRANS_DATE : " + fecha + " ACTUALIZADA CORRECTAMENTE");
+					} else {
+						log.debug(methodName + " No se ha actualizado la fecha : " + fecha);
 					}
-
-					if (objDao.actualizarTransDateReversa(fecha, Integer.parseInt(accountNo),
-							Integer.parseInt(trackingid))) {
-						log.debug(methodName + " Se ha actualizado la fecha Correctamente!!!");
-					}
+//					if (objDao.actualizarTransDateReversa(fecha, Integer.parseInt(accountNo),
+//							Integer.parseInt(trackingid))) {
+//						log.debug(methodName + " Se ha actualizado la fecha Correctamente!!!");
+//					}
 
 				} else {
-					log.debug(methodName + " Fecha trans no fue Actualizada  : ");
+					log.debug(methodName + " Reversa no fue exitosa, no ha podido actualizar TRANS_DATE ");
 				}
 			} catch (ReversaPagoFault e) {
 				reversaPagoFault.setErrorCode(e.getErrorCode());
@@ -1394,14 +1397,15 @@ public class ConciliacionDetalleController extends ControladorBase {
 	}
 
 	private ReversaPagoDetalle[] requestWsReversaPago(List<CBParametrosGeneralesModel> parametros,
-			CBConciliacionDetallada detalle) throws ReversaPagoFault, RemoteException, MalformedURLException {
+			CBConciliacionDetallada detalle, CBHistorialAccionModel historial)
+			throws ReversaPagoFault, RemoteException, MalformedURLException {
 		String methodName = "requestWsReversaPago()";
 		log.debug(methodName + " - inicia ");
 		// TODO Auto-generated method stub
 		PagosPortService servicio = new PagosPortServiceLocator();
 		ReversaPagoDetalle[] response = null;
 		PagosPortSoap11Stub ws = new PagosPortSoap11Stub(new URL(servicio.getpagosPortSoap11Address()), servicio);
-		ReversaPagoRequest requestReversaPago = setParamsReversaPago(parametros, detalle);
+		ReversaPagoRequest requestReversaPago = setParamsReversaPago(parametros, detalle, historial);
 		log.debug(methodName + " - Se envia solicitud al WS ");
 		response = ws.reversaPago(requestReversaPago);
 		log.debug(methodName + " - RequestXML : "
@@ -1432,7 +1436,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 	}
 
 	private ReversaPagoRequest setParamsReversaPago(List<CBParametrosGeneralesModel> parametros,
-			CBConciliacionDetallada detalle) {
+			CBConciliacionDetallada detalle, CBHistorialAccionModel historial) {
 		CBConciliacionDetalleDAO objDao = new CBConciliacionDetalleDAO();
 		String methodName = "setParamsReversaPago()";
 		Date objFecha = new Date();
@@ -1442,7 +1446,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 		// DateFormat fechaFormato = new SimpleDateFormat("yyyyMMdd");
 		// String fecha = fechaFormato.format(objFecha);
 		log.debug(methodName + " -  inicia ");
-		int cliente = getClienteTelefono(detalle);
+		int cliente = getClienteTelefono(detalle, historial);
 		log.debug(methodName + " -  codigo cliente a enviar : " + cliente);
 		// request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
 		ReversaPagoRequest request = new ReversaPagoRequest();
@@ -1512,7 +1516,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 	}
 
 	private PagoDetalle[] requestWsEjecutaPago(List<CBParametrosGeneralesModel> parametros,
-			CBConciliacionDetallada detalle) throws EjecutarPagoFault, RemoteException, MalformedURLException {
+			CBConciliacionDetallada detalle, CBHistorialAccionModel historial) throws EjecutarPagoFault, RemoteException, MalformedURLException {
 		// CBConciliacionDetalleDAO objDao = null;
 		CBConciliacionDetalleDAO objDao = new CBConciliacionDetalleDAO();
 		String methodName = "requestWsEjecutaPago()";
@@ -1522,7 +1526,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 		PagoDetalle[] response = null;
 
 		PagosPortSoap11Stub ws = new PagosPortSoap11Stub(new URL(servicio.getpagosPortSoap11Address()), servicio);
-		EjecutarPagoRequest request = setParamEjecutaPagoRequest(parametros, detalle);
+		EjecutarPagoRequest request = setParamEjecutaPagoRequest(parametros, detalle,historial);
 		log.debug(methodName + " - Se envia solicitud al WS ");
 		response = ws.ejecutarPago(request);
 
@@ -1558,13 +1562,13 @@ public class ConciliacionDetalleController extends ControladorBase {
 	}
 
 	private EjecutarPagoRequest setParamEjecutaPagoRequest(List<CBParametrosGeneralesModel> parametros,
-			CBConciliacionDetallada detalle) {
+			CBConciliacionDetallada detalle, CBHistorialAccionModel historial) {
 		String methodName = "setParamEjecutaPagoRequest()";
 		Date objFecha = new Date();
 		DateFormat fechaFormato = new SimpleDateFormat("ddMMyyyy");
 		String fecha = fechaFormato.format(objFecha);
 		log.debug(methodName + " -  inicia ");
-		int cliente = getClienteTelefono(detalle);
+		int cliente = getClienteTelefono(detalle,historial);
 		log.debug(methodName + " -  codigo cliente a enviar : " + cliente);
 		EjecutarPagoRequest request = new EjecutarPagoRequest();
 		// request.setBank_id(Tools.obtenerParametro(Constantes.COD_BANCO, parametros));
@@ -1599,7 +1603,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 		return request;
 	}
 
-	private int getClienteTelefono(CBConciliacionDetallada detalle) {
+	private int getClienteTelefono(CBConciliacionDetallada detalle, CBHistorialAccionModel historial) {
 		// TODO Auto-generated method stub
 		int codCliente = 0;
 		if (detalle.getCliente() != null && detalle.getTelefono() == null) {
@@ -1613,12 +1617,46 @@ public class ConciliacionDetalleController extends ControladorBase {
 		if (detalle.getCliente() != null && detalle.getTelefono() != null) {
 			codCliente = Integer.parseInt(detalle.getCliente());
 		}
+
 		if (detalle.getCliente() == null) {
-			codCliente = Integer.parseInt(CBConciliacionDetalleDAO.obtenerTelefono(detalle.getTelefono()));
-			log.debug("getClienteTelefono() - obteniendo codigo cliente 2 : " + codCliente);
+
+			if (detalle.getTelefono() != null) {
+
+				String cuentaArbor = CBConciliacionDetalleDAO.obtenerTelefono(detalle.getTelefono());
+				if (cuentaArbor != null)
+					codCliente = Integer.parseInt(cuentaArbor);
+				else
+					codCliente = Integer.parseInt(obtenerCuenta(historial.getObservaciones()));
+
+			} else {
+				codCliente = Integer.parseInt(obtenerCuenta(historial.getObservaciones()));
+				log.debug("getClienteTelefono() - obteniendo codigo de observaciones : " + codCliente);
+			}
+
 		}
 
 		return codCliente;
+	}
+
+	public static String obtenerCuenta(String observaciones) {
+		String methodName = "obtenerCuenta()";
+		String cuenta = null;
+		log.debug(methodName+" - Inicia obtener No cuenta desde observaciones");
+		if (Tools.isEmpty(observaciones))
+			return cuenta;
+		
+		char[] toCharArray = observaciones.toCharArray();
+		log.debug(methodName+" - Extrae cuenta ");
+		
+		for (int i = 0; i < observaciones.length(); i++) {
+			char caracter = toCharArray[i];
+			if (Character.isDigit(caracter)) {
+				cuenta = observaciones.substring(i, observaciones.length());
+				break;
+			}
+		}
+		log.debug(methodName + "No de cuenta = " + cuenta);
+		return cuenta;
 	}
 
 	/**
@@ -1866,7 +1904,7 @@ public class ConciliacionDetalleController extends ControladorBase {
 			} else {
 				wdwHistorial2.setVisible(false);
 			}
-			System.out.println("Click en cerrar ventana");
+			log.debug("evlOnClick_btnCancelar2() - Click en cerrar ventana");
 			Clients.clearBusy();
 		}
 	};

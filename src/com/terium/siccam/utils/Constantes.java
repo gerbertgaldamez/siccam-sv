@@ -20,6 +20,8 @@ public class Constantes {
 	public static final String TEXT_CENTER = "text-align: center";
 
 	public static final String IP_DEFAULT = "0.0.0.0";
+	
+	
 
 	// Parametros para consumo de WS Pagos
 	public static final String AGENCIA = "AGENCIA";
